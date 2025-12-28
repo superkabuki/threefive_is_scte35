@@ -12,6 +12,7 @@ from .new_reader import reader
 from .section import SpliceInfoSection
 from .segment import Segment
 from .sixfix import SixFix
+from .speedo import Speedo
 from .stream import Stream
 from .stuff import (
     badtype,
