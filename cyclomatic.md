@@ -1,5 +1,11 @@
+```smalltalk
+654 blocks (classes, functions, methods) analyzed.
+Average complexity: A (1.996941896024465)
+```
+
 ```js
-a@fu:~/scratch/threefive$ radon cc --show-closures  -sa threefive 
+a@fu:~/scratch/threefive$ radon cc --show-closures  -sa threefive
+
 threefive/throttle.py
     C 78:0 SupaStream - A (4)
     M 65:4 Throttle.throttle - A (4)
