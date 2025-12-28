@@ -14,6 +14,7 @@ import time
 from functools import partial
 from .new_reader import reader
 from .stuff import blue, reblue, print2, pif
+from .speedo import Speedo
 
 
 DGRAM = 1316
@@ -66,23 +67,13 @@ class GumS:
         iter_dgrams iterates over the video and sends
         self.dgram_size chunks of video to the socket.
         """
-        million = 1024 * 1024
-        start_time = time.time()
         time.sleep(0.0001)
-        now = time.time
-        total_bytes = 0
+        speedo = Speedo()
         with reader(vid) as gum:
             for dgram in iter(partial(gum.read, DGRAM), b""):
                 self.sock.sendto(dgram, self.dest_grp)
-                total_bytes += len(dgram)
-                elapsed = now() - start_time
-                rate = (total_bytes / million) / elapsed
-                mb = total_bytes / million
-                reblue(
-                    f"\t{mb:0.2f} MB sent in {elapsed:5.2f} seconds. {rate:3.2f} MB/Sec"
-                )
-            print("\n", file=sys.stderr)
-
+                speedo.plus(len(dgram))
+        speedo.end()
     def send_stream(self, vid):
         """
         send_stream sets multicast ttl if needed,
