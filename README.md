@@ -15,6 +15,7 @@ https://github.com/user-attachments/assets/0c7ebdae-df3c-44bd-80ea-336a971004cd
 
 ___
 # [ Latest threefive version is v3.0.69 ]
+* [why can`t you be more cyclomatic like your brother?](cyclomatic.md)
 * __live SRT support is now stable for decoding__.
 * live SRT streaming support has been  integrated, no special handling required.
 * srtfu now build libsrt automatically the first time you use it.
