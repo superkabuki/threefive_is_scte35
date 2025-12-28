@@ -1,6 +1,17 @@
+"""
+threefive.speedo.py
+A Speedo class is used to
+calulate data transfer rates.
+
+
+"""
+
 
 import sys
 import time
+
+
+MILLION = 2<<19
 
 
 class Speedo:
@@ -9,10 +20,9 @@ class Speedo:
     """
 
     def __init__(self):
-        self.start=time.time()
-        self.now =time.time
+        self.start = time.time()
+        self.now = time.time
         self.total_bytes = 0
-        self.million= 2 << 19
 
     @staticmethod
     def print_out(out):
@@ -20,41 +30,23 @@ class Speedo:
         print_out print  out
         and overwrite the previous out.
         """
-        print(out, file=sys.stderr, end='\r')
+        print(out, file=sys.stderr, end="\r")
 
-    def speed(self,some_bytes):
+    def plus(self, this_many):
         """
-        speed calculate current transfer rate
+        plus add to the running byte tota;l
+        print current stats.
         """
-        self.total_bytes +=some_bytes
-        elapsed= self.now()-self.start
-        rate = (self.total_bytes/self.million)/elapsed
-        mb = self.total_bytes/self.million
+        self.total_bytes += this_many
+        elapsed = self.now() - self.start
+        mb = self.total_bytes / MILLION
+        rate =mb / elapsed
         out = f"\t{mb:0.2f} MB sent in {elapsed:5.2f} seconds. {rate:3.2f} MB/Sec"
         self.print_out(out)
-        
+
     def end(self):
         """
-        end advance the cursor past the \r 
+        end advance the cursor past the \r
         """
-        out ='\n\n'
+        out = "\n\n"
         self.print_out(out)
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
