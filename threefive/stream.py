@@ -262,22 +262,22 @@ class Stream(Based):
 
     def decode(self, func=show_cue):
         """
-        decode reads self.tsdata to find SCTE35 packets.
+        Stream.decode reads self.tsdata to find SCTE35 packets.
         func can be set to a custom function that accepts
         a threefive.Cue instance as it's only argument.
         """
         speedo = Speedo()
         num_pkts = 1400
         for chunk in self.iter_pkts(num_pkts=num_pkts):
-            speedo.speed(len(chunk))
+            speedo.plus(len(chunk))
             self._decode2cues(chunk, func)
         speedo.end()
         return False
 
     def decode_next(self):
         """
-        decode_next is generator for 
-        SCTE35 Cues in a video stream
+        Stream.decode_next returns the next
+        SCTE35 cue as a threefive.Cue instance.
         """
         for pkt in self.iter_pkts():
             cue = self._parse(pkt)
@@ -287,7 +287,7 @@ class Stream(Based):
 
     def decode_pids(self, scte35_pids=None, func=show_cue):
         """
-        decode_pids takes a list of SCTE-35 Pids parse
+        Stream.decode_pids takes a list of SCTE-35 Pids parse
         and an optional call back function to run when a Cue is found.
         if scte35_pids is not set, all threefive pids will be parsed.
         """
@@ -306,7 +306,7 @@ class Stream(Based):
 
     def proxy(self, func=show_cue):
         """
-        proxy writes all ts packets are written to stdout
+        Stream.decode_proxy writes all ts packets are written to stdout
         for piping into another program like mplayer.
         SCTE-35 cues are print2`ed to stderr.
         """
