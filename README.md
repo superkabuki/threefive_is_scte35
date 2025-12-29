@@ -5,6 +5,8 @@ ___
 ### [ threefive now supports SRT](srt.md)
 
 
+* _( You have to unmute the audio )_
+
 https://github.com/user-attachments/assets/a323ea90-867f-480f-a55f-e9339263e511
 
 
