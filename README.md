@@ -187,9 +187,19 @@ ___
 * [Online SCTE-35 Parser](https://iodisco.com/scte35)  Supporte Base64, Bytes,Hex,Int, Json, Xml, and Xml+binary.
 
 * [Encode SCTE-35](https://github.com/superkabuki/threefive/blob/main/encode.md) Some encoding code examples. 
+___
+
+
+### __Python3 vs Pypy3 running threefive__
+
+
+
+https://github.com/user-attachments/assets/9e88fb38-6ad0-487a-a801-90faba9d72c6
+
 
 
 ___
+
 
 * Let me show you how easy threefive is to use.
 
