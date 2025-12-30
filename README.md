@@ -19,14 +19,24 @@ https://github.com/user-attachments/assets/a323ea90-867f-480f-a55f-e9339263e511
 <BR> _checkout [SRTfu](https://github.com/superkabuki/srtfu)_
 
 ___
-# [ Latest threefive version is v3.0.69 ]
+# [Latest threefive version is v3.0.69]
 * [why can`t you be more cyclomatic like your brother?](cyclomatic.md)
 * __live SRT support is now stable for decoding__.
 * live SRT streaming support has been  integrated, no special handling required.
 * srtfu now build libsrt automatically the first time you use it.
 * __threefive functions with or without SRT support.__ 
 
-# [ Features ]
+###  __Stream.decode_next()__ is now a generator.
+* Some people have complained that the callback functionality of Stream.decode is too limiting. So I made Stream.decode_next a full blown python generator, so now you can get the SCTE-35 cues as they happen and handle them however you like.
+```py3
+	from threefive import Stream
+
+    strm =Stream(some_url)
+    for cue in strm.decode_next():
+		your_complicated_function(cue, one_arg , two_arg, 13,)
+```        
+
+# [Features]
 <samp>
 
 * __Decode SCTE-35__  MPEGTS ✔ Base64 ✔ Bytes ✔ Hex ✔ Integers ✔ JSON ✔ XML ✔ XML+Binary ✔ DASH ✔  Dicts ✔  
@@ -42,7 +52,7 @@ ___
 
 ___
 
-#  [ Tip Of The Week ]
+#  [Tip Of The Week]
 If you want to have a Segmentation Descriptor without a UPID <BR>
 set __segmentation_upid_length__= __0__ <BR>
 set __segmentation_upid_type__= __0__
@@ -50,13 +60,13 @@ ___
 
 
 
-# [ Documentation ]
+# [Documentation]
 	
-* [__Install__](#-install-) 
-* [SCTE-35 Decoding __Quick Start__ ](#-quick-start-) _threefive makes decoding SCTE-35 fast and easy_
+* [__Install__](#install) 
+* [SCTE-35 Decoding __Quick Start__ ](#quick-start) _threefive makes decoding SCTE-35 fast and easy_
 * [SCTE-35 __Examples__](https://github.com/superkabuki/threefive/tree/main/examples) _examples of all kinds of SCTE-35 stuff_
-* [SCTE-35 __Cli__](#-the-cli-tool-) _decode SCTE-35 on the command line_
-* [Using the __threefive lib__](#-using-the-library-) _decode SCTE-35 with less than ten lines of code_
+* [SCTE-35 __Cli__](#the-cli-tool) _decode SCTE-35 on the command line_
+* [Using the __threefive lib__](#using-the-library) _decode SCTE-35 with less than ten lines of code_
 * [SCTE-35 __HLS__](https://github.com/superkabuki/threefive/blob/main/hls.md) _parse SCTE-35 in HLS__
 * [SCTE-35 __XML__ ](https://github.com/superkabuki/SCTE-35/blob/main/xml.md) and [More __XML__](node.md) _threefive can parse and encode SCTE-35 xml_
 * [__Encode__ SCTE-35](https://github.com/superkabuki/threefive/blob/main/encode.md) _threefive can encode SCTE-35 in every SCTE-35 format_
@@ -72,7 +82,7 @@ ___
 </samp>
 
 
-##  [ Install ]
+##  [Install]
 * python3 via pip
 ```rebol
 python3 -mpip install threefive
@@ -90,7 +100,7 @@ make install
 ___
 
 
-## [ Quick Start ] 
+## [Quick Start] 
 
 
 * Most of the stuff in threefive all works the same way.
@@ -148,23 +158,23 @@ ___
 
 ___
 
-##  [ Examples ]
+##  [Examples]
 * [__Examples__](https://github.com/superkabuki/threefive/tree/main/examples)
-## [ XML ]
+## [XML]
 * [XML](https://github.com/superkabuki/SCTE-35/blob/main/xml.md) __New__! _updated 05/01/2025_
-## [ Cli ]
+## [Cli]
 * [SCTE-35 Cli Super Tool](#the-cli-tool) Encodes, Decodes, and Recodes. This is pretty cool, it does SCTE-35 seven different ways.
      * The cli tool comes with builtin documentation just type `threefive help`
-## [ HLS ]
+## [HLS]
 * [Advanced Parsing of SCTE-35 in HLS with threefive](https://github.com/superkabuki/threefive/blob/main/hls.md) All HLS SCTE-35 tags, Sidecar Files, AAC ID3 Header Timestamps, SCTE-35 filters... Who loves you baby?
 
-##  [ MPEGTS Packet Injection ]
+##  [MPEGTS Packet Injection]
 * [The SuperKabuki MPEGTS Packet Injection Engine in the Cli](inject.md)
 
-##  [ SCTE-35 As a Service ]
+##  [SCTE-35 As a Service]
 * Decode SCTE-35 without installing anything. If you can make an https request, you can use [__Sassy__](sassy.md) to decode SCTE-35. . 
 
-##  [ Classes ]
+##  [Classes]
 * The python built in help is always the most up to date docs for the library.
 
 ```py3
@@ -182,7 +192,7 @@ a@fu:~/build7/threefive$ pypy3
 
 ___
 
-## [ | more  ]
+## [more]
 
 * [Online SCTE-35 Parser](https://iodisco.com/scte35)  Supporte Base64, Bytes,Hex,Int, Json, Xml, and Xml+binary.
 
