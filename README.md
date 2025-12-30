@@ -65,7 +65,7 @@ ___
 * [SCTE-35 Decoding __Quick Start__ ](#quick-start) _threefive makes decoding SCTE-35 fast and easy_
 * [SCTE-35 __Examples__](https://github.com/superkabuki/threefive/tree/main/examples) _examples of all kinds of SCTE-35 stuff_
 * [SCTE-35 __Cli__](#the-cli-tool) _decode SCTE-35 on the command line_
-* [Using the __threefive lib__](#using-the-library) _decode SCTE-35 with less than ten lines of code_
+* [__Using the threefive library__](#using-the-library) _decode SCTE-35 with less than ten lines of code_
 * [SCTE-35 __HLS__](https://github.com/superkabuki/threefive/blob/main/hls.md) _parse SCTE-35 in HLS__
 * [SCTE-35 __XML__ ](https://github.com/superkabuki/SCTE-35/blob/main/xml.md) and [More __XML__](node.md) _threefive can parse and encode SCTE-35 xml_
 * [__Encode__ SCTE-35](https://github.com/superkabuki/threefive/blob/main/encode.md) _threefive can encode SCTE-35 in every SCTE-35 format_
