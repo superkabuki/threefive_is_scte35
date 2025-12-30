@@ -61,11 +61,11 @@ ___
   	* XML ✔
   	* XML+Binary ✔
 
-* __threefive __file protocols__:
+* __threefive file protocols__:
 	* Pipes(stdin, stdout) ✔
     * Files ✔
 
-* threefive __network protocols__: 
+* __threefive network protocols__: 
     * HTTP(s) ✔
     * Multicast ✔
     * UDP ✔
