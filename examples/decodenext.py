@@ -9,20 +9,13 @@ but you trigger any action you like, this is just an example.
 
 import sys
 from threefive import Stream
-from threefive.new_reader import reader
 
 
 def do():
     arg = sys.argv[1]
-    with reader(arg) as tsdata:
-        st = Stream(tsdata)
-        while True:
-            cue = st.decode_next()
-            if not cue:
-                return False
-            if cue:
-                if cue.command.command_type == 5:
-                    print(cue.command)
+    strm =Stream(sys.argv[1])
+    for cue in strm.decode_next():
+        cue.show()
 
 
 if __name__ == "__main__":
