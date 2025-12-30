@@ -2,7 +2,7 @@
 
 ### If you do __SCTE35__, you want to __use threefive__. 
 ___
-# [Python3 vs. Pypy3 running threefive.](https://github.com/superkabuki/threefive_is_scte35#python3-vs-pypy3-running-threefive)
+# [Python3 vs. Pypy3 parsing SCTE35 .](https://github.com/superkabuki/threefive_is_scte35#python3-vs-pypy3-running-threefive)
 
 # [ threefive now supports SRT](srt.md)
 
