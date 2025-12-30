@@ -2,23 +2,22 @@
 
 ### If you do __SCTE35__, you want to __use threefive__. 
 ___
-### [ threefive now supports SRT](srt.md)
+# [Python3 vs. Pypy3 running threefive.](https://github.com/superkabuki/threefive_is_scte35#python3-vs-pypy3-running-threefive)
+
+# [ threefive now supports SRT](srt.md)
 
 
 * _( You have to unmute the audio )_
 
 https://github.com/user-attachments/assets/a323ea90-867f-480f-a55f-e9339263e511
 
-
-
-
-
-
 <BR>
 
 <BR> _checkout [SRTfu](https://github.com/superkabuki/srtfu)_
 
 ___
+
+
 # [Latest threefive version is v3.0.69]
 * [why can`t you be more cyclomatic like your brother?](cyclomatic.md)
 * __live SRT support is now stable for decoding__.
@@ -200,9 +199,9 @@ ___
 ___
 
 
-### __Python3 vs Pypy3 running threefive__
+## __Python3 vs Pypy3 running threefive__
 
-
+* __( You have to unmute the audio )__
 
 https://github.com/user-attachments/assets/9e88fb38-6ad0-487a-a801-90faba9d72c6
 
