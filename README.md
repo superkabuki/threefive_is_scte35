@@ -3,7 +3,7 @@
 ### If you do __SCTE35__, you want to __use threefive__. 
 ___
 # [Python3 vs. Pypy3 parsing SCTE35 .](https://github.com/superkabuki/threefive_is_scte35#python3-vs-pypy3-running-threefive)
-
+___
 # [ threefive now supports SRT](srt.md)
 
 
@@ -24,8 +24,8 @@ ___
 * live SRT streaming support has been  integrated, no special handling required.
 * srtfu now build libsrt automatically the first time you use it.
 * __threefive functions with or without SRT support.__ 
-
-###  __Stream.decode_next()__ is now a generator.
+___
+#  __Stream.decode_next()__ is now a generator.
 * Some people have complained that the callback functionality of Stream.decode is too limiting. So I made Stream.decode_next a full blown python generator, so now you can get the SCTE-35 cues as they happen and handle them however you like.
 ```py3
 	from threefive import Stream
@@ -34,14 +34,42 @@ ___
     for cue in strm.decode_next():
 		your_complicated_function(cue, one_arg , two_arg, 13,)
 ```        
+___
 
 # [Features]
+
 <samp>
 
-* __Decode SCTE-35__  MPEGTS ✔ Base64 ✔ Bytes ✔ Hex ✔ Integers ✔ JSON ✔ XML ✔ XML+Binary ✔ DASH ✔  Dicts ✔  
-* __Encodes SCTE-35__ MPEGTS ✔ Base64 ✔ Bytes ✔ Hex ✔ Integers ✔ JSON ✔ XML ✔ XML+Binary ✔
+* __Decode SCTE-35__ from:
+	* MPEGTS ✔
+	* Base64 ✔
+	* Bytes ✔
+	* Hex ✔
+	* Integers
+	* ✔ JSON
+	* ✔ XML
+	* ✔ XML+Binary
+	* ✔ DASH ✔
+	* Dicts ✔  
+* __Encodes SCTE-35__ to:
+	* MPEGTS ✔
+	* Base64 ✔
+ 	* Bytes ✔
+  	* Hex ✔
+  	* Integers ✔
+  	* JSON ✔
+  	* XML ✔
+  	* XML+Binary ✔
 
-* __threefive parses SCTE35 from Pipes, Files,  HTTP(s), Multicast, UDP, and now SRT__.  
+* __threefive __file protocols__:
+	* Pipes(stdin, stdout) ✔
+    * Files ✔
+
+* threefive __network protocols__: 
+    * HTTP(s) ✔
+    * Multicast ✔
+    * UDP ✔
+    * SRT ✔ 
 
 * __Automatic AES decryption__ for __MPEGTS__ and __HLS__. ✔
 
