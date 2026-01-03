@@ -54,13 +54,12 @@ class Throttle:
             ptime = round(pts - self.first, 6)
             atime = round(self.actualstop - self.actualstart, 6)
             diff = round((ptime - atime), 6)
-            if 0 < diff:
-                if diff < 10:
-                    print(f"sleeping: {diff}", file=sys.stderr, end="\r")
-                    time.sleep(diff)
-                    self.reset_end()
-                else:
-                    self.reset()
+            if 0 < diff < 10:
+                print(f"throttling: {diff}", file=sys.stderr, end="\r")
+                time.sleep(diff)
+                self.reset_end()
+            else:
+                self.reset()
 
     def throttle(self, packet):
         """
@@ -81,12 +80,14 @@ class SupaStream(Stream):
     """
 
     def slow(self):
-        timr = TheTime()
+        timr = Throttle()
         for pkt in self.iter_pkts():
             timr.throttle(pkt)
             cue = self._parse(pkt)
             if cue:
                 cue.show()
+        #    sys.stdout.buffer.write(pkt)
+        #    sys.stdout.buffer.flush()
 
 
 if __name__ == "__main__":
