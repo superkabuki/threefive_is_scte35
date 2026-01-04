@@ -2,18 +2,20 @@
 
 ### If you do __SCTE35__, you want to __use threefive__. 
 ___
-# [Python3 vs. Pypy3 parsing SCTE35 .](https://github.com/superkabuki/threefive_is_scte35#python3-vs-pypy3-running-threefive)
+### [[Python3 vs. Pypy3 parsing SCTE35]](https://github.com/superkabuki/threefive_is_scte35#python3-vs-pypy3-running-threefive)
 ___
-# [ threefive now supports SRT](srt.md)
-
+### [threefive now supports SRT]
 
 * _( You have to unmute the audio )_
 
 https://github.com/user-attachments/assets/a323ea90-867f-480f-a55f-e9339263e511
 
-<BR>
+<BR> 
 
-<BR> _checkout [SRTfu](https://github.com/superkabuki/srtfu)_
+* [more SRT and threefive info](srt.md)
+
+
+* _checkout [SRTfu](https://github.com/superkabuki/srtfu)_
 
 ___
 
@@ -25,7 +27,7 @@ ___
 * srtfu now build libsrt automatically the first time you use it.
 * __threefive functions with or without SRT support.__ 
 ___
-#  __Stream.decode_next()__ is now a generator.
+#  [__Stream.decode_next()__ is now a generator]
 * Some people have complained that the callback functionality of Stream.decode is too limiting. So I made Stream.decode_next a full blown python generator, so now you can get the SCTE-35 cues as they happen and handle them however you like.
 ```py3
 	from threefive import Stream
