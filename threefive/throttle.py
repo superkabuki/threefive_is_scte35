@@ -17,12 +17,13 @@ class Throttle:
     the Throttle class works at the MPEGTS packet level.
     """
 
-    def __init__(self):
+    def __init__(self, shush=False):
         self.first = None
         self.second = None
         self.actualstart = None
         self.actualstop = None
         self.ifr = IFramer(shush=True)
+        self.shush = shush
 
     def reset(self):
         """
@@ -42,7 +43,8 @@ class Throttle:
         """
         self.first = pts
         self.actualstart = time.time()
-        print2(f"first: {pts} actual: {self.actualstart}")
+        if not self.shush:
+            print2(f"first: {pts} actualstart: {self.actualstart}")
 
     def diff(self, pts):
         """
@@ -54,8 +56,9 @@ class Throttle:
             ptime = round(pts - self.first, 6)
             atime = round(self.actualstop - self.actualstart, 6)
             diff = round((ptime - atime), 6)
-            if 0 < diff < 10:
-                print(f"throttling: {diff}", file=sys.stderr, end="\r")
+            if 0 <= diff < 10:
+                if not self.shush:
+                    print2(f"throttling: {diff}", file=sys.stderr, end="\r")
                 time.sleep(diff)
                 self.reset_end()
             else:
