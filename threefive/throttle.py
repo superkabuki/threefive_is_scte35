@@ -6,8 +6,9 @@ MPEGTS packet level throttlinig to simulate real time streaming.
 
 import sys
 import time
-from threefive import IFramer, Stream, print2
-
+from .iframes import IFramer
+from .stream import Stream
+from .stuff import print2
 
 class Throttle:
     """
