@@ -15,7 +15,7 @@ from functools import partial
 from .new_reader import reader
 from .stuff import blue, reblue, print2, pif
 from .speedo import Speedo
-
+from .throttle import Throttle
 
 DGRAM = 1316
 
@@ -68,12 +68,18 @@ class GumS:
         self.dgram_size chunks of video to the socket.
         """
         time.sleep(0.0001)
+        throttle = Throttle(shush=True)
         speedo = Speedo()
         with reader(vid) as gum:
             for dgram in iter(partial(gum.read, DGRAM), b""):
+                packets = dgram
+                while packets:
+                    packet, packets = packets[:188], packets[188:]
+                    throttle.throttle(packet)
                 self.sock.sendto(dgram, self.dest_grp)
                 speedo.plus(len(dgram))
         speedo.end()
+
     def send_stream(self, vid):
         """
         send_stream sets multicast ttl if needed,
