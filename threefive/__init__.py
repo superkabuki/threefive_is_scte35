@@ -32,6 +32,7 @@ from .stuff import (
     rmap,
 )
 from .superkabuki import SuperKabuki
+from .throttle import Throttle
 from .upids import AirId, Atsc, Eidr, Isan, Mid, Mpu, NoUpid, Umid, Upid, upid_map
 from .uxp import UltraXmlParser
 from .version import version
