@@ -46,6 +46,24 @@ class Throttle:
         if not self.shush:
             print2(f"first: {pts} actualstart: {self.actualstart}")
 
+    def print_throttle(self,diff):
+        """
+        print_throttle print the amount of throttle
+        """
+        if not self.shush:
+            print2(f"throttling: {diff}", file=sys.stderr, end="\r")
+
+    def sleep(self,diff):
+        """
+        sleep sleep for diff
+        """
+        if 0 < diff < 10:
+            self.print_throttle(diff)
+            time.sleep(diff)
+            self.reset_end()
+        else:
+            self.reset()        
+
     def diff(self, pts):
         """
         diff calculate the difference betweeen start and stop times,
@@ -56,13 +74,15 @@ class Throttle:
             ptime = round(pts - self.first, 6)
             atime = round(self.actualstop - self.actualstart, 6)
             diff = round((ptime - atime), 6)
-            if 0 < diff < 10:
-                if not self.shush:
-                    print2(f"throttling: {diff}", file=sys.stderr, end="\r")
-                time.sleep(diff)
-                self.reset_end()
-            else:
-                self.reset()
+            self.sleep(diff)
+
+    def _set_first(self,pts):
+        if not self.first:
+            self.set_start(pts)
+            
+    def _set_second(self,pts):
+        if not self.second:
+            self.diff(pts)        
 
     def throttle(self, packet):
         """
@@ -70,29 +90,27 @@ class Throttle:
         """
         pts = self.ifr.parse(packet)
         if pts:
-            if not self.first:
-                self.set_start(pts)
-            else:
-                if not self.second:
-                    self.diff(pts)
+            self._set_first(pts)
+            if self.first:
+                self._set_second(pts)
+            
 
-
-class SupaStream(Stream):
-    """
-    SupaStream -Stream class with throttling
-    """
-
-    def slow(self):
-        timr = Throttle()
-        for pkt in self.iter_pkts():
-            timr.throttle(pkt)
-            cue = self._parse(pkt)
-            if cue:
-                cue.show()
-        #    sys.stdout.buffer.write(pkt)
-        #    sys.stdout.buffer.flush()
-
-
-if __name__ == "__main__":
-    ss = SupaStream(sys.argv[1])
-    ss.slow()
+##class SupaStream(Stream):
+##    """
+##    SupaStream -Stream class with throttling
+##    """
+##
+##    def slow(self):
+##        timr = Throttle()
+##        for pkt in self.iter_pkts():
+##            timr.throttle(pkt)
+##            cue = self._parse(pkt)
+##            if cue:
+##                cue.show()
+##        #    sys.stdout.buffer.write(pkt)
+##        #    sys.stdout.buffer.flush()
+##
+##
+##if __name__ == "__main__":
+##    ss = SupaStream(sys.argv[1])
+##    ss.slow()
