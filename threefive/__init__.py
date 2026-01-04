@@ -14,23 +14,6 @@ from .segment import Segment
 from .sixfix import SixFix
 from .speedo import Speedo
 from .stream import Stream
-from .stuff import (
-    badtype,
-    blue,
-    clean,
-    codec_detect,
-    ERR,
-    k_by_v,
-    ishex,
-    isjson,
-    isxml,
-    iso8601,
-    pif,
-    print2,
-    red,
-    reblue,
-    rmap,
-)
 from .superkabuki import SuperKabuki
 from .throttle import Throttle
 from .upids import AirId, Atsc, Eidr, Isan, Mid, Mpu, NoUpid, Umid, Upid, upid_map
@@ -56,6 +39,24 @@ from .descriptors import (
     SpliceDescriptor,
     TimeDescriptor,
     descriptor_map,
+)
+
+from .stuff import (
+    badtype,
+    blue,
+    clean,
+    codec_detect,
+    ERR,
+    k_by_v,
+    ishex,
+    isjson,
+    isxml,
+    iso8601,
+    pif,
+    print2,
+    red,
+    reblue,
+    rmap,
 )
 
 ADRIAN = "Super Cool"
