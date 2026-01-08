@@ -101,14 +101,3 @@ class Throttle:
             self._set_first(pts)
             if self.first:
                 self._set_second(pts)
-
-
-##            if cue:
-##                cue.show()
-##        #    sys.stdout.buffer.write(pkt)
-##        #    sys.stdout.buffer.flush()
-##
-##
-##if __name__ == "__main__":
-##    ss = SupaStream(sys.argv[1])
-##    ss.slow()
