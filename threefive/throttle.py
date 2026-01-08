@@ -7,8 +7,8 @@ MPEGTS packet level throttlinig to simulate real time streaming.
 import sys
 import time
 from .iframes import IFramer
-from .stream import Stream
 from .stuff import print2
+
 
 class Throttle:
     """
@@ -47,14 +47,14 @@ class Throttle:
         if not self.shush:
             print2(f"first: {pts} actualstart: {self.actualstart}")
 
-    def print_throttle(self,diff):
+    def print_throttle(self, diff):
         """
         print_throttle print the amount of throttle
         """
         if not self.shush:
             print2(f"throttling: {diff}", file=sys.stderr, end="\r")
 
-    def sleep(self,diff):
+    def sleep(self, diff):
         """
         sleep sleep for diff
         """
@@ -63,7 +63,7 @@ class Throttle:
             time.sleep(diff)
             self.reset_end()
         else:
-            self.reset()        
+            self.reset()
 
     def diff(self, pts):
         """
@@ -77,35 +77,32 @@ class Throttle:
             diff = round((ptime - atime), 6)
             self.sleep(diff)
 
-    def _set_first(self,pts):
+    def _set_first(self, pts):
         if not self.first:
             self.set_start(pts)
-            
-    def _set_second(self,pts):
+
+    def _set_second(self, pts):
         if not self.second:
-            self.diff(pts)        
+            self.diff(pts)
 
     def throttle(self, packet):
         """
-        throttle pts base throttle to maintain realtime stream.
+        throttle throttle packet to maintain realtime stream.
         """
         pts = self.ifr.parse(packet)
+        self.throttle_pts(pts)
+
+    def throttle_pts(self, pts):
+        """
+        throttle_pts throttle by pts instead of an mpegts packet
+        to maintain a realtime stream.
+        """
         if pts:
             self._set_first(pts)
             if self.first:
                 self._set_second(pts)
-            
 
-##class SupaStream(Stream):
-##    """
-##    SupaStream -Stream class with throttling
-##    """
-##
-##    def slow(self):
-##        timr = Throttle()
-##        for pkt in self.iter_pkts():
-##            timr.throttle(pkt)
-##            cue = self._parse(pkt)
+
 ##            if cue:
 ##                cue.show()
 ##        #    sys.stdout.buffer.write(pkt)
