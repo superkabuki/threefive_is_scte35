@@ -12,6 +12,7 @@ from .packetdata import PacketData
 from .streamtypes import streamtype_map
 from .stuff import blue, clean, ERR, print2
 from .speedo import Speedo
+from .throttle import Throttle
 
 
 def no_op(cue):
@@ -174,6 +175,7 @@ class Stream(Based):
         self.pmt_count = 0
         self.pmt_pkt = None
         self.pat_pkt = None
+        self.realtime = False
 
     @staticmethod
     def as_90k(ticks):
@@ -243,6 +245,12 @@ class Stream(Based):
         print2("No Stream Found\n")
         return False
 
+    def rt(self):
+        """
+        rt set stream to realtime.
+        """
+        self.realtime = True
+
     def iter_pkts(self, num_pkts=1):
         """
         iter_pkts iterates a mpegts stream into packets
@@ -309,11 +317,15 @@ class Stream(Based):
         Stream.decode_proxy writes all ts packets are written to stdout
         for piping into another program like mplayer.
         SCTE-35 cues are print2`ed to stderr.
+        setting Calling  Stream.rt() will proxy in realtime.
         """
+        throttler = Throttle()
         for pkt in self.iter_pkts():
             cue = self._parse(pkt)
             if cue:
                 func(cue)
+            if self.realtime:
+                throttler.throttle(pkt)
             sys.stdout.buffer.write(pkt)
         return False
 
