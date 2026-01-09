@@ -77,6 +77,10 @@ HELP = f"""
 
     threefive pts video.ts
 
+    {B}  rt      {U}{NORM}{BLUE} Parse a MPEGTS stream and copy it to stdout at realtime speed.{NORM}
+
+    threefive rt video.ts
+
     {B}  sidecar    {U}{NORM}{BLUE} Create a SCTE-35 sidecar file{NORM}
 
     threefive sidecar video.ts
@@ -228,6 +232,16 @@ def pts_chk(this):
     strm.show_pts()
 
 
+def rt_chk(this):
+    """
+    rt_chk checks for the rt keyword
+    and proxies the stream to stdout at realtime speed.
+    rt_chk also creates a sidecar file.
+    """
+    strm = Stream(this)
+    strm.rt(func=mk_sidecar)
+
+
 def show_chk(this):
     """
     show_chk checks for the show keyword
@@ -250,6 +264,7 @@ mpegts_map = {
     "packets": packet_chk,
     "proxy": proxy_chk,
     "pts": pts_chk,
+    "rt": rt_chk,
     "show": show_chk,
     "sidecar": sidecar_chk,
     "iframes": iframe_chk,
