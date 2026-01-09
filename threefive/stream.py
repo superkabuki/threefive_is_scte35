@@ -175,7 +175,6 @@ class Stream(Based):
         self.pmt_count = 0
         self.pmt_pkt = None
         self.pat_pkt = None
-        self.realtime = False
 
     @staticmethod
     def as_90k(ticks):
@@ -245,11 +244,24 @@ class Stream(Based):
         print2("No Stream Found\n")
         return False
 
-    def rt(self):
+    def rt(self,func=show_cue):
         """
-        rt set stream to realtime.
+        rt  all ts packets are written to stdout
+        for piping into another program in real time.
+        SCTE-35 cues are print2`ed to stderr.
+        decode SCTE-35.  the arg func can be set to
+        a function that accepts one arg, a Cue instance.
+        func is called everytime a Cue is found in the stream.
+        the default func, show_cue calls Cue.show().
         """
-        self.realtime = True
+        throttler = Throttle()
+        for pkt in self.iter_pkts():
+            cue = self._parse(pkt)
+            if cue: func(cue)
+            throttler.throttle(pkt)
+            sys.stdout.buffer.write(pkt)
+        sys.stdout.buffer.flush()
+        return False
 
     def iter_pkts(self, num_pkts=1):
         """
@@ -317,15 +329,11 @@ class Stream(Based):
         Stream.decode_proxy writes all ts packets are written to stdout
         for piping into another program like mplayer.
         SCTE-35 cues are print2`ed to stderr.
-        setting Calling  Stream.rt() will proxy in realtime.
         """
-        throttler = Throttle()
         for pkt in self.iter_pkts():
             cue = self._parse(pkt)
             if cue:
                 func(cue)
-            if self.realtime:
-                throttler.throttle(pkt)
             sys.stdout.buffer.write(pkt)
         return False
 
