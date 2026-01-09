@@ -152,11 +152,11 @@ class SpliceInfoSection(SCTE35Base):
         encode Splice.InfoSection.splice_command_length
         and Splice.InfoSection.splice_command_type
         """
-        if not self.splice_command_length:
-            self.splice_command_length = 0
+ #       if not self.splice_command_length:
+  #          self.splice_command_length = 0
         self._chk_var(int, nbin.add_int, "splice_command_length", 12)
-        if not self.splice_command_type:
-            self.splice_command_type = 0
+ #       if not self.splice_command_type:
+   #         self.splice_command_type = 0
         self._chk_var(int, nbin.add_int, "splice_command_type", 8)
 
     def encode(self, nbin=None):
