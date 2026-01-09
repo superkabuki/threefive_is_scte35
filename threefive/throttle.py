@@ -1,6 +1,6 @@
 """
 throttle.py
-MPEGTS packet level throttlinig to simulate real time streaming. 
+MPEGTS packet level throttlinig to simulate real time streaming.
 
 """
 
@@ -52,7 +52,7 @@ class Throttle:
         print_throttle print the amount of throttle
         """
         if not self.shush:
-            print2(f"throttling: {diff}", file=sys.stderr, end="\r")
+            print(f"throttling: {diff}", file=sys.stderr, end="\r")
 
     def sleep(self, diff):
         """
