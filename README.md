@@ -2,7 +2,11 @@
 
 ### If you do __SCTE35__, you want to __use threefive__. 
 ___
-### [[Python3 vs. Pypy3 parsing SCTE35]](https://github.com/superkabuki/threefive_is_scte35#python3-vs-pypy3-running-threefive)
+
+
+* Python3 vs. Pypy3 [parsing SCTE35 with threefive](https://github.com/superkabuki/threefive_is_scte35#python3-vs-pypy3-running-threefive)
+* threefive now supports[ SRT](https://github.com/superkabuki/threefive_is_scte35/blob/main/README.md#threefive-now-supports-srt)
+
 ___
 
 
@@ -13,15 +17,7 @@ ___
 * srtfu now build libsrt automatically the first time you use it.
 * __threefive functions with or without SRT support.__ 
 ___
-#  [__Stream.decode_next()__ is now a generator]
-* Some people have complained that the callback functionality of Stream.decode is too limiting. So I made Stream.decode_next a full blown python generator, so now you can get the SCTE-35 cues as they happen and handle them however you like.
-```py3
-	from threefive import Stream
 
-    strm =Stream(some_url)
-    for cue in strm.decode_next():
-		your_complicated_function(cue, one_arg , two_arg, 13,)
-```        
 ___
 
 
@@ -29,36 +25,13 @@ ___
 
 <samp>
 
-* __Decode SCTE-35__ from:
-	* MPEGTS ✔
-	* Base64 ✔
-	* Bytes ✔
-	* Hex ✔
-	* Integers
-	* ✔ JSON
-	* ✔ XML
-	* ✔ XML+Binary
-	* ✔ DASH ✔
-	* Dicts ✔  
-* __Encodes SCTE-35__ to:
-	* MPEGTS ✔
-	* Base64 ✔
- 	* Bytes ✔
-  	* Hex ✔
-  	* Integers ✔
-  	* JSON ✔
-  	* XML ✔
-  	* XML+Binary ✔
+* __Decode SCTE-35__ from MPEGTS ✔ Base64 ✔ Bytes ✔ DASH ✔ Hex ✔ HLS ✔ Integers ✔ JSON ✔ XML  ✔ XML+Binary ✔ DASH ✔ Dicts ✔  
 
-* __threefive file protocols__:
-	* Pipes(stdin, stdout) ✔
-    * Files ✔
+* __Encodes SCTE-35__ to MPEGTS ✔ Base64 ✔ Bytes ✔ Hex ✔ Integers ✔ JSON ✔ XML ✔ XML+Binary ✔
 
-* __threefive network protocols__: 
-    * HTTP(s) ✔
-    * Multicast ✔
-    * UDP ✔
-    * SRT ✔ 
+* __threefive file protocols__ Pipes(stdin, stdout) ✔ Files ✔
+
+* __threefive network protocols__ HTTP(s) ✔ Multicast ✔ UDP ✔ SRT ✔ 
 
 * __Automatic AES decryption__ for __MPEGTS__ and __HLS__. ✔
 
@@ -69,9 +42,17 @@ ___
 ___
 
 #  [Tip Of The Week]
-If you want to have a Segmentation Descriptor without a UPID <BR>
-set __segmentation_upid_length__= __0__ <BR>
-set __segmentation_upid_type__= __0__
+
+*  __Stream.decode_next()__ is now a generator
+
+```py3
+	from threefive import Stream
+
+    strm =Stream(some_url)
+    for cue in strm.decode_next():
+		your_complicated_function(cue, one_arg , two_arg, 13,)
+```        
+
 ___
 
 
