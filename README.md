@@ -91,7 +91,7 @@ ___
 * [threefive __Classes__](#classes) _threefive is OO, made to subclass_
 	* [__Cue__ Class](https://github.com/superkabuki/threefive/blob/main/cue.md) _this class you'll use often_ 
 	* [__Stream__ Class](https://github.com/superkabuki/threefive/blob/main/stream.md) _this is the class for parsing MPEGTS_
-* [Use threefive to stream __Multicast__](#stream-multicast-with-the-threefive-cli-its-easy) _threefive is a multicast client and server_
+* [Use threefive to stream __Multicast__](#-threefive-streams-multicast-its-easy-) _threefive is a multicast client and server_
 * [SCTE-35 __Online Parser__](https://iodisco.com/scte35) _powered by threefive, hosted on my server_
 * [SCTE-35 __As a Service__](sassy.md) _if you can make an http request, you can parse SCTE-35, no install needed._
 * [Make your __threefive__ script an executable with __cython__](cython.md) _threefive is compatible with all python tools_
