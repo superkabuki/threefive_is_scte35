@@ -25,29 +25,22 @@ class SCTE35Base:
             nbin = NBin()
         return nbin
 
-    def _err2(self, var_name, var_value, bit_count, var_type):
+    @staticmethod
+    def _err2(var_name, var_value, bit_count, var_type):
         var_type = str(var_type).split("'")[1]
         mesg = f"{var_name} is {var_value},"
         err_mesg = f"{mesg} it should be type {var_type}, {bit_count} bit(s) long."
         red(err_mesg)
 
-    def _bool_int(self, var_value, var_type):
+    @staticmethod
+    def _bool_int(var_value, var_type):
         if var_type == int:
             return isinstance(var_value, bool)
         return False
 
-    def _wrong_type(self, var_value, var_type):
+    @staticmethod
+    def _wrong_type(var_value, var_type):
         return not isinstance(var_value, var_type)
-
-    def _chk_var(self, var_type, nbin_method, var_name, bit_count):
-        """
-        _chk_var is used to check var values and types before encoding
-        """
-        var_value = self.__dict__[var_name]
-        if self._bool_int(var_value, var_type) or self._wrong_type(var_value, var_type):
-            self._err2(var_name, var_value, bit_count, var_type)
-        else:
-            nbin_method(var_value, bit_count)
 
     @staticmethod
     def as_90k(int_time):
@@ -84,6 +77,38 @@ class SCTE35Base:
         """
         return (hexed.replace("0x", "0x0", 1), hexed)[len(hexed) % 2 == 0]
 
+    @staticmethod
+    def idxsplit(gonzo, sep):
+        """
+        idxsplit is like split but you keep
+        the sep.
+
+        example:
+                >>> idxsplit('123456789',4)
+                >>>'456789'
+        """
+        if sep in gonzo:
+            return gonzo[gonzo.index(sep) :]
+        return gonzo
+
+    @staticmethod
+    def _json2dict(gonzo):
+        if isinstance(gonzo, str):
+            gonzo = json.loads(gonzo)
+        return gonzo
+
+    def _chk_var(self, var_type, nbin_method, var_name, bit_count):
+        """
+        _chk_var is used to check var values and types before encoding
+        """
+        var_value = self.__dict__[var_name]
+        if self._bool_int(var_value, var_type) or self._wrong_type(var_value, var_type):
+            self._err2(var_name, var_value, bit_count, var_type)
+            return -1
+        else:
+            nbin_method(var_value, bit_count)
+            return 0
+
     def get(self):
         """
         Returns instance as a kv_clean'ed dict
@@ -99,20 +124,6 @@ class SCTE35Base:
         if hasattr(obj, what):
             return getattr(obj, what)
         return None
-
-    @staticmethod
-    def idxsplit(gonzo, sep):
-        """
-        idxsplit is like split but you keep
-        the sep.
-
-        example:
-                >>> idxsplit('123456789',4)
-                >>>'456789'
-        """
-        if sep in gonzo:
-            return gonzo[gonzo.index(sep) :]
-        return gonzo
 
     def json(self):
         """
@@ -146,11 +157,6 @@ class SCTE35Base:
                 [],
             ]
         }  # added empty list []
-
-    def _json2dict(self, gonzo):
-        if isinstance(gonzo, str):
-            gonzo = json.loads(gonzo)
-        return gonzo
 
     def _chk_vars(self, k, v):
         if k in vars(self):
