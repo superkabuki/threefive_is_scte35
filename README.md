@@ -37,6 +37,23 @@ ___
 		your_complicated_function(cue, one_arg , two_arg, 13,)
 ```        
 ___
+# [threefive streams multicast]
+```py3
+a@fu:~/scratch/threefive$ threefive mcast -i ~/mpegts/ms.ts 
+# setting SO_REUSEPORT 
+
+	Multicast Stream
+	udp://@235.35.3.5:3535
+
+	Source
+	0.0.0.0:54952
+
+	96.15 MB sent in 1420.03 seconds. 0.07 MB/Sec     
+```
+
+
+https://github.com/user-attachments/assets/99491583-dcd5-4ad9-af83-1bfbbb72d358
+___
 
 # [Features]
 
