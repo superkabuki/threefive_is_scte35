@@ -173,7 +173,7 @@ ___
 
  </summary>
  
-* MPEGTS streams can be  Files, Http(s), Multicast, UDP Unicast, or  stdin. 
+* MPEGTS streams can be  Files, Http(s), Multicast,SRT, UDP Unicast, or  stdin. 
 
 * __cli__
 ```js
