@@ -21,13 +21,14 @@ ___
 ___
 # [new stuff coming in 3.0.71]
 * All ansi color codes striped when output is not a tty.
+*  __threefive.Cue.xmlbin()__ now returns a Node instance like __threefive.Cue.xml()__. 
 * __threefive.Stream__ has a new method __threefive.Stream.rt(func=show_cue)__  that parses SCTE-35 and proxies the stream to stdout at realtime speed.
 * __threefive.Stream.decode()__ now shows parse speed.
 * __Cli tool__ new features
 	*  All __MPEGTS__ related tasks shoe parsing speed.
 	* __threefive mcast__ now throttles Multicast output to realtime speed.
  	* __threefive rt__  parses SCTE-35, writes a SCTE-35 sidecar file, and outputs the MPEGTS stream to stdout at realtime speed.   
-___
+___ * __threefive packets__ and __threefive pts__ now works with __SRT__.
 
 
 # [Features]
