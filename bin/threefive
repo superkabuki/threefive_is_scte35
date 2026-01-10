@@ -31,75 +31,81 @@ U = "\033[m"
 
 
 HELP = f"""
-{BLUE} threefive cli tool                                {U}
+{B}threefive{U}{BLUE} cli tool{U}
 
     {B} Default      {U} {BLUE}The default action is to read a input and write a SCTE-35 output.{U}
 
-    {BLUE}Inputs {U} mpegts, base64, hex, json,and xml, and xmlbin{U}.
+        {BLUE}Inputs {U} mpegts, base64, hex, json,and xml, and xmlbin{U}.
 
-    {BLUE}Outputs{U} base64, bytes, hex, int, json, xml, and xmlbin.{U}
+        {BLUE}Outputs{U} base64, bytes, hex, int, json, xml, and xmlbin.{U}
 
-    {BLUE}scte35 can be read from {U} strings, files, stdin, DASH, HLS, http(s), multicast, SRT, and UDP.
+        {BLUE}SCTE-35 can be read from {U} strings, files, stdin, DASH, HLS,
+                    http(s), multicast, SRT, and UDP.
 
-    Input {U}    Output {U}
-   {U}{BLUE} mpegts {U}  {U}{BLUE} base64 {NORM} threefive https://example.com/video.ts  base64
-   {U}{BLUE} base64 {U}  {U}{BLUE} hex    {NORM} threefive '/DAWAAAAAAAAAP/wBQb+AKmKxwAACzuu2Q==' hex
-   {U}{BLUE} xmlbin  {U} {BLUE} int    {NORM} threefive   < xmlbin.xml int
-   {U}{BLUE} xml    {U}  {BLUE} json   {NORM} threefive   < xml.xml
-   {U}{BLUE} mpegts {U}  {BLUE} json   {NORM} threefive video.ts
-   {U}{BLUE} json{U}    {BLUE}  xml    {NORM} threefive  < json.json  xml
+        {U}{B}Input {U}    {B}Output{U}  {B}Example Command{U}
+        
+       {U} mpegts {U}   base64 {U}{BLUE} threefive https://example.com/video.ts  base64 {NORM} 
+       {U} base64 {U}   hex    {U}{BLUE} threefive '/DAWAAAAAAAAAP/wBQb+AKmKxwAACzuu2Q==' hex{NORM} 
+       {U} xmlbin {U}   int    {U}{BLUE} threefive   < xmlbin.xml int {NORM} 
+       {U} xml    {U}   json   {U}{BLUE} threefive   < xml.xml {NORM} 
+       {U} mpegts {U}   json   {U}{BLUE} threefive video.ts {NORM} 
+       {U} json{U}      xml    {U}{BLUE} threefive  < json.json  xml  {NORM} 
 
-    {B}  hls        {U}{NORM}{BLUE} SCTE-35 HLS decode{U}
+    {B} hls         {U}{NORM}{BLUE} SCTE-35 HLS decode{U}
 
-    threefive hls help   |   threefive hls https://example.com/master.m3u8{U}
+        threefive hls https://example.com/master.m3u8{U}
+
+        threefive hls help 
 
     {B} iframes     {U}{BLUE} Show MPEGTS iframes{NORM}
 
-    threefive iframes video.ts
+        threefive iframes video.ts
 
     {B} inject      {U}{NORM}{BLUE} SuperKabuki SCTE-35 MPEGTS Packet Injection Engine{U}
 
-    threefive inject help
+        threefive inject help
 
     {B} mcast       {U}{NORM}{BLUE} Multicast sender(server){U}
 
-    threefive mcast help  |   threefive mcast video.ts
+        threefive mcast video.ts
 
-    {B}  packets    {U}{NORM}{BLUE} Print raw SCTE-35 packets{NORM}
+        threefive mcast help 
 
-    threefive packets udp://@235.35.3.5:3535
+    {B} packets     {U}{NORM}{BLUE} Print raw SCTE-35 packets{NORM}
 
-    {B}  proxy      {U}{NORM}{BLUE} Parse a MPEGTS stream, copy it to stdout{NORM}
+        threefive packets udp://@235.35.3.5:3535
 
-    threefive proxy video.ts
+    {B} proxy       {U}{NORM}{BLUE} Parse a MPEGTS stream, copy it to stdout{NORM}
 
-    {B}  pts        {U}{NORM}{BLUE} Print PTS from MPEGTS video{NORM}
+        threefive proxy video.ts
 
-    threefive pts video.ts
+    {B} pts         {U}{NORM}{BLUE} Print PTS from MPEGTS video{NORM}
 
-    {B}  rt      {U}{NORM}{BLUE} Parse a MPEGTS stream, copy to stdout at realtime.{NORM}
+        threefive pts video.ts
 
-    threefive rt video.ts
+    {B} rt          {U}{NORM}{BLUE} Parse a MPEGTS stream, copy to stdout at realtime.{NORM}
 
-    {B}  sidecar    {U}{NORM}{BLUE} Create a SCTE-35 sidecar file{NORM}
+        threefive rt video.ts
 
-    threefive sidecar video.ts
+    {B} sidecar     {U}{NORM}{BLUE} Create a SCTE-35 sidecar file{NORM}
 
-    {B}  sixfix     {U}{NORM}{BLUE} Convert ffmpeg bin data back to SCTE-35{NORM}
+        threefive sidecar video.ts
 
-    threefive sixfix video.ts
+    {B} sixfix      {U}{NORM}{BLUE} Convert ffmpeg bin data back to SCTE-35{NORM}
 
-    {B}  show       {U}{NORM}{BLUE} Probe MPEGTS video{NORM}
+        threefive sixfix video.ts
 
-    threefive show video.ts
+    {B} show        {U}{NORM}{BLUE} Probe MPEGTS video{NORM}
 
-    {B}  version    {U}{NORM}{BLUE} Show version{NORM}
+        threefive show video.ts
 
-    threefive version
+    {B} version     {U}{NORM}{BLUE} Show version{NORM}
 
-    {B}  help       {U}{NORM} {BLUE}Help{NORM}
+        threefive version
 
-    threefive help
+    {B} help        {U}{NORM} {BLUE}Help{NORM}
+
+        threefive help
 
 """
 
