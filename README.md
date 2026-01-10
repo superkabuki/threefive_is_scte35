@@ -80,7 +80,8 @@ ___
 	* [__Cue__ Class](https://github.com/superkabuki/threefive/blob/main/cue.md) _this class you'll use often_ 
 	* [__Stream__ Class](https://github.com/superkabuki/threefive/blob/main/stream.md) _this is the class for parsing MPEGTS_
 * [Use threefive to stream __Multicast__](#-threefive-streams-multicast-its-easy-) _threefive is a multicast client and server_
-* [SCTE-35 __Online Parser__](https://iodisco.com/scte35) _powered by threefive, hosted on my server_
+* [threefive SCTE-35 __Online Parser__](https://iodisco.com/scte35) hosted on my server_
+* [ SCTE-35 __Online Parser__ powered by threefive](http://www.domus1938.com/scte35parser) _another online parser powered by threefive_
 * [SCTE-35 __As a Service__](sassy.md) _if you can make an http request, you can parse SCTE-35, no install needed._
 * [Make your __threefive__ script an executable with __cython__](cython.md) _threefive is compatible with all python tools_
 </samp>
