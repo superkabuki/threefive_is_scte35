@@ -487,9 +487,8 @@ class Cue(SCTE35Base):
 
     def xml(self, ns="scte35"):
         """
-        xml returns a THREEfive.Node instance
+        xml returns a threefive.Node instance
         which can be edited as needed or printed.
-        xmlbin
         """
         self.encode()
         sis = self.info_section.xml(ns=ns)
@@ -501,11 +500,10 @@ class Cue(SCTE35Base):
 
     def xmlbin(self, ns="scte35"):
         """
-        xml returns a THREEfive.Node instance
+        xmlbin returns a threefive.Node instance
         which can be edited as needed or printed.
-        xmlbin
         """
-
-        return f"""<{ns}:Signal xmlns:{ns}="https://scte.org/schemas/35">
-    <{ns}:Binary>{self.base64()}</{ns}:Binary>
-</{ns}:Signal>"""
+        xb = Node("Signal",attrs={'xmlns':"https://scte.org/schemas/35"},ns=ns)
+        xbb = Node("Binary",value=self.base64())
+        xb.addchild(xbb)
+        return xb
