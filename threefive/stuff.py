@@ -179,14 +179,14 @@ def badtype(data, shouldbe):
     return False
 
 
-def no_ESC(bytestring):
+def no_ESC(a_string):
     """
     no_ESC removes ansi colors
-    from bytestring
+    from astring
     """
     esc_codes= re.compile('\x1B\\[[0-9;]*m')
     blank=''
-    return re.sub(esc_codes, blank, bytestring)
+    return re.sub(esc_codes, blank, a_string)
 
 
 def print2(gonzo=b""):
@@ -203,6 +203,7 @@ def print2(gonzo=b""):
     print(no_color, file=stderr, flush=True)    
     return
 
+
 def iso8601():
     """
     return UTC time in iso8601 format.
@@ -217,8 +218,7 @@ def red(message):
     """
     red  print error messages in red to stderr.
     """
-    if stderr.isatty():
-        message = f"{RED}{message}{RESET}"
+    message = f"{RED}{message}{RESET}"
     print2(f"# {message}")
     return False
 
@@ -227,8 +227,7 @@ def blue(message):
     """
     blue  print info messages in blue to stderr.
     """
-    if stderr.isatty():
-        message = f"{BLUE}{message}{RESET}"
+    message = f"{BLUE}{message}{RESET}"
     print2(f"# {message}")
 
 
