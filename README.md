@@ -1,4 +1,4 @@
-# threefive is better than you
+# threefive
 
 ### If you do __SCTE35__, you want to __use threefive__. 
 ___
