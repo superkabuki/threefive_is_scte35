@@ -28,8 +28,9 @@ ___
 	*  All __MPEGTS__ related tasks shoe parsing speed.
 	* __threefive mcast__ now throttles Multicast output to realtime speed.
  	* __threefive rt__  parses SCTE-35, writes a SCTE-35 sidecar file, and outputs the MPEGTS stream to stdout at realtime speed.   
-___ * __threefive packets__ and __threefive pts__ now works with __SRT__.
+    * __threefive packets__ and __threefive pts__ now works with __SRT__.
 
+___
 
 # [Features]
 
