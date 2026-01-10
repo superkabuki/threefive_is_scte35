@@ -6,6 +6,7 @@ print2, pif, iso8601, red, blue
 
 import datetime
 from os import environ
+import re
 from sys import stderr
 
 ERR = (
@@ -19,9 +20,9 @@ ERR = (
     KeyError,
 )
 
-BLUE='\033[107m\033[44m'
-RED='\033[107m\033[41m'
-RESET=' \033[0m'
+BLUE = "\033[107m\033[44m"
+RED = "\033[107m\033[41m"
+RESET = " \033[0m"
 
 
 write2 = True
@@ -178,15 +179,29 @@ def badtype(data, shouldbe):
     return False
 
 
+def no_ESC(bytestring):
+    """
+    no_ESC removes ansi colors
+    from bytestring
+    """
+    esc_codes= re.compile('\x1B\\[[0-9;]*m')
+    blank=''
+    return re.sub(esc_codes, blank, bytestring)
+
+
 def print2(gonzo=b""):
     """
     print2 prints to 2 aka stderr.
     """
     if "HTTP_USER_AGENT" in environ:
         print(f'<script>alert("{gonzo}");</script>')
-    else:
+        return
+    if stderr.isatty():
         print(gonzo, file=stderr, flush=True)
-
+        return
+    no_color=no_ESC(gonzo)
+    print(no_color, file=stderr, flush=True)    
+    return
 
 def iso8601():
     """
@@ -203,8 +218,8 @@ def red(message):
     red  print error messages in red to stderr.
     """
     if stderr.isatty():
-        message= f"{RED}{message}{RESET}"
-    print2(f'# {message}')
+        message = f"{RED}{message}{RESET}"
+    print2(f"# {message}")
     return False
 
 
@@ -214,7 +229,7 @@ def blue(message):
     """
     if stderr.isatty():
         message = f"{BLUE}{message}{RESET}"
-    print2(f'# {message}')
+    print2(f"# {message}")
 
 
 def reblue(message):
