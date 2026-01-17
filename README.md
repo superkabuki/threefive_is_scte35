@@ -5,9 +5,13 @@
 ### If you do __SCTE35__, you want to __use threefive__. 
 ___
 
-* __I am no longer banned from the python dev site__, however they are __still deleting most of my comments and questions__. It's not me, I'm trying to get along with folks.... 
+### threefive runs really well on python3, threefive runs best on pypy3.
+* __Python3 vs. Pypy3__ [parsing SCTE35 with threefive](https://github.com/superkabuki/threefive_is_scte35#python3-vs-pypy3-running-threefive) (watch the cool video)
 
-* Python3 vs. Pypy3 [parsing SCTE35 with threefive](https://github.com/superkabuki/threefive_is_scte35#python3-vs-pypy3-running-threefive)
+ ___
+
+ 
+## SRT stands for <s>“Street and Racing Technology,”</s>  Secure Reliable Transport
 * threefive now supports[ SRT](https://github.com/superkabuki/threefive_is_scte35/blob/main/README.md#threefive-now-supports-srt)
 
 ___
