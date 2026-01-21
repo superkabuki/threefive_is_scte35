@@ -1,5 +1,5 @@
 """
-THREEfive.Cue Class
+threefive.Cue Class
 """
 
 from base64 import b64decode, b64encode
@@ -36,21 +36,21 @@ class Cue(SCTE35Base):
     SCTE 35 message strings.
     Example usage:
 
-    >>>> import THREEfive
-    >>>> Base64 = "/DAvAAAAAAAA///wBQb+dGKQoAAZAhdDVUVJSAAAjn+fCAgAAAAALKChijUCAKnMZ1g="
-    >>>> cue = THREEfive.Cue(Base64)
-    >>>> cue.show()
+     import threefive
+     Base64 = "/DAvAAAAAAAA///wBQb+dGKQoAAZAhdDVUVJSAAAjn+fCAgAAAAALKChijUCAKnMZ1g="
+     cue = THREEfive.Cue(Base64)
+     cue.show()
 
     * A cue instance can be initialized with
      Base64, Bytes, Hex, Int, Json, or Xml+binary data.
 
     * Instance variables can be accessed via dot notation.
 
-    >>>> cue.command
+     cue.command
     {'command_length': 5, 'name': 'Time Signal', 'time_specified_flag': True,
     'pts_time': 21695.740089}
 
-    >>>> cue.command.pts_time
+     cue.command.pts_time
     21695.740089
 
 
@@ -306,6 +306,7 @@ class Cue(SCTE35Base):
         if self.command:
             self._assemble()
             self._encode_crc()
+            self.decode()
             return b64encode(self.bites).decode()
         return False
 
@@ -444,6 +445,7 @@ class Cue(SCTE35Base):
         self._load_command(gonzo)
         self._load_descriptors(gonzo["descriptors"])
         self.encode()
+        self.decode()
         return self.bites
 
     ## xml stuff
@@ -463,7 +465,7 @@ class Cue(SCTE35Base):
         elif "SpliceInfoSection" in gonzo:
             self.load(xml2cue(gonzo))
         else:
-            self.bites = b"\xfc"  # return a Splice Null instead of an Error.
+            self.bites = b""
         return self.bites
 
     def _xml_segmentation_comment(self, dscptr, sis):
@@ -503,7 +505,7 @@ class Cue(SCTE35Base):
         xmlbin returns a threefive.Node instance
         which can be edited as needed or printed.
         """
-        xb = Node("Signal",attrs={'xmlns':"https://scte.org/schemas/35"},ns=ns)
-        xbb = Node("Binary",value=self.base64())
+        xb = Node("Signal", attrs={"xmlns": "https://scte.org/schemas/35"}, ns=ns)
+        xbb = Node("Binary", value=self.base64())
         xb.addchild(xbb)
         return xb
