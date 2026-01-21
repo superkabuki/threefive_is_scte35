@@ -62,6 +62,24 @@ class GumS:
             sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)
         return sock
 
+    ##    def iter_dgrams(self, vid):
+    ##        """
+    ##        iter_dgrams iterates over the video and sends
+    ##        self.dgram_size chunks of video to the socket.
+    ##        """
+    ##        time.sleep(0.0001)
+    ##        throttle = Throttle(shush=True)
+    ##        speedo = Speedo()
+    ##        with reader(vid) as gum:
+    ##            for dgram in iter(partial(gum.read, DGRAM), b""):
+    ##                packets = dgram
+    ##                while packets:
+    ##                    packet, packets = packets[:188], packets[188:]
+    ##                    throttle.throttle(packet)
+    ##                self.sock.sendto(dgram, self.dest_grp)
+    ##                speedo.plus(len(dgram))
+    ##        speedo.end()
+
     def iter_dgrams(self, vid):
         """
         iter_dgrams iterates over the video and sends
@@ -72,10 +90,12 @@ class GumS:
         speedo = Speedo()
         with reader(vid) as gum:
             for dgram in iter(partial(gum.read, DGRAM), b""):
-                packets = dgram
-                while packets:
-                    packet, packets = packets[:188], packets[188:]
-                    throttle.throttle(packet)
+                packets = []
+                while dgram:
+                    packets.append(dgram[:188])
+                    dgram = dgram[188:]
+                    throttle.throttle(packets[-1])
+                dgram = b"".join(packets)
                 self.sock.sendto(dgram, self.dest_grp)
                 speedo.plus(len(dgram))
         speedo.end()
