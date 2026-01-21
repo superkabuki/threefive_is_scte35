@@ -254,11 +254,15 @@ class Scte35Profile:
             line = "#EXT-X-CUE-IN\n"
         return line
 
+    def _incr_seg_type(line, dscptr):
+        self.seg_type = dscptr.segmentation_type_id + 1
+        if dscptr.has("segmentation_duration"):
+            line = self._mk_cueout_line(dscptr.segmentation_duration)
+        return line
+
     def _is_dscptr_cueout(self, dscptr, line):
         if dscptr.segmentation_type_id in self.starts:
-            self.seg_type = dscptr.segmentation_type_id + 1
-            if dscptr.has("segmentation_duration"):
-                line = self._mk_cueout_line(dscptr.segmentation_duration)
+            line = self._incr_seg_type(line, dscptr)
         return line
 
     def _is_dscptr_cuein(self, dscptr, line):
