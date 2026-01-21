@@ -184,8 +184,8 @@ def no_ESC(a_string):
     no_ESC removes ansi colors
     from astring
     """
-    esc_codes= re.compile('\x1B\\[[0-9;]*m')
-    blank=''
+    esc_codes = re.compile("\x1B\\[[0-9;]*m")
+    blank = ""
     return re.sub(esc_codes, blank, a_string)
 
 
@@ -199,8 +199,8 @@ def print2(gonzo=b""):
     if stderr.isatty():
         print(gonzo, file=stderr, flush=True)
         return
-    no_color=no_ESC(gonzo)
-    print(no_color, file=stderr, flush=True)    
+    no_color = no_ESC(gonzo)
+    print(no_color, file=stderr, flush=True)
     return
 
 
