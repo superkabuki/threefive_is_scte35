@@ -57,8 +57,9 @@ class GumS:
         """
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
         sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        blue("SO_REUSEADDR is On")
         if hasattr(socket, "SO_REUSEPORT"):
-            blue("setting SO_REUSEPORT")
+            blue("SO_REUSEPORT is On")
             sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)
         return sock
 
@@ -111,6 +112,10 @@ class GumS:
         pre = "Unicast"
         if self.is_multicast():
             self.sock.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, self.ttl)
+            blue(f'IP_MULTICAST_TTL  is {getattr(socket,'IP_MULTICAST_TTL')}')
+            self.sock.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_LOOP, 1)
+            if hasattr(socket, "IP_MULTICAST_LOOP"):
+                blue('IP_MULTICAST_LOOP is On')
             proto = proto + "@"
             pre = "Multicast"
         src_ip, src_port = self.sock.getsockname()
