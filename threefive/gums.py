@@ -9,6 +9,7 @@ gums, Grande Unicast Multicast Sender
 import argparse
 import os
 import socket
+import struct
 import sys
 import time
 from functools import partial
@@ -31,7 +32,7 @@ class GumS:
     GumS is the Gonzo Unicast and Multicast Sender
     """
 
-    def __init__(self, addr=None, mttl=16, bind_addr="0.0.0.0"):
+    def __init__(self, addr=None, mttl=64, bind_addr="0.0.0.0"):
         self.dest_ip, self.dest_port = addr.rsplit(":", 1)
         self.src_ip = bind_addr.rsplit(":", 1)[0]
         self.src_port = 0
@@ -57,29 +58,16 @@ class GumS:
         """
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
         sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        blue("SO_REUSEADDR is On")
+        blue("SO_REUSEADDR On")
         if hasattr(socket, "SO_REUSEPORT"):
-            blue("SO_REUSEPORT is On")
             sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)
+            blue("SO_REUSEPORT On")
+        send_buffer_size = sock.getsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF)
+        blue(f"SO_SNDBUF Was {send_buffer_size}")
+        sock.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, (send_buffer_size << 2))
+        send_buffer_size = sock.getsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF)
+        blue(f"SO_SNDBUF Now {send_buffer_size}")
         return sock
-
-    ##    def iter_dgrams(self, vid):
-    ##        """
-    ##        iter_dgrams iterates over the video and sends
-    ##        self.dgram_size chunks of video to the socket.
-    ##        """
-    ##        time.sleep(0.0001)
-    ##        throttle = Throttle(shush=True)
-    ##        speedo = Speedo()
-    ##        with reader(vid) as gum:
-    ##            for dgram in iter(partial(gum.read, DGRAM), b""):
-    ##                packets = dgram
-    ##                while packets:
-    ##                    packet, packets = packets[:188], packets[188:]
-    ##                    throttle.throttle(packet)
-    ##                self.sock.sendto(dgram, self.dest_grp)
-    ##                speedo.plus(len(dgram))
-    ##        speedo.end()
 
     def iter_dgrams(self, vid):
         """
@@ -111,11 +99,14 @@ class GumS:
         proto = "udp://"
         pre = "Unicast"
         if self.is_multicast():
+            print2('\n')
+            blue("Opening Multicast socket")
+            print2('\n')
             self.sock.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, self.ttl)
-            blue(f'IP_MULTICAST_TTL  is {getattr(socket,'IP_MULTICAST_TTL')}')
+            blue(f"IP_MULTICAST_TTL {self.sock.getsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL)}")
             self.sock.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_LOOP, 1)
-            if hasattr(socket, "IP_MULTICAST_LOOP"):
-                blue('IP_MULTICAST_LOOP is On')
+            if getattr(socket, "IP_MULTICAST_LOOP"):
+                blue('IP_MULTICAST_LOOP On')
             proto = proto + "@"
             pre = "Multicast"
         src_ip, src_port = self.sock.getsockname()
@@ -161,7 +152,7 @@ def parse_args():
     parser.add_argument(
         "-t",
         "--ttl",
-        default=32,
+        default=64,
         help=f"Multicast TTL (1 - 255) [default:{REV}32{NORM}]",
     )
 
