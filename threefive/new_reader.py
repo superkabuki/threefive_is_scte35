@@ -132,13 +132,12 @@ def _mk_socked():
     socked = Socked(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
     lshiftbuf(socked)
     socked.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    blue("SO_REUSEADDR is On")
+    blue("SO_REUSEADDR  On")
     if hasattr(socket, "SO_REUSEPORT"):
         socked.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)
-        blue("SO_REUSEPORT is On")
-
+        blue("SO_REUSEPORT  On")
     socked.settimeout(TIMEOUT)
-    blue(f"Socket Timeout is {TIMEOUT}")
+    blue(f"Socket Timeout   {TIMEOUT}")
     return socked
 
 
@@ -166,16 +165,16 @@ def _open_mcast(uri):
     """
     udp://@227.1.3.10:4310
     """
-    print2('\n')
-    blue("Opening Multicast socket")
-    print2('\n')
-    ttl = 32
+    ttl = 64
     interface_ip = "0.0.0.0"
     multicast_group, port = (uri.split("udp://@")[1]).rsplit(":", 1)
     multicast_port = pif(port)
     socked = _mk_socked()
-    socked.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, struct.pack("b", ttl))
-    blue(f"IP_MULTICAST_TTL is {ttl}")
+    print2('\n')
+    blue("Opening Multicast socket")
+    print2('\n')
+    socked.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, ttl)
+    blue(f"IP_MULTICAST_TTL {socked.getsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL)}")
     print2('\n\n')
 
     socked.bind(("", multicast_port))
