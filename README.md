@@ -4,6 +4,20 @@
 ### If you do __SCTE35__, you want to __use threefive__. 
 ___
 
+### Terms and Conditions
+
+*    __You be cool, and I'll be cool.__
+
+*    __Questions?__ Ask them. 
+
+*    __Features?__ Speak up. I'm open to new ideas..
+
+*    __Comments?__ Make them. 
+
+*    __Got Code?__ Do a pull request.
+
+___
+
 ### threefive runs really well on python3, threefive runs best on pypy3.
 * __Python3 vs. Pypy3__ [parsing SCTE35 with threefive](https://github.com/superkabuki/threefive_is_scte35#python3-vs-pypy3-running-threefive) (watch the cool video)
 
