@@ -160,7 +160,6 @@ class Stream(Based):
         strm.decode()
 
         """
-
         if not isinstance(tsdata, str):
             self._tsdata = tsdata
         else:
@@ -188,8 +187,8 @@ class Stream(Based):
         return pkt[1] & 0x40
 
     @staticmethod
-    def _afc_flag(pkt3):
-        return pkt3 & 0x20
+    def _afc_flag(pkt):
+        return pkt[3] & 0x20
 
     @staticmethod
     def _pcr_flag(pkt):
@@ -244,7 +243,7 @@ class Stream(Based):
         print2("No Stream Found\n")
         return False
 
-    def rt(self,func=show_cue):
+    def rt(self, func=show_cue):
         """
         rt  all ts packets are written to stdout
         for piping into another program in real time.
@@ -257,7 +256,8 @@ class Stream(Based):
         throttler = Throttle()
         for pkt in self.iter_pkts():
             cue = self._parse(pkt)
-            if cue: func(cue)
+            if cue:
+                func(cue)
             throttler.throttle(pkt)
             sys.stdout.buffer.write(pkt)
         sys.stdout.buffer.flush()
@@ -466,10 +466,6 @@ class Stream(Based):
             prgm = self.pid2prgm(pid)
             self.maps.prgm_pcr[prgm] = pcr
 
-    @staticmethod
-    def _afc_flag(pkt):
-        return pkt[3] & 32
-
     def _parse_payload(self, pkt):
         """
         _parse_payload returns the packet payload
@@ -526,14 +522,12 @@ class Stream(Based):
     def _parse(self, pkt):
         cue = False
         pid = self._parse_info(pkt)
-
         if self._pid_has_scte35(pid):
             cue = self._parse_scte35(pkt, pid)
         if self._pusi_flag(pkt):
             self._chk_pts(pkt, pid)
             if pid in self.pids.pcr:
                 self._chk_pcr(pkt, pid)
-
         return cue
 
     def _pid_has_scte35(self, pid):
