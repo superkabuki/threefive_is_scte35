@@ -307,7 +307,20 @@ ___
 
 ####  Methods inherited from threefive.base.SCTE35Base:
   
- * __has(self, what)__ has runs hasattr with self and what as the attribute. Returns value of what if set or False if not set. 
+ * __has(self, what)__ has runs hasattr with self and what as the attribute. Returns value of what if set or False if not set.
+ ```py3
+
+>>>> cue.has('info_section')
+
+{'table_id': '0xfc', 'section_syntax_indicator': False, 'private': False, 'sap_type': '0x03', 'sap_details': 'No Sap Type',
+ 'section_length': 32, 'protocol_version': 0, 'encrypted_packet': False, 'encryption_algorithm': 0, 'pts_adjustment': 0.0,
+'cw_index': '0x00', 'tier': '0x0fff', 'splice_command_length': 15, 'splice_command_type': 5,
+ 'descriptor_loop_length': 0, 'crc': '0x961b236d'}
+
+>>>> cue.has('bob')
+
+>>>> 
+ ```
  * __json(self)__  returns self as kv_clean'ed json
  * __kv_clean(self)__ recursively removes attributes from the instance if the value is None.
  * __show(self)__ prints __kv_clean__'ed self as json to stderr
