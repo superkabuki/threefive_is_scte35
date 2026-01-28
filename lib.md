@@ -330,9 +330,6 @@ ___
 >>>> cue=Cue()
 >>>> cue.idxsplit("Hello","e")
 'ello'
->>>> cue.idxsplit("Hello","l")
-'llo'
->>>> cue.idxsplit("Hello","w")
-'Hello'
+
 ```
 ___
