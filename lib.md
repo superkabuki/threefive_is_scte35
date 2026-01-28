@@ -6,7 +6,7 @@
 * [Decoding](#decoding)
 * [Output methods](#output-methods)
 * [Components](#components)
-* [Inherited SCTE35Base methods](#threefivescte35base))
+* [Inherited SCTE35Base methods](#threefivescte35base)
   
 # Decoding 
 
