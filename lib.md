@@ -6,7 +6,7 @@
 * [Decoding](#decoding)
 * [Output methods](#output-methods)
 * [Components](#components)
-* [Inherited SCTE35Base methods](#threefive.SCTE35Base)
+* [Inherited SCTE35Base methods](#threefivescte35base))
   
 # Decoding 
 
@@ -44,7 +44,6 @@
 
 >>>> cue =Cue(exemel)
 ```
-
 
 #### Once you have a Cue instance you can print the data in JSON with the show() method.
 
@@ -94,6 +93,20 @@
     "descriptors": []
 }
 ```
+___
+
+#### Cue variables or attributes can be accessed via dot notation.
+```py3
+>>>> from threefive import Cue
+>>>> cue=Cue('/DAWAAAAAAAAAP/wBQb+AKmKxwAACzuu2Q==')
+>>>> cue.info_section.table_id
+'0xfc'
+>>>> cue.command.pts_time
+123.456789
+
+```
+___
+
 # Output methods
 
 #### The data can be returned in a variety of formats.
@@ -112,6 +125,7 @@
 `
 * __Cue.xmlbin()__ _returns SCTE-35 as Xml+binary_
 
+___
 
 # Components
 
@@ -187,16 +201,27 @@ ___
  'bites': None, 'packet_data': None, 'dash_data': None}
 
 ```
+___
+
 #### Cue vars can be edited via dot notation
 
 ```py3
+>>>> cue.command.time_specified_flag
+False
+
 >>>> cue.command.time_specified_flag=True
+
+>>>> cue.command.time_specified_flag
+True
+
 >>>> cue.command.pts_time=123.456789
 
 >>>> cue
 
 {'command': {'command_length': 0, 'command_type': 6, 'name': 'Time Signal', 'bites': None, 'time_specified_flag': True, 'pts_time': 123.456789}, 'descriptors': [], 'info_section': {'table_id': None, 'section_syntax_indicator': None, 'private': None, 'sap_type': None, 'sap_details': None, 'section_length': None, 'protocol_version': None, 'encrypted_packet': None, 'encryption_algorithm': None, 'pts_adjustment': 0, 'cw_index': None, 'tier': None, 'splice_command_length': None, 'splice_command_type': None, 'descriptor_loop_length': 0, 'crc': None}, 'bites': None, 'packet_data': None, 'dash_data': None}
 ```
+___
+
 #### Running Cue.encode() will fill in the Splice Info Section.
 ```py3
 
@@ -245,12 +270,16 @@ ___
 }
 ```
 
+___
+
 
 ## Cue, Splice Info Section, Splice Commands, Splice Descriptors, and Upids all have these methods.
 
 * __decode()__ decode the SCTE-35 component
 * __encode()__ encode the SCTE-35 component and return the byte string
 * __xml()__    return a threefive.Node xml instance
+
+___
 
 ## Splice Info Section, Splice Commands, Splice Descriptors, and Upids can be manipulated with or without a Cue.
 ```py3
@@ -270,6 +299,7 @@ b'\xfe\x00\xa9\x8a\xc7'
 </scte35:TimeSignal>
 
 ```
+___
 
 # threefive.SCTE35Base
 
@@ -290,3 +320,4 @@ b'\xfe\x00\xa9\x8a\xc7'
  * __fix_hex(hexed)__ adds padded zero if needed for byte conversion.
  * __idxsplit(gonzo, sep)__  split gonzo at sep and return sep + everything after. Cue.idxsplit("Hello","e") returns "ello"
 
+___
