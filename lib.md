@@ -307,7 +307,7 @@ ___
 
 ####  Methods inherited from threefive.base.SCTE35Base:
   
- * __has(self, what)__ has runs hasattr with self and what as the attribute. Returns value of what if set or False if not set.
+ * __has(self, what)__ has runs hasattr with self and what as the attribute. Returns value of what if set or None if not set.
  ```py3
 
 >>>> cue.has('info_section')
