@@ -318,6 +318,21 @@ ___
  * __as_hms(secs_of_time)__ converts timestamp to 00:00:00.000 format
  * __as_ticks(float_time)__ 90k timestamps to ticks
  * __fix_hex(hexed)__ adds padded zero if needed for byte conversion.
- * __idxsplit(gonzo, sep)__  split gonzo at sep and return sep + everything after. Cue.idxsplit("Hello","e") returns "ello"
-
+```py3
+>>> from threefive import Cue
+>>>> cue=Cue()
+>>>> cue.fix_hex('0xDBEE3')
+'0x0DBEE3'
+```
+ * __idxsplit(gonzo, sep)__  split gonzo at sep and return sep + everything after.
+```py3
+>>> from threefive import Cue
+>>>> cue=Cue()
+>>>> cue.idxsplit("Hello","e")
+'ello'
+>>>> cue.idxsplit("Hello","l")
+'llo'
+>>>> cue.idxsplit("Hello","w")
+'Hello'
+```
 ___
