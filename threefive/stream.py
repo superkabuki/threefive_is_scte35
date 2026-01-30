@@ -160,6 +160,7 @@ class Stream(Based):
         strm.decode()
 
         """
+
         if not isinstance(tsdata, str):
             self._tsdata = tsdata
         else:
@@ -286,12 +287,12 @@ class Stream(Based):
         func can be set to a custom function that accepts
         a threefive.Cue instance as it's only argument.
         """
-        speedo = Speedo()
+    #  speedo = Speedo()
         num_pkts = 1400
         for chunk in self.iter_pkts(num_pkts=num_pkts):
-            speedo.plus(len(chunk))
+      #    speedo.plus(len(chunk))
             self._decode2cues(chunk, func)
-        speedo.end()
+    # speedo.end()
         return False
 
     def decode_next(self):
@@ -466,6 +467,7 @@ class Stream(Based):
             prgm = self.pid2prgm(pid)
             self.maps.prgm_pcr[prgm] = pcr
 
+
     def _parse_payload(self, pkt):
         """
         _parse_payload returns the packet payload
@@ -522,12 +524,14 @@ class Stream(Based):
     def _parse(self, pkt):
         cue = False
         pid = self._parse_info(pkt)
+
         if self._pid_has_scte35(pid):
             cue = self._parse_scte35(pkt, pid)
         if self._pusi_flag(pkt):
             self._chk_pts(pkt, pid)
             if pid in self.pids.pcr:
                 self._chk_pcr(pkt, pid)
+
         return cue
 
     def _pid_has_scte35(self, pid):
@@ -597,7 +601,6 @@ class Stream(Based):
         """
         parse a threefive cue from one or more packets
         """
-        # self._parse_pts(pkt, pid)  # Check ffmpeg style packets
         if self.the_scte35_pids:  # for parse by pid
             if pid not in self.the_scte35_pids:
                 return False
