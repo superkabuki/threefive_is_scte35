@@ -5,7 +5,7 @@
 
 ___
 
-### Terms and Conditions
+### [ Terms and Conditions ]
 
 *    __You be cool, and I'll be cool.__
 
@@ -19,7 +19,7 @@ ___
 
 ___
 
-### threefive runs really well on python3, threefive runs best on pypy3.
+###  threefive runs really well on python3, threefive runs best on pypy3 
 * __Python3 vs. Pypy3__ [parsing SCTE35 with threefive](https://github.com/superkabuki/threefive_is_scte35#python3-vs-pypy3-running-threefive) (watch the cool video)
 
  ___
@@ -29,7 +29,7 @@ ___
 
 ___
 
-# [Latest version is  v3.0.71]
+# [ Latest version is  v3.0.71 ]
 * [why can`t you be more cyclomatic like your brother?](cyclomatic.md)
 * All ansi color codes striped when output is not a tty.
 *  __threefive.Cue.xmlbin()__ now returns a __threefive.xml.Node instance like__ __threefive.Cue.xml()__. 
@@ -44,7 +44,7 @@ ___
 
 ___
 
-# [Features]
+# [ Features ]
 
 <samp>
 
@@ -64,7 +64,7 @@ ___
 
 ___
 
-#  [Tip Of The Week]
+#  [ Tip Of The Week ]
 
 *  __Stream.decode_next()__ is now a generator
 
@@ -80,7 +80,7 @@ ___
 
 
 
-# [Documentation]
+# [ Documentation ]
 	
 * [__Install__](#install) 
 * [SCTE-35 Decoding __Quick Start__ ](#quick-start) _threefive makes decoding SCTE-35 fast and easy_
