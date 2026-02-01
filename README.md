@@ -1,4 +1,4 @@
-# threefive
+# [ threefive ]
 ## https://github.com/superkabuki/threefive
 
 ### __threefive__ is the industry leading SCTE-35 tool. 
@@ -6,30 +6,20 @@
 ___
 
 ### [ Terms and Conditions ]
-
 *    __You be cool, and I'll be cool.__
-
 *    __Questions?__ Ask them. 
-
 *    __Features?__ Speak up. I'm open to new ideas..
-
 *    __Comments?__ Make them. 
-
 *    __Got Code?__ Do a pull request.
-
 ___
-
-###  threefive runs really well on python3, threefive runs best on pypy3 
-* __Python3 vs. Pypy3__ [parsing SCTE35 with threefive](https://github.com/superkabuki/threefive_is_scte35#python3-vs-pypy3-running-threefive) (watch the cool video)
-
- ___
-
+### [ News ]
+* __Python3 vs. Pypy3__ [__parsing SCTE35 with threefive__](https://github.com/superkabuki/threefive_is_scte35#python3-vs-pypy3-running-threefive) (watch the cool video)
  
-### threefive now supports  [Secure Reliable Transport, SRT](https://github.com/superkabuki/threefive_is_scte35/blob/main/README.md#threefive-now-supports-srt)
+* __threefive now supports__ [__Secure Reliable Transport__](https://github.com/superkabuki/threefive_is_scte35/blob/main/README.md#threefive-now-supports-srt)
 
 ___
 
-# [ Latest version is  v3.0.71 ]
+### [ Latest version is  v3.0.71 ]
 * [why can`t you be more cyclomatic like your brother?](cyclomatic.md)
 * All ansi color codes striped when output is not a tty.
 *  __threefive.Cue.xmlbin()__ now returns a __threefive.xml.Node instance like__ __threefive.Cue.xml()__. 
@@ -44,7 +34,7 @@ ___
 
 ___
 
-# [ Features ]
+### [ Features ]
 
 <samp>
 
@@ -64,7 +54,7 @@ ___
 
 ___
 
-#  [ Tip Of The Week ]
+###  [ Tip Of The Week ]
 
 *  __Stream.decode_next()__ is now a generator
 
@@ -78,8 +68,6 @@ ___
 
 ___
 
-
-
 # [ Documentation ]
 	
 * [__Install__](#install) 
@@ -87,6 +75,7 @@ ___
 * [SCTE-35 __Examples__](https://github.com/superkabuki/threefive/tree/main/examples) _examples of all kinds of SCTE-35 stuff_
 * [SCTE-35 __Cli__](#-the-cli-tool-) _decode SCTE-35 on the command line_
 * [__Using the threefive library__](#using-the-library) _decode SCTE-35 with less than ten lines of code_
+	* [__Using the threefive.Cue class__](https://github.com/superkabuki/threefive/blob/main/lib.md) 
 * [SCTE-35 __HLS__](https://github.com/superkabuki/threefive/blob/main/hls.md) _parse SCTE-35 in HLS__
 * [SCTE-35 __XML__ ](https://github.com/superkabuki/SCTE-35/blob/main/xml.md) and [More __XML__](node.md) _threefive can parse and encode SCTE-35 xml_
 * [__Encode__ SCTE-35](https://github.com/superkabuki/threefive/blob/main/encode.md) _threefive can encode SCTE-35 in every SCTE-35 format_
