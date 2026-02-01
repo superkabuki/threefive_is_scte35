@@ -5,9 +5,7 @@ import setuptools
 with open("README.md", "r", encoding="utf-8") as fh:
     readme = fh.read()
 
-import time
 from threefive.version import version
-from threefive.stuff import blue
 
 setuptools.setup(
     name="threefive",
