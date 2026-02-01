@@ -7,12 +7,11 @@ clean:
 	rm -f dist/*
 	rm -rf build/*
 
-pypy3: clean
-	$(PYPY3)  -m build -n
-	$(PYPY3) -m pip install . 	
+pypy3: pkg
+	$(PYPY3) -m pip install . --break-system-packages	
 
-install: clean pkg
-	$(PY3)  -m pip install .	
+install: pkg
+	$(PY3)  -m pip install . --break-system-packages	
 
 pkg: clean
 	$(PY3) -m build -n
