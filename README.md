@@ -1,9 +1,8 @@
-<img width="887" height="60" alt="image" src="https://github.com/user-attachments/assets/9194162b-c340-4acb-96bc-30f2e8be8c8c" />
-
 # threefive
 ## https://github.com/superkabuki/threefive
 
-### If you do __SCTE35__, you want to __use threefive__. 
+### __threefive__ is the industry leading SCTE-35 tool. 
+
 ___
 
 ### Terms and Conditions
@@ -26,20 +25,12 @@ ___
  ___
 
  
-### threefive now supports <s>“Street and Racing Technology,”</s> [Secure Reliable Transport, SRT](https://github.com/superkabuki/threefive_is_scte35/blob/main/README.md#threefive-now-supports-srt)
+### threefive now supports  [Secure Reliable Transport, SRT](https://github.com/superkabuki/threefive_is_scte35/blob/main/README.md#threefive-now-supports-srt)
 
 ___
 
-
-# [Latest threefive version is v3.0.69]
+# [Latest version is  v3.0.71]
 * [why can`t you be more cyclomatic like your brother?](cyclomatic.md)
-* __live SRT support is now stable for decoding__.
-* live SRT streaming support has been  integrated, no special handling required.
-* srtfu now build libsrt automatically the first time you use it.
-* __threefive functions with or without SRT support.__ 
-___
-# [new stuff coming in 3.0.71]
-
 * All ansi color codes striped when output is not a tty.
 *  __threefive.Cue.xmlbin()__ now returns a __threefive.xml.Node instance like__ __threefive.Cue.xml()__. 
 * __threefive.Stream__ has a new method __threefive.Stream.rt(func=show_cue)__  that parses SCTE-35 and proxies the stream to stdout at realtime speed.
@@ -165,11 +156,15 @@ ___
 
 | Description                              | How To Use                                       |
 |------------------------------------------|---------------------------------------------------------|
+| Adjust __SCTE-35__ PTS values by seconds  | threefive __bump__ -i input.ts -o output.ts -b -37.45   |
+|											|														|
 | Parse HLS for __SCTE35__                 |threefive __hls__ https://example.com/master.m3u8        |
 |                                          |                                                         |
 | Inject __SCTE35__ packets                |threefive __inject__ -i in.video -s sidecar.txt -o out.ts|
 |                                          |                                                         |
 | Show raw __SCTE35__ packets              |threefive __packets__ udp://@235.35.3.5:3535             |
+|											|														| 
+| Copy MPEGTS stream to stdout at realtime speed| threefive __rt__ input.ts | mplayer -				|
 |                                          |                                                         |
 | Create __SCTE35__ sidecar file           |threefive __sidecar__ video.ts                           |
 |                                          |                                                         |
