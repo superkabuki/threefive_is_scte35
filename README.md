@@ -39,16 +39,16 @@ ___
 * __threefive functions with or without SRT support.__ 
 ___
 # [new stuff coming in 3.0.71]
-<img width="1042" height="631" alt="image" src="https://github.com/user-attachments/assets/10b8561b-dfc8-4d53-8098-383c7b83554a" />
 
 * All ansi color codes striped when output is not a tty.
-*  __threefive.Cue.xmlbin()__ now returns a Node instance like __threefive.Cue.xml()__. 
+*  __threefive.Cue.xmlbin()__ now returns a __threefive.xml.Node instance like__ __threefive.Cue.xml()__. 
 * __threefive.Stream__ has a new method __threefive.Stream.rt(func=show_cue)__  that parses SCTE-35 and proxies the stream to stdout at realtime speed.
-* __threefive.Stream.decode()__ now shows parse speed.
+* <s>__threefive.Stream.decode()__ now shows parse speed.</s>
 * __Cli tool__ new features
-	*  All __MPEGTS__ related tasks show parsing speed.
+	* __New  __bump__ keyword to adjust SCTE-35 PTS. Supports positive and negative adjustments.
+    * New __rt__  keyword parses SCTE-35, writes a SCTE-35 sidecar file, and outputs the MPEGTS stream to stdout at realtime speed.   
+	*  <s>All __MPEGTS__ related tasks show parsing speed.</s>
 	* __threefive mcast__ now throttles Multicast output to realtime speed.
- 	* __threefive rt__  parses SCTE-35, writes a SCTE-35 sidecar file, and outputs the MPEGTS stream to stdout at realtime speed.   
     * __threefive packets__ and __threefive pts__ now works with __SRT__.
 
 ___
