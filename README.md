@@ -19,8 +19,9 @@ ___
 
 ___
 
-### [ Latest version is  v3.0.71 ]
+### [ Latest version is  v3.0.73 ]
 * [why can`t you be more cyclomatic like your brother?](cyclomatic.md)
+* __threefive hls__ can now handle __SCTE-35 as Integer values in HLS tags__
 * All ansi color codes striped when output is not a tty.
 *  __threefive.Cue.xmlbin()__ now returns a __threefive.xml.Node instance like__ __threefive.Cue.xml()__. 
 * __threefive.Stream__ has a new method __threefive.Stream.rt(func=show_cue)__  that parses SCTE-35 and proxies the stream to stdout at realtime speed.
