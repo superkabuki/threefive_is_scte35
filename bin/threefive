@@ -52,64 +52,39 @@ HELP = f"""
  {U}mpegts {U}   json   {U}{BLUE} threefive video.ts{NORM} 
  {U}json{U}      xml    {U}{BLUE} threefive < json.json  xml{NORM} 
 
+{BLUE} Additional Commands{U}
+
  {B} bump        {U}{BLUE} Adjust SCTE-35 PTS values by seconds {NORM}
-
     threefive bump -i input.ts -o output.ts --bump 56.4
-
     threefive bump help
-
  {B} hls         {U}{NORM}{BLUE} SCTE-35 HLS decode{U}
-
     threefive hls https://example.com/master.m3u8{U}
-
     threefive hls help 
-
  {B} iframes     {U}{BLUE} Show MPEGTS iframes{NORM}
-
     threefive iframes video.ts
-
  {B} inject      {U}{NORM}{BLUE} SuperKabuki SCTE-35 MPEGTS Packet Injection Engine{U}
-
     threefive inject help
-
  {B} mcast       {U}{NORM}{BLUE} Multicast sender(server){U}
-
-    threefive mcast video.ts
-
+    threefive mcast  -i video.ts
     threefive mcast help 
-
  {B} packets     {U}{NORM}{BLUE} Print raw SCTE-35 packets{NORM}
-
     threefive packets udp://@235.35.3.5:3535
-
  {B} proxy       {U}{NORM}{BLUE} Parse a MPEGTS stream, copy it to stdout{NORM}
-
     threefive proxy video.ts
-
  {B} pts         {U}{NORM}{BLUE} Print PTS from MPEGTS video{NORM}
-
     threefive pts video.ts
-
  {B} rt          {U}{NORM}{BLUE} Parse a MPEGTS stream, copy to stdout at realtime.{NORM}
-
     threefive rt video.ts
-
  {B} sidecar     {U}{NORM}{BLUE} Create a SCTE-35 sidecar file{NORM}
-
     threefive sidecar video.ts
-
  {B} sixfix      {U}{NORM}{BLUE} Convert ffmpeg bin data back to SCTE-35{NORM}
-
     threefive sixfix video.ts
-
  {B} show        {U}{NORM}{BLUE} Probe MPEGTS video{NORM}
-
     threefive show video.ts
-
+ {B} speedo      {U}{NORM}{BLUE} Show MPEGTS video parse speed{NORM}
+    threefive speedo video.ts
  {B} version     {U}{NORM}{BLUE} Show version{NORM}
-
     threefive version
-
  {B} help        {U}{NORM} {BLUE}Help{NORM}
 
     threefive help
@@ -272,6 +247,12 @@ def sidecar_chk(this):
     strm = Stream(this)
     strm.decode(func=mk_sidecar)
 
+def speedo_chk(this):
+    """
+    speedo_chk displays parse speed for mpegts streams
+    """
+    strm = Stream(this)
+    strm.speed()
 
 mpegts_map = {
     "packets": packet_chk,
@@ -280,6 +261,7 @@ mpegts_map = {
     "rt": rt_chk,
     "show": show_chk,
     "sidecar": sidecar_chk,
+    "speedo": speedo_chk,
     "iframes": iframe_chk,
 }
 
@@ -433,7 +415,7 @@ def is_pkt(args, rdr, one):
     strm = Stream(sys.stdin.buffer)
     strm._parse(one + two)  # dont drop first packet
     strm.decode(func=funk())
-    sys.exit()  # I keep forgetting why I do
+    sys.exit()  # I keep forgetting why I do this
 
 
 def stdin_is_readable():
