@@ -281,6 +281,19 @@ class Stream(Based):
     def _decode2cues(self, chunk, func):
         _ = [func(cue) for cue in self._mk_pkts(chunk) if cue]
 
+    def speed(self,func=show_cue):
+        """
+        Stream.speed is identical to Stream.decode
+        but also shows parsing speed.
+        """
+        speedo = Speedo()
+        num_pkts = 1400
+        for chunk in self.iter_pkts(num_pkts=num_pkts):
+            speedo.plus(len(chunk))
+            self._decode2cues(chunk, func)
+        speedo.end()
+        return False
+
     def decode(self, func=show_cue):
         """
         Stream.decode reads self.tsdata to find SCTE35 packets.
