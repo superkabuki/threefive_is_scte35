@@ -499,6 +499,8 @@ class HlsParser:
 
         """
         #  line= self.auto_cuein(line)
+        if isinstance(cue,int):
+            cue=f'{cue}'
         if cue.encode() == self.last_cue:
             return ""
         self.last_cue = cue.encode()
@@ -948,8 +950,14 @@ class HlsParser:
         parsed = [self.parse_line(line) for line in lines]
         lines = [line for line in parsed if line is not None]
         media = media.replace("\n", "")
-        self.chk_ts(media)
-        self.chk_aac(media)
+        try:
+            self.chk_ts(media)
+        except:
+            try:
+                self.chk_aac(media)
+            except:
+                red(f'Skipping {media}\n')
+                return
         pane = Pane(media, lines)
         self.sliding_window.slide_panes(pane)
         self.first_segment = False
@@ -973,6 +981,7 @@ class HlsParser:
         if not self.rendition:
             red("No rendition to parse")
             return
+        self.rendition=self.rendition.strip()
         with reader(self.rendition) as m3u8:
             lines = []
             m3u8_lines = self.decode_lines(m3u8.readlines())
