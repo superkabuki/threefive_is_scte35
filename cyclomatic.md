@@ -1,694 +1,703 @@
+# Cyclomatic complexity.
+https://www.qt.io/quality-assurance/blog/what-is-cyclomatic-complexity
+
+## threefive 3.0.73 Score
 ```smalltalk
-654 blocks (classes, functions, methods) analyzed.
-Average complexity: A (1.996941896024465)
+660 blocks (classes, functions, methods) analyzed.
+Average complexity: A (1.9893939393939395)
 ```
 
-```js
-a@fu:~/scratch/threefive$ radon cc --show-closures  -sa threefive
 
+<pre><span style="color:#20FC20"><b>a@fu</b></span>:<span style="color:#5555FF"><b>~/scratch/threefive</b></span>$ radon cc --show-closures  -sa threefive
 threefive/throttle.py
-    C 78:0 SupaStream - A (4)
-    M 65:4 Throttle.throttle - A (4)
-    M 47:4 Throttle.diff - A (4)
-    M 83:4 SupaStream.slow - A (3)
-    C 12:0 Throttle - A (3)
-    M 39:4 Throttle.set_start - A (1)
-    M 33:4 Throttle.reset_end - A (1)
-    M 27:4 Throttle.reset - A (1)
-    M 20:4 Throttle.__init__ - A (1)
+    <span style="color:#FFFFFF"><b>M </b></span>95:4 Throttle.throttle_pts - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>84:4 Throttle._set_second - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>80:4 Throttle._set_first - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>68:4 Throttle.diff - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>57:4 Throttle.sleep - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>50:4 Throttle.print_throttle - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>41:4 Throttle.set_start - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#55FFFF"><b>C </b></span>13:0 Throttle - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>88:4 Throttle.throttle - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>35:4 Throttle.reset_end - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>29:4 Throttle.reset - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>21:4 Throttle.__init__ - <span style="color:#00AA00">A (1)</span>
 threefive/packetdata.py
-    C 9:0 PacketData - A (3)
-    M 32:4 PacketData.mk_pts - A (2)
-    M 22:4 PacketData.mk_pcr - A (2)
-    M 16:4 PacketData.__init__ - A (1)
+    <span style="color:#55FFFF"><b>C </b></span>9:0 PacketData - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>32:4 PacketData.mk_pts - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>22:4 PacketData.mk_pcr - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>16:4 PacketData.__init__ - <span style="color:#00AA00">A (1)</span>
 threefive/upids.py
-    C 313:0 Umid - A (3)
-    C 215:0 Mid - A (3)
-    C 163:0 Eidr - A (3)
-    M 75:4 Upid.xml - A (3)
-    M 66:4 Upid._extra_xml_attrs - A (3)
-    M 44:4 Upid.redecode - A (3)
-    C 17:0 Upid - A (3)
-    M 330:4 Umid.encode - A (2)
-    M 318:4 Umid.decode - A (2)
-    M 290:4 Mpu.decode - A (2)
-    C 272:0 Mpu - A (2)
-    M 256:4 Mid.xml - A (2)
-    M 244:4 Mid.encode - A (2)
-    M 220:4 Mid.decode - A (2)
-    C 195:0 Isan - A (2)
-    M 182:4 Eidr.encode - A (2)
-    M 168:4 Eidr.decode - A (2)
-    C 132:0 Atsc - A (2)
-    C 113:0 AirId - A (2)
-    C 95:0 NoUpid - A (2)
-    M 58:4 Upid._xml_format_attr - A (2)
-    M 302:4 Mpu.encode - A (1)
-    M 277:4 Mpu._decode_adfr - A (1)
-    M 207:4 Isan.encode - A (1)
-    M 200:4 Isan.decode - A (1)
-    M 151:4 Atsc.encode - A (1)
-    M 137:4 Atsc.decode - A (1)
-    M 125:4 AirId.encode - A (1)
-    M 118:4 AirId.decode - A (1)
-    M 106:4 NoUpid.encode - A (1)
-    M 100:4 NoUpid.decode - A (1)
-    M 37:4 Upid.encode - A (1)
-    M 30:4 Upid.decode - A (1)
-    M 22:4 Upid.__init__ - A (1)
+    <span style="color:#55FFFF"><b>C </b></span>313:0 Umid - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#55FFFF"><b>C </b></span>215:0 Mid - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#55FFFF"><b>C </b></span>163:0 Eidr - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>75:4 Upid.xml - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>66:4 Upid._extra_xml_attrs - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>44:4 Upid.redecode - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#55FFFF"><b>C </b></span>17:0 Upid - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>330:4 Umid.encode - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>318:4 Umid.decode - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>290:4 Mpu.decode - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#55FFFF"><b>C </b></span>272:0 Mpu - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>256:4 Mid.xml - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>244:4 Mid.encode - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>220:4 Mid.decode - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#55FFFF"><b>C </b></span>195:0 Isan - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>182:4 Eidr.encode - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>168:4 Eidr.decode - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#55FFFF"><b>C </b></span>132:0 Atsc - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#55FFFF"><b>C </b></span>113:0 AirId - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#55FFFF"><b>C </b></span>95:0 NoUpid - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>58:4 Upid._xml_format_attr - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>302:4 Mpu.encode - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>277:4 Mpu._decode_adfr - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>207:4 Isan.encode - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>200:4 Isan.decode - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>151:4 Atsc.encode - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>137:4 Atsc.decode - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>125:4 AirId.encode - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>118:4 AirId.decode - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>106:4 NoUpid.encode - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>100:4 NoUpid.decode - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>37:4 Upid.encode - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>30:4 Upid.decode - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>22:4 Upid.__init__ - <span style="color:#00AA00">A (1)</span>
 threefive/encode.py
-    F 49:0 mk_splice_insert - A (3)
-    F 24:0 mk_time_signal - A (2)
-    F 12:0 mk_splice_null - A (1)
+    <span style="color:#FF55FF"><b>F </b></span>49:0 mk_splice_insert - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FF55FF"><b>F </b></span>24:0 mk_time_signal - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FF55FF"><b>F </b></span>12:0 mk_splice_null - <span style="color:#00AA00">A (1)</span>
 threefive/stream.py
-    M 668:4 Stream._parse_pmt - B (6)
-    M 607:4 Stream._parse_sdt - B (6)
-    M 643:4 Stream._parse_pat - A (5)
-    M 582:4 Stream._parse_scte35 - A (5)
-    M 337:4 Stream.show_pts - A (5)
-    M 320:4 Stream.show - A (5)
-    M 506:4 Stream._parse - A (4)
-    M 425:4 Stream._parse_pts - A (4)
-    M 235:4 Stream._find_start - A (4)
-    M 722:4 Stream._set_scte35_pids - A (3)
-    M 567:4 Stream._chk_maybe_pid - A (3)
-    M 537:4 Stream._section_incomplete - A (3)
-    M 475:4 Stream._sdt_pid - A (3)
-    M 403:4 Stream._parse_cc - A (3)
-    M 307:4 Stream.proxy - A (3)
-    M 277:4 Stream.decode_next - A (3)
-    M 260:4 Stream._decode2cues - A (3)
-    C 131:0 Stream - A (3)
-    C 53:0 ProgramInfo - A (3)
-    C 41:0 Based - A (3)
-    M 697:4 Stream._parse_program_streams - A (2)
-    M 600:4 Stream._mk_pinfo - A (2)
-    M 576:4 Stream._mk_scte35_payload - A (2)
-    M 563:4 Stream._pop_maybe_pid - A (2)
-    M 554:4 Stream._strip_scte35_pes - A (2)
-    M 546:4 Stream._parse_cue - A (2)
-    M 530:4 Stream._same_as_last - A (2)
-    M 525:4 Stream._chk_partial - A (2)
-    M 519:4 Stream._pid_has_scte35 - A (2)
-    M 500:4 Stream._chk_scte35 - A (2)
-    M 492:4 Stream._chk_pcr - A (2)
-    M 486:4 Stream._parse_info - A (2)
-    M 471:4 Stream._pat_pid - A (2)
-    M 464:4 Stream._pmt_pid - A (2)
-    M 453:4 Stream._parse_payload - A (2)
-    M 439:4 Stream._parse_pcr - A (2)
-    M 380:4 Stream.pid2pcr - A (2)
-    M 370:4 Stream.pid2pts - A (2)
-    M 360:4 Stream.pid2prgm - A (2)
-    M 298:4 Stream.decode_start_time - A (2)
-    M 288:4 Stream.decode_pids - A (2)
-    M 263:4 Stream.decode - A (2)
-    M 254:4 Stream._mk_pkts - A (2)
-    M 246:4 Stream.iter_pkts - A (2)
-    M 229:4 Stream._split_by_idx - A (2)
-    M 150:4 Stream.__init__ - A (2)
-    C 111:0 Maps - A (2)
-    C 95:0 Pids - A (2)
-    M 75:4 ProgramInfo.show - A (2)
-    M 67:4 ProgramInfo._mk_vee - A (2)
-    M 46:4 Based.__repr__ - A (2)
-    M 712:4 Stream._parse_stream_type - A (1)
-    M 496:4 Stream._chk_pts - A (1)
-    M 480:4 Stream._parse_tables - A (1)
-    M 450:4 Stream._afc_flag - A (1)
-    M 414:4 Stream.mk_pts - A (1)
-    M 396:4 Stream._mk_packet_data - A (1)
-    M 393:4 Stream._unpad - A (1)
-    M 390:4 Stream._unpad_afc - A (1)
-    M 354:4 Stream.pts - A (1)
-    M 222:4 Stream._parse_program - A (1)
-    M 214:4 Stream._parse_pid - A (1)
-    M 207:4 Stream._parse_length - A (1)
-    M 202:4 Stream._pts_flag - A (1)
-    M 198:4 Stream._spi_flag - A (1)
-    M 194:4 Stream._pcr_flag - A (1)
-    M 190:4 Stream._afc_flag - A (1)
-    M 186:4 Stream._pusi_flag - A (1)
-    M 179:4 Stream.as_90k - A (1)
-    M 121:4 Maps.__init__ - A (1)
-    M 103:4 Pids.__init__ - A (1)
-    M 60:4 ProgramInfo.__init__ - A (1)
-    F 33:0 show_cue_stderr - A (1)
-    F 25:0 show_cue - A (1)
-    F 17:0 no_op - A (1)
+    <span style="color:#FFFFFF"><b>M </b></span>698:4 Stream._parse_pmt - <span style="color:#00AA00">B (6)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>637:4 Stream._parse_sdt - <span style="color:#00AA00">B (6)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>673:4 Stream._parse_pat - <span style="color:#00AA00">A (5)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>613:4 Stream._parse_scte35 - <span style="color:#00AA00">A (5)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>371:4 Stream.show_pts - <span style="color:#00AA00">A (5)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>354:4 Stream.show - <span style="color:#00AA00">A (5)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>537:4 Stream._parse - <span style="color:#00AA00">A (4)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>459:4 Stream._parse_pts - <span style="color:#00AA00">A (4)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>236:4 Stream._find_start - <span style="color:#00AA00">A (4)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>752:4 Stream._set_scte35_pids - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>598:4 Stream._chk_maybe_pid - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>568:4 Stream._section_incomplete - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>506:4 Stream._sdt_pid - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>437:4 Stream._parse_cc - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>341:4 Stream.proxy - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>311:4 Stream.decode_next - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>281:4 Stream._decode2cues - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>247:4 Stream.rt - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#55FFFF"><b>C </b></span>132:0 Stream - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#55FFFF"><b>C </b></span>54:0 ProgramInfo - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#55FFFF"><b>C </b></span>42:0 Based - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>727:4 Stream._parse_program_streams - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>630:4 Stream._mk_pinfo - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>607:4 Stream._mk_scte35_payload - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>594:4 Stream._pop_maybe_pid - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>585:4 Stream._strip_scte35_pes - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>577:4 Stream._parse_cue - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>561:4 Stream._same_as_last - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>556:4 Stream._chk_partial - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>550:4 Stream._pid_has_scte35 - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>531:4 Stream._chk_scte35 - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>523:4 Stream._chk_pcr - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>517:4 Stream._parse_info - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>502:4 Stream._pat_pid - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>495:4 Stream._pmt_pid - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>484:4 Stream._parse_payload - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>473:4 Stream._parse_pcr - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>414:4 Stream.pid2pcr - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>404:4 Stream.pid2pts - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>394:4 Stream.pid2prgm - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>332:4 Stream.decode_start_time - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>322:4 Stream.decode_pids - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>297:4 Stream.decode - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>284:4 Stream.speed - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>275:4 Stream._mk_pkts - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>267:4 Stream.iter_pkts - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>230:4 Stream._split_by_idx - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>151:4 Stream.__init__ - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#55FFFF"><b>C </b></span>112:0 Maps - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#55FFFF"><b>C </b></span>96:0 Pids - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>76:4 ProgramInfo.show - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>68:4 ProgramInfo._mk_vee - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>47:4 Based.__repr__ - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>742:4 Stream._parse_stream_type - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>527:4 Stream._chk_pts - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>511:4 Stream._parse_tables - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>448:4 Stream.mk_pts - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>430:4 Stream._mk_packet_data - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>427:4 Stream._unpad - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>424:4 Stream._unpad_afc - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>388:4 Stream.pts - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>223:4 Stream._parse_program - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>215:4 Stream._parse_pid - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>208:4 Stream._parse_length - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>203:4 Stream._pts_flag - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>199:4 Stream._spi_flag - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>195:4 Stream._pcr_flag - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>191:4 Stream._afc_flag - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>187:4 Stream._pusi_flag - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>180:4 Stream.as_90k - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>122:4 Maps.__init__ - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>104:4 Pids.__init__ - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>61:4 ProgramInfo.__init__ - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FF55FF"><b>F </b></span>34:0 show_cue_stderr - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FF55FF"><b>F </b></span>26:0 show_cue - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FF55FF"><b>F </b></span>18:0 no_op - <span style="color:#00AA00">A (1)</span>
 threefive/hls.py
-    M 1000:4 HlsParser.pick_one - A (5)
-    M 965:4 HlsParser._parse_manifest - A (5)
-    M 721:4 HlsParser.extinf - A (5)
-    M 659:4 HlsParser.scte35 - A (5)
-    M 618:4 HlsParser.chk_x_daterange - A (5)
-    M 544:4 HlsParser._set_break_duration - A (5)
-    M 492:4 HlsParser.set_cue_state - A (5)
-    M 395:4 HlsParser.chk_aes - A (5)
-    M 942:4 HlsParser._parse_new_media - A (4)
-    M 918:4 HlsParser.write_flat - A (4)
-    M 813:4 HlsParser.chk_aac - A (4)
-    M 798:4 HlsParser.chk_ts - A (4)
-    M 765:4 HlsParser.ts_cues - A (4)
-    M 693:4 HlsParser.auto_cuein - A (4)
-    M 637:4 HlsParser.chk_x_oatcls - A (4)
-    M 603:4 HlsParser.chk_x_scte35 - A (4)
-    M 564:4 HlsParser.chk_x_cue_out_cont - A (4)
-    M 527:4 HlsParser._set_break_timer - A (4)
-    M 480:4 HlsParser._chk_cue_out - A (4)
-    M 953:4 HlsParser._fixup_media - A (3)
-    M 897:4 HlsParser.parse_header - A (3)
-    M 883:4 HlsParser.parse_line - A (3)
-    M 867:4 HlsParser.update_cue_state - A (3)
-    M 852:4 HlsParser._mk_window_size - A (3)
-    M 839:4 HlsParser.parse_target_duration - A (3)
-    M 826:4 HlsParser.new_media - A (3)
-    M 777:4 HlsParser.ts_set_cue - A (3)
-    M 738:4 HlsParser.print_time - A (3)
-    M 654:4 HlsParser._dump_by_key - A (3)
-    M 440:4 HlsParser.diff_stuff - A (3)
-    C 340:0 HlsParser - A (3)
-    M 257:4 Scte35Profile._is_dscptr_cueout - A (3)
-    M 168:4 Scte35Profile._this_that_none - A (3)
-    M 146:4 Scte35Profile._string2bool - A (3)
-    M 118:4 Scte35Profile._is_comment - A (3)
-    M 68:4 Scte35Profile._is_int - A (3)
-    M 987:4 HlsParser.pull - A (2)
-    M 910:4 HlsParser.chk_endlist - A (2)
-    M 877:4 HlsParser.decode_lines - A (2)
-    M 855:4 HlsParser.chk_window_size - A (2)
-    M 756:4 HlsParser.ts_pts - A (2)
-    M 710:4 HlsParser.reset_break - A (2)
-    M 520:4 HlsParser.show_tags - A (2)
-    M 470:4 HlsParser._chk_cue_in - A (2)
-    M 416:4 HlsParser.to_dump - A (2)
-    M 384:4 HlsParser.clear_files - A (2)
-    M 324:4 SlidingWindow.all_panes - A (2)
-    M 317:4 SlidingWindow.pop_pane - A (2)
-    C 307:0 SlidingWindow - A (2)
-    C 286:0 Pane - A (2)
-    M 276:4 Scte35Profile.validate_time_signal - A (2)
-    M 270:4 Scte35Profile._validate_dscptr - A (2)
-    M 264:4 Scte35Profile._is_dscptr_cuein - A (2)
-    M 248:4 Scte35Profile.validate_splice_insert - A (2)
-    M 242:4 Scte35Profile._is_splice_insert_cueout - A (2)
-    M 225:4 Scte35Profile.validate_cue - A (2)
-    M 220:4 Scte35Profile._chk_splice_insert - A (2)
-    M 215:4 Scte35Profile._chk_time_signal - A (2)
-    M 211:4 Scte35Profile._chk_expand - A (2)
-    M 205:4 Scte35Profile._chk_pts - A (2)
-    M 188:4 Scte35Profile.read_profile - A (2)
-    M 183:4 Scte35Profile._parse_profile - A (2)
-    M 173:4 Scte35Profile.format4profile - A (2)
-    M 162:4 Scte35Profile._hexed - A (2)
-    M 155:4 Scte35Profile._new_that - A (2)
-    M 123:4 Scte35Profile._split_this_that - A (2)
-    M 113:4 Scte35Profile._vee_is_list - A (2)
-    M 108:4 Scte35Profile._vee_is_ints - A (2)
-    M 105:4 Scte35Profile._vee_to_hex - A (2)
-    M 93:4 Scte35Profile._write_profile_lines - A (2)
-    M 81:4 Scte35Profile._bool_in_profile - A (2)
-    M 76:4 Scte35Profile._list_in_profile - A (2)
-    M 62:4 Scte35Profile.__repr__ - A (2)
-    C 29:0 Scte35Profile - A (2)
-    F 1036:0 _chk_profile - A (2)
-    F 1030:0 _chk_help - A (2)
-    M 1022:4 HlsParser.find_renditions - A (1)
-    M 959:4 HlsParser._post_parse - A (1)
-    M 932:4 HlsParser.write_manifest - A (1)
-    M 682:4 HlsParser.auto_cont - A (1)
-    M 594:4 HlsParser.chk_x_cue_out - A (1)
-    M 583:4 HlsParser.chk_x_cue_in - A (1)
-    M 511:4 HlsParser.invalid - A (1)
-    M 464:4 HlsParser.pts_stuff - A (1)
-    M 458:4 HlsParser.dur_stuff - A (1)
-    M 434:4 HlsParser.cue_stuff - A (1)
-    M 426:4 HlsParser.media_stuff - A (1)
-    M 409:4 HlsParser.to_sidecar - A (1)
-    M 377:4 HlsParser.clear - A (1)
-    M 345:4 HlsParser.__init__ - A (1)
-    M 330:4 SlidingWindow.slide_panes - A (1)
-    M 312:4 SlidingWindow.__init__ - A (1)
-    M 303:4 Pane.__repr__ - A (1)
-    M 295:4 Pane.get - A (1)
-    M 291:4 Pane.__init__ - A (1)
-    M 239:4 Scte35Profile._mk_cueout_line - A (1)
-    M 196:4 Scte35Profile.set_pts - A (1)
-    M 152:4 Scte35Profile._hex_or_int - A (1)
-    M 139:4 Scte35Profile.clean_n_split - A (1)
-    M 132:4 Scte35Profile._clean - A (1)
-    M 98:4 Scte35Profile.write_profile - A (1)
-    M 86:4 Scte35Profile._mk_profile_line - A (1)
-    M 34:4 Scte35Profile.__init__ - A (1)
-    F 1052:0 cli - A (1)
-    F 1043:0 precheck - A (1)
+    <span style="color:#FFFFFF"><b>M </b></span>948:4 HlsParser._parse_new_media - <span style="color:#00AA00">B (6)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>496:4 HlsParser.set_cue_state - <span style="color:#00AA00">B (6)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>1013:4 HlsParser.pick_one - <span style="color:#00AA00">A (5)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>977:4 HlsParser._parse_manifest - <span style="color:#00AA00">A (5)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>727:4 HlsParser.extinf - <span style="color:#00AA00">A (5)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>665:4 HlsParser.scte35 - <span style="color:#00AA00">A (5)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>624:4 HlsParser.chk_x_daterange - <span style="color:#00AA00">A (5)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>550:4 HlsParser._set_break_duration - <span style="color:#00AA00">A (5)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>399:4 HlsParser.chk_aes - <span style="color:#00AA00">A (5)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>924:4 HlsParser.write_flat - <span style="color:#00AA00">A (4)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>819:4 HlsParser.chk_aac - <span style="color:#00AA00">A (4)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>804:4 HlsParser.chk_ts - <span style="color:#00AA00">A (4)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>771:4 HlsParser.ts_cues - <span style="color:#00AA00">A (4)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>699:4 HlsParser.auto_cuein - <span style="color:#00AA00">A (4)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>643:4 HlsParser.chk_x_oatcls - <span style="color:#00AA00">A (4)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>609:4 HlsParser.chk_x_scte35 - <span style="color:#00AA00">A (4)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>570:4 HlsParser.chk_x_cue_out_cont - <span style="color:#00AA00">A (4)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>533:4 HlsParser._set_break_timer - <span style="color:#00AA00">A (4)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>484:4 HlsParser._chk_cue_out - <span style="color:#00AA00">A (4)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>965:4 HlsParser._fixup_media - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>903:4 HlsParser.parse_header - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>889:4 HlsParser.parse_line - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>873:4 HlsParser.update_cue_state - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>858:4 HlsParser._mk_window_size - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>845:4 HlsParser.parse_target_duration - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>832:4 HlsParser.new_media - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>783:4 HlsParser.ts_set_cue - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>744:4 HlsParser.print_time - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>660:4 HlsParser._dump_by_key - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>444:4 HlsParser.diff_stuff - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#55FFFF"><b>C </b></span>344:0 HlsParser - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>168:4 Scte35Profile._this_that_none - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>146:4 Scte35Profile._string2bool - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>118:4 Scte35Profile._is_comment - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>68:4 Scte35Profile._is_int - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>1000:4 HlsParser.pull - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>916:4 HlsParser.chk_endlist - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>883:4 HlsParser.decode_lines - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>861:4 HlsParser.chk_window_size - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>762:4 HlsParser.ts_pts - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>716:4 HlsParser.reset_break - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>526:4 HlsParser.show_tags - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>474:4 HlsParser._chk_cue_in - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>420:4 HlsParser.to_dump - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>388:4 HlsParser.clear_files - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>328:4 SlidingWindow.all_panes - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>321:4 SlidingWindow.pop_pane - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#55FFFF"><b>C </b></span>311:0 SlidingWindow - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#55FFFF"><b>C </b></span>290:0 Pane - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>280:4 Scte35Profile.validate_time_signal - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>274:4 Scte35Profile._validate_dscptr - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>268:4 Scte35Profile._is_dscptr_cuein - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>263:4 Scte35Profile._is_dscptr_cueout - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>257:4 Scte35Profile._incr_seg_type - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>248:4 Scte35Profile.validate_splice_insert - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>242:4 Scte35Profile._is_splice_insert_cueout - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>225:4 Scte35Profile.validate_cue - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>220:4 Scte35Profile._chk_splice_insert - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>215:4 Scte35Profile._chk_time_signal - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>211:4 Scte35Profile._chk_expand - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>205:4 Scte35Profile._chk_pts - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>188:4 Scte35Profile.read_profile - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>183:4 Scte35Profile._parse_profile - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>173:4 Scte35Profile.format4profile - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>162:4 Scte35Profile._hexed - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>155:4 Scte35Profile._new_that - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>123:4 Scte35Profile._split_this_that - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>113:4 Scte35Profile._vee_is_list - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>108:4 Scte35Profile._vee_is_ints - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>105:4 Scte35Profile._vee_to_hex - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>93:4 Scte35Profile._write_profile_lines - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>81:4 Scte35Profile._bool_in_profile - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>76:4 Scte35Profile._list_in_profile - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>62:4 Scte35Profile.__repr__ - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#55FFFF"><b>C </b></span>29:0 Scte35Profile - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FF55FF"><b>F </b></span>1049:0 _chk_profile - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FF55FF"><b>F </b></span>1043:0 _chk_help - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>1035:4 HlsParser.find_renditions - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>971:4 HlsParser._post_parse - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>938:4 HlsParser.write_manifest - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>688:4 HlsParser.auto_cont - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>600:4 HlsParser.chk_x_cue_out - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>589:4 HlsParser.chk_x_cue_in - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>517:4 HlsParser.invalid - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>468:4 HlsParser.pts_stuff - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>462:4 HlsParser.dur_stuff - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>438:4 HlsParser.cue_stuff - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>430:4 HlsParser.media_stuff - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>413:4 HlsParser.to_sidecar - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>381:4 HlsParser.clear - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>349:4 HlsParser.__init__ - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>334:4 SlidingWindow.slide_panes - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>316:4 SlidingWindow.__init__ - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>307:4 Pane.__repr__ - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>299:4 Pane.get - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>295:4 Pane.__init__ - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>239:4 Scte35Profile._mk_cueout_line - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>196:4 Scte35Profile.set_pts - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>152:4 Scte35Profile._hex_or_int - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>139:4 Scte35Profile.clean_n_split - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>132:4 Scte35Profile._clean - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>98:4 Scte35Profile.write_profile - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>86:4 Scte35Profile._mk_profile_line - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>34:4 Scte35Profile.__init__ - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FF55FF"><b>F </b></span>1065:0 cli - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FF55FF"><b>F </b></span>1056:0 precheck - <span style="color:#00AA00">A (1)</span>
 threefive/aac.py
-    C 12:0 AacParser - A (3)
-    M 78:4 AacParser.parse - A (2)
-    M 68:4 AacParser.parse_timestamp - A (2)
-    M 56:4 AacParser.read_id3 - A (2)
-    M 47:4 AacParser.has_applehead - A (2)
-    M 37:4 AacParser.syncsafe5 - A (2)
-    M 20:4 AacParser.is_header - A (2)
-    M 29:4 AacParser.id3_len - A (1)
+    <span style="color:#55FFFF"><b>C </b></span>12:0 AacParser - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>78:4 AacParser.parse - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>68:4 AacParser.parse_timestamp - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>56:4 AacParser.read_id3 - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>47:4 AacParser.has_applehead - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>37:4 AacParser.syncsafe5 - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>20:4 AacParser.is_header - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>29:4 AacParser.id3_len - <span style="color:#00AA00">A (1)</span>
 threefive/commands.py
-    M 291:4 SpliceInsert.xml - A (5)
-    M 252:4 SpliceInsert.encode - A (5)
-    M 226:4 SpliceInsert.decode - A (5)
-    C 194:0 SpliceInsert - A (4)
-    M 177:4 TimeSignal.xml - A (3)
-    M 163:4 TimeSignal._encode_splice_time - A (3)
-    C 118:0 TimeSignal - A (3)
-    M 278:4 SpliceInsert.encode_break_duration - A (2)
-    M 151:4 TimeSignal._splice_time - A (2)
-    C 101:0 SpliceNull - A (2)
-    C 60:0 PrivateCommand - A (2)
-    C 43:0 BandwidthReservation - A (2)
-    C 11:0 SpliceCommand - A (2)
-    M 217:4 SpliceInsert.decode_break_duration - A (1)
-    M 199:4 SpliceInsert.__init__ - A (1)
-    M 141:4 TimeSignal.encode - A (1)
-    M 132:4 TimeSignal.decode - A (1)
-    M 123:4 TimeSignal.__init__ - A (1)
-    M 111:4 SpliceNull.xml - A (1)
-    M 106:4 SpliceNull.__init__ - A (1)
-    M 91:4 PrivateCommand.xml - A (1)
-    M 81:4 PrivateCommand.encode - A (1)
-    M 72:4 PrivateCommand.decode - A (1)
-    M 65:4 PrivateCommand.__init__ - A (1)
-    M 53:4 BandwidthReservation.xml - A (1)
-    M 48:4 BandwidthReservation.__init__ - A (1)
-    M 34:4 SpliceCommand.encode - A (1)
-    M 27:4 SpliceCommand._set_len - A (1)
-    M 22:4 SpliceCommand.decode - A (1)
-    M 16:4 SpliceCommand.__init__ - A (1)
+    <span style="color:#FFFFFF"><b>M </b></span>291:4 SpliceInsert.xml - <span style="color:#00AA00">A (5)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>252:4 SpliceInsert.encode - <span style="color:#00AA00">A (5)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>226:4 SpliceInsert.decode - <span style="color:#00AA00">A (5)</span>
+    <span style="color:#55FFFF"><b>C </b></span>194:0 SpliceInsert - <span style="color:#00AA00">A (4)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>177:4 TimeSignal.xml - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>163:4 TimeSignal._encode_splice_time - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#55FFFF"><b>C </b></span>118:0 TimeSignal - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>278:4 SpliceInsert.encode_break_duration - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>151:4 TimeSignal._splice_time - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#55FFFF"><b>C </b></span>101:0 SpliceNull - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#55FFFF"><b>C </b></span>60:0 PrivateCommand - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#55FFFF"><b>C </b></span>43:0 BandwidthReservation - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#55FFFF"><b>C </b></span>11:0 SpliceCommand - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>217:4 SpliceInsert.decode_break_duration - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>199:4 SpliceInsert.__init__ - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>141:4 TimeSignal.encode - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>132:4 TimeSignal.decode - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>123:4 TimeSignal.__init__ - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>111:4 SpliceNull.xml - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>106:4 SpliceNull.__init__ - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>91:4 PrivateCommand.xml - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>81:4 PrivateCommand.encode - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>72:4 PrivateCommand.decode - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>65:4 PrivateCommand.__init__ - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>53:4 BandwidthReservation.xml - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>48:4 BandwidthReservation.__init__ - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>34:4 SpliceCommand.encode - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>27:4 SpliceCommand._set_len - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>22:4 SpliceCommand.decode - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>16:4 SpliceCommand.__init__ - <span style="color:#00AA00">A (1)</span>
 threefive/sixfix.py
-    M 110:4 SixFix.pmt2packets - B (6)
-    M 154:4 SixFix._parse_pmt - A (5)
-    M 81:4 SixFix._parse_pkts - A (4)
-    M 69:4 SixFix._parse_by_pid - A (4)
-    C 41:0 SixFix - A (3)
-    C 27:0 PreFix - A (3)
-    M 140:4 SixFix._pmt_precheck - A (2)
-    M 49:4 SixFix.__init__ - A (2)
-    M 32:4 PreFix.decode - A (2)
-    F 207:0 cli - A (2)
-    F 186:0 sixfix - A (2)
-    M 150:4 SixFix.mk_pmt - A (1)
-    M 106:4 SixFix._chk_payload - A (1)
-    M 97:4 SixFix.convert_pids - A (1)
-    M 62:4 SixFix.iter_pkts - A (1)
-    F 16:0 passed - A (1)
+    <span style="color:#FFFFFF"><b>M </b></span>110:4 SixFix.pmt2packets - <span style="color:#00AA00">B (6)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>154:4 SixFix._parse_pmt - <span style="color:#00AA00">A (5)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>81:4 SixFix._parse_pkts - <span style="color:#00AA00">A (4)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>69:4 SixFix._parse_by_pid - <span style="color:#00AA00">A (4)</span>
+    <span style="color:#55FFFF"><b>C </b></span>41:0 SixFix - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#55FFFF"><b>C </b></span>27:0 PreFix - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>140:4 SixFix._pmt_precheck - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>49:4 SixFix.__init__ - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>32:4 PreFix.decode - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FF55FF"><b>F </b></span>207:0 cli - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FF55FF"><b>F </b></span>186:0 sixfix - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>150:4 SixFix.mk_pmt - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>106:4 SixFix._chk_payload - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>97:4 SixFix.convert_pids - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>62:4 SixFix.iter_pkts - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FF55FF"><b>F </b></span>16:0 passed - <span style="color:#00AA00">A (1)</span>
 threefive/xml.py
-    F 63:0 iter_attrs - A (4)
-    M 369:4 Node.set_depth - A (3)
-    M 356:4 Node.rendr_all - A (3)
-    M 339:4 Node.rendr_attrs - A (3)
-    M 329:4 Node.mk_ans - A (3)
-    M 295:4 Node.a2c - A (3)
-    M 280:4 Node.findtag - A (3)
-    M 267:4 Node.findattr - A (3)
-    M 218:4 Node.addchild - A (3)
-    M 211:4 Node._handle_attrs - A (3)
-    C 164:0 Node - A (3)
-    M 145:4 NameSpace.xmlns - A (3)
-    F 25:0 un_camel - A (3)
-    F 13:0 t2s - A (3)
-    C 413:0 Comment - A (2)
-    M 396:4 Node.children_namespaces - A (2)
-    M 386:4 Node.set_parent - A (2)
-    M 351:4 Node._rendrd_children - A (2)
-    M 320:4 Node.mk_tag - A (2)
-    M 305:4 Node.mk - A (2)
-    M 201:4 Node.chk_obj - A (2)
-    C 119:0 NameSpace - A (2)
-    C 93:0 NodeList - A (2)
-    F 85:0 mk_xml_attrs - A (2)
-    F 54:0 strip_ns - A (2)
-    F 35:0 un_xml - A (2)
-    M 437:4 Comment.mk - A (1)
-    M 405:4 Node.get_indent - A (1)
-    M 380:4 Node.set_ns - A (1)
-    M 259:4 Node.drop - A (1)
-    M 253:4 Node.dropattr - A (1)
-    M 244:4 Node.dropchild - A (1)
-    M 238:4 Node.addattr - A (1)
-    M 231:4 Node.addcomment - A (1)
-    M 198:4 Node.__repr__ - A (1)
-    M 187:4 Node.__init__ - A (1)
-    M 155:4 NameSpace.clear - A (1)
-    M 138:4 NameSpace.prefix_all - A (1)
-    M 135:4 NameSpace.__repr__ - A (1)
-    M 130:4 NameSpace.__init__ - A (1)
-    M 110:4 NodeList.remove - A (1)
-    M 101:4 NodeList.pop - A (1)
-    M 98:4 NodeList.__init__ - A (1)
-    F 80:0 key2xml - A (1)
-    F 73:0 val2xml - A (1)
+    <span style="color:#FF55FF"><b>F </b></span>63:0 iter_attrs - <span style="color:#00AA00">A (4)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>369:4 Node.set_depth - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>356:4 Node.rendr_all - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>339:4 Node.rendr_attrs - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>329:4 Node.mk_ans - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>295:4 Node.a2c - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>280:4 Node.findtag - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>267:4 Node.findattr - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>218:4 Node.addchild - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>211:4 Node._handle_attrs - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#55FFFF"><b>C </b></span>164:0 Node - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>145:4 NameSpace.xmlns - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FF55FF"><b>F </b></span>25:0 un_camel - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FF55FF"><b>F </b></span>13:0 t2s - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#55FFFF"><b>C </b></span>413:0 Comment - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>396:4 Node.children_namespaces - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>386:4 Node.set_parent - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>351:4 Node._rendrd_children - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>320:4 Node.mk_tag - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>305:4 Node.mk - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>201:4 Node.chk_obj - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#55FFFF"><b>C </b></span>119:0 NameSpace - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#55FFFF"><b>C </b></span>93:0 NodeList - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FF55FF"><b>F </b></span>85:0 mk_xml_attrs - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FF55FF"><b>F </b></span>54:0 strip_ns - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FF55FF"><b>F </b></span>35:0 un_xml - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>437:4 Comment.mk - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>405:4 Node.get_indent - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>380:4 Node.set_ns - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>259:4 Node.drop - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>253:4 Node.dropattr - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>244:4 Node.dropchild - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>238:4 Node.addattr - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>231:4 Node.addcomment - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>198:4 Node.__repr__ - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>187:4 Node.__init__ - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>155:4 NameSpace.clear - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>138:4 NameSpace.prefix_all - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>135:4 NameSpace.__repr__ - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>130:4 NameSpace.__init__ - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>110:4 NodeList.remove - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>101:4 NodeList.pop - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>98:4 NodeList.__init__ - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FF55FF"><b>F </b></span>80:0 key2xml - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FF55FF"><b>F </b></span>73:0 val2xml - <span style="color:#00AA00">A (1)</span>
 threefive/stuff.py
-    F 114:0 pif - A (5)
-    F 102:0 isxml - A (3)
-    F 82:0 isjson - A (3)
-    F 57:0 clean - A (3)
-    F 30:0 codec_detect - A (3)
-    F 220:0 reblue - A (2)
-    F 211:0 blue - A (2)
-    F 201:0 red - A (2)
-    F 181:0 print2 - A (2)
-    F 141:0 rmap - A (2)
-    F 133:0 k_by_v - A (2)
-    F 94:0 isfloat - A (2)
-    F 71:0 ishex - A (2)
-    F 191:0 iso8601 - A (1)
-    F 167:0 badtype - A (1)
-    F 156:0 _type2string - A (1)
+    <span style="color:#FF55FF"><b>F </b></span>115:0 pif - <span style="color:#00AA00">A (5)</span>
+    <span style="color:#FF55FF"><b>F </b></span>192:0 print2 - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FF55FF"><b>F </b></span>103:0 isxml - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FF55FF"><b>F </b></span>83:0 isjson - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FF55FF"><b>F </b></span>58:0 clean - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FF55FF"><b>F </b></span>31:0 codec_detect - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FF55FF"><b>F </b></span>234:0 reblue - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FF55FF"><b>F </b></span>142:0 rmap - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FF55FF"><b>F </b></span>134:0 k_by_v - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FF55FF"><b>F </b></span>95:0 isfloat - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FF55FF"><b>F </b></span>72:0 ishex - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FF55FF"><b>F </b></span>226:0 blue - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FF55FF"><b>F </b></span>217:0 red - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FF55FF"><b>F </b></span>207:0 iso8601 - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FF55FF"><b>F </b></span>182:0 no_ESC - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FF55FF"><b>F </b></span>168:0 badtype - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FF55FF"><b>F </b></span>157:0 _type2string - <span style="color:#00AA00">A (1)</span>
 threefive/new_reader.py
-    F 55:0 reader - B (7)
-    C 33:0 Socked - A (2)
-    F 130:0 _mk_socked - A (2)
-    F 119:0 lshiftbuf - A (2)
-    M 39:4 Socked.read - A (1)
-    F 162:0 _open_mcast - A (1)
-    F 153:0 _open_udp - A (1)
-    F 143:0 _mk_udp_sock - A (1)
-    F 104:0 do_srt - A (1)
-    F 46:0 corsreader - A (1)
+    <span style="color:#FF55FF"><b>F </b></span>55:0 reader - <span style="color:#00AA00">B (7)</span>
+    <span style="color:#55FFFF"><b>C </b></span>33:0 Socked - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FF55FF"><b>F </b></span>131:0 _mk_socked - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FF55FF"><b>F </b></span>119:0 lshiftbuf - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>39:4 Socked.read - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FF55FF"><b>F </b></span>164:0 _open_mcast - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FF55FF"><b>F </b></span>155:0 _open_udp - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FF55FF"><b>F </b></span>144:0 _mk_udp_sock - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FF55FF"><b>F </b></span>104:0 do_srt - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FF55FF"><b>F </b></span>46:0 corsreader - <span style="color:#00AA00">A (1)</span>
 threefive/bump.py
-    M 140:4 StreamBumper.bump_scte35 - A (3)
-    M 125:4 StreamBumper._scte35 - A (2)
-    C 111:0 StreamBumper - A (2)
-    F 97:0 bumped - A (2)
-    F 73:0 bump_pts - A (2)
-    F 47:0 bump_pts_time - A (2)
-    M 164:4 StreamBumper._parse_args - A (1)
-    M 155:4 StreamBumper._apply_args - A (1)
-    M 130:4 StreamBumper._parse2 - A (1)
-    M 118:4 StreamBumper.__init__ - A (1)
-    F 193:0 cli - A (1)
-    F 87:0 repad - A (1)
-    F 66:0 show_bump - A (1)
-    F 58:0 bump_pts_adjust - A (1)
+    <span style="color:#FFFFFF"><b>M </b></span>140:4 StreamBumper.bump_scte35 - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>125:4 StreamBumper._scte35 - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#55FFFF"><b>C </b></span>111:0 StreamBumper - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FF55FF"><b>F </b></span>97:0 bumped - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FF55FF"><b>F </b></span>73:0 bump_pts - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FF55FF"><b>F </b></span>47:0 bump_pts_time - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>164:4 StreamBumper._parse_args - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>155:4 StreamBumper._apply_args - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>130:4 StreamBumper._parse2 - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>118:4 StreamBumper.__init__ - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FF55FF"><b>F </b></span>193:0 cli - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FF55FF"><b>F </b></span>87:0 repad - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FF55FF"><b>F </b></span>66:0 show_bump - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FF55FF"><b>F </b></span>58:0 bump_pts_adjust - <span style="color:#00AA00">A (1)</span>
 threefive/cue.py
-    M 421:4 Cue.load - A (4)
-    M 169:4 Cue._xj_bits - A (4)
-    M 478:4 Cue._xml_mk_descriptor - A (3)
-    M 450:4 Cue._from_xml - A (3)
-    M 401:4 Cue._load_descriptors - A (3)
-    M 386:4 Cue._load_command - A (3)
-    M 358:4 Cue._unloop_descriptors - A (3)
-    M 192:4 Cue._str_bits - A (3)
-    M 115:4 Cue.get - A (3)
-    M 79:4 Cue.decode - A (3)
-    M 469:4 Cue._xml_segmentation_comment - A (2)
-    M 376:4 Cue._load_info_section - A (2)
-    M 301:4 Cue.base64 - A (2)
-    M 265:4 Cue._set_splice_command - A (2)
-    M 240:4 Cue._mk_descriptors - A (2)
-    M 221:4 Cue._mk_bits - A (2)
-    M 208:4 Cue._byte_bits - A (2)
-    M 200:4 Cue._pkt_bits - A (2)
-    M 182:4 Cue._xjd_bits - A (2)
-    M 175:4 Cue._digit_bits - A (2)
-    M 137:4 Cue.fix_bad_b64 - A (2)
-    M 130:4 Cue.get_descriptors - A (2)
-    M 110:4 Cue._get_packet_data - A (2)
-    M 98:4 Cue._descriptor_loop - A (2)
-    M 59:4 Cue.__init__ - A (2)
-    C 33:0 Cue - A (2)
-    M 502:4 Cue.xmlbin - A (1)
-    M 488:4 Cue.xml - A (1)
-    M 415:4 Cue._no_cmd - A (1)
-    M 350:4 Cue._encode_crc - A (1)
-    M 344:4 Cue.encode_as_int - A (1)
-    M 338:4 Cue.encode_as_hex - A (1)
-    M 332:4 Cue.encode - A (1)
-    M 325:4 Cue.int - A (1)
-    M 318:4 Cue.hex - A (1)
-    M 312:4 Cue.bytes - A (1)
-    M 283:4 Cue._assemble - A (1)
-    M 254:4 Cue.mk_info_section - A (1)
-    M 218:4 Cue._dict_bits - A (1)
-    M 214:4 Cue._node_bits - A (1)
-    M 162:4 Cue._b64_bits - A (1)
-    M 155:4 Cue._hex_bits - A (1)
-    M 147:4 Cue._int_bits - A (1)
-    M 74:4 Cue.__repr__ - A (1)
+    <span style="color:#FFFFFF"><b>M </b></span>422:4 Cue.load - <span style="color:#00AA00">A (4)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>169:4 Cue._xj_bits - <span style="color:#00AA00">A (4)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>480:4 Cue._xml_mk_descriptor - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>452:4 Cue._from_xml - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>402:4 Cue._load_descriptors - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>387:4 Cue._load_command - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>359:4 Cue._unloop_descriptors - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>192:4 Cue._str_bits - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>115:4 Cue.get - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>79:4 Cue.decode - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>471:4 Cue._xml_segmentation_comment - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>377:4 Cue._load_info_section - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>301:4 Cue.base64 - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>265:4 Cue._set_splice_command - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>240:4 Cue._mk_descriptors - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>221:4 Cue._mk_bits - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>208:4 Cue._byte_bits - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>200:4 Cue._pkt_bits - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>182:4 Cue._xjd_bits - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>175:4 Cue._digit_bits - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>137:4 Cue.fix_bad_b64 - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>130:4 Cue.get_descriptors - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>110:4 Cue._get_packet_data - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>98:4 Cue._descriptor_loop - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>59:4 Cue.__init__ - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#55FFFF"><b>C </b></span>33:0 Cue - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>503:4 Cue.xmlbin - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>490:4 Cue.xml - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>416:4 Cue._no_cmd - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>351:4 Cue._encode_crc - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>345:4 Cue.encode_as_int - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>339:4 Cue.encode_as_hex - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>333:4 Cue.encode - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>326:4 Cue.int - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>319:4 Cue.hex - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>313:4 Cue.bytes - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>283:4 Cue._assemble - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>254:4 Cue.mk_info_section - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>218:4 Cue._dict_bits - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>214:4 Cue._node_bits - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>162:4 Cue._b64_bits - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>155:4 Cue._hex_bits - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>147:4 Cue._int_bits - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>74:4 Cue.__repr__ - <span style="color:#00AA00">A (1)</span>
 threefive/iframes.py
-    M 147:4 IFramer.first - A (4)
-    M 115:4 IFramer.ticks - A (3)
-    M 106:4 IFramer._get_pts - A (3)
-    M 96:4 IFramer._is_key - A (3)
-    M 69:4 IFramer._parse_pts - A (3)
-    M 138:4 IFramer.do - A (2)
-    M 124:4 IFramer.parse - A (2)
-    M 93:4 IFramer._afc_approved - A (2)
-    M 85:4 IFramer._chk_rai - A (2)
-    M 61:4 IFramer._parse_payload - A (2)
-    M 24:4 IFramer._to90k - A (2)
-    C 15:0 IFramer - A (2)
-    M 132:4 IFramer.iter_pkts - A (1)
-    M 58:4 IFramer._rai_flag - A (1)
-    M 54:4 IFramer._pusi_flag - A (1)
-    M 49:4 IFramer._pts_flag - A (1)
-    M 45:4 IFramer._pcr_flag - A (1)
-    M 41:4 IFramer._nal - A (1)
-    M 37:4 IFramer._afc_flag - A (1)
-    M 30:4 IFramer._abc_flags - A (1)
-    M 20:4 IFramer.__init__ - A (1)
-    F 178:0 firstcli - A (1)
-    F 161:0 cli - A (1)
+    <span style="color:#FFFFFF"><b>M </b></span>147:4 IFramer.first - <span style="color:#00AA00">A (4)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>115:4 IFramer.ticks - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>106:4 IFramer._get_pts - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>96:4 IFramer._is_key - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>69:4 IFramer._parse_pts - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>138:4 IFramer.do - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>124:4 IFramer.parse - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>93:4 IFramer._afc_approved - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>85:4 IFramer._chk_rai - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>61:4 IFramer._parse_payload - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>24:4 IFramer._to90k - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#55FFFF"><b>C </b></span>15:0 IFramer - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>132:4 IFramer.iter_pkts - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>58:4 IFramer._rai_flag - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>54:4 IFramer._pusi_flag - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>49:4 IFramer._pts_flag - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>45:4 IFramer._pcr_flag - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>41:4 IFramer._nal - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>37:4 IFramer._afc_flag - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>30:4 IFramer._abc_flags - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>20:4 IFramer.__init__ - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FF55FF"><b>F </b></span>178:0 firstcli - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FF55FF"><b>F </b></span>161:0 cli - <span style="color:#00AA00">A (1)</span>
 threefive/base.py
-    F 129:8 kv_clean.b2l - B (7)
-    M 123:4 SCTE35Base.kv_clean - A (3)
-    M 42:4 SCTE35Base._chk_var - A (3)
-    M 162:4 SCTE35Base._load_dict - A (2)
-    M 159:4 SCTE35Base._vrfy_load - A (2)
-    M 155:4 SCTE35Base._chk_vars - A (2)
-    M 150:4 SCTE35Base._json2dict - A (2)
-    M 104:4 SCTE35Base.idxsplit - A (2)
-    M 93:4 SCTE35Base.has - A (2)
-    M 67:4 SCTE35Base.as_hms - A (2)
-    M 34:4 SCTE35Base._bool_int - A (2)
-    M 23:4 SCTE35Base._chk_nbin - A (2)
-    C 11:0 SCTE35Base - A (2)
-    M 175:4 SCTE35Base.show - A (1)
-    M 166:4 SCTE35Base.load - A (1)
-    M 117:4 SCTE35Base.json - A (1)
-    M 87:4 SCTE35Base.get - A (1)
-    M 81:4 SCTE35Base.fix_hex - A (1)
-    M 60:4 SCTE35Base.as_ticks - A (1)
-    M 53:4 SCTE35Base.as_90k - A (1)
-    M 39:4 SCTE35Base._wrong_type - A (1)
-    M 28:4 SCTE35Base._err2 - A (1)
-    M 19:4 SCTE35Base.__repr__ - A (1)
+    <span style="color:#FF55FF"><b>F </b></span>140:8 kv_clean.b2l - <span style="color:#00AA00">B (7)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>134:4 SCTE35Base.kv_clean - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>100:4 SCTE35Base._chk_var - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>168:4 SCTE35Base._load_dict - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>165:4 SCTE35Base._vrfy_load - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>161:4 SCTE35Base._chk_vars - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>118:4 SCTE35Base.has - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>95:4 SCTE35Base._json2dict - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>81:4 SCTE35Base.idxsplit - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>60:4 SCTE35Base.as_hms - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>36:4 SCTE35Base._bool_int - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>23:4 SCTE35Base._chk_nbin - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#55FFFF"><b>C </b></span>11:0 SCTE35Base - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>181:4 SCTE35Base.show - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>172:4 SCTE35Base.load - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>128:4 SCTE35Base.json - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>112:4 SCTE35Base.get - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>74:4 SCTE35Base.fix_hex - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>53:4 SCTE35Base.as_ticks - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>46:4 SCTE35Base.as_90k - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>42:4 SCTE35Base._wrong_type - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>29:4 SCTE35Base._err2 - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>19:4 SCTE35Base.__repr__ - <span style="color:#00AA00">A (1)</span>
 threefive/segment.py
-    M 120:4 Segment.decode - A (3)
-    M 58:4 Segment.__init__ - A (3)
-    M 110:4 Segment.show_cue - A (2)
-    C 17:0 Segment - A (2)
-    M 103:4 Segment.shushed - A (1)
-    M 96:4 Segment._add_cue - A (1)
-    M 89:4 Segment._aes_decrypt - A (1)
-    M 85:4 Segment._aes_get_key - A (1)
-    M 81:4 Segment._mk_tmp - A (1)
-    M 78:4 Segment.__repr__ - A (1)
+    <span style="color:#FFFFFF"><b>M </b></span>120:4 Segment.decode - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>58:4 Segment.__init__ - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>110:4 Segment.show_cue - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#55FFFF"><b>C </b></span>17:0 Segment - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>103:4 Segment.shushed - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>96:4 Segment._add_cue - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>89:4 Segment._aes_decrypt - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>85:4 Segment._aes_get_key - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>81:4 Segment._mk_tmp - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>78:4 Segment.__repr__ - <span style="color:#00AA00">A (1)</span>
 threefive/bitn.py
-    M 189:4 NBin.zeroed - A (2)
-    M 172:4 NBin.reserve - A (2)
-    M 149:4 NBin.add_hex - A (2)
-    M 131:4 NBin.add_int - A (2)
-    M 119:4 NBin.add_bites - A (2)
-    C 95:0 NBin - A (2)
-    M 49:4 Bitn.as_charset - A (2)
-    M 31:4 Bitn.as_int - A (2)
-    C 8:0 Bitn - A (2)
-    M 183:4 NBin.forward - A (1)
-    M 163:4 NBin.add_flag - A (1)
-    M 140:4 NBin.add_90k - A (1)
-    M 108:4 NBin.nbits2bites - A (1)
-    M 103:4 NBin.__init__ - A (1)
-    M 86:4 Bitn.negative_shift - A (1)
-    M 79:4 Bitn.forward - A (1)
-    M 73:4 Bitn.as_flag - A (1)
-    M 64:4 Bitn.as_bytes - A (1)
-    M 41:4 Bitn.as_hex - A (1)
-    M 23:4 Bitn.as_90k - A (1)
-    M 20:4 Bitn.__repr__ - A (1)
-    M 16:4 Bitn.__init__ - A (1)
+    <span style="color:#FFFFFF"><b>M </b></span>189:4 NBin.zeroed - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>172:4 NBin.reserve - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>149:4 NBin.add_hex - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>131:4 NBin.add_int - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>119:4 NBin.add_bites - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#55FFFF"><b>C </b></span>95:0 NBin - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>49:4 Bitn.as_charset - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>31:4 Bitn.as_int - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#55FFFF"><b>C </b></span>8:0 Bitn - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>183:4 NBin.forward - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>163:4 NBin.add_flag - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>140:4 NBin.add_90k - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>108:4 NBin.nbits2bites - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>103:4 NBin.__init__ - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>86:4 Bitn.negative_shift - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>79:4 Bitn.forward - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>73:4 Bitn.as_flag - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>64:4 Bitn.as_bytes - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>41:4 Bitn.as_hex - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>23:4 Bitn.as_90k - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>20:4 Bitn.__repr__ - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>16:4 Bitn.__init__ - <span style="color:#00AA00">A (1)</span>
 threefive/superkabuki.py
-    M 230:4 SuperKabuki._chk_sidecar_pts - A (4)
-    M 180:4 SuperKabuki.encode - A (4)
-    M 265:4 SuperKabuki.chk_sidecar_cues - A (3)
-    M 240:4 SuperKabuki._read_sidecar_file - A (3)
-    M 111:4 SuperKabuki.pid2int - A (3)
-    C 24:0 SuperKabuki - A (3)
-    M 255:4 SuperKabuki.load_sidecar - A (2)
-    M 160:4 SuperKabuki.iframe_action - A (2)
-    M 151:4 SuperKabuki.parse_pkt - A (2)
-    M 143:4 SuperKabuki.add_scte35_pkt - A (2)
-    M 135:4 SuperKabuki.auto_time_signals - A (2)
-    M 127:4 SuperKabuki.open_output - A (2)
-    M 37:4 SuperKabuki.__init__ - A (2)
-    M 277:4 SuperKabuki.mk_scte35_pkt - A (1)
-    M 248:4 SuperKabuki.clobber_file - A (1)
-    M 204:4 SuperKabuki._gen_time_signal - A (1)
-    M 172:4 SuperKabuki.mk_pmt - A (1)
-    M 124:4 SuperKabuki._bump_cc - A (1)
-    M 100:4 SuperKabuki._apply_args - A (1)
-    M 52:4 SuperKabuki._parse_args - A (1)
-    F 302:0 cli - A (1)
+    <span style="color:#FFFFFF"><b>M </b></span>230:4 SuperKabuki._chk_sidecar_pts - <span style="color:#00AA00">A (4)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>180:4 SuperKabuki.encode - <span style="color:#00AA00">A (4)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>265:4 SuperKabuki.chk_sidecar_cues - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>240:4 SuperKabuki._read_sidecar_file - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>111:4 SuperKabuki.pid2int - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#55FFFF"><b>C </b></span>24:0 SuperKabuki - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>255:4 SuperKabuki.load_sidecar - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>160:4 SuperKabuki.iframe_action - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>151:4 SuperKabuki.parse_pkt - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>143:4 SuperKabuki.add_scte35_pkt - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>135:4 SuperKabuki.auto_time_signals - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>127:4 SuperKabuki.open_output - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>37:4 SuperKabuki.__init__ - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>277:4 SuperKabuki.mk_scte35_pkt - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>248:4 SuperKabuki.clobber_file - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>204:4 SuperKabuki._gen_time_signal - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>172:4 SuperKabuki.mk_pmt - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>124:4 SuperKabuki._bump_cc - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>100:4 SuperKabuki._apply_args - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>52:4 SuperKabuki._parse_args - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FF55FF"><b>F </b></span>302:0 cli - <span style="color:#00AA00">A (1)</span>
 threefive/pmt.py
-    M 187:4 PMT.mk - A (4)
-    M 171:4 PMT._add_pmt_cuei - A (3)
-    M 134:4 PMT.parse_descriptors - A (3)
-    C 103:0 PMT - A (3)
-    M 43:4 PmtStream.__init__ - A (3)
-    C 38:0 PmtStream - A (3)
-    M 182:4 PMT._prog_info_len - A (2)
-    M 150:4 PMT.parse_streams - A (2)
-    M 90:4 PmtStream.add - A (2)
-    M 70:4 PmtStream._chk_conv_pids - A (2)
-    M 55:4 PmtStream.parse - A (2)
-    M 15:4 Dscptr.__init__ - A (2)
-    C 10:0 Dscptr - A (2)
-    M 160:4 PMT.add_scte35stream - A (1)
-    M 131:4 PMT.__repr__ - A (1)
-    M 108:4 PMT.__init__ - A (1)
-    M 87:4 PmtStream.__repr__ - A (1)
-    M 74:4 PmtStream.add_cuei - A (1)
-    M 29:4 Dscptr.add - A (1)
-    M 26:4 Dscptr.__repr__ - A (1)
+    <span style="color:#FFFFFF"><b>M </b></span>187:4 PMT.mk - <span style="color:#00AA00">A (4)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>171:4 PMT._add_pmt_cuei - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>134:4 PMT.parse_descriptors - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#55FFFF"><b>C </b></span>103:0 PMT - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>43:4 PmtStream.__init__ - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#55FFFF"><b>C </b></span>38:0 PmtStream - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>182:4 PMT._prog_info_len - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>150:4 PMT.parse_streams - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>90:4 PmtStream.add - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>70:4 PmtStream._chk_conv_pids - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>55:4 PmtStream.parse - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>15:4 Dscptr.__init__ - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#55FFFF"><b>C </b></span>10:0 Dscptr - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>160:4 PMT.add_scte35stream - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>131:4 PMT.__repr__ - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>108:4 PMT.__init__ - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>87:4 PmtStream.__repr__ - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>74:4 PmtStream.add_cuei - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>29:4 Dscptr.add - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>26:4 Dscptr.__repr__ - <span style="color:#00AA00">A (1)</span>
 threefive/gums.py
-    C 29:0 GumS - A (3)
-    M 77:4 GumS.send_stream - A (2)
-    M 65:4 GumS.iter_dgrams - A (2)
-    M 53:4 GumS.mk_sock - A (2)
-    M 43:4 GumS.is_multicast - A (2)
-    F 140:0 fork - A (2)
-    M 34:4 GumS.__init__ - A (1)
-    F 160:0 cli - A (1)
-    F 150:0 daemonize - A (1)
-    F 98:0 parse_args - A (1)
+    <span style="color:#FFFFFF"><b>M </b></span>91:4 GumS.send_stream - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>71:4 GumS.iter_dgrams - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#55FFFF"><b>C </b></span>29:0 GumS - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>53:4 GumS.mk_sock - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>43:4 GumS.is_multicast - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FF55FF"><b>F </b></span>161:0 fork - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>34:4 GumS.__init__ - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FF55FF"><b>F </b></span>181:0 cli - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FF55FF"><b>F </b></span>171:0 daemonize - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FF55FF"><b>F </b></span>119:0 parse_args - <span style="color:#00AA00">A (1)</span>
 threefive/hlstags.py
-    M 143:4 TagParser._split_key - A (4)
-    M 101:4 TagParser.precheck - A (4)
-    M 183:4 TagParser._unquoted - A (3)
-    M 130:4 TagParser._split_tail - A (3)
-    M 115:4 TagParser.parse_tags - A (3)
-    C 51:0 TagParser - A (3)
-    M 170:4 TagParser._quoted - A (2)
-    M 159:4 TagParser._split_value - A (2)
-    M 80:4 TagParser.__init__ - A (2)
-    M 98:4 TagParser._colon_in_line - A (1)
-    M 94:4 TagParser._starts_with_octothorpe - A (1)
-    M 89:4 TagParser._oated - A (1)
-    M 86:4 TagParser._strip_last_comma - A (1)
+    <span style="color:#FFFFFF"><b>M </b></span>143:4 TagParser._split_key - <span style="color:#00AA00">A (4)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>101:4 TagParser.precheck - <span style="color:#00AA00">A (4)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>183:4 TagParser._unquoted - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>130:4 TagParser._split_tail - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>115:4 TagParser.parse_tags - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#55FFFF"><b>C </b></span>51:0 TagParser - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>170:4 TagParser._quoted - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>159:4 TagParser._split_value - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>80:4 TagParser.__init__ - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>98:4 TagParser._colon_in_line - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>94:4 TagParser._starts_with_octothorpe - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>89:4 TagParser._oated - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>86:4 TagParser._strip_last_comma - <span style="color:#00AA00">A (1)</span>
 threefive/descriptors.py
-    M 414:4 SegmentationDescriptor._encode_segments - A (4)
-    M 58:4 SpliceDescriptor.encode - A (4)
-    M 475:4 SegmentationDescriptor.xml_redecode - A (3)
-    M 446:4 SegmentationDescriptor.xml - A (3)
-    M 423:4 SegmentationDescriptor._xml_sub_segs - A (3)
-    M 398:4 SegmentationDescriptor._encode_segmentation - A (3)
-    M 346:4 SegmentationDescriptor._decode_segments - A (3)
-    M 333:4 SegmentationDescriptor._decode_segmentation - A (3)
-    C 266:0 SegmentationDescriptor - A (3)
-    C 13:0 SpliceDescriptor - A (3)
-    M 434:4 SegmentationDescriptor._xml_delivery_node - A (2)
-    M 383:4 SegmentationDescriptor.mk_the_upid - A (2)
-    M 370:4 SegmentationDescriptor._encode_flags - A (2)
-    M 354:4 SegmentationDescriptor.encode - A (2)
-    M 321:4 SegmentationDescriptor._decode_flags - A (2)
-    M 308:4 SegmentationDescriptor.decode - A (2)
-    C 218:0 TimeDescriptor - A (2)
-    M 189:4 DtmfDescriptor.encode - A (2)
-    C 167:0 DtmfDescriptor - A (2)
-    C 131:0 AvailDescriptor - A (2)
-    M 100:4 DVBDASDescriptor.decode - A (2)
-    C 81:0 DVBDASDescriptor - A (2)
-    M 51:4 SpliceDescriptor.decode - A (2)
-    M 40:4 SpliceDescriptor.parse_id - A (2)
-    M 29:4 SpliceDescriptor.parse_tag_and_len - A (2)
-    F 504:0 splice_descriptor - A (2)
-    M 282:4 SegmentationDescriptor.__init__ - A (1)
-    M 250:4 TimeDescriptor.xml - A (1)
-    M 240:4 TimeDescriptor.encode - A (1)
-    M 231:4 TimeDescriptor.decode - A (1)
-    M 223:4 TimeDescriptor.__init__ - A (1)
-    M 203:4 DtmfDescriptor.xml - A (1)
-    M 180:4 DtmfDescriptor.decode - A (1)
-    M 172:4 DtmfDescriptor.__init__ - A (1)
-    M 157:4 AvailDescriptor.xml - A (1)
-    M 149:4 AvailDescriptor.encode - A (1)
-    M 142:4 AvailDescriptor.decode - A (1)
-    M 136:4 AvailDescriptor.__init__ - A (1)
-    M 117:4 DVBDASDescriptor.encode - A (1)
-    M 86:4 DVBDASDescriptor.__init__ - A (1)
-    M 72:4 SpliceDescriptor._encode_id - A (1)
-    M 20:4 SpliceDescriptor.__init__ - A (1)
+    <span style="color:#FFFFFF"><b>M </b></span>414:4 SegmentationDescriptor._encode_segments - <span style="color:#00AA00">A (4)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>58:4 SpliceDescriptor.encode - <span style="color:#00AA00">A (4)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>475:4 SegmentationDescriptor.xml_redecode - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>446:4 SegmentationDescriptor.xml - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>423:4 SegmentationDescriptor._xml_sub_segs - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>398:4 SegmentationDescriptor._encode_segmentation - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>346:4 SegmentationDescriptor._decode_segments - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>333:4 SegmentationDescriptor._decode_segmentation - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#55FFFF"><b>C </b></span>266:0 SegmentationDescriptor - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#55FFFF"><b>C </b></span>13:0 SpliceDescriptor - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>434:4 SegmentationDescriptor._xml_delivery_node - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>383:4 SegmentationDescriptor.mk_the_upid - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>370:4 SegmentationDescriptor._encode_flags - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>354:4 SegmentationDescriptor.encode - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>321:4 SegmentationDescriptor._decode_flags - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>308:4 SegmentationDescriptor.decode - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#55FFFF"><b>C </b></span>218:0 TimeDescriptor - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>189:4 DtmfDescriptor.encode - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#55FFFF"><b>C </b></span>167:0 DtmfDescriptor - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#55FFFF"><b>C </b></span>131:0 AvailDescriptor - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>100:4 DVBDASDescriptor.decode - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#55FFFF"><b>C </b></span>81:0 DVBDASDescriptor - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>51:4 SpliceDescriptor.decode - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>40:4 SpliceDescriptor.parse_id - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>29:4 SpliceDescriptor.parse_tag_and_len - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FF55FF"><b>F </b></span>504:0 splice_descriptor - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>282:4 SegmentationDescriptor.__init__ - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>250:4 TimeDescriptor.xml - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>240:4 TimeDescriptor.encode - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>231:4 TimeDescriptor.decode - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>223:4 TimeDescriptor.__init__ - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>203:4 DtmfDescriptor.xml - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>180:4 DtmfDescriptor.decode - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>172:4 DtmfDescriptor.__init__ - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>157:4 AvailDescriptor.xml - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>149:4 AvailDescriptor.encode - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>142:4 AvailDescriptor.decode - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>136:4 AvailDescriptor.__init__ - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>117:4 DVBDASDescriptor.encode - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>86:4 DVBDASDescriptor.__init__ - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>72:4 SpliceDescriptor._encode_id - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>20:4 SpliceDescriptor.__init__ - <span style="color:#00AA00">A (1)</span>
 threefive/streamtypes.py
-    F 116:0 mk_streamtype_map - A (2)
-    F 105:0 add_stream_types - A (2)
-    F 98:0 hex_literal - A (1)
+    <span style="color:#FF55FF"><b>F </b></span>116:0 mk_streamtype_map - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FF55FF"><b>F </b></span>105:0 add_stream_types - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FF55FF"><b>F </b></span>98:0 hex_literal - <span style="color:#00AA00">A (1)</span>
 threefive/uxp.py
-    M 119:4 UltraXmlParser.parse - A (4)
-    M 20:4 UltraXmlParser.mk_attrs - A (4)
-    M 345:4 NodeConverter.xmldescriptors - A (3)
-    M 272:4 NodeConverter.xmlupid - A (3)
-    M 235:4 NodeConverter._xmlspliceinsert_children - A (3)
-    M 154:4 NodeConverter.xmlcommand - A (3)
-    M 83:4 UltraXmlParser.endtag - A (3)
-    M 53:4 UltraXmlParser.mk_node - A (3)
-    C 11:0 UltraXmlParser - A (3)
-    M 302:4 NodeConverter._xmlsegmentation_message - A (2)
-    M 290:4 NodeConverter._xmlsegmentationdescriptor_children - A (2)
-    M 261:4 NodeConverter._xmldeliveryrestrictions - A (2)
-    M 222:4 NodeConverter._xmlbreakduration - A (2)
-    M 209:4 NodeConverter._xmlsplicetime - A (2)
-    M 171:4 NodeConverter._xmltimesignal_children - A (2)
-    M 144:4 NodeConverter.xmlspliceinfosection - A (2)
-    C 139:0 NodeConverter - A (2)
-    M 116:4 UltraXmlParser._nocomment - A (2)
-    M 99:4 UltraXmlParser.ultraclean - A (2)
-    M 70:4 UltraXmlParser.starttag - A (2)
-    F 369:0 xml2cue - A (2)
-    M 361:4 NodeConverter.convert - A (1)
-    M 337:4 NodeConverter._xmltimedescriptor - A (1)
-    M 328:4 NodeConverter._xmlavaildescriptor - A (1)
-    M 309:4 NodeConverter._xmlsegmentationdescriptor - A (1)
-    M 245:4 NodeConverter._xmlspliceinsert - A (1)
-    M 195:4 NodeConverter._xmlprivatecommand - A (1)
-    M 181:4 NodeConverter._xmltimesignal - A (1)
-    M 45:4 UltraXmlParser.mk_line - A (1)
-    M 37:4 UltraXmlParser.mk_tag - A (1)
-    M 16:4 UltraXmlParser.__init__ - A (1)
+    <span style="color:#FFFFFF"><b>M </b></span>119:4 UltraXmlParser.parse - <span style="color:#00AA00">A (4)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>20:4 UltraXmlParser.mk_attrs - <span style="color:#00AA00">A (4)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>345:4 NodeConverter.xmldescriptors - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>272:4 NodeConverter.xmlupid - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>235:4 NodeConverter._xmlspliceinsert_children - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>154:4 NodeConverter.xmlcommand - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>83:4 UltraXmlParser.endtag - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>53:4 UltraXmlParser.mk_node - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#55FFFF"><b>C </b></span>11:0 UltraXmlParser - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>302:4 NodeConverter._xmlsegmentation_message - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>290:4 NodeConverter._xmlsegmentationdescriptor_children - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>261:4 NodeConverter._xmldeliveryrestrictions - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>222:4 NodeConverter._xmlbreakduration - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>209:4 NodeConverter._xmlsplicetime - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>171:4 NodeConverter._xmltimesignal_children - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>144:4 NodeConverter.xmlspliceinfosection - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#55FFFF"><b>C </b></span>139:0 NodeConverter - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>116:4 UltraXmlParser._nocomment - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>99:4 UltraXmlParser.ultraclean - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>70:4 UltraXmlParser.starttag - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FF55FF"><b>F </b></span>369:0 xml2cue - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>361:4 NodeConverter.convert - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>337:4 NodeConverter._xmltimedescriptor - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>328:4 NodeConverter._xmlavaildescriptor - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>309:4 NodeConverter._xmlsegmentationdescriptor - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>245:4 NodeConverter._xmlspliceinsert - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>195:4 NodeConverter._xmlprivatecommand - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>181:4 NodeConverter._xmltimesignal - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>45:4 UltraXmlParser.mk_line - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>37:4 UltraXmlParser.mk_tag - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>16:4 UltraXmlParser.__init__ - <span style="color:#00AA00">A (1)</span>
 threefive/crc.py
-    F 14:0 crc32 - A (2)
-    F 26:0 crc32hex - A (1)
+    <span style="color:#FF55FF"><b>F </b></span>14:0 crc32 - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FF55FF"><b>F </b></span>26:0 crc32hex - <span style="color:#00AA00">A (1)</span>
 threefive/speedo.py
-    C 17:0 Speedo - A (2)
-    M 47:4 Speedo.end - A (1)
-    M 35:4 Speedo.plus - A (1)
-    M 28:4 Speedo.print_out - A (1)
-    M 22:4 Speedo.__init__ - A (1)
+    <span style="color:#55FFFF"><b>C </b></span>16:0 Speedo - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>46:4 Speedo.end - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>34:4 Speedo.plus - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>27:4 Speedo.print_out - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>21:4 Speedo.__init__ - <span style="color:#00AA00">A (1)</span>
 threefive/section.py
-    M 150:4 SpliceInfoSection._encode_splice_command - A (3)
-    M 116:4 SpliceInfoSection._encode_encrypted - A (3)
-    M 142:4 SpliceInfoSection._encode_tier - A (2)
-    M 134:4 SpliceInfoSection._encode_cw_index - A (2)
-    M 108:4 SpliceInfoSection._encode_protocol_version - A (2)
-    M 100:4 SpliceInfoSection._encode_section_length - A (2)
-    M 91:4 SpliceInfoSection._encode_sap - A (2)
-    M 47:4 SpliceInfoSection.decode - A (2)
-    C 21:0 SpliceInfoSection - A (2)
-    M 182:4 SpliceInfoSection.xml - A (1)
-    M 162:4 SpliceInfoSection.encode - A (1)
-    M 128:4 SpliceInfoSection._encode_pts_adjustment - A (1)
-    M 84:4 SpliceInfoSection._encode_private_flag - A (1)
-    M 77:4 SpliceInfoSection._encode_section_syntax_indicator - A (1)
-    M 70:4 SpliceInfoSection._encode_table_id - A (1)
-    M 27:4 SpliceInfoSection.__init__ - A (1)
+    <span style="color:#FFFFFF"><b>M </b></span>116:4 SpliceInfoSection._encode_encrypted - <span style="color:#00AA00">A (3)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>142:4 SpliceInfoSection._encode_tier - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>134:4 SpliceInfoSection._encode_cw_index - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>108:4 SpliceInfoSection._encode_protocol_version - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>100:4 SpliceInfoSection._encode_section_length - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>91:4 SpliceInfoSection._encode_sap - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>47:4 SpliceInfoSection.decode - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#55FFFF"><b>C </b></span>21:0 SpliceInfoSection - <span style="color:#00AA00">A (2)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>182:4 SpliceInfoSection.xml - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>162:4 SpliceInfoSection.encode - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>150:4 SpliceInfoSection._encode_splice_command - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>128:4 SpliceInfoSection._encode_pts_adjustment - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>84:4 SpliceInfoSection._encode_private_flag - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>77:4 SpliceInfoSection._encode_section_syntax_indicator - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>70:4 SpliceInfoSection._encode_table_id - <span style="color:#00AA00">A (1)</span>
+    <span style="color:#FFFFFF"><b>M </b></span>27:4 SpliceInfoSection.__init__ - <span style="color:#00AA00">A (1)</span>
 
-654 blocks (classes, functions, methods) analyzed.
-Average complexity: A (1.996941896024465)
-```
+660 blocks (classes, functions, methods) analyzed.
+Average complexity: <span style="color:#00AA00">A (1.9893939393939395)</span>
+</pre>
