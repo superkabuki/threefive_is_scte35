@@ -106,11 +106,7 @@ def isxml(data):
     is xml.
     """
     data = clean(data)
-    if data[0] in ["<"]:
-        if data[-1] in [">"]:
-            return True
-    return False
-
+    return data.startswith("<") & data.endswith(">")
 
 def pif(value):
     """
@@ -167,7 +163,7 @@ def _type2string(atype):
 
 def badtype(data, shouldbe):
     """
-    badtype show red message that we have a wrong type.
+    badtype shows a red message that we have a wrong type.
     data can be anything.
     shouldbe is a string like "int", or "SpliceCommand"
     data: anything
