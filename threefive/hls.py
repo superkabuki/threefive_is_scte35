@@ -499,8 +499,8 @@ class HlsParser:
 
         """
         #  line= self.auto_cuein(line)
-        if isinstance(cue,int):
-            cue=f'{cue}'
+        if isinstance(cue, int):
+            cue = f"{cue}"
         if cue.encode() == self.last_cue:
             return ""
         self.last_cue = cue.encode()
@@ -956,7 +956,7 @@ class HlsParser:
             try:
                 self.chk_aac(media)
             except:
-                red(f'Skipping {media}\n')
+                red(f"Skipping {media}\n")
                 return
         pane = Pane(media, lines)
         self.sliding_window.slide_panes(pane)
@@ -981,7 +981,7 @@ class HlsParser:
         if not self.rendition:
             red("No rendition to parse")
             return
-        self.rendition=self.rendition.strip()
+        self.rendition = self.rendition.strip()
         with reader(self.rendition) as m3u8:
             lines = []
             m3u8_lines = self.decode_lines(m3u8.readlines())
