@@ -12,6 +12,7 @@ import socket
 import sys
 import time
 from functools import partial
+from .socks import *
 from .new_reader import reader
 from .stuff import blue, reblue, print2, pif
 from .speedo import Speedo
@@ -37,8 +38,8 @@ class GumS:
         self.src_port = 0
         self.ttl = mttl
         self.dest_grp = (self.dest_ip, pif(self.dest_port))
-        self.sock = self.mk_sock()
-        self.sock.bind((self.src_ip, self.src_port))
+        self.socked = self.mk_sock()
+        self.socked.bind((self.src_ip, self.src_port))
 
     def is_multicast(self):
         """
@@ -55,18 +56,26 @@ class GumS:
         mk_sock makes a udp socket, self.sock
         and sets a few opts.
         """
-        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
-        sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        blue("SO_REUSEADDR On")
-        if hasattr(socket, "SO_REUSEPORT"):
-            sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)
-            blue("SO_REUSEPORT On")
-        send_buffer_size = sock.getsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF)
-        blue(f"SO_SNDBUF Was {send_buffer_size}")
-        sock.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, (send_buffer_size << 2))
-        send_buffer_size = sock.getsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF)
-        blue(f"SO_SNDBUF Now {send_buffer_size}")
-        return sock
+        socked = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
+        setSO_REUSEADDR(socked)
+        setSO_REUSEPORT(socked)
+        setSO_SNDBUF(socked)
+        return socked
+
+    def burst(self,vid,speedo):
+        """
+        burst send a burst of unthrottled dgrams
+        at start of stream
+        """
+        burst_size=10
+        blue(f"bursting {burst_size} dgrams")
+
+        while burst_size:
+            dgram= vid.read(DGRAM)
+            self.socked.sendto(dgram, self.dest_grp)
+            speedo.plus(len(dgram))
+            burst_size -=1
+       
 
     def iter_dgrams(self, vid):
         """
@@ -76,15 +85,15 @@ class GumS:
         time.sleep(0.0001)
         throttle = Throttle(shush=True)
         speedo = Speedo()
-        with reader(vid) as gum:
-            for dgram in iter(partial(gum.read, DGRAM), b""):
+        with reader(vid) as video:
+            for dgram in iter(partial(video.read, DGRAM), b""):
                 packets = []
                 while dgram:
                     packets.append(dgram[:188])
                     dgram = dgram[188:]
-                    throttle.throttle(packets[-1])
+                throttle.throttle(packets[0])
                 dgram = b"".join(packets)
-                self.sock.sendto(dgram, self.dest_grp)
+                self.socked.sendto(dgram, self.dest_grp)
                 speedo.plus(len(dgram))
         speedo.end()
 
@@ -101,19 +110,16 @@ class GumS:
             print2('\n')
             blue("Opening Multicast socket")
             print2('\n')
-            self.sock.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, self.ttl)
-            blue(f"IP_MULTICAST_TTL {self.sock.getsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL)}")
-            self.sock.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_LOOP, 1)
-            if getattr(socket, "IP_MULTICAST_LOOP"):
-                blue('IP_MULTICAST_LOOP On')
+            setIP_MULTICAST_TTL(self.socked,self.ttl)
+       #     setIP_MULTICAST_LOOP(self.socked)
             proto = proto + "@"
             pre = "Multicast"
-        src_ip, src_port = self.sock.getsockname()
+        src_ip, src_port = self.socked.getsockname()
         print2(f"\n\t{pre} Stream\n\t{proto}{self.dest_ip}:{self.dest_port}")
         print2(f"\n\tSource\n\t{src_ip}:{src_port}\n")
 
         self.iter_dgrams(vid)
-        self.sock.close()
+        self.socked.close()
 
 
 def parse_args():
