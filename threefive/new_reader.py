@@ -8,13 +8,10 @@ import socket
 import struct
 import sys
 import urllib.request
-
 from srtfu import SRTfu, SRTO_TRANSTYPE, SRT_LIVE, SRTO_RCVSYN, SRTO_RCVBUF
-from .socks import *
+from .udp import udp_receiver, mcast_ttl
 from .stuff import blue, ERR, pif, print2
 
-
-TIMEOUT = 60
 
 CORS = {
     "Origin": "null",
@@ -24,21 +21,6 @@ CORS = {
     "Sec-Fetch-Mode": "cors",
     "Sec-Fetch-Site": "cross-site",
 }
-
-
-class Socked(socket.socket):
-    """
-    Socked class subclasses socket.socket
-    and defines a read() method to maintain the interface.
-    """
-
-    def read(self, bites=1316):
-        """
-        read is just an alias for socket.socket.recv
-        so anything returned by reader can call a
-        read() method.
-        """
-        return self.recv(bites)
 
 
 def corsreader(uri, headers={}):
@@ -99,43 +81,22 @@ def reader(uri, headers={}):
     return open(uri, "rb")
 
 
-def do_srt(srt_url,headers={}):
+def do_srt(srt_url, headers={}):
     """
     do_srt handle Secure Reliable Transport live streams
     """
-    
+
     preflags = {
         SRTO_TRANSTYPE: SRT_LIVE,
         SRTO_RCVSYN: 1,
         SRTO_RCVBUF: 32768000,
     }
-    
+
     preflag.update(headers)
     srtf = SRTfu(srt_url, preflags)
     srtf.conlive()
     srtf.connect()
     return srtf
-
-
-    
-def _mk_socked():
-    socked = Socked(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
-    setSO_RCVBUF(socked)
-    setSO_REUSEADDR(socked)
-    setSO_REUSEPORT(socked)
-    setTIMEOUT(socked,TIMEOUT)
-    return socked
-
-
-def _mk_udp_sock(udp_ip, udp_port):
-    """
-    udp socket setup
-    """
-    blue("Opening UDP  Unicast socket")
-    print2('\n')
-    udp_sock = _mk_socked()
-    udp_sock.bind((udp_ip, udp_port))
-    return udp_sock
 
 
 def _open_udp(uri):
@@ -144,7 +105,11 @@ def _open_udp(uri):
     """
     udp_ip, udp_port = (uri.split("udp://")[1]).rsplit(":", 1)
     udp_port = pif(udp_port)
-    return _mk_udp_sock(udp_ip, udp_port)
+    blue("Opening UDP  Unicast socket")
+    print2("\n")
+    udp_sock = udp_receiver()
+    udp_sock.bind((udp_ip, udp_port))
+    return udp_sock
 
 
 def _open_mcast(uri):
@@ -155,12 +120,12 @@ def _open_mcast(uri):
     interface_ip = "0.0.0.0"
     multicast_group, port = (uri.split("udp://@")[1]).rsplit(":", 1)
     multicast_port = pif(port)
-    socked = _mk_socked()
-    print2('\n')
+    socked = udp_receiver()
+    print2("\n")
     blue("Opening Multicast socket")
-    print2('\n')
-    setIP_MULTICAST_TTL(socked,ttl)
-    print2('\n\n')
+    print2("\n")
+    mcast_ttl(socked, ttl)
+    print2("\n\n")
     socked.bind(("", multicast_port))
     socked.setsockopt(
         socket.SOL_IP,
