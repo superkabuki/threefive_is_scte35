@@ -86,10 +86,7 @@ def isjson(data):
     is json.
     """
     data = clean(data)
-    if data[0] in ["{"]:
-        if data[-1] in ["}"]:
-            return True
-    return False
+    return  data.startswith("{") & data.endswith("}")
 
 
 def isfloat(value):
