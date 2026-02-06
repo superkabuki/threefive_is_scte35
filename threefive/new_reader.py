@@ -8,15 +8,11 @@ import socket
 import struct
 import sys
 import urllib.request
+
+from srtfu import SRTfu, SRTO_TRANSTYPE, SRT_LIVE, SRTO_RCVSYN, SRTO_RCVBUF
+from .socks import *
 from .stuff import blue, ERR, pif, print2
 
-SRT = False
-try:
-    from srtfu import SRTfu, SRTO_TRANSTYPE, SRT_LIVE, SRTO_RCVSYN, SRTO_RCVBUF
-
-    SRT = True
-except:
-    pass
 
 TIMEOUT = 60
 
@@ -38,7 +34,9 @@ class Socked(socket.socket):
 
     def read(self, bites=1316):
         """
-        read is an alias for socket.socket.recv
+        read is just an alias for socket.socket.recv
+        so anything returned by reader can call a
+        read() method.
         """
         return self.recv(bites)
 
@@ -95,49 +93,37 @@ def reader(uri, headers={}):
         req = urllib.request.Request(uri, headers=headers)
         return urllib.request.urlopen(req)
     # SRT
-    if SRT and uri.startswith("srt://"):
-        return do_srt(uri)
+    if uri.startswith("srt://"):
+        return do_srt(uri, headers=headers)
     # File
     return open(uri, "rb")
 
 
-def do_srt(srt_url):
+def do_srt(srt_url,headers={}):
     """
     do_srt handle Secure Reliable Transport live streams
     """
+    
     preflags = {
         SRTO_TRANSTYPE: SRT_LIVE,
         SRTO_RCVSYN: 1,
         SRTO_RCVBUF: 32768000,
     }
+    
+    preflag.update(headers)
     srtf = SRTfu(srt_url, preflags)
     srtf.conlive()
     srtf.connect()
     return srtf
 
 
-def lshiftbuf(socked):
-    shift = 2
-    rcvbuf_size = socked.getsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF)
-    blue(f"SO_RCVBUF Was {rcvbuf_size}")
-    try:
-        new_size = rcvbuf_size << shift
-        socked.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, new_size)
-        blue(f"SO_RCVBUF Now {new_size}")
-    except ERR:
-        blue("Unable to left shift socket.SO_RCVBUF")
-
-
+    
 def _mk_socked():
     socked = Socked(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
-    lshiftbuf(socked)
-    socked.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    blue("SO_REUSEADDR  On")
-    if hasattr(socket, "SO_REUSEPORT"):
-        socked.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)
-        blue("SO_REUSEPORT  On")
-    socked.settimeout(TIMEOUT)
-    blue(f"Socket Timeout   {TIMEOUT}")
+    setSO_RCVBUF(socked)
+    setSO_REUSEADDR(socked)
+    setSO_REUSEPORT(socked)
+    setTIMEOUT(socked,TIMEOUT)
     return socked
 
 
@@ -165,7 +151,7 @@ def _open_mcast(uri):
     """
     udp://@227.1.3.10:4310
     """
-    ttl = 64
+    ttl = 32
     interface_ip = "0.0.0.0"
     multicast_group, port = (uri.split("udp://@")[1]).rsplit(":", 1)
     multicast_port = pif(port)
@@ -173,10 +159,8 @@ def _open_mcast(uri):
     print2('\n')
     blue("Opening Multicast socket")
     print2('\n')
-    socked.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, ttl)
-    blue(f"IP_MULTICAST_TTL {socked.getsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL)}")
+    setIP_MULTICAST_TTL(socked,ttl)
     print2('\n\n')
-
     socked.bind(("", multicast_port))
     socked.setsockopt(
         socket.SOL_IP,
