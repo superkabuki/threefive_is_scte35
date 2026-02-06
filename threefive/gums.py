@@ -12,7 +12,7 @@ import socket
 import sys
 import time
 from functools import partial
-from .socks import *
+from .udp import udp_sender, mcast_ttl
 from .new_reader import reader
 from .stuff import blue, reblue, print2, pif
 from .speedo import Speedo
@@ -38,7 +38,7 @@ class GumS:
         self.src_port = 0
         self.ttl = mttl
         self.dest_grp = (self.dest_ip, pif(self.dest_port))
-        self.socked = self.mk_sock()
+        self.socked = udp_sender()
         self.socked.bind((self.src_ip, self.src_port))
 
     def is_multicast(self):
@@ -51,31 +51,19 @@ class GumS:
             return True
         return False
 
-    def mk_sock(self):
-        """
-        mk_sock makes a udp socket, self.sock
-        and sets a few opts.
-        """
-        socked = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
-        setSO_REUSEADDR(socked)
-        setSO_REUSEPORT(socked)
-        setSO_SNDBUF(socked)
-        return socked
-
-    def burst(self,vid,speedo):
+    def burst(self, vid, speedo):
         """
         burst send a burst of unthrottled dgrams
         at start of stream
         """
-        burst_size=10
+        burst_size = 10
         blue(f"bursting {burst_size} dgrams")
 
         while burst_size:
-            dgram= vid.read(DGRAM)
+            dgram = vid.read(DGRAM)
             self.socked.sendto(dgram, self.dest_grp)
             speedo.plus(len(dgram))
-            burst_size -=1
-       
+            burst_size -= 1
 
     def iter_dgrams(self, vid):
         """
@@ -107,11 +95,11 @@ class GumS:
         proto = "udp://"
         pre = "Unicast"
         if self.is_multicast():
-            print2('\n')
+            print2("\n")
             blue("Opening Multicast socket")
-            print2('\n')
-            setIP_MULTICAST_TTL(self.socked,self.ttl)
-       #     setIP_MULTICAST_LOOP(self.socked)
+            print2("\n")
+            mcast_ttl(self.socked, self.ttl)
+            #     setIP_MULTICAST_LOOP(self.socked)
             proto = proto + "@"
             pre = "Multicast"
         src_ip, src_port = self.socked.getsockname()
