@@ -86,7 +86,7 @@ def isjson(data):
     is json.
     """
     data = clean(data)
-    return  data.startswith("{") & data.endswith("}")
+    return data.startswith("{") & data.endswith("}")
 
 
 def isfloat(value):
@@ -104,6 +104,7 @@ def isxml(data):
     """
     data = clean(data)
     return data.startswith("<") & data.endswith(">")
+
 
 def pif(value):
     """
