@@ -5,7 +5,7 @@ threefive.Cue Class
 from base64 import b64decode, b64encode
 import json
 import re
-from .stuff import clean, red, ishex, isjson, isxml
+from .stuff import clean, red, ishex, isjson, isxml, pif
 from .bitn import NBin
 from .base import SCTE35Base
 from .section import SpliceInfoSection
@@ -68,7 +68,6 @@ class Cue(SCTE35Base):
         if data:
             self._decode_bits(data)
         self.packet_data = packet_data
-        self.dash_data = None
         self.decode()
 
     def __repr__(self):
@@ -192,94 +191,72 @@ class Cue(SCTE35Base):
 
     # *_bits  is autodetection of SCTE-35 formats
 
-    def _int_bits(self, data):
-        """
-        _int_bits convert a SCTE-35 Cue from integer to bytes.
-        """
-        length = data.bit_length() >> THREE
-        bites = int.to_bytes(data, length, byteorder="big")
-        self.bites = bites
-
-    def _hex_bits(self, data):
-        """
-        _hex_bits convert a SCTE-35 Cue from hex to bytes.
-        """
-        i = int(data, SIXTEEN)
-        self._int_bits(i)
-
     def _b64_bits(self, data):
-        """
-        _b64_bits decode base64 to bytes
-        """
         self.bites = b64decode(self.fix_bad_b64(data))
 
-    def _xml_json_bits(self, data):
-        if isxml(data) or isjson(data):
-            return self.load(data)
-        return False
+    def _bytes_bits(self, data):
+        data = self._pkt_bits(data)
+        self.bites = self.idxsplit(data, b"\xfc")
 
-    def _digit_bits(self, data):
-        if data.isdigit():
-            data = int(data)
-            self._int_bits(data)
+    def _int_bits(self, data):
+        pdata = pif(data)
+        if isinstance(pdata, int):
+            length = pdata.bit_length() >> THREE
+            bites = int.to_bytes(pdata, length, byteorder="big")
+            self.bites = bites
             return True
         return False
 
-    def _xjd_bits(self, data):
+    def _node_bits(self, data):
         """
-        _xjd_bits auto-detect xml, json, and digits
-        in bytes or strings.
+        data is a threefive.Node instance
         """
-        if isinstance(data, (str, bytes)):
-            data = data.strip()
-            return self._xml_json_bits(data) | self._digit_bits(data)
-        return False
-
-    def _str_bits(self, data):
-        if self._xjd_bits(data):
-            return
-        if ishex(data):
-            self._hex_bits(clean(data))
-        else:
-            self._b64_bits(data)
+        data = data.mk()
+        self._from_xml(data)
 
     def _pkt_bits(self, data):
         """
-        _pkt_bits parse raw mpegts SCTE-35 packet
+        parse raw mpegts SCTE-35 packet
         """
         if data.startswith(b"G"):
             data = data.split(b"\x00\x00\x01\xfc", ONE)[MINUSONE]
         return data
 
-    def _byte_bits(self, data):
-        if self._xjd_bits(data):
-            return
-        data = self._pkt_bits(data)
-        self.bites = self.idxsplit(data, b"\xfc")
+    def _xml_json_bits(self, data):
+        if isxml(data) | isjson(data):
+            return self.load(data)
+        return False
 
-    def _node_bits(self, data):
-        data = data.mk()
-        self._from_xml(data)
+    def _xj_bits(self, data):
+        if isinstance(
+            data,
+            (
+                bytes,
+                str,
+            ),
+        ):
+            data = data.strip()
+            return self._xml_json_bits(data)
+        return False
 
-    def _dict_bits(self, data):
-        self.load(data)
+    def _precheck_bits(self, data):
+        return self._int_bits(data) | self._xj_bits(data)
 
     def _decode_bits(self, data):
         """
         cue._decode_bits converts
         several SCTE-35 formats into bytes.
         """
-        type_map = {
-            Node: self._node_bits,
-            dict: self._dict_bits,
-            str: self._str_bits,
-            bytes: self._byte_bits,
-            int: self._int_bits,
-        }
-
-        td = type(data)
-        if td in type_map.keys():
-            type_map[td](data)
+        if not self._precheck_bits(data):
+            type_map = {
+                Node: self._node_bits,
+                bytes: self._bytes_bits,
+                dict: self.load,
+                str: self._b64_bits,
+            }
+            td = type(data)
+            if td in type_map.keys():
+                type_map[td](data)
 
     # encode stuff
 
