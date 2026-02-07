@@ -368,49 +368,52 @@ class Cue(SCTE35Base):
         encode descriptor tag, descriptor length,
         and the descriptor into all_bites.bites
         """
-        all_bites = NBin()
+        nbin = NBin()
         dbite_chunks = [dsptr.encode() for dsptr in self.descriptors]
         for chunk, dsptr in zip(dbite_chunks, self.descriptors):
             dsptr.descriptor_length = len(chunk)
-            all_bites.add_int(dsptr.tag, EIGHT)
-            all_bites.add_int(dsptr.descriptor_length, EIGHT)
-            all_bites.add_bites(chunk)
-        return all_bites.bites
+            nbin.add_int(dsptr.tag, EIGHT)
+            nbin.add_int(dsptr.descriptor_length, EIGHT)
+            nbin.add_bites(chunk)
+        return nbin.bites
 
     # load stuff
 
-    def _load_info_section(self, gonzo):
+    def _load_info_section(self, data):
         """
         load_info_section loads data for Cue.info_section
-        isec should be a dict.
+        data should be a dict.
         if 'splice_command_type' is included,
         an empty command instance will be created for Cue.command
         """
-        if "info_section" in gonzo:
-            self.info_section.load(gonzo["info_section"])
+        if "info_section" in data:
+            self.info_section.load(data["info_section"])
 
-    def _load_command(self, gonzo):
+    def _load_command(self, data):
         """
         load_command loads data for Cue.command
-        cmd should be a dict.
+        data and data['command'] should both be dicts.
         if 'command_type' is included,
         the command instance will be created.
         """
-        if "command" not in gonzo:
+        if "command" not in data:
             return self._no_cmd()
-        cmd = gonzo["command"]
+        cmd = data["command"]
         if "command_type" in cmd:
             self.command = command_map[cmd["command_type"]]()
             self.command.load(cmd)
         return "command_type" in cmd
 
-    def _load_descriptors(self, dlist):
+    def _load_descriptors(self, data):
         """
         Load_descriptors loads descriptor data.
-        dlist is a list of dicts
+        data is a list of dicts.
         if 'tag' is included in each dict,
         a descriptor instance will be created.
         """
+        if "descriptors" not in data:
+            return
+        dlist = data["descriptors"]
         if not isinstance(dlist, list):
             red("descriptors should be a list")
         for dstuff in dlist:
@@ -440,39 +443,38 @@ class Cue(SCTE35Base):
         * load doesn't need to be called directly
           unless you initialize a Cue without data.
         """
-        if isinstance(gonzo, bytes):
-            gonzo = gonzo.decode(errors="ignore")
-        # gonzo = clean(gonzo)
-        if isinstance(gonzo, str):
-            if isxml(gonzo):
-                self._from_xml(gonzo)
+        if isinstance(data, bytes):
+            data = data.decode(errors="ignore")
+        if isinstance(data, str):
+            if isxml(data):
+                self._from_xml(data)
                 return True
-            gonzo = json.loads(gonzo)
-        if isinstance(gonzo, (dict)):
-            self._load_info_section(gonzo)
-            self._load_command(gonzo)
-            self._load_descriptors(gonzo["descriptors"])
+            data = json.loads(data)
+        if isinstance(data, (dict)):
+            self._load_info_section(data)
+            self._load_command(data)
+            self._load_descriptors(data)
             self.encode()
             self.decode()
             return True
         return False
 
     ## xml stuff
-    def _from_xml(self, gonzo):
+    def _from_xml(self, data):
         """
         _from_xml converts xml to data that can
         be loaded by a Cue instance.
         """
-        gonzo = clean(gonzo)
-        if "Binary" in gonzo:
+        data = clean(data)
+        if "Binary" in data:
             re_start = re.compile("<scte35:Binary>|<Binary>")
             re_stop = re.compile("</scte35:Binary>|</Binary>")
-            dat = re.split(re_start, gonzo, 1)[1]
-            dat = re.split(re_stop, dat, 1)[0]
-            self._decode_bits(dat)
+            rdat = re.split(re_start, data, 1)[1]
+            rdat = re.split(re_stop, rdat, 1)[0]
+            self._decode_bits(rdat)
             self.decode()
-        elif "SpliceInfoSection" in gonzo:
-            self.load(xml2cue(gonzo))
+        elif "SpliceInfoSection" in data:
+            self.load(xml2cue(data))
         else:
             self.bites = b""
         return self.bites
