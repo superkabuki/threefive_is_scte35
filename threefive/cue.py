@@ -32,17 +32,14 @@ from .uxp import xml2cue
 
 class Cue(SCTE35Base):
     """
-    The THREEfive.Cue class handles parsing
-    SCTE 35 message strings.
+    The threefive.Cue class parses individual SCTE-35 Cues or messages.
+
     Example usage:
 
      import threefive
      Base64 = "/DAvAAAAAAAA///wBQb+dGKQoAAZAhdDVUVJSAAAjn+fCAgAAAAALKChijUCAKnMZ1g="
-     cue = THREEfive.Cue(Base64)
+     cue = threefive.Cue(Base64)
      cue.show()
-
-    * A cue instance can be initialized with
-     Base64, Bytes, Hex, Int, Json, or Xml+binary data.
 
     * Instance variables can be accessed via dot notation.
 
@@ -58,7 +55,10 @@ class Cue(SCTE35Base):
 
     def __init__(self, data=None, packet_data=None):
         """
-        data may be packet bites or encoded string
+        data can be SCTE-35 as Base64 ,Bytes, Dict,
+        Hex, Int, Json, Xml, Xml+binary,or raw MPEGTS packet.
+        data can also be None.
+
         packet_data is a instance passed from a Stream instance
         """
         self.command = None
@@ -66,7 +66,7 @@ class Cue(SCTE35Base):
         self.info_section = SpliceInfoSection()
         self.bites = None
         if data:
-            self._mk_bits(data)
+            self._decode_bits(data)
         self.packet_data = packet_data
         self.dash_data = None
         self.decode()
@@ -75,6 +75,58 @@ class Cue(SCTE35Base):
         return str(self.__dict__)
 
     # decode stuff
+
+    def _decode_descriptors(self, bites):
+        """
+        Cue._decode_descriptors parses
+        Cue.info_section.descriptor_loop_length,
+        then call Cue._descriptor_loop
+        """
+        while bites:
+            dll = (bites[ZERO] << EIGHT) | bites[ONE]
+            self.info_section.descriptor_loop_length = dll
+            bites = bites[TWO:]
+            self._descriptor_loop(bites[:dll])
+            return bites[dll:]
+        return False
+
+    def decode_info_section(self, bites):
+        """
+        Cue.decode_info_section parses the
+        Splice Info Section
+        of a SCTE35 cue.
+        """
+        info_size = FOURTEEN
+        info_bites = bites[:info_size]
+        self.info_section.decode(info_bites)
+        return bites[info_size:]
+
+    def _decode_splice_command(self, bites):
+        """
+        Cue._decode_splice_command parses
+        the command section of a SCTE35 cue.
+        """
+        sct = self.info_section.splice_command_type
+        if sct not in command_map:
+            return red(f"Splice Command type {sct} not recognized")
+        iscl = self.info_section.splice_command_length
+        cmd_bites = bites[:iscl]
+        self.command = command_map[sct](cmd_bites)
+        self.command.command_length = iscl
+        self.command.decode()
+        del self.command.bites
+        return bites[iscl:]
+
+    def _decode_crc(self, bites):
+        """
+        _decode_crc decode the crc from bites
+        """
+        if bites:
+            self.info_section.crc = hex(
+                int.from_bytes(bites[ZERO:FOUR], byteorder="big")
+            )
+            return True
+        return False
 
     def decode(self):
         """
@@ -86,14 +138,10 @@ class Cue(SCTE35Base):
         bites = self.bites
         self.descriptors = []
         while bites:
-            bites = self.mk_info_section(bites)
-            bites = self._set_splice_command(bites)
-            bites = self._mk_descriptors(bites)
-            if bites:
-                crc = hex(int.from_bytes(bites[ZERO:FOUR], byteorder="big"))
-                self.info_section.crc = crc
-                return True
-        return False
+            bites = self.decode_info_section(bites)
+            bites = self._decode_splice_command(bites)
+            bites = self._decode_descriptors(bites)
+            return self._decode_crc(bites)
 
     def _descriptor_loop(self, loop_bites):
         """
@@ -142,7 +190,7 @@ class Cue(SCTE35Base):
             data = data + EQUALSIGN
         return data
 
-    # mk_bits stuff
+    # *_bits  is autodetection of SCTE-35 formats
 
     def _int_bits(self, data):
         """
@@ -163,13 +211,11 @@ class Cue(SCTE35Base):
         """
         _b64_bits decode base64 to bytes
         """
-
         self.bites = b64decode(self.fix_bad_b64(data))
 
-    def _xj_bits(self, data):
+    def _xml_json_bits(self, data):
         if isxml(data) or isjson(data):
-            if self.load(data):
-                return True
+            return self.load(data)
         return False
 
     def _digit_bits(self, data):
@@ -186,7 +232,7 @@ class Cue(SCTE35Base):
         """
         if isinstance(data, (str, bytes)):
             data = data.strip()
-            return self._xj_bits(data) | self._digit_bits(data)
+            return self._xml_json_bits(data) | self._digit_bits(data)
         return False
 
     def _str_bits(self, data):
@@ -218,9 +264,9 @@ class Cue(SCTE35Base):
     def _dict_bits(self, data):
         self.load(data)
 
-    def _mk_bits(self, data):
+    def _decode_bits(self, data):
         """
-        cue._mk_bits converts
+        cue._decode_bits converts
         several SCTE-35 formats into bytes.
         """
         type_map = {
@@ -234,49 +280,6 @@ class Cue(SCTE35Base):
         td = type(data)
         if td in type_map.keys():
             type_map[td](data)
-
-    # mk stuff
-
-    def _mk_descriptors(self, bites):
-        """
-        Cue._mk_descriptors parses
-        Cue.info_section.descriptor_loop_length,
-        then call Cue._descriptor_loop
-        """
-        while bites:
-            dll = (bites[ZERO] << EIGHT) | bites[ONE]
-            self.info_section.descriptor_loop_length = dll
-            bites = bites[TWO:]
-            self._descriptor_loop(bites[:dll])
-            return bites[dll:]
-        return False
-
-    def mk_info_section(self, bites):
-        """
-        Cue.mk_info_section parses the
-        Splice Info Section
-        of a SCTE35 cue.
-        """
-        info_size = FOURTEEN
-        info_bites = bites[:info_size]
-        self.info_section.decode(info_bites)
-        return bites[info_size:]
-
-    def _set_splice_command(self, bites):
-        """
-        Cue._set_splice_command parses
-        the command section of a SCTE35 cue.
-        """
-        sct = self.info_section.splice_command_type
-        if sct not in command_map:
-            return red(f"Splice Command type {sct} not recognized")
-        iscl = self.info_section.splice_command_length
-        cmd_bites = bites[:iscl]
-        self.command = command_map[sct](cmd_bites)
-        self.command.command_length = iscl
-        self.command.decode()
-        del self.command.bites
-        return bites[iscl:]
 
     # encode stuff
 
@@ -300,8 +303,8 @@ class Cue(SCTE35Base):
 
     def base64(self):
         """
-        base64 Cue.base64() converts SCTE35 data
-        to a base64 encoded string.
+        base64 returns SCTE35
+        encoded as a base64 string.
         """
         if self.command:
             self._assemble()
@@ -312,39 +315,41 @@ class Cue(SCTE35Base):
 
     def bytes(self):
         """
-        get_bytes returns Cue.bites
+        bytes returns SCTE-35
+        as raw bytes
         """
         return self.bites
 
     def hex(self):
         """
-        hex returns self.bites as
-        a hex string
+        hex returns SCTE-35
+        encoded as a hex string
         """
         return hex(self.int())
 
     def int(self):
         """
-        int returns self.bites as an int.
+        int returns SCTE-35
+        encoded as an Integer
         """
         self.encode()
         return int.from_bytes(self.bites, byteorder="big")
 
     def encode(self):
         """
-        encode is an alias for base64
+        encode is an alias for Cue.base64()
         """
         return self.base64()
 
     def encode_as_hex(self):
         """
-        encode_as_hex backward compatibility
+        encode_as_hex  alias for Cue.hex()
         """
         return self.hex()
 
     def encode_as_int(self):
         """
-        encode_as_int backward compatibility
+        encode_as_int alias for Cue.int()
         """
         return self.int()
 
@@ -419,16 +424,18 @@ class Cue(SCTE35Base):
         """
         return red("A splice command is required")
 
-    def load(self, gonzo):
+    def load(self, data):
         """
-        Cue.load loads SCTE35 data for encoding.
-        gonzo is a dict or json
+        Cue.load loads SCTE35 data into the Cue instance.
+        data is a dict or json or xml
         with any or all of these keys
-        gonzo = {
+        data = {
             'info_section': {dict} ,
             'command': {dict},
             'descriptors': [list of {dicts}],
             }
+        * You can load partial data into a Cue instance.
+            for instance, you can load just the command if you want.
 
         * load doesn't need to be called directly
           unless you initialize a Cue without data.
@@ -439,14 +446,16 @@ class Cue(SCTE35Base):
         if isinstance(gonzo, str):
             if isxml(gonzo):
                 self._from_xml(gonzo)
-                return self.bites
+                return True
             gonzo = json.loads(gonzo)
-        self._load_info_section(gonzo)
-        self._load_command(gonzo)
-        self._load_descriptors(gonzo["descriptors"])
-        self.encode()
-        self.decode()
-        return self.bites
+        if isinstance(gonzo, (dict)):
+            self._load_info_section(gonzo)
+            self._load_command(gonzo)
+            self._load_descriptors(gonzo["descriptors"])
+            self.encode()
+            self.decode()
+            return True
+        return False
 
     ## xml stuff
     def _from_xml(self, gonzo):
@@ -460,7 +469,7 @@ class Cue(SCTE35Base):
             re_stop = re.compile("</scte35:Binary>|</Binary>")
             dat = re.split(re_start, gonzo, 1)[1]
             dat = re.split(re_stop, dat, 1)[0]
-            self._mk_bits(dat)
+            self._decode_bits(dat)
             self.decode()
         elif "SpliceInfoSection" in gonzo:
             self.load(xml2cue(gonzo))
@@ -489,8 +498,8 @@ class Cue(SCTE35Base):
 
     def xml(self, ns="scte35"):
         """
-        xml returns a threefive.Node instance
-        which can be edited as needed or printed.
+        xml returns SCTE-35
+        as xml
         """
         self.encode()
         sis = self.info_section.xml(ns=ns)
@@ -502,8 +511,8 @@ class Cue(SCTE35Base):
 
     def xmlbin(self, ns="scte35"):
         """
-        xmlbin returns a threefive.Node instance
-        which can be edited as needed or printed.
+        xmlbin returns SCTE-35
+        as xmlbin
         """
         xb = Node("Signal", attrs={"xmlns": "https://scte.org/schemas/35"}, ns=ns)
         xbb = Node("Binary", value=self.base64())
