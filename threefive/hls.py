@@ -346,7 +346,7 @@ class HlsParser:
     HlsParser is the Hls Parser
     """
 
-    def __init__(self, pro_file="hls.profile"):
+    def __init__(self, pro_file="hls.profile",headers={}):
         self.media = deque()
         self.sidecar = "hls.sidecar"
         self.dumpfile = "hls.dump"
@@ -367,7 +367,8 @@ class HlsParser:
         self.sliding_window = SlidingWindow()
         self.cue_state = None
         self.last_cue = None
-        self.headers = []
+        self.headers=headers
+        self.hls_headers = []
         self.pts = 0
         self.cont_resume = True
         self.first_segment = True
@@ -909,7 +910,7 @@ class HlsParser:
         splitline = line.split(":", 1)
         if splitline[0] in HEADER_TAGS:
             self.parse_target_duration(line)
-            self.headers.append(line)
+            self.hls_headers.append(line)
             return True
         return False
 
@@ -929,7 +930,7 @@ class HlsParser:
         with open(self.flat, "a", encoding="utf-8") as flat:
             if self.first_segment:
                 flat.write("#EXTM3U\n")
-                for header in self.headers:
+                for hls_header in self.hls_headers:
                     flat.write(header)
             for line in lines:
                 flat.write(line)
@@ -970,7 +971,7 @@ class HlsParser:
 
     def _post_parse(self):
         self.write_manifest()
-        self.headers = []
+        self.hls_headers = []
         self.update_cue_state()
         time.sleep(self.sleep_duration)
 
@@ -982,7 +983,7 @@ class HlsParser:
             red("No rendition to parse")
             return
         self.rendition = self.rendition.strip()
-        with reader(self.rendition) as m3u8:
+        with reader(self.rendition,headers=self.headers) as m3u8:
             lines = []
             m3u8_lines = self.decode_lines(m3u8.readlines())
             self.chk_window_size(m3u8_lines)
@@ -1036,7 +1037,7 @@ class HlsParser:
         """
         find_renditions search master.m3u8 for playable renditions.
         """
-        with reader(uri) as arg:
+        with reader(uri, headers=self.headers) as arg:
             self.pick_one(arg, uri)
 
 
