@@ -218,29 +218,21 @@ class Cue(SCTE35Base):
         """
         parse raw mpegts SCTE-35 packet
         """
-        if data.startswith(b"G"):
-            data = data.split(b"\x00\x00\x01\xfc", ONE)[MINUSONE]
-        return data
+        return data.split(b"\x00\x00\x01\xfc", ONE)[MINUSONE]
 
-    def _xml_json_bits(self, data):
+    def _json_xml_bits(self,data):
         if isxml(data) | isjson(data):
             return self.load(data)
         return False
 
-    def _xj_bits(self, data):
-        if isinstance(
-            data,
-            (
-                bytes,
-                str,
-            ),
-        ):
+    def _bytes_or_str_bits(self, data):
+        if isinstance(data,(bytes,str,)):
             data = data.strip()
-            return self._xml_json_bits(data)
+            return self._json_xml_bits(data)
         return False
 
     def _precheck_bits(self, data):
-        return self._int_bits(data) | self._xj_bits(data)
+        return self._int_bits(data) | self._bytes_or_str_bits(data)
 
     def _decode_bits(self, data):
         """
