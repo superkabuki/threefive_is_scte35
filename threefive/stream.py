@@ -148,7 +148,7 @@ class Stream(Based):
     ROLLOVER9K = 95443.717678
     SCTE35_PES_START = b"\x00\x00\x01\xfc"
 
-    def __init__(self, tsdata, show_null=True):
+    def __init__(self, tsdata, show_null=True, headers={}):
         """
         tsdata is an file or http/https url
         set show_null=False to exclude Splice Nulls
@@ -164,7 +164,7 @@ class Stream(Based):
         if not isinstance(tsdata, str):
             self._tsdata = tsdata
         else:
-            self._tsdata = reader(tsdata)
+            self._tsdata = reader(tsdata,headers=headers)
         self.show_null = show_null
         self.start = {}
         self.info = False
@@ -281,7 +281,7 @@ class Stream(Based):
     def _decode2cues(self, chunk, func):
         _ = [func(cue) for cue in self._mk_pkts(chunk) if cue]
 
-    def speed(self,func=show_cue):
+    def speed(self, func=show_cue):
         """
         Stream.speed is identical to Stream.decode
         but also shows parsing speed.
@@ -300,12 +300,12 @@ class Stream(Based):
         func can be set to a custom function that accepts
         a threefive.Cue instance as it's only argument.
         """
-    #  speedo = Speedo()
+        #  speedo = Speedo()
         num_pkts = 1400
         for chunk in self.iter_pkts(num_pkts=num_pkts):
-      #    speedo.plus(len(chunk))
+            #    speedo.plus(len(chunk))
             self._decode2cues(chunk, func)
-    # speedo.end()
+        # speedo.end()
         return False
 
     def decode_next(self):
@@ -479,7 +479,6 @@ class Stream(Based):
             pcr |= pkt[10] >> 7
             prgm = self.pid2prgm(pid)
             self.maps.prgm_pcr[prgm] = pcr
-
 
     def _parse_payload(self, pkt):
         """
