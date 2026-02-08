@@ -1,5 +1,5 @@
 """
-socks.py      udp/multicast socket setting functions
+udp.py      udp/multicast socket setting functions
 """
 
 import socket
@@ -24,9 +24,9 @@ class Socked(socket.socket):
         return self.recv(bites)
 
 
-def setSO_RCVBUF(socked):
+def _setSO_RCVBUF(socked):
     """
-    setSO_RCVBUF  left shift socket.SO_RCVBUF
+    _setSO_RCVBUF  left shift socket.SO_RCVBUF
     """
     shift = 3
     rcvbuf_size = socked.getsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF)
@@ -37,9 +37,9 @@ def setSO_RCVBUF(socked):
     blue(f"SO_RCVBUF Now { new_rcvbuf}")
 
 
-def setSO_SNDBUF(socked):
+def _setSO_SNDBUF(socked):
     """
-    setSO_SNDBUF  left shift socket.SO_SNDBUF
+    _setSO_SNDBUF  left shift socket.SO_SNDBUF
     """
     shift = 3
     sndbuf_size = socked.getsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF)
@@ -50,9 +50,9 @@ def setSO_SNDBUF(socked):
     blue(f"SO_SNDBUF Now {new_sndbuf}")
 
 
-def setSO_REUSEADDR(socked):
+def _setSO_REUSEADDR(socked):
     """
-    setSO_REUSEADDR  turn on REUSEADDR
+    _setSO_REUSEADDR  turn on REUSEADDR
     if present
     """
     if hasattr(socked, "SO_REUSEADDR"):
@@ -60,9 +60,9 @@ def setSO_REUSEADDR(socked):
         blue(f"SO_REUSEADDR {socked.getsockopt(socket.SOL_SOCKET,socket.SO_REUSEADDR)}")
 
 
-def setSO_REUSEPORT(socked):
+def _setSO_REUSEPORT(socked):
     """
-    setSO_REUSEPORT  turn on REUSEPORT
+    _setSO_REUSEPORT  turn on REUSEPORT
     if present
     """
     if hasattr(socked, "SO_REUSEPORT"):
@@ -101,24 +101,24 @@ def mcast_ttl(socked, ttl):
 
 def udp_sender():
     """
-    udp_sender create a
-    udp sender socket
+    udp_sender create 
+    a udp sender socket
     """
     socked = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
-    setSO_REUSEADDR(socked)
-    setSO_REUSEPORT(socked)
-    setSO_SNDBUF(socked)
+    _setSO_REUSEADDR(socked)
+    _setSO_REUSEPORT(socked)
+    _setSO_SNDBUF(socked)
     return socked
 
 
 def udp_receiver():
     """
-    udp_receiver create a
-    udp receiver socket
+    udp_receiver create 
+    a udp receiver socket
     """
     socked = Socked(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
-    setSO_RCVBUF(socked)
-    setSO_REUSEADDR(socked)
-    setSO_REUSEPORT(socked)
+    _setSO_RCVBUF(socked)
+    _setSO_REUSEADDR(socked)
+    _setSO_REUSEPORT(socked)
     setTIMEOUT(socked, TIMEOUT)
     return socked
