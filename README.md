@@ -2,9 +2,8 @@
 ## https://github.com/superkabuki/threefive
 
 ### __threefive__ is the industry leading SCTE-35 tool. 
-___
 
-#### Need to inject SCTE-35 into ABR HLS? [X9k3](https://github.com/superkabuki/x9k3) 
+#### `Need to inject SCTE-35 into ABR HLS?` [X9k3](https://github.com/superkabuki/x9k3) 
 ___
 
 ### [ News ]
@@ -35,34 +34,12 @@ ___
 <samp>
 
 * __Decode SCTE-35__ from MPEGTS ✔ Base64 ✔ Bytes ✔ DASH ✔ Hex ✔ HLS ✔ Integers ✔ JSON ✔ XML  ✔ XML+Binary ✔ DASH ✔ Dicts ✔  
-
 * __Encodes SCTE-35__ to MPEGTS ✔ Base64 ✔ Bytes ✔ Hex ✔ Integers ✔ JSON ✔ XML ✔ XML+Binary ✔
-
 * __threefive file protocols__ Pipes(stdin, stdout) ✔ Files ✔
-
 * __threefive network protocols__ HTTP(s) ✔ Multicast ✔ UDP ✔ SRT ✔ 
-
 * __Automatic AES decryption__ for __MPEGTS__ and __HLS__. ✔
-
 * __Built-in Multicast Sender__ and __Receiver__. ✔
-
 * __Injects SCTE-35 Packets__ into __MPEGTS__ video ✔.
-
- <img width="258" height="256" alt="image" src="https://github.com/user-attachments/assets/642cb803-9465-408e-bb6e-03549eb22d78" />
-
-___
-
-###  [ Tip Of The Week ]
-
-*  __Stream.decode_next()__ is now a generator
-
-```py3
-	from threefive import Stream
-
-    strm =Stream(some_url)
-    for cue in strm.decode_next():
-		your_complicated_function(cue, one_arg , two_arg, 13,)
-```        
 
 ___
 
@@ -922,6 +899,7 @@ ___
   <circle cx="50" cy="50" r="40" stroke="green" stroke-width="4" fill="yellow" />
 </svg> 
 
+ <img width="258" height="256" alt="image" src="https://github.com/user-attachments/assets/642cb803-9465-408e-bb6e-03549eb22d78" />
 
 ___
  [__Install__](#install) |[__SCTE-35 Cli__](#the-cli-tool) | [__SCTE-35 HLS__](https://github.com/superkabuki/threefive/blob/main/hls.md) | [__Cue__ Class](https://github.com/superkabuki/threefive/blob/main/cue.md) | [__Stream__ Class](https://github.com/superkabuki/threefive/blob/main/stream.md) | [__Online SCTE-35 Parser__](https://iodisco.com/scte35) | [__Encode SCTE-35__](https://github.com/superkabuki/threefive/blob/main/encode.md) | [__SCTE-35 Examples__](https://github.com/superkabuki/threefive/tree/main/examples)
