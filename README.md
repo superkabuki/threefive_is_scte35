@@ -2,16 +2,11 @@
 ## https://github.com/superkabuki/threefive
 
 ### __threefive__ is the industry leading SCTE-35 tool. 
-
 ___
 
-### [ Terms and Conditions ]
-*    __You be cool, and I'll be cool.__
-*    __Questions?__ Ask them. 
-*    __Features?__ Speak up. I'm open to new ideas..
-*    __Comments?__ Make them. 
-*    __Got Code?__ Do a pull request.
+#### Need to inject SCTE-35 into ABR HLS? [X9k3](https://github.com/superkabuki/x9k3) 
 ___
+
 ### [ News ]
 * __Python3 vs. Pypy3__ [__parsing SCTE35 with threefive__](https://github.com/superkabuki/threefive_is_scte35#python3-vs-pypy3-running-threefive) (watch the cool video)
  
