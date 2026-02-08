@@ -77,11 +77,12 @@ class GumS:
             for dgram in iter(partial(video.read, DGRAM), b""):
                 packets = []
                 while dgram:
-                    packets.append(dgram[:188])
+                    packet=dgram[:188]
+                    packets.append(packet)
                     dgram = dgram[188:]
-                throttle.throttle(packets[0])
                 dgram = b"".join(packets)
                 self.socked.sendto(dgram, self.dest_grp)
+                throttle.throttle(packets[-1])
                 speedo.plus(len(dgram))
         speedo.end()
 
