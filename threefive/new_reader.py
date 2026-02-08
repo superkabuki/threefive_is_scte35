@@ -8,6 +8,7 @@ import socket
 import struct
 import sys
 import urllib.request
+
 from srtfu import SRTfu, SRTO_TRANSTYPE, SRT_LIVE, SRTO_RCVSYN, SRTO_RCVBUF
 from .udp import udp_receiver, mcast_ttl
 from .stuff import blue, ERR, pif, print2
@@ -84,6 +85,7 @@ def reader(uri, headers={}):
 def do_srt(srt_url, headers={}):
     """
     do_srt handle Secure Reliable Transport live streams
+    srt://5.6.7.8:1234
     """
 
     preflags = {
@@ -92,7 +94,7 @@ def do_srt(srt_url, headers={}):
         SRTO_RCVBUF: 32768000,
     }
 
-    preflag.update(headers)
+    preflags.update(headers)
     srtf = SRTfu(srt_url, preflags)
     srtf.conlive()
     srtf.connect()
