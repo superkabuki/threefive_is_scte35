@@ -34,7 +34,7 @@ class Cue(SCTE35Base):
     """
     The threefive.Cue class parses individual SCTE-35 Cues or messages.
 
-    Example usage:
+    example:
 
      import threefive
      Base64 = "/DAvAAAAAAAA///wBQb+dGKQoAAZAhdDVUVJSAAAjn+fCAgAAAAALKChijUCAKnMZ1g="
@@ -43,14 +43,11 @@ class Cue(SCTE35Base):
 
     * Instance variables can be accessed via dot notation.
 
-     cue.command
+    >>>> cue.command
     {'command_length': 5, 'name': 'Time Signal', 'time_specified_flag': True,
     'pts_time': 21695.740089}
 
-     cue.command.pts_time
-    21695.740089
-
-
+    >>>> cue.command.pts_time=56.345
     """
 
     def __init__(self, data=None, packet_data=None):
@@ -220,13 +217,19 @@ class Cue(SCTE35Base):
         """
         return data.split(b"\x00\x00\x01\xfc", ONE)[MINUSONE]
 
-    def _json_xml_bits(self,data):
+    def _json_xml_bits(self, data):
         if isxml(data) | isjson(data):
             return self.load(data)
         return False
 
     def _bytes_or_str_bits(self, data):
-        if isinstance(data,(bytes,str,)):
+        if isinstance(
+            data,
+            (
+                bytes,
+                str,
+            ),
+        ):
             data = data.strip()
             return self._json_xml_bits(data)
         return False
