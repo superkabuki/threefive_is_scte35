@@ -77,7 +77,7 @@ class GumS:
             for dgram in iter(partial(video.read, DGRAM), b""):
                 packets = []
                 while dgram:
-                    packet=dgram[:188]
+                    packet = dgram[:188]
                     packets.append(packet)
                     dgram = dgram[188:]
                 dgram = b"".join(packets)
