@@ -62,7 +62,7 @@ example:
         self.info_section = SpliceInfoSection()
         self.bites = None
         if data:
-            self._decode_bits(data)
+            self._bits_decode(data)
         self.packet_data = packet_data
         self.decode()
 
@@ -185,16 +185,16 @@ example:
             data = data + EQUALSIGN
         return data
 
-    # *_bits  is autodetection of SCTE-35 formats
+    # _bits_*  is autodetection of SCTE-35 formats
 
-    def _b64_bits(self, data):
+    def _bits_b64(self, data):
         self.bites = b64decode(self.fix_bad_b64(data))
 
-    def _bytes_bits(self, data):
-        data = self._pkt_bits(data)
+    def _bits_bytes(self, data):
+        data = self._bits_pkt(data)
         self.bites = self.idxsplit(data, b"\xfc")
 
-    def _int_bits(self, data):
+    def _bits_int(self, data):
         pdata = pif(data)
         if isinstance(pdata, int):
             length = pdata.bit_length() >> THREE
@@ -203,45 +203,45 @@ example:
             return True
         return False
 
-    def _node_bits(self, data):
+    def _bits_node(self, data):
         """
         data is a threefive.Node instance
         """
         data = data.mk()
         self._from_xml(data)
 
-    def _pkt_bits(self, data):
+    def _bits_pkt(self, data):
         """
         parse raw mpegts SCTE-35 packet
         """
         return data.split(b"\x00\x00\x01\xfc", ONE)[MINUSONE]
 
-    def _json_xml_bits(self, data):
+    def _bits_json_xml(self, data):
         if isjson(data) | isxml(data):
             return self.load(data)
         return False
 
-    def _bytes_or_str_bits(self, data):
+    def _bits_bytes_or_str(self, data):
         if isinstance(data,(bytes, str,),):
             data = data.strip()
-            return self._json_xml_bits(data)
+            return self._bits_json_xml(data)
         return False
 
-    def _precheck_bits(self, data):
-        return self._int_bits(data) | self._bytes_or_str_bits(data)
+    def _bits_precheck(self, data):
+        return self._bits_int(data) | self._bits_bytes_or_str(data)
 
-    def _decode_bits(self, data):
+    def _bits_decode(self, data):
         """
-        cue._decode_bits converts
+        cue._bits_decode converts
         several SCTE-35 formats into bytes.
         """
-        if not self._precheck_bits(data):
+        if not self._bits_precheck(data):
             type_map = {
-                Node: self._node_bits,
-                bytes: self._bytes_bits,
+                Node: self._bits_node,
+                bytes: self._bits_bytes,
                 dict: self.load,
                 list: self.load,
-                str: self._b64_bits,
+                str: self._bits_b64,
             }
             td = type(data)
             if td in type_map.keys():
@@ -352,9 +352,21 @@ example:
         if 'splice_command_type' is included,
         an empty command instance will be created for Cue.command
         """
+        info_sec=data
         if "info_section" in data:
-            self.info_section.load(data["info_section"])
+            info_sec= data["info_section"]
+            self.info_section.load(info_sec)
 
+    def _load_cmd(self,data):
+        """
+        _load_cmd
+        cmd= data or data['command']
+        """
+        cmd=data
+        if "command" in cmd:
+            cmd= data["command"]
+        return cmd
+    
     def _load_command(self, data):
         """
         load_command loads data for Cue.command
@@ -362,13 +374,23 @@ example:
         if 'command_type' is included,
         the command instance will be created.
         """
-        cmd=data
-        if "command" in cmd:
-            cmd= data["command"]
+        cmd=self._load_cmd(data) 
         if "command_type" in cmd:
             self.command = command_map[cmd["command_type"]]()
             self.command.load(cmd)
         return "command_type" in cmd
+
+    def _load_dstuff(self,dstuff):
+        if "tag" in dstuff:
+            dscptr = descriptor_map[dstuff["tag"]]()
+            dscptr.load(dstuff)
+            self.descriptors.append(dscptr)
+
+    def _load_dlist(self,dlist):
+        for dstuff in dlist:
+            if isinstance(dstuff,dict):
+                self._load_dstuff(dstuff)
+
 
     def _load_descriptors(self, data):
         """
@@ -382,18 +404,7 @@ example:
             dlist = data["descriptors"]
         if not isinstance(dlist, list):
             return
-        for dstuff in dlist:
-            if isinstance(dstuff,dict):
-                if "tag" in dstuff:
-                    dscptr = descriptor_map[dstuff["tag"]]()
-                    dscptr.load(dstuff)
-                    self.descriptors.append(dscptr)
-
-    def _no_cmd(self):
-        """
-        _no_cmd raises an exception if no splice command.
-        """
-        return red("A splice command is required")
+        self._load_dlist(dlist)
 
 
     def _load_bytes(self,data):
@@ -417,14 +428,18 @@ example:
             self._load_descriptors(data)
 
     def _load_by_type(self,data):
-         _= [x(data) for x in [self._load_bytes, self._load_str,
-                               self._load_dict, self._load_dict_list]]
-
+         _= [x(data) for x in [self._load_bytes,
+                            self._load_str,
+                            self._load_dict,
+                            self._load_dict_list]
+             ]
+        
     def load(self, data):
         """
         Cue.load loads SCTE35 data into the Cue instance.
         data is a dict or json or xml
         with any or all of these keys
+        
         data = {
             'info_section': {dict} ,
             'command': {dict},
@@ -453,11 +468,9 @@ example:
         """
         data = clean(data)
         if "Binary" in data:
-            re_start = re.compile("<scte35:Binary>|<Binary>")
-            re_stop = re.compile("</scte35:Binary>|</Binary>")
-            rdat = re.split(re_start, data, 1)[1]
-            rdat = re.split(re_stop, rdat, 1)[0]
-            self._decode_bits(rdat)
+            # Should be base64, but threefive allows any SCTE35 format
+            b64= data.split('Binary>',1)[-1].split('<')[0]
+            self._bits_decode(b64)
             self.decode()
         elif "SpliceInfoSection" in data:
             self.load(xml2cue(data))
