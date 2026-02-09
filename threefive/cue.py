@@ -185,7 +185,7 @@ example:
             data = data + EQUALSIGN
         return data
 
-    # _bits_*  is autodetection of SCTE-35 formats
+    # *_bits  is autodetection of SCTE-35 formats
 
     def _bits_b64(self, data):
         self.bites = b64decode(self.fix_bad_b64(data))
@@ -221,14 +221,14 @@ example:
             return self.load(data)
         return False
 
-    def _bits_bytes_or_str(self, data):
+    def _bits__bytes_or_str(self, data):
         if isinstance(data,(bytes, str,),):
             data = data.strip()
             return self._bits_json_xml(data)
         return False
 
     def _bits_precheck(self, data):
-        return self._bits_int(data) | self._bits_bytes_or_str(data)
+        return self._bits_int(data) | self._bits__bytes_or_str(data)
 
     def _bits_decode(self, data):
         """
@@ -429,17 +429,16 @@ example:
 
     def _load_by_type(self,data):
          _= [x(data) for x in [self._load_bytes,
-                            self._load_str,
-                            self._load_dict,
-                            self._load_dict_list]
+                                            self._load_str,
+                                           self._load_dict,
+                                           self._load_dict_list]
              ]
-        
+
     def load(self, data):
         """
         Cue.load loads SCTE35 data into the Cue instance.
         data is a dict or json or xml
         with any or all of these keys
-        
         data = {
             'info_section': {dict} ,
             'command': {dict},
