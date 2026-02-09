@@ -34,12 +34,11 @@ class Cue(SCTE35Base):
     """
     The threefive.Cue class parses individual SCTE-35 Cues or messages.
 
-    example:
-
-     import threefive
-     Base64 = "/DAvAAAAAAAA///wBQb+dGKQoAAZAhdDVUVJSAAAjn+fCAgAAAAALKChijUCAKnMZ1g="
-     cue = threefive.Cue(Base64)
-     cue.show()
+example:
+                >>> import threefive
+                >>> Base64 = "/DAvAAAAAAAA///wBQb+dGKQoAAZAhdDVUVJSAAAjn+fCAgAAAAALKChijUCAKnMZ1g="
+                >>> cue = threefive.Cue(Base64)
+                >>> cue.show()
 
     * Instance variables can be accessed via dot notation.
 
@@ -218,18 +217,12 @@ class Cue(SCTE35Base):
         return data.split(b"\x00\x00\x01\xfc", ONE)[MINUSONE]
 
     def _json_xml_bits(self, data):
-        if isxml(data) | isjson(data):
+        if isjson(data) | isxml(data):
             return self.load(data)
         return False
 
     def _bytes_or_str_bits(self, data):
-        if isinstance(
-            data,
-            (
-                bytes,
-                str,
-            ),
-        ):
+        if isinstance(data,(bytes, str,),):
             data = data.strip()
             return self._json_xml_bits(data)
         return False
@@ -247,6 +240,7 @@ class Cue(SCTE35Base):
                 Node: self._node_bits,
                 bytes: self._bytes_bits,
                 dict: self.load,
+                list: self.load,
                 str: self._b64_bits,
             }
             td = type(data)
@@ -368,9 +362,9 @@ class Cue(SCTE35Base):
         if 'command_type' is included,
         the command instance will be created.
         """
-        if "command" not in data:
-            return self._no_cmd()
-        cmd = data["command"]
+        cmd=data
+        if "command" in cmd:
+            cmd= data["command"]
         if "command_type" in cmd:
             self.command = command_map[cmd["command_type"]]()
             self.command.load(cmd)
@@ -383,21 +377,48 @@ class Cue(SCTE35Base):
         if 'tag' is included in each dict,
         a descriptor instance will be created.
         """
-        if "descriptors" not in data:
-            return
-        dlist = data["descriptors"]
+        dlist =data
+        if "descriptors"  in data:
+            dlist = data["descriptors"]
         if not isinstance(dlist, list):
-            red("descriptors should be a list")
+            return
         for dstuff in dlist:
-            dscptr = descriptor_map[dstuff["tag"]]()
-            dscptr.load(dstuff)
-            self.descriptors.append(dscptr)
+            if isinstance(dstuff,dict):
+                if "tag" in dstuff:
+                    dscptr = descriptor_map[dstuff["tag"]]()
+                    dscptr.load(dstuff)
+                    self.descriptors.append(dscptr)
 
     def _no_cmd(self):
         """
         _no_cmd raises an exception if no splice command.
         """
         return red("A splice command is required")
+
+
+    def _load_bytes(self,data):
+        if isinstance(data, bytes):
+            data = data.decode(errors="ignore")
+
+    def _load_str(self,data):
+        if isinstance(data, str):
+            if isxml(data):
+                self._from_xml(data)
+                return True
+            data = json.loads(data)
+
+    def _load_dict(self,data):           
+        if isinstance(data, (dict)):
+            self._load_info_section(data)
+            self._load_command(data)
+
+    def _load_dict_list(self,data):        
+        if isinstance(data,(dict,list,)):
+            self._load_descriptors(data)
+
+    def _load_by_type(self,data):
+         _= [x(data) for x in [self._load_bytes, self._load_str,
+                               self._load_dict, self._load_dict_list]]
 
     def load(self, data):
         """
@@ -415,19 +436,12 @@ class Cue(SCTE35Base):
         * load doesn't need to be called directly
           unless you initialize a Cue without data.
         """
-        if isinstance(data, bytes):
-            data = data.decode(errors="ignore")
-        if isinstance(data, str):
-            if isxml(data):
-                self._from_xml(data)
-                return True
-            data = json.loads(data)
-        if isinstance(data, (dict)):
-            self._load_info_section(data)
-            self._load_command(data)
-            self._load_descriptors(data)
+        self._load_by_type(data)
+        if self.command:
             self.encode()
             self.decode()
+            return True
+        if self.descriptors:
             return True
         return False
 
