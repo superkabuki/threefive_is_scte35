@@ -101,19 +101,19 @@ def mcast_ttl(socked, ttl):
 
 def udp_sender():
     """
-    udp_sender create 
+    udp_sender create
     a udp sender socket
     """
     socked = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
+    _setSO_SNDBUF(socked)
     _setSO_REUSEADDR(socked)
     _setSO_REUSEPORT(socked)
-    _setSO_SNDBUF(socked)
     return socked
 
 
 def udp_receiver():
     """
-    udp_receiver create 
+    udp_receiver create
     a udp receiver socket
     """
     socked = Socked(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
