@@ -50,17 +50,13 @@ class StreamBumper(Stream):
 
         Adjust SCTE-35 PTS times  in MPEGTS
 
-    example
-
-            from threefive.bump import StreamBumper
-
-            sb=StreamBumper()
-
-            sb.infile = "input.ts"
-            sb.outfile = "output.ts"
-            sb.secs = 100.123
-
-            sb.bump()
+example:
+                >>> from threefive.bump import StreamBumper
+                >>> sb=StreamBumper()               
+                >>> sb.infile = "input.ts"
+                >>> sb.outfile = "output.ts"
+                >>> sb.secs = 100.123
+                >>> sb.bump()
 
     """
 
