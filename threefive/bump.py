@@ -8,7 +8,7 @@ if the Cue in the packet has cue.command.pts_time:
 
     cue.command.pts_time is adjusted directly  like this:
 
-   1)   cue.command.pts_time = bump + cue.info_section.pts_adjustment+ cue.command.pts_time
+   1)   cue.command.pts_time = secs + cue.info_section.pts_adjustment+ cue.command.pts_time
 
   2)  cue.info_section.pts_adjustment = 0.0
 
@@ -23,7 +23,7 @@ if the Cue in the packet has cue.command.pts_time:
 
 if the Cue in the packet doesn't have cue.command.pts_time:
 
-   1)     cue.info_section.pts_adjustment=bump + cue.info_section.pts_adjustment
+   1)     cue.info_section.pts_adjustment=secs + cue.info_section.pts_adjustment
 
 
 
@@ -44,102 +44,53 @@ REV = "\033[7m"
 NORM = "\033[27m"
 
 
-def bump_pts_time(cue, bump):
-    """
-    bump_pts_time add bump directly to cue.command.pts_time
-    """
-    bumpme = cue.command.pts_time + cue.info_section.pts_adjustment + bump
-    cue.info_section.pts_adjustment = 0.0
-    if bumpme < 0.0:
-        bumpme = ROLLOVER + bumpme
-    cue.command.pts_time = bumpme % ROLLOVER
-
-
-def bump_pts_adjust(cue, bump):
-    """
-    bump_pts_adjust add bump to cue.command.pts_adjustment
-    """
-    bumpme = cue.info_section.pts_adjustment + bump
-    cue.info_section.pts_adjustment = bumpme % ROLLOVER
-
-
-def show_bump():
-    """
-    show_bump show the Cue with adjusted pts.
-    """
-    blue("Cue adjusted")
-
-
-def bump_pts(pay, bump):
-    """
-    bump_pts adjust SCTE-35 pts by bump
-    """
-    cue = Cue(pay)
-    if cue.command.pts_time:
-        bump_pts_time(cue, bump)
-    else:
-        bump_pts_adjust(cue, bump)
-    cue.encode()
-    show_bump()
-    return cue.bytes()
-
-
-def repad(pkt):
-    """
-    repad add padding to packet as needed.
-    """
-    pad = b"\xff"
-    padsize = 188 - len(pkt)
-    pkt = pkt + (pad * padsize)
-    return pkt
-
-
-def bumped(pkt, bump):
-    """
-    bumped adjust the pts_time in the Cue in the pkt by bump,
-    bump is a float in seconds.
-    """
-    if b"\xfc" in pkt:
-        pre = pkt.split(b"\x00\x00\x01\xfc")[-1]
-        tail = pre[pre.index(b"\xfc") :]
-        head = pkt.replace(tail, b"")
-        tail = bump_pts(tail, bump)
-        pkt = repad(head + tail)
-    return pkt
-
-
 class StreamBumper(Stream):
     """
     StreamBumper class
 
         Adjust SCTE-35 PTS times  in MPEGTS
+
+    example
+
+            from threefive.bump import StreamBumper
+
+            sb=StreamBumper()
+
+            sb.infile = "input.ts"
+            sb.outfile = "output.ts"
+            sb.secs = 100.123
+
+            sb.bump()
+
     """
 
     def __init__(self, tsdata=None, show_null=True):
         super().__init__(tsdata)
         self.outfile = sys.stdout.buffer
         self.infile = None
-        self.bump = 0.0
+        self.secs = 0.0
         self._parse_args()
 
-    def _scte35(self, pkt, pid):
-        if self._pid_has_scte35(pid):
-            pkt = bumped(pkt, self.bump)
+    @staticmethod
+    def _show_bump():
+        """
+        _show_bump show the Cue with adjusted pts.
+        """
+        blue("Cue adjusted")
+
+    @staticmethod
+    def _repad(pkt):
+        """
+        _repad add padding to packet as needed.
+        """
+        pad = b"\xff"
+        padsize = 188 - len(pkt)
+        pkt = pkt + (pad * padsize)
         return pkt
 
-    def _parse2(self, pkt):
+    def bump(self):
         """
-        parse packets for tables and SCTE-35,
-        adjust SCTE-35 PTS by bump.
-        return modified pkt.
-        """
-        pid = self._parse_info(pkt)
-        pkt = self._scte35(pkt, pid)
-        return pkt
-
-    def bump_scte35(self):
-        """
-        bump_scte_35 adjust pts of the SCTE-35 by bump
+        bump adjust pts of the SCTE-35 by secs
         """
         num_pkts = 2420
         with open(self.outfile, "wb") as outfile:
@@ -152,13 +103,71 @@ class StreamBumper(Stream):
                 outfile.flush()
         return False
 
+    def _scte35(self, pkt, pid):
+        if self._pid_has_scte35(pid):
+            pkt = self._bumped(pkt)
+        return pkt
+
+    def _parse2(self, pkt):
+        """
+        parse packets for tables and SCTE-35,
+        adjust SCTE-35 PTS by secs.
+        return modified pkt.
+        """
+        pid = self._parse_info(pkt)
+        pkt = self._scte35(pkt, pid)
+        return pkt
+
+    def _bump_pts_time(self, cue):
+        """
+        _bump_pts_time add secs directly to cue.command.pts_time
+        """
+        bumpme = cue.command.pts_time + cue.info_section.pts_adjustment + self.secs
+        cue.info_section.pts_adjustment = 0.0
+        if bumpme < 0.0:
+            bumpme = ROLLOVER + bumpme
+        cue.command.pts_time = bumpme % ROLLOVER
+
+    def _bump_pts_adjust(self, cue):
+        """
+        _bump_pts_adjust add secs to cue.command.pts_adjustment
+        """
+        bumpme = cue.info_section.pts_adjustment + self.secs
+        cue.info_section.pts_adjustment = bumpme % ROLLOVER
+
+    def _bump_pts(self, pay):
+        """
+        _bump_pts adjust SCTE-35 pts by secs
+        """
+        cue = Cue(pay)
+        if cue.command.pts_time:
+            self._bump_pts_time(cue)
+        else:
+            self._bump_pts_adjust(cue)
+        cue.encode()
+        self._show_bump()
+        return cue.bytes()
+
+    def _bumped(self, pkt):
+        """
+        _bumped adjust the pts_time in the Cue in the pkt by secs,
+        secs is a float in seconds.
+        """
+        if b"\xfc" in pkt:
+            pre = pkt.split(b"\x00\x00\x01\xfc")[-1]
+            tail = pre[pre.index(b"\xfc") :]
+            head = pkt.replace(tail, b"")
+            tail = self._bump_pts(tail)
+            pkt = self._repad(head + tail)
+        return pkt
+
     def _apply_args(self, args):
         """
         _apply_args applies command line args
         """
         self.outfile = args.output
         self.infile = args.input
-        self.bump = float(args.bump)
+        self.secs = float(args.secs)
         super().__init__(self.infile)
 
     def _parse_args(self):
@@ -181,8 +190,8 @@ class StreamBumper(Stream):
             help=f"Output file  [ default:{REV}sys.stdout.buffer{NORM} ]",
         )
         parser.add_argument(
-            "-b",
-            "--bump",
+            "-s",
+            "--secs",
             default=0.0,
             help=f"Adjustment to apply to SCTE-35 Cues. [default: {REV}0.0{NORM}]",
         )
@@ -195,4 +204,4 @@ def cli():
     function to make a cli tool
     """
     bumper = StreamBumper()
-    bumper.bump_scte35()
+    bumper.bump()
