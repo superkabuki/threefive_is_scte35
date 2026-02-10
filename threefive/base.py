@@ -137,19 +137,19 @@ class SCTE35Base:
         from a dict if the value is None.
         """
 
-        def b2l(val):
+        def _b2l(val):
             if isinstance(val, SCTE35Base):
                 val.kv_clean()
             if isinstance(val, (list)):
-                val = [b2l(v) for v in val]
+                val = [_b2l(v) for v in val]
             if isinstance(val, (dict)):
-                val = {k: b2l(v) for k, v in val.items()}
+                val = {k: _b2l(v) for k, v in val.items()}
             if isinstance(val, (bytes, bytearray)):
                 val = list(val)
             return val
 
         return {
-            k: b2l(v)
+            k: _b2l(v)
             for k, v in vars(self).items()
             if v
             not in [
