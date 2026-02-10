@@ -336,7 +336,7 @@ class SegmentationDescriptor(SpliceDescriptor):
             self.segmentation_duration = self.as_90k(segmentation_duration_ticks)
         self.segmentation_upid_type = bitbin.as_int(8)
         self.segmentation_upid_length = bitbin.as_int(8)
-        the_upid = self.mk_the_upid(bitbin)
+        the_upid = self._mk_the_upid(bitbin)
         self.segmentation_upid_type_name, self.segmentation_upid = the_upid.decode()
         self.segmentation_type_id = bitbin.as_int(8)
         if self.segmentation_type_id in table22:
@@ -380,9 +380,9 @@ class SegmentationDescriptor(SpliceDescriptor):
         else:
             nbin.reserve(5)
 
-    def mk_the_upid(self, bitbin=None):
+    def _mk_the_upid(self, bitbin=None):
         """
-        mk_the_upid create a upid instance
+        _mk_the_upid create a upid instance
         and return it. the bitbin arg is only
         used in decode()
         """
@@ -471,24 +471,6 @@ class SegmentationDescriptor(SpliceDescriptor):
         else:
             sd.addchild(upid_node)
         return sd
-
-    def xml_redecode(self):
-        """
-        redecode is for decoding complex xml upids
-        before encoding to another format.
-        """
-        seg_upid = self.segmentation_upid
-        if isinstance(seg_upid, str):
-            bites = b""
-            bitbin = None
-            try:
-                bites = bytes.fromhex(seg_upid)
-            except ERR:
-                bites = seg_upid.encode()
-            bitbin = Bitn(bites)
-            self.segmentation_upid_length = len(bites)
-            the_upid = self.mk_the_upid(bitbin=bitbin)
-            self.segmentation_upid_type_name, self.segmentation_upid = the_upid.decode()
 
 
 # map of known descriptors and associated classes
