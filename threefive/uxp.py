@@ -17,7 +17,7 @@ class UltraXmlParser:
         self.openlist = []
 
     @staticmethod
-    def mk_attrs(line):
+    def _mk_attrs(line):
         """
         mk_attrs parses the current line for attributes
         """
@@ -57,7 +57,7 @@ class UltraXmlParser:
 
         """
         ns = None
-        attrs = self.mk_attrs(line)
+        attrs = self._mk_attrs(line)
         if ":" in tag:
             ns, tag = tag.split(":", 1)
         tag = tag.strip(">")
@@ -67,7 +67,7 @@ class UltraXmlParser:
             exemel = exemel.replace(node.value, "", 1).strip()
         return node, exemel
 
-    def starttag(self, line, node):
+    def _starttag(self, line, node):
         """
         _starttag self-terminating nodes
         are added as children to the last
