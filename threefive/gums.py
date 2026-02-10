@@ -41,9 +41,9 @@ class GumS:
         self.socked = udp_sender()
         self.socked.bind((self.src_ip, self.src_port))
 
-    def is_multicast(self):
+    def _is_multicast(self):
         """
-        is_multicast tests the first byte of an ipv4 address
+        _is_multicast tests the first byte of an ipv4 address
         to see if it is in the multicast range.
         """
         net_id = pif(self.dest_ip.split(".", 1)[0])
@@ -51,23 +51,10 @@ class GumS:
             return True
         return False
 
-    def burst(self, vid, speedo):
+ 
+    def _iter_dgrams(self, vid):
         """
-        burst send a burst of unthrottled dgrams
-        at start of stream
-        """
-        burst_size = 10
-        blue(f"bursting {burst_size} dgrams")
-
-        while burst_size:
-            dgram = vid.read(DGRAM)
-            self.socked.sendto(dgram, self.dest_grp)
-            speedo.plus(len(dgram))
-            burst_size -= 1
-
-    def iter_dgrams(self, vid):
-        """
-        iter_dgrams iterates over the video and sends
+        _iter_dgrams iterates over the video and sends
         self.dgram_size chunks of video to the socket.
         """
         time.sleep(0.0001)
@@ -95,7 +82,7 @@ class GumS:
         """
         proto = "udp://"
         pre = "Unicast"
-        if self.is_multicast():
+        if self._is_multicast():
             print2("\n")
             blue("Opening Multicast socket")
             print2("\n")
@@ -107,7 +94,7 @@ class GumS:
         print2(f"\n\t{pre} Stream\n\t{proto}{self.dest_ip}:{self.dest_port}")
         print2(f"\n\tSource\n\t{src_ip}:{src_port}\n")
 
-        self.iter_dgrams(vid)
+        self._iter_dgrams(vid)
         self.socked.close()
 
 
