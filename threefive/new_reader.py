@@ -77,12 +77,12 @@ def reader(uri, headers={}):
         return urllib.request.urlopen(req)
     # SRT
     if uri.startswith("srt://"):
-        return do_srt(uri, headers=headers)
+        return _do_srt(uri, headers=headers)
     # File
     return open(uri, "rb")
 
 
-def do_srt(srt_url, headers={}):
+def _do_srt(srt_url, headers={}):
     """
     do_srt handle Secure Reliable Transport live streams
     srt://5.6.7.8:1234
