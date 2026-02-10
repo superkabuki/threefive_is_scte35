@@ -127,8 +127,8 @@ example:
         """
         Cue.decode() parses for SCTE35 data
 
-        *decode doesn't need to be called directly
-           unless you initialize a Cue without data.
+        * decode doesn't need to be called directly
+
         """
         bites = self.bites
         self.descriptors = []
@@ -159,6 +159,13 @@ example:
         """
         Cue.get returns the SCTE-35 Cue
         data as a dict of dicts.
+
+example:
+                >>> import threefive
+                >>> Base64 = "/DAvAAAAAAAA///wBQb+dGKQoAAZAhdDVUVJSAAAjn+fCAgAAAAALKChijUCAKnMZ1g="
+                >>> cue = threefive.Cue(Base64)
+                >>> cue.get()
+
         """
         scte35_data = False
         if self.command and self.info_section:
@@ -180,6 +187,13 @@ example:
     def fix_bad_b64(self, data):
         """
         fix_bad_b64 fixes bad padding on Base64
+
+example:
+                >>> from threefive.cue import fix-bad_b64
+                >>> fix-bad_b64("/DAvAAAAAAAA///wBQb+dGKQoAAZAhdDVUVJSAAAjn+fCAgAAAAALKChijUCAKnMZ1g")
+
+                /DAvAAAAAAAA///wBQb+dGKQoAAZAhdDVUVJSAAAjn+fCAgAAAAALKChijUCAKnMZ1g=
+        
         """
         while len(data) % FOUR != ZERO:
             data = data + EQUALSIGN
@@ -500,6 +514,12 @@ example:
         """
         xml returns SCTE-35
         as xml
+
+example:
+                >>> import threefive
+                >>> Base64 = "/DAvAAAAAAAA///wBQb+dGKQoAAZAhdDVUVJSAAAjn+fCAgAAAAALKChijUCAKnMZ1g="
+                >>> cue = threefive.Cue(Base64)
+                >>> cue.xml()
         """
         self.encode()
         sis = self.info_section.xml(ns=ns)
