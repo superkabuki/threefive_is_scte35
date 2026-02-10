@@ -34,25 +34,25 @@ class UltraXmlParser:
         return iter_attrs(attrs)
 
     @staticmethod
-    def mk_tag(data):
+    def _mk_tag(data):
         """
-        mk_tag parse out the
+        _mk_tag parse out the
         next available xml tag from data
         """
         return data[1:].split(" ", 1)[0].split(">")[0].strip()
 
     @staticmethod
-    def mk_line(exemel):
+    def _mk_line(exemel):
         """
-        mk_line grabs the next '<' to '>' section of xml
+        _mk_line grabs the next '<' to '>' section of xml
         """
         line = exemel.split(">", 1)[0] + ">"
         exemel = exemel.replace(line, "", 1).strip()
         return line, exemel
 
-    def mk_node(self, tag, line, exemel):
+    def _mk_node(self, tag, line, exemel):
         """
-        mk_node marshal xml data
+        _mk_node marshal xml data
         into a  threefive.xml.Node instance.
 
         """
@@ -69,7 +69,7 @@ class UltraXmlParser:
 
     def starttag(self, line, node):
         """
-        starttag self-terminating nodes
+        _starttag self-terminating nodes
         are added as children to the last
         node in openlist.
         open nodes (nodes that aren't self-terminating)
@@ -80,7 +80,7 @@ class UltraXmlParser:
         else:
             self.openlist.append(node)
 
-    def endtag(self):
+    def _endtag(self):
         """
         endtag when a node is closed
         pop it off openlist and then
@@ -96,7 +96,7 @@ class UltraXmlParser:
         return closed
 
     @staticmethod
-    def ultraclean(exemel):
+    def _ultraclean(exemel):
         """
         ultraclean unescapes and sanitizes exemel
 
@@ -123,16 +123,16 @@ class UltraXmlParser:
         """
         final = False
         self.openlist = []
-        exemel = self.ultraclean(exemel)
+        exemel = self._ultraclean(exemel)
         while exemel:
-            line, exemel = self.mk_line(exemel)
+            line, exemel = self._mk_line(exemel)
             if self._nocomment(line):
-                tag = self.mk_tag(line)
+                tag = self._mk_tag(line)
                 if "/" not in tag:
-                    node, exemel = self.mk_node(tag, line, exemel)
-                    self.starttag(line, node)
+                    node, exemel = self._mk_node(tag, line, exemel)
+                    self._starttag(line, node)
                 else:
-                    final = self.endtag()
+                    final = self._endtag()
         return final
 
 
@@ -141,7 +141,7 @@ class NodeConverter:
     NodeConverter class converts A SpliceInfoSection Node to a dict.
     """
 
-    def xmlspliceinfosection(self, node):
+    def _xmlspliceinfosection(self, node):
         """
         spliceinfosection parses exemel for info section data
         and returns a loadable dict
@@ -151,7 +151,7 @@ class NodeConverter:
             return node.attrs
         return {}
 
-    def xmlcommand(self, node):
+    def _xmlcommand(self, node):
         """
         command parses exemel for a splice command
         and returns a loadable dict
@@ -342,7 +342,7 @@ class NodeConverter:
         node.attrs.update(setme)
         return node.attrs
 
-    def xmldescriptors(self, node):
+    def _xmldescriptors(self, node):
         """
         xmldescriptors parse xml for descriptors
         """
@@ -360,9 +360,9 @@ class NodeConverter:
 
     def convert(self, node):
         return {
-            "info_section": self.xmlspliceinfosection(node),
-            "command": self.xmlcommand(node),
-            "descriptors": self.xmldescriptors(node),
+            "info_section": self._xmlspliceinfosection(node),
+            "command": self._xmlcommand(node),
+            "descriptors": self._xmldescriptors(node),
         }
 
 
