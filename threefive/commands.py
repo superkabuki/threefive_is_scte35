@@ -214,9 +214,9 @@ class SpliceInsert(TimeSignal):
         self.avail_num = None
         self.avails_expected = None
 
-    def decode_break_duration(self, bitbin):
+    def _decode_break_duration(self, bitbin):
         """
-        break_duration Table 15 - break_duration()
+        _decode_break_duration Table 15 - break_duration()
         """
         self.break_auto_return = bitbin.as_flag(1)
         bitbin.forward(6)
@@ -243,7 +243,7 @@ class SpliceInsert(TimeSignal):
                 if not self.splice_immediate_flag:
                     self._splice_time(bitbin)
             if self.duration_flag:
-                self.decode_break_duration(bitbin)
+                self._decode_break_duration(bitbin)
             self.unique_program_id = bitbin.as_int(16)
             self.avail_num = bitbin.as_int(8)
             self.avails_expected = bitbin.as_int(8)
@@ -268,14 +268,14 @@ class SpliceInsert(TimeSignal):
                 if not self.splice_immediate_flag:
                     self._encode_splice_time(nbin)
             if self.duration_flag:
-                self.encode_break_duration(nbin)
+                self._encode_break_duration(nbin)
             self._chk_var(int, nbin.add_int, "unique_program_id", 16)
             self._chk_var(int, nbin.add_int, "avail_num", 8)
             self._chk_var(int, nbin.add_int, "avails_expected", 8)
         self.command_length = len(nbin.bites)
         return nbin.bites
 
-    def encode_break_duration(self, nbin):
+    def _encode_break_duration(self, nbin):
         """
         SpliceInsert._encode_break(nbin) is called
         if SpliceInsert.duration_flag is set
