@@ -26,75 +26,75 @@ class Throttle:
         self.ifr = IFramer(shush=True)
         self.shush = shush
 
-    def reset(self):
+    def _reset(self):
         """
-        reset reinitialize all four stop/start times
+        _reset reinitialize all four stop/start times
         """
         self.first = self.second = self.actualstart = self.actualstop = None
 
-    def reset_end(self):
+    def _reset_end(self):
         """
-        reset_end only reset the two stop tines
+        _reset_end only reset the two stop tines
         """
         self.second = self.actualstop = None
 
-    def set_start(self, pts):
+    def _set_start(self, pts):
         """
-        set_start set first and actualstart
+        _set_start set first and actualstart
         """
         self.first = pts
         self.actualstart = time.time()
         if not self.shush:
             print2(f"first: {pts} actualstart: {self.actualstart}")
 
-    def print_throttle(self, diff):
+    def _print_throttle(self, diff):
         """
-        print_throttle print the amount of throttle
+        _print_throttle print the amount of throttle
         """
         if not self.shush:
             print(f"throttling: {diff}", file=sys.stderr, end="\r")
 
-    def sleep(self, diff):
+    def _sleep(self, diffed):
         """
-        sleep sleep for diff
+        _sleep sleep for diff
         """
-        if 0 < diff < 10:
-            self.print_throttle(diff)
-            time.sleep(diff)
-            self.reset_end()
+        if 0 < diffed < 10:
+            self._print_throttle(diffed)
+            time.sleep(diffed)
+            self._reset_end()
         else:
-            self.reset()
+            self._reset()
 
-    def diff(self, pts):
+    def _diff(self, pts):
         """
-        diff calculate the difference betweeen start and stop times,
+        _diff calculate the difference betweeen start and stop times,
         compare pts to actual and sleep the difference.
         """
         if pts > self.first:
             self.actualstop = time.time()
             ptime = round(pts - self.first, 6)
             atime = round(self.actualstop - self.actualstart, 6)
-            diff = round((ptime - atime), 6)
-            self.sleep(diff)
+            diffed = round((ptime - atime), 6)
+            self._sleep(diffed)
 
     def _set_first(self, pts):
         if not self.first:
-            self.set_start(pts)
+            self._set_start(pts)
 
     def _set_second(self, pts):
         if not self.second:
-            self.diff(pts)
+            self._diff(pts)
 
     def throttle(self, packet):
         """
         throttle throttle packet to maintain realtime stream.
         """
         pts = self.ifr.parse(packet)
-        self.throttle_pts(pts)
+        self._throttle_pts(pts)
 
-    def throttle_pts(self, pts):
+    def _throttle_pts(self, pts):
         """
-        throttle_pts throttle by pts instead of an mpegts packet
+        _throttle_pts throttle by pts instead of an mpegts packet
         to maintain a realtime stream.
         """
         if pts:
