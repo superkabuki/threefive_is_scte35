@@ -18,6 +18,8 @@ ___
 * __Python3 vs. Pypy3__ [__parsing SCTE35 with threefive__](https://github.com/superkabuki/threefive_is_scte35#python3-vs-pypy3-running-threefive) (watch the cool video)
  
 * __threefive now supports__ [__Secure Reliable Transport__](https://github.com/superkabuki/threefive_is_scte35/blob/main/README.md#threefive-now-supports-srt)
+
+* [__threefive does Multicast very well__](#-threefive-streams-multicast-its-easy-), both as a sender and receiver.  
 ___
 
 ## [ Latest version is  v3.0.73 ]
@@ -811,13 +813,21 @@ ___
 
 
 ## [ threefive Streams Multicast, it's easy. ]
-
 * The threefive cli has long been a Multicast Receiver( client )
 * The cli now comes with a builtin Multicast Sender( server).
- * __Start the Receiver first__
 * It's optimized for MPEGTS (1316 byte Datagrams) but you can send any video or file.
 * The defaults will work in most situations, you don't even have to set the address.
 * threefive cli also supports UDP Unicast Streaming.
+
+If you're tired of configuring strange kernel settings with sysctl trying to get multicast to work,<br> 
+threefive multicast is written from scratch in raw sockets and autoconfigures most settings,<br> 
+threefive adjusts the SO_RCVBUF, SO_SNDBUF, SO_REUSEADDR,SO_REUSEPORT,IP_MULTICAST_TTL and IP_MULTICAST_LOOP for you.<br>
+all you really need to do is make sure multicast is enabled on the network device, threefive can handle the rest.<br>
+```js
+ip link set wlp2s0  multicast on
+
+```
+
    
 ```js
 a@fu:~$ threefive mcast help
