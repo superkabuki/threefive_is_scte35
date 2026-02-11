@@ -35,31 +35,30 @@ def corsreader(uri, headers={}):
 
 def reader(uri, headers={}):
     """
-    reader returns an open file handle.
-    stdin:              cat video.ts | gumd
-    files:              "/home/you/video.ts"
-    http(s) urls:       "https://example.com/vid.ts"
-     (http headers can be added by setting headers)
-    udp urls:           "udp://1.2.3.4:5555"
-    multicast urls:     "udp://@227.1.3.10:4310"
 
-    Use like:
+    reader returns an object with a read method.
+    No matter what object is return, meets the
+    interface:
+                        obj.read(bites)
+                        
+example:
 
-    with reader('http://iodisco.com/') as disco:
-        disco.read()
+    >>> from threefive import reader
+    
+    >>> with reader('http://iodisco.com/') as disco:
+    >>> disco.read()
 
-    with reader('http://iodisco.com/',headers={"myHeader":"DOOM"}) as doom:
-        doom.read()
+    >>> with reader('http://iodisco.com/',headers={"myHeader":"DOOM"}) as doom:
+    >>> doom.read()
 
-    with reader("udp://@227.1.3.10:4310") as data:
-        data.read(8192)
+    >>> with reader("udp://@227.1.3.10:4310") as data:
+    >>> data.read(8192)
 
-    with reader("/home/you/video.ts") as data:
-        fu = data.read()
+    >>> with reader("/home/you/video.ts") as data:
+    >>> fu = data.read()
 
-    udp_data =reader("udp://1.2.3.4:5555")
-    chunks = [udp_data.read(188) for i in range(0,1024)]
-    udp_data.close()
+    >>> udp_data =reader("udp://1.2.3.4:5555")
+    >>> chunks = [udp_data.read(188) for i in range(0,1024)]
 
     """
     # read from stdin
