@@ -8,9 +8,32 @@ from .stuff import red, pif
 class Bitn:
     """
     bitn.Bitbin takes a byte string and
-    converts it to a integer, a very large integer
-    if needed. A 1500 bit integer is no problem.
-    several methods are available for slicing off bits.
+    converts it to a integer, a very large integer.
+    This is used to slice off bits that are not byte-aligned
+    and convert them as needed.
+
+
+example:
+    >>>> from threefive.bitn import Bitn
+    >>>> somebites=b'Byte String'
+    >>>> bn=Bitn(somebites)
+    >>>> allthebits=bin(bn.bits) # this is Bitn.bits displayed as bits
+    >>>> elevenbits=bin(bn.as_int(11)) this is the first eleven bits 
+    >>>> allthebits.startswith(elevenbits)
+    True
+    >>>> allthebits
+    '0b100001001111001011101000110010100100000010100110111010001110010011010010110111001100111'
+    >>>> elevenbits
+    '0b1000010011'
+    >>>> bn.as_hex(5)
+    '0x19'
+    >>>> bn.as_int(32)
+    1952784467
+    >>>> next4bytes=bn.as_bytes(32)
+    >>>> next4bytes
+    b'trin'
+
+
     """
 
     def __init__(self, bites):
