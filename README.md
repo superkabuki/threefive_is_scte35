@@ -15,6 +15,9 @@ ___
 
 
 ### [ News ]
+
+* __threefive.Bitn__ does __bit manipulation 2.7 times faster__ than the __python standard library__/
+   
 * __Python3 vs. Pypy3__ [__parsing SCTE35 with threefive__](https://github.com/superkabuki/threefive_is_scte35#python3-vs-pypy3-running-threefive) (watch the cool video)
  
 * __threefive now supports__ [__Secure Reliable Transport__](https://github.com/superkabuki/threefive_is_scte35/blob/main/README.md#threefive-now-supports-srt)
