@@ -538,3 +538,4 @@ example:
         xbb = Node("Binary", value=self.base64())
         xb.addchild(xbb)
         return xb
+
