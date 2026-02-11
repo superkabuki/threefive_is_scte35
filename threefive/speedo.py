@@ -8,7 +8,7 @@ calulate data transfer rates.
 
 import sys
 import time
-
+from .stuff import print2
 
 MILLION = 2 << 19
 
@@ -23,13 +23,6 @@ class Speedo:
         self.now = time.time
         self.total_bytes = 0
 
-    @staticmethod
-    def print_out(out):
-        """
-        print_out print  out
-        and overwrite the previous out.
-        """
-        print(out, file=sys.stderr, end="\r")
 
     def plus(self, this_many):
         """
@@ -48,4 +41,4 @@ class Speedo:
         end advance the cursor past the \r
         """
         out = "\n\n"
-        self.print_out(out)
+        self.print2(out)
