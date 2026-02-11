@@ -29,6 +29,12 @@ if the Cue in the packet doesn't have cue.command.pts_time:
 
 final values are modolo`ed to the ROLLOVER.
 
+you just need one function call ,bump. 
+
+example:
+                >>> from threefive import bump
+                >>> bump(infile,outfile,secs)
+
 """
 
 import argparse
@@ -157,12 +163,12 @@ example:
             pkt = self._repad(head + tail)
         return pkt
 
-    def _apply_args(self, args):
+    def apply_args(self, args):
         """
-        _apply_args applies command line args
+        apply_args applies command line args
         """
-        self.outfile = args.output
-        self.infile = args.input
+        self.outfile = args.outfile
+        self.infile = args.infile
         self.secs = float(args.secs)
         super().__init__(self.infile)
 
@@ -173,7 +179,7 @@ example:
         parser = argparse.ArgumentParser()
         parser.add_argument(
             "-i",
-            "--input",
+            "--infile",
             default=sys.stdin.buffer,
             help=f""" Input source, stdin, file, http(s), udp, or multicast mpegts
                                     [ default:{REV}sys.stdin.buffer{NORM} ]
@@ -181,7 +187,7 @@ example:
         )
         parser.add_argument(
             "-o",
-            "--output",
+            "--outfile",
             default=sys.stdout.buffer,
             help=f"Output file  [ default:{REV}sys.stdout.buffer{NORM} ]",
         )
@@ -194,6 +200,29 @@ example:
         args = parser.parse_args()
         self._apply_args(args)
 
+def bump(infile=sys.stdin.buffer,outfile=sys.stdout.buffer,secs=0.0):
+    """
+    bump  is a function to adjust PTS with defaults.
+    
+        infile = sys.stdin.buffer
+    
+        outfile = sys.stdout.buffer
+    
+        secs= 0.0
+    
+example:
+                >>> from threefive import bump
+                >>> bump(infile,outfile,secs)
+
+    """
+    args={"infile":infile,
+                "outfile":outfile,
+              "secs":secs,
+          }
+    bumper = StreamBumper()
+    bumper.apply_args(args)
+    bumper.bump()
+    
 
 def cli():
     """
