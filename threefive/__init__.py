@@ -17,7 +17,7 @@ from .speedo import Speedo
 from .stream import Stream
 from .superkabuki import SuperKabuki
 from .throttle import Throttle
-from .udp import  udp_sender,udp_receiver,mcast_ttl
+from .udp import udp_sender, udp_receiver, mcast_ttl
 from .upids import AirId, Atsc, Eidr, Isan, Mid, Mpu, NoUpid, Umid, Upid, upid_map
 from .uxp import UltraXmlParser
 from .version import version
