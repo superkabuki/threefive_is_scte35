@@ -72,6 +72,13 @@ def clean(data):
 def ishex(data):
     """
     ishex determine if a string is a hex value.
+
+example:
+                >>> from threefive.stuff import ishex
+                >>> a='0x1234'
+                >>> ishex(a)
+                True
+    
     """
     data = clean(data)
     hexed = "0123456789abcdef"
@@ -92,6 +99,16 @@ def isjson(data):
 def isfloat(value):
     """
     isfloat determine if a str or bytes is a float
+    
+example:
+                >>> from threefive.stuff import isfloat
+                >>> isfloat('1.23')
+                True
+                >>> isfloat('1.23g')
+                False
+               >>> isfloat('1.2.3')
+               False
+ 
     """
     value = clean(value)
     return "." in value and value.replace(".", "", 1).isdigit()
@@ -110,6 +127,21 @@ def pif(value):
     """
     pif  parses  an int or float from byte strings and strings and hex
     if it's not a string or byte string it  just returns the value.
+example:
+                >>> from threefive.stuff import pif
+                >>>> pif("bob")
+                'bob'
+                >>>> pif("12.4")
+                12.4
+                >>>> pif("0x3456")
+                13398
+                >>>> pif(b"13")
+                13
+                >>>> pif(0xdead)
+                57005
+                >>>> pif('7')
+                7
+
     """
     if not isinstance(value, (str, bytes)):
         return value
@@ -186,6 +218,13 @@ def no_ESC(a_string):
 def print2(gonzo=b""):
     """
     print2 prints to 2 aka stderr.
+
+example:
+                >>> from threefive.stuff import print2
+                >>> print2('hello')
+                hello
+
+                    
     """
     if "HTTP_USER_AGENT" in environ:
         print(f'<script>alert("{gonzo}");</script>')
@@ -204,6 +243,10 @@ def iso8601():
 
     '2023-05-11T15:55:51.'
 
+    example:
+                    >>> from threefive.stuff import iso8601
+                    >>> iso8601()
+                    '2026-02-12T13:21:05.32Z '
     """
     return f"{datetime.datetime.utcnow().isoformat()[:-4]}Z "
 
