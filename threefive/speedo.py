@@ -23,7 +23,6 @@ class Speedo:
         self.now = time.time
         self.total_bytes = 0
 
-
     def plus(self, this_many):
         """
         plus add to the running byte tota;l
