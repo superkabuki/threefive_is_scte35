@@ -52,17 +52,17 @@ NORM = "\033[27m"
 
 class StreamBumper(Stream):
     """
-    StreamBumper class
+        StreamBumper class
 
-        Adjust SCTE-35 PTS times  in MPEGTS
+            Adjust SCTE-35 PTS times  in MPEGTS
 
-example:
-                >>> from threefive.bump import StreamBumper
-                >>> sb=StreamBumper()               
-                >>> sb.infile = "input.ts"
-                >>> sb.outfile = "output.ts"
-                >>> sb.secs = 100.123
-                >>> sb.bump()
+    example:
+                    >>> from threefive.bump import StreamBumper
+                    >>> sb=StreamBumper()
+                    >>> sb.infile = "input.ts"
+                    >>> sb.outfile = "output.ts"
+                    >>> sb.secs = 100.123
+                    >>> sb.bump()
 
     """
 
@@ -200,29 +200,31 @@ example:
         args = parser.parse_args()
         self._apply_args(args)
 
-def bump(infile=sys.stdin.buffer,outfile=sys.stdout.buffer,secs=0.0):
+
+def bump(infile=sys.stdin.buffer, outfile=sys.stdout.buffer, secs=0.0):
     """
-    bump  is a function to adjust PTS with defaults.
-    
-        infile = sys.stdin.buffer
-    
-        outfile = sys.stdout.buffer
-    
-        secs= 0.0
-    
-example:
-                >>> from threefive import bump
-                >>> bump(infile,outfile,secs)
+        bump  is a function to adjust PTS with defaults.
+
+            infile = sys.stdin.buffer
+
+            outfile = sys.stdout.buffer
+
+            secs= 0.0
+
+    example:
+                    >>> from threefive import bump
+                    >>> bump(infile,outfile,secs)
 
     """
-    args={"infile":infile,
-                "outfile":outfile,
-              "secs":secs,
-          }
+    args = {
+        "infile": infile,
+        "outfile": outfile,
+        "secs": secs,
+    }
     bumper = StreamBumper()
     bumper.apply_args(args)
     bumper.bump()
-    
+
 
 def cli():
     """
