@@ -27,7 +27,6 @@ class Segment(Stream):
 
 
    example:
-
                     >>> from threefive import Segment
                     >>> uri = "https://example.com/1.ts"
                     >>> seg = Segment(uri)
@@ -38,8 +37,8 @@ class Segment(Stream):
 
 
     AES Encryption
+    
     example:
-
                     >>> from threefive import Segment
                     >>> key = "https://example.com/aes.key"
                     >>> IV=0x998C575D24F514AEC84EDC5CABCCDB81
