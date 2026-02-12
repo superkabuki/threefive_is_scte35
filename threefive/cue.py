@@ -32,21 +32,21 @@ from .uxp import xml2cue
 
 class Cue(SCTE35Base):
     """
-    The threefive.Cue class parses individual SCTE-35 Cues or messages.
+        The threefive.Cue class parses individual SCTE-35 Cues or messages.
 
-example:
-                >>> import threefive
-                >>> Base64 = "/DAvAAAAAAAA///wBQb+dGKQoAAZAhdDVUVJSAAAjn+fCAgAAAAALKChijUCAKnMZ1g="
-                >>> cue = threefive.Cue(Base64)
-                >>> cue.show()
+    example:
+                    >>> import threefive
+                    >>> Base64 = "/DAvAAAAAAAA///wBQb+dGKQoAAZAhdDVUVJSAAAjn+fCAgAAAAALKChijUCAKnMZ1g="
+                    >>> cue = threefive.Cue(Base64)
+                    >>> cue.show()
 
-    * Instance variables can be accessed via dot notation.
+        * Instance variables can be accessed via dot notation.
 
-    >>>> cue.command
-    {'command_length': 5, 'name': 'Time Signal', 'time_specified_flag': True,
-    'pts_time': 21695.740089}
+        >>>> cue.command
+        {'command_length': 5, 'name': 'Time Signal', 'time_specified_flag': True,
+        'pts_time': 21695.740089}
 
-    >>>> cue.command.pts_time=56.345
+        >>>> cue.command.pts_time=56.345
     """
 
     def __init__(self, data=None, packet_data=None):
@@ -157,14 +157,14 @@ example:
 
     def get(self):
         """
-        Cue.get returns the SCTE-35 Cue
-        data as a dict of dicts.
+                Cue.get returns the SCTE-35 Cue
+                data as a dict of dicts.
 
-example:
-                >>> import threefive
-                >>> Base64 = "/DAvAAAAAAAA///wBQb+dGKQoAAZAhdDVUVJSAAAjn+fCAgAAAAALKChijUCAKnMZ1g="
-                >>> cue = threefive.Cue(Base64)
-                >>> cue.get()
+        example:
+                        >>> import threefive
+                        >>> Base64 = "/DAvAAAAAAAA///wBQb+dGKQoAAZAhdDVUVJSAAAjn+fCAgAAAAALKChijUCAKnMZ1g="
+                        >>> cue = threefive.Cue(Base64)
+                        >>> cue.get()
 
         """
         scte35_data = False
@@ -186,14 +186,14 @@ example:
 
     def fix_bad_b64(self, data):
         """
-        fix_bad_b64 fixes bad padding on Base64
+                fix_bad_b64 fixes bad padding on Base64
 
-example:
-                >>> from threefive.cue import fix-bad_b64
-                >>> fix-bad_b64("/DAvAAAAAAAA///wBQb+dGKQoAAZAhdDVUVJSAAAjn+fCAgAAAAALKChijUCAKnMZ1g")
+        example:
+                        >>> from threefive.cue import fix-bad_b64
+                        >>> fix-bad_b64("/DAvAAAAAAAA///wBQb+dGKQoAAZAhdDVUVJSAAAjn+fCAgAAAAALKChijUCAKnMZ1g")
 
-                /DAvAAAAAAAA///wBQb+dGKQoAAZAhdDVUVJSAAAjn+fCAgAAAAALKChijUCAKnMZ1g=
-        
+                        /DAvAAAAAAAA///wBQb+dGKQoAAZAhdDVUVJSAAAjn+fCAgAAAAALKChijUCAKnMZ1g=
+
         """
         while len(data) % FOUR != ZERO:
             data = data + EQUALSIGN
@@ -236,7 +236,13 @@ example:
         return False
 
     def _bits__bytes_or_str(self, data):
-        if isinstance(data,(bytes, str,),):
+        if isinstance(
+            data,
+            (
+                bytes,
+                str,
+            ),
+        ):
             data = data.strip()
             return self._bits_json_xml(data)
         return False
@@ -366,21 +372,21 @@ example:
         if 'splice_command_type' is included,
         an empty command instance will be created for Cue.command
         """
-        info_sec=data
+        info_sec = data
         if "info_section" in data:
-            info_sec= data["info_section"]
+            info_sec = data["info_section"]
             self.info_section.load(info_sec)
 
-    def _load_cmd(self,data):
+    def _load_cmd(self, data):
         """
         _load_cmd
         cmd= data or data['command']
         """
-        cmd=data
+        cmd = data
         if "command" in cmd:
-            cmd= data["command"]
+            cmd = data["command"]
         return cmd
-    
+
     def _load_command(self, data):
         """
         load_command loads data for Cue.command
@@ -388,23 +394,22 @@ example:
         if 'command_type' is included,
         the command instance will be created.
         """
-        cmd=self._load_cmd(data) 
+        cmd = self._load_cmd(data)
         if "command_type" in cmd:
             self.command = command_map[cmd["command_type"]]()
             self.command.load(cmd)
         return "command_type" in cmd
 
-    def _load_dstuff(self,dstuff):
+    def _load_dstuff(self, dstuff):
         if "tag" in dstuff:
             dscptr = descriptor_map[dstuff["tag"]]()
             dscptr.load(dstuff)
             self.descriptors.append(dscptr)
 
-    def _load_dlist(self,dlist):
+    def _load_dlist(self, dlist):
         for dstuff in dlist:
-            if isinstance(dstuff,dict):
+            if isinstance(dstuff, dict):
                 self._load_dstuff(dstuff)
-
 
     def _load_descriptors(self, data):
         """
@@ -413,40 +418,49 @@ example:
         if 'tag' is included in each dict,
         a descriptor instance will be created.
         """
-        dlist =data
-        if "descriptors"  in data:
+        dlist = data
+        if "descriptors" in data:
             dlist = data["descriptors"]
         if not isinstance(dlist, list):
             return
         self._load_dlist(dlist)
 
-
-    def _load_bytes(self,data):
+    def _load_bytes(self, data):
         if isinstance(data, bytes):
             data = data.decode(errors="ignore")
 
-    def _load_str(self,data):
+    def _load_str(self, data):
         if isinstance(data, str):
             if isxml(data):
                 self._from_xml(data)
                 return True
             data = json.loads(data)
 
-    def _load_dict(self,data):           
+    def _load_dict(self, data):
         if isinstance(data, (dict)):
             self._load_info_section(data)
             self._load_command(data)
 
-    def _load_dict_list(self,data):        
-        if isinstance(data,(dict,list,)):
+    def _load_dict_list(self, data):
+        if isinstance(
+            data,
+            (
+                dict,
+                list,
+            ),
+        ):
             self._load_descriptors(data)
 
-    def _load_by_type(self,data):
-         _= [x(data) for x in [self._load_bytes,
-                                            self._load_str,
-                                           self._load_dict,
-                                           self._load_dict_list]
-             ]
+    def _load_by_type(self, data):
+        _ = [
+            x(data)
+            for x in [
+                self._load_bytes,
+                self._load_str,
+                self._load_dict,
+                self._load_dict_list,
+            ]
+        ]
 
     def load(self, data):
         """
@@ -482,7 +496,7 @@ example:
         data = clean(data)
         if "Binary" in data:
             # Should be base64, but threefive allows any SCTE35 format
-            b64= data.split('Binary>',1)[-1].split('<')[0]
+            b64 = data.split("Binary>", 1)[-1].split("<")[0]
             self._bits_decode(b64)
             self.decode()
         elif "SpliceInfoSection" in data:
@@ -512,14 +526,14 @@ example:
 
     def xml(self, ns="scte35"):
         """
-        xml returns SCTE-35
-        as xml
+                xml returns SCTE-35
+                as xml
 
-example:
-                >>> import threefive
-                >>> Base64 = "/DAvAAAAAAAA///wBQb+dGKQoAAZAhdDVUVJSAAAjn+fCAgAAAAALKChijUCAKnMZ1g="
-                >>> cue = threefive.Cue(Base64)
-                >>> cue.xml()
+        example:
+                        >>> import threefive
+                        >>> Base64 = "/DAvAAAAAAAA///wBQb+dGKQoAAZAhdDVUVJSAAAjn+fCAgAAAAALKChijUCAKnMZ1g="
+                        >>> cue = threefive.Cue(Base64)
+                        >>> cue.xml()
         """
         self.encode()
         sis = self.info_section.xml(ns=ns)
@@ -538,4 +552,3 @@ example:
         xbb = Node("Binary", value=self.base64())
         xb.addchild(xbb)
         return xb
-
