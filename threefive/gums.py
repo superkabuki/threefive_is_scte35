@@ -51,7 +51,6 @@ class GumS:
             return True
         return False
 
- 
     def _iter_dgrams(self, vid):
         """
         _iter_dgrams iterates over the video and sends
