@@ -42,7 +42,6 @@ def reader(uri, headers={}):
                             obj.read(bites)
 
     example:
-
         >>> from threefive import reader
 
         >>> with reader('http://iodisco.com/') as disco:
