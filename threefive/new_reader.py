@@ -36,29 +36,29 @@ def corsreader(uri, headers={}):
 def reader(uri, headers={}):
     """
 
-    reader returns an object with a read method.
-    No matter what object is return, meets the
-    interface:
-                        obj.read(bites)
-                        
-example:
+        reader returns an object with a read method.
+        No matter what object is return, meets the
+        interface:
+                            obj.read(bites)
 
-    >>> from threefive import reader
-    
-    >>> with reader('http://iodisco.com/') as disco:
-    >>> disco.read()
+    example:
 
-    >>> with reader('http://iodisco.com/',headers={"myHeader":"DOOM"}) as doom:
-    >>> doom.read()
+        >>> from threefive import reader
 
-    >>> with reader("udp://@227.1.3.10:4310") as data:
-    >>> data.read(8192)
+        >>> with reader('http://iodisco.com/') as disco:
+        >>> disco.read()
 
-    >>> with reader("/home/you/video.ts") as data:
-    >>> fu = data.read()
+        >>> with reader('http://iodisco.com/',headers={"myHeader":"DOOM"}) as doom:
+        >>> doom.read()
 
-    >>> udp_data =reader("udp://1.2.3.4:5555")
-    >>> chunks = [udp_data.read(188) for i in range(0,1024)]
+        >>> with reader("udp://@227.1.3.10:4310") as data:
+        >>> data.read(8192)
+
+        >>> with reader("/home/you/video.ts") as data:
+        >>> fu = data.read()
+
+        >>> udp_data =reader("udp://1.2.3.4:5555")
+        >>> chunks = [udp_data.read(188) for i in range(0,1024)]
 
     """
     # read from stdin
