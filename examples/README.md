@@ -2,6 +2,7 @@
 
 * `aac_id3header.py` - use the __threefive.aac.AacParser__ class to parse __HLS AAC__ segments for __PTS__ in __ID3 header tags__.
 * `id3.aac` test file for __aac_id3header.py__
+
 * `base64toxmlbin.py`- __convert__ __base64__ encoded __SCTE-35__ to __xml+binary__ encoded SCTE-35 and back.
   
 * `cue2vtt.py` - display __SCTE-35__ data on video using __WebVTT__ subtitles to __verify__ __SCTE-35__ __splice points__.
@@ -20,6 +21,8 @@
 
 * `quickstream.py` - how to __add SCTE-35 parsing__ for __MPEGTS__ streams to __your application__.
 
+* `spliceinsert.py` - a __SCTE-35__ __Splice Insert__ example.  
+
 * `upid_custom_output.py` - __customizing Upid data output__ for a variety of __Upids__.
 
-* `spliceinsert.py` - a __SCTE-35__ __Splice Insert__ example.  
+* `custom_upid_handling.py` -  Custom __user defined UPID__ handling example.
