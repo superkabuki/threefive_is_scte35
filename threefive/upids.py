@@ -92,6 +92,27 @@ class Upid:
         return Node("SegmentationUpid", attrs=ud_attrs, value=value, ns=ns)
 
 
+class AdID(Upid):
+    """
+    AdID Upid
+
+
+    AdID Upid example:
+                    >>> 'ABCD0123456H'
+    """
+    pass
+
+
+class TID(Upid):
+    """
+    TID Turner Identifier
+
+    TID Upid example:
+                    >>> 'MV0004146400'
+    """
+    pass
+
+
 class NoUpid(Upid):
     """
     NoUpid class
@@ -112,7 +133,8 @@ class NoUpid(Upid):
 
 class AirId(Upid):
     """
-    Air Id Upid
+    Air Id Upid example:
+                                    >>> '0x2cb2d79d'
     """
 
     def decode(self):
@@ -132,6 +154,14 @@ class AirId(Upid):
 class Atsc(Upid):
     """
     ATSC Upid
+
+    example ATSC Upid:
+                                    >>> {'TSID': 241,
+                                    'reserved': 3,
+                                    'end_of_day': 23,
+                                    'unique_for': 511,
+                                    'content_id': 'human012'}
+                    
     """
 
     def decode(self):
@@ -163,6 +193,9 @@ class Atsc(Upid):
 class Eidr(Upid):
     """
     Eidr Upid
+
+    Eidr Upid example:
+                    >>> '0x307831343738663835616531'
     """
 
     def decode(self):
@@ -195,6 +228,9 @@ class Eidr(Upid):
 class Isan(Upid):
     """
     Isan Upid
+
+    Isan Upid example:
+                   >>> '0x3a8d000000000000'
     """
 
     def decode(self):
@@ -272,6 +308,10 @@ class Mid(Upid):
 class Mpu(Upid):
     """
     Mpu Upid
+
+           MPU Upid example:
+                        >>> {'format_identifier': 'RTLN',
+                        'private_data': '0x3148010000000031333736393230323534343935483100'}
     """
 
     def _decode_adfr(self):
@@ -290,6 +330,7 @@ class Mpu(Upid):
     def decode(self):
         """
         decode MPU Upids
+ 
         """
         self.upid_value = {
             "format_identifier": self.bitbin.as_charset(32),
@@ -310,9 +351,19 @@ class Mpu(Upid):
         nbin.add_hex(self.upid_value["private_data"], bit_len)
 
 
+class SCR(Upid):
+    """
+    SCR Upid
+
+    """
+    pass
+
 class Umid(Upid):
     """
     Umid Upid
+
+    Umid Upid example:
+                    >>> 30363061.32623334.2e303130.31303130.352e3031.30313064.32302e31
     """
 
     def decode(self):
@@ -335,6 +386,13 @@ class Umid(Upid):
         chunks = self.upid_value.split(".")
         for chunk in chunks:
             nbin.add_hex(chunk, 32)
+
+
+class UUID(Upid):
+    """
+    UUID Upid
+    """
+    pass
 
 
 upid_map = {
