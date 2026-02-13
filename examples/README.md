@@ -20,4 +20,6 @@
 
 * `quickstream.py` - how to __add SCTE-35 parsing__ for __MPEGTS__ streams to __your application__.
 
+* `upid_custom_output.py` - __customizing Upid data output__ for a variety of __Upids__.
+
 * `spliceinsert.py` - a __SCTE-35__ __Splice Insert__ example.  
