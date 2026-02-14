@@ -38,8 +38,6 @@ ___
 ___
 
 ## [Fun Facts]
-* threefive has been pip installed over 1.1 Million times
-* pypi.org ranks threefive in the top 2% of all python packages, ever.
 * threefive is single threaded.
 * threefive has more left shifts than multiplication operations.
 * threefive doesn't have a single lambda call.
