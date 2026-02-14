@@ -15,8 +15,6 @@ ___
 
 
 ### [ News ]
-
-* __threefive.Bitn__ does __bit manipulation__ __10 times faster__ than __bitarray__.
    
 * __Python3 vs. Pypy3__ [__parsing SCTE35 with threefive__](https://github.com/superkabuki/threefive_is_scte35#python3-vs-pypy3-running-threefive) (watch the cool video)
  
@@ -38,6 +36,13 @@ ___
 * __threefive packets__ and __threefive pts__ now works with __SRT__.
 
 ___
+
+## [Fun Facts]
+* threefive has been pip installed over 1.1 Million times
+* pypi.org ranks threefive in the top 2% of all python packages, ever.
+* threefive is single threaded.
+* threefive has more left shifts than multiplication operations.
+* threefive doesn't have a single lambda call.
 
 ##  [Examples]
 <i>These examples show how to parse SCTE-35<BR> 
