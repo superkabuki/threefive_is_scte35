@@ -5,11 +5,16 @@
 ## https://github.com/superkabuki/threefive
 
 ### __threefive__ is the industry leading SCTE-35 tool. 
-*   Decode SCTE-35 from __MPEGTS ✔ Base64 ✔ Bytes ✔ DASH ✔ Hex ✔ HLS ✔ Integers ✔ JSON ✔ XML ✔ XML+Binary ✔__  
+*   Decode SCTE-35 from __MPEGTS ✔ Base64 ✔ Bytes ✔ DASH ✔ Hex ✔ HLS ✔ Integers ✔ JSON ✔ XML ✔ XML+Binary ✔__
+  
 *   Encodes SCTE-35 to __MPEGTS ✔ Base64 ✔ Bytes ✔ Hex ✔ Integers ✔ JSON ✔ XML ✔ XML+Binary ✔__
+
 *   Network support for __HTTP(s) ✔ Multicast ✔ UDP ✔ SRT ✔__ 
+
 *   __Automatic AES decryption__ for __MPEGTS__ and __HLS__. ✔
+
 *   __Built-in Multicast Server__ and __client__. ✔
+
 *   __Injects SCTE-35 Packets__ into __MPEGTS__ video ✔.
 ___
 
@@ -41,6 +46,7 @@ ___
 * threefive is single threaded.
 * threefive has more left shifts than multiplication operations.
 * threefive doesn't have a single lambda call.
+___
 
 ##  [Examples]
 <i>These examples show how to parse SCTE-35<BR> 
