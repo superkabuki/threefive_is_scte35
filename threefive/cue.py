@@ -449,43 +449,6 @@ class Cue(SCTE35Base):
             return
         self._load_dlist(dlist)
 
-    def _load_bytes(self, data):
-        if isinstance(data, bytes):
-            data = data.decode(errors="ignore")
-
-    def _load_str(self, data):
-        if isinstance(data, str):
-            if isxml(data):
-                self._from_xml(data)
-                return True
-            data = json.loads(data)
-
-    def _load_dict(self, data):
-        if isinstance(data, (dict)):
-            self._load_info_section(data)
-            self._load_command(data)
-
-    def _load_dict_list(self, data):
-        if isinstance(
-            data,
-            (
-                dict,
-                list,
-            ),
-        ):
-            self._load_descriptors(data)
-
-    def _load_by_type(self, data):
-        _ = [
-            x(data)
-            for x in [
-                self._load_bytes,
-                self._load_str,
-                self._load_dict,
-                self._load_dict_list,
-            ]
-        ]
-
     def load(self, data):
         """
         Cue.load loads SCTE35 data into the Cue instance.
@@ -515,12 +478,19 @@ class Cue(SCTE35Base):
                         >>> cue.load(xml)
                         True
         """
-        self._load_by_type(data)
-        if self.command:
+        data = clean(data)
+        if isinstance(data, str):
+            if isxml(data):
+                self._from_xml(data)
+                return True
+            data = json.loads(data)
+        if isinstance(data, (dict,)):
+            self._load_info_section(data)
+            self._load_command(data)
+        if isinstance(data, (dict,list,)):
+            self._load_descriptors(data["descriptors"])
             self.encode()
             self.decode()
-            return True
-        if self.descriptors:
             return True
         return False
 
