@@ -16,38 +16,38 @@ except ImportError:
 
 class Segment(Stream):
     """
-    The Segment class is a Sub Class of threefive.Stream
-    made for small, fixed size MPEGTS files,like HLS segments.
+     The Segment class is a Sub Class of threefive.Stream
+     made for small, fixed size MPEGTS files,like HLS segments.
 
-    Segment Class Specific Features:
+     Segment Class Specific Features:
 
-    * Decryption of AES Encrypted MPEGTS.
+     * Decryption of AES Encrypted MPEGTS.
 
-    * Segment.cues  a list of SCTE35 cues found in the segment.
-
-
-   example:
-                    >>> from threefive import Segment
-                    >>> uri = "https://example.com/1.ts"
-                    >>> seg = Segment(uri)
-                    >>> seg.decode()
-                    >>> [cue.encode() for cue in seg.cues]
-                    ['/DARAAAAAAAAAP/wAAAAAHpPv/8=',
-                    '/DAvAAAAAAAAAP/wFAUAAAKWf+//4WoauH4BTFYgAAEAAAAKAAhDVUVJAAAAAOv1oqc=']
+     * Segment.cues  a list of SCTE35 cues found in the segment.
 
 
-    AES Encryption
-    
     example:
-                    >>> from threefive import Segment
-                    >>> key = "https://example.com/aes.key"
-                    >>> IV=0x998C575D24F514AEC84EDC5CABCCDB81
-                    >>> uri = "https://example.com/aes-1.ts"
-                    >>>> seg = Segment(uri,key_uri=key, iv=IV)
-                    >>>> seg.decode()
-                    >>>> {cue.packet_data.pts:cue.encode() for cue in seg.cues}
-                   { 89718.451333: '/DARAAAAAAAAAP/wAAAAAHpPv/8=',
-                   89730.281789: '/DAvAAAAAAAAAP/wFAUAAAKWf+//4WoauH4BTFYgAAEAAAAKAAhDVUVJAAAAAOv1oqc='}
+                     >>> from threefive import Segment
+                     >>> uri = "https://example.com/1.ts"
+                     >>> seg = Segment(uri)
+                     >>> seg.decode()
+                     >>> [cue.encode() for cue in seg.cues]
+                     ['/DARAAAAAAAAAP/wAAAAAHpPv/8=',
+                     '/DAvAAAAAAAAAP/wFAUAAAKWf+//4WoauH4BTFYgAAEAAAAKAAhDVUVJAAAAAOv1oqc=']
+
+
+     AES Encryption
+
+     example:
+                     >>> from threefive import Segment
+                     >>> key = "https://example.com/aes.key"
+                     >>> IV=0x998C575D24F514AEC84EDC5CABCCDB81
+                     >>> uri = "https://example.com/aes-1.ts"
+                     >>> seg = Segment(uri,key_uri=key, iv=IV)
+                     >>> seg.decode()
+                     >>> {cue.packet_data.pts:cue.encode() for cue in seg.cues}
+                    { 89718.451333: '/DARAAAAAAAAAP/wAAAAAHpPv/8=',
+                    89730.281789: '/DAvAAAAAAAAAP/wFAUAAAKWf+//4WoauH4BTFYgAAEAAAAKAAhDVUVJAAAAAOv1oqc='}
 
     """
 
