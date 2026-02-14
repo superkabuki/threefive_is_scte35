@@ -291,6 +291,12 @@ class Cue(SCTE35Base):
         """
         base64 returns SCTE35
         encoded as a base64 string.
+
+        example:
+                >>> from threefive import Cue
+                >>> cue=Cue('0xfc301600000000000000fff00506feceda3b7700000d10b0ea')
+                >>> cue.base64()
+                '/DAWAAAAAAAAAP/wBQb+zto7dwAADRCw6g=='
         """
         if self.command:
             self._assemble()
@@ -303,6 +309,12 @@ class Cue(SCTE35Base):
         """
         bytes returns SCTE-35
         as raw bytes
+
+        example:
+            >>> from threefive import Cue
+            >>> cue=Cue('0xfc301600000000000000fff00506feceda3b7700000d10b0ea')
+            >>> cue.bytes()
+            b'\xfc0\x16\x00\x00\x00\x00\x00\x00\x00\xff\xf0\x05\x06\xfe\xce\xda;w\x00\x00\r\x10\xb0\xea'
         """
         return self.bites
 
@@ -310,6 +322,12 @@ class Cue(SCTE35Base):
         """
         hex returns SCTE-35
         encoded as a hex string
+
+        example:
+                >>> from threefive import Cue
+                >>> cue=Cue( '/DAWAAAAAAAAAP/wBQb+zto7dwAADRCw6g==')
+                 >>> cue.hex()
+                '0xfc301600000000000000fff00506feceda3b7700000d10b0ea'
         """
         return hex(self.int())
 
@@ -317,6 +335,12 @@ class Cue(SCTE35Base):
         """
         int returns SCTE-35
         encoded as an Integer
+
+        example:
+                    >>> from threefive import Cue
+                    >>> cue=Cue( '/DAWAAAAAAAAAP/wBQb+zto7dwAADRCw6g==')
+                    >>> cue.int()
+                    1583008701074197245727019716796221243010008018887947691536618
         """
         self.encode()
         return int.from_bytes(self.bites, byteorder="big")
@@ -477,6 +501,19 @@ class Cue(SCTE35Base):
 
         * load doesn't need to be called directly
           unless you initialize a Cue without data.
+
+        example:
+                        >>> from threefive import Cue
+                        >>> xml='''<scte35:SpliceInfoSection xmlns:scte35="https://scte.org/schemas/35"
+                        ptsAdjustment="0" protocolVersion="0" sapType="3" tier="4095">
+                          <scte35:TimeSignal>
+                              <scte35:SpliceTime ptsTime="38560.095189"/>
+                            </scte35:TimeSignal>
+                        </scte35:SpliceInfoSection>
+                        '''
+                        >>> cue=Cue()
+                        >>> cue.load(xml)
+                        True
         """
         self._load_by_type(data)
         if self.command:
