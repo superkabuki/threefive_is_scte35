@@ -1,5 +1,5 @@
 """
-next.py demonstrates how to use Stream.decode_next() to grab and process
+decodenext.py demonstrates how to use Stream.decode_next() to grab and process
 the next SCTE-35 Cue in an MPEGTS stream.
 
 threefive.Stream.decode_next() is a python generator that yields a cue
