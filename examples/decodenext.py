@@ -21,11 +21,11 @@ from threefive import Stream
 
 def do():
     arg = sys.argv[1]
-    strm =Stream(sys.argv[1])
+    strm = Stream(sys.argv[1])
     for cue in strm.decode_next():
-        cmd = f'Command: {cue.command.name}'
-        if cue.command.has('pts_time'):
-            cmd +=f'\t pts: {cue.command.pts_time}'
+        cmd = f"Command: {cue.command.name}"
+        if cue.command.has("pts_time"):
+            cmd += f"\t pts: {cue.command.pts_time}"
         print(cmd)
 
 
