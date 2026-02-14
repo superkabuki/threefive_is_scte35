@@ -478,8 +478,10 @@ class Cue(SCTE35Base):
                         >>> cue.load(xml)
                         True
         """
-        data = clean(data)
+        if isinstance(data, bytes):
+            data = clean(data)
         if isinstance(data, str):
+            data=data.strip()
             if isxml(data):
                 self._from_xml(data)
                 return True
