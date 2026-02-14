@@ -92,30 +92,40 @@ class Upid:
         return Node("SegmentationUpid", attrs=ud_attrs, value=value, ns=ns)
 
 
-class AdID(Upid):
+class Adid(Upid):
     """
-    AdID Upid
+    AdId Upid
 
+    AdID - type: 0x03   length: 12
 
-    AdID Upid example:
+    AdID Upid example value:
                     >>> 'ABCD0123456H'
     """
+
     pass
 
 
-class TID(Upid):
+class Tid(Upid):
     """
-    TID Turner Identifier
+    Tid Upid
 
-    TID Upid example:
+    Turner Identifier - type: 0x07   length: 12
+
+    TID Upid example value:
                     >>> 'MV0004146400'
     """
+
     pass
 
 
 class NoUpid(Upid):
     """
-    NoUpid class
+    No Upid
+
+    No Upid - type: 0x00 length: 0
+
+    example No Upid value:
+                    >>> ""
     """
 
     def decode(self):
@@ -131,10 +141,14 @@ class NoUpid(Upid):
         nbin.forward(0)
 
 
-class AirId(Upid):
+class Airid(Upid):
     """
-    Air Id Upid example:
-                                    >>> '0x2cb2d79d'
+    AirId Upid
+
+    Airing Id -  type: 0x08  length: 8
+
+    example Airing Upid value:
+                        >>> '0x2cb2d79d'
     """
 
     def decode(self):
@@ -155,13 +169,15 @@ class Atsc(Upid):
     """
     ATSC Upid
 
-    example ATSC Upid:
+    ATSC - type: 0x0B
+
+    example ATSC Upid value:
                                     >>> {'TSID': 241,
                                     'reserved': 3,
                                     'end_of_day': 23,
                                     'unique_for': 511,
                                     'content_id': 'human012'}
-                    
+
     """
 
     def decode(self):
@@ -194,7 +210,9 @@ class Eidr(Upid):
     """
     Eidr Upid
 
-    Eidr Upid example:
+    EIDR - type: 0x0a  length: 12
+
+    Eidr Upid example value:
                     >>> '0x307831343738663835616531'
     """
 
@@ -229,6 +247,8 @@ class Isan(Upid):
     """
     Isan Upid
 
+    ISAN  - type: 0x06  length: 12
+
     Isan Upid example:
                    >>> '0x3a8d000000000000'
     """
@@ -251,6 +271,9 @@ class Isan(Upid):
 class Mid(Upid):
     """
     Mid Upid
+
+    MID - type: 0x0D
+
     """
 
     def decode(self):
@@ -309,7 +332,9 @@ class Mpu(Upid):
     """
     Mpu Upid
 
-           MPU Upid example:
+    MPU - type: 0x0C
+
+    MPU Upid example value:
                         >>> {'format_identifier': 'RTLN',
                         'private_data': '0x3148010000000031333736393230323534343935483100'}
     """
@@ -330,7 +355,7 @@ class Mpu(Upid):
     def decode(self):
         """
         decode MPU Upids
- 
+
         """
         self.upid_value = {
             "format_identifier": self.bitbin.as_charset(32),
@@ -351,18 +376,24 @@ class Mpu(Upid):
         nbin.add_hex(self.upid_value["private_data"], bit_len)
 
 
-class SCR(Upid):
+class Scr(Upid):
     """
-    SCR Upid
+    Scr Upid
+
+    SCR - type: 0x11
 
     """
+
     pass
+
 
 class Umid(Upid):
     """
     Umid Upid
 
-    Umid Upid example:
+    UMID - type: 0x04  length: 32
+
+    Umid Upid example value:
                     >>> 30363061.32623334.2e303130.31303130.352e3031.30313064.32302e31
     """
 
@@ -388,10 +419,13 @@ class Umid(Upid):
             nbin.add_hex(chunk, 32)
 
 
-class UUID(Upid):
+class Uuid(Upid):
     """
     UUID Upid
+
+    UUID - type: 0x10  length: 16
     """
+
     pass
 
 
@@ -399,12 +433,12 @@ upid_map = {
     0x00: ["No UPID", NoUpid, 0],
     0x01: ["Type 0x01 is deprecated, use MPU type 0x0C", Upid, False],
     0x02: ["Type 0x02 is deprecated, use AdID type 0x03", Upid, 8],
-    0x03: ["AdID", Upid, 12],
+    0x03: ["AdID", Adid, 12],
     0x04: ["UMID", Umid, 32],
     0x05: ["Type 0x05 is deprecated, use ISAN type 0x06", Isan, 8],
     0x06: ["ISAN", Isan, 12],
-    0x07: ["TID", Upid, 12],
-    0x08: ["AiringID", AirId, 8],
+    0x07: ["TID", Tid, 12],
+    0x08: ["AiringID", Airid, 8],
     0x09: ["ADI", Upid, False],
     0x0A: ["EIDR", Eidr, 12],
     0x0B: ["ATSC", Atsc, False],
@@ -412,7 +446,7 @@ upid_map = {
     0x0D: ["MID", Mid, False],
     0x0E: ["ADS Info", Upid, False],
     0x0F: ["URI", Upid, False],
-    0x10: ["UUID", Upid, 16],
-    0x11: ["SCR", Upid, False],
+    0x10: ["UUID", Uuid, 16],
+    0x11: ["SCR", Scr, False],
     0xFD: ["Unknown", Upid, False],
 }
