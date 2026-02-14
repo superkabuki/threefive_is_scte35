@@ -7,7 +7,7 @@
   
 * `cue2vtt.py` - display __SCTE-35__ data on video using __WebVTT__ subtitles to __verify__ __SCTE-35__ __splice points__.
 
-* `decodenext.py` - parse __MPEGTS__ streams for __SCTE-35__ using __Stream.decode_next()__.  _(Updated 01/12/2026)_
+* `decodenext.py` - parse __MPEGTS__ streams for __SCTE-35__ using __Stream.decode_next()__.  _(__Updated__ 01/12/2026)_
 
 * `dtmf.py` - parse __base64__ __SCTE-35__ with a __DTMF__ descriptor and __re-encode__ to __SCTE-35__ in __Hex__ format.
 
