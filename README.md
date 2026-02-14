@@ -900,36 +900,7 @@ ___
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>threefive package &mdash; threefive 3.0.74 documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
 
-  
-      <script src="_static/jquery.js?v=5d32c60e"></script>
-      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=af2aa4bb"></script>
-      <script src="_static/doctools.js?v=fd6eb6e6"></script>
-      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
-    <script src="_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" /> 
-</head>
-
-<body class="wy-body-for-nav"> 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
-
-          
-          
-
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <!-- Local TOC -->
-              <div class="local-toc">
-</li>
-</ul>
-</li>
 <li><a class="reference internal" href="#module-threefive.base">threefive.base module</a><ul>
 
 <li><a class="reference internal" href="#threefive.base.SCTE35Base"><code class="docutils literal notranslate"><span class="pre">SCTE35Base</span></code></a><ul>
@@ -2417,26 +2388,5 @@ before encodingto another format.</p>
 </dd></dl>
 
 </section>
-on>
-<section id="module-threefive">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-threefive" title="Link to this heading"></a></h2>
-<p>threefive.__init__.py</p>
-</section>
-</section>
 
-
-           </div>
-          </div>
-
-        </div>
-      </div>
-    </section>
-  </div>
-  <script>
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script> 
-
-</body>
 </html>
