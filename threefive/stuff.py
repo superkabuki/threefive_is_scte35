@@ -1,7 +1,7 @@
 """
-stuff.py functions and such common to threefive.
+stuff.py helper functions and such common to threefive.
 
-print2, pif, iso8601, red, blue
+
 """
 
 import datetime
@@ -52,7 +52,7 @@ def codec_detect(data):
             data = data.decode(encoding=codec)
             return codec, data
         except ERR:
-            pass
+            return False,data
 
 
 def clean(data):
@@ -71,14 +71,14 @@ def clean(data):
 
 def ishex(data):
     """
-    ishex determine if a string is a hex value.
+        ishex determine if a string is a hex value.
 
-example:
-                >>> from threefive.stuff import ishex
-                >>> a='0x1234'
-                >>> ishex(a)
-                True
-    
+    example:
+                    >>> from threefive.stuff import ishex
+                    >>> a='0x1234'
+                    >>> ishex(a)
+                    True
+
     """
     data = clean(data)
     hexed = "0123456789abcdef"
@@ -98,17 +98,17 @@ def isjson(data):
 
 def isfloat(value):
     """
-    isfloat determine if a str or bytes is a float
-    
-example:
-                >>> from threefive.stuff import isfloat
-                >>> isfloat('1.23')
-                True
-                >>> isfloat('1.23g')
-                False
-               >>> isfloat('1.2.3')
-               False
- 
+        isfloat determine if a str or bytes is a float
+
+    example:
+                    >>> from threefive.stuff import isfloat
+                    >>> isfloat('1.23')
+                    True
+                    >>> isfloat('1.23g')
+                    False
+                   >>> isfloat('1.2.3')
+                   False
+
     """
     value = clean(value)
     return "." in value and value.replace(".", "", 1).isdigit()
@@ -125,25 +125,25 @@ def isxml(data):
 
 def pif(value):
     """
-    pif  parses  an int or float from byte strings and strings and hex
-    if it's not a string or byte string it  just returns the value.
-example:
-                >>> from threefive.stuff import pif
-                >>>> pif("bob")
-                'bob'
-                >>>> pif("12.4")
-                12.4
-                >>>> pif("0x3456")
-                13398
-                >>>> pif(b"13")
-                13
-                >>>> pif(0xdead)
-                57005
-                >>>> pif('7')
-                7
+        pif  parses  an int or float from byte strings and strings and hex
+        if it's not a string or byte string it  just returns the value.
+    example:
+                    >>> from threefive.stuff import pif
+                    >>>> pif("bob")
+                    'bob'
+                    >>>> pif("12.4")
+                    12.4
+                    >>>> pif("0x3456")
+                    13398
+                    >>>> pif(b"13")
+                    13
+                    >>>> pif(0xdead)
+                    57005
+                    >>>> pif('7')
+                    7
 
     """
-    if not isinstance(value, (str, bytes)):
+    if not isinstance(value, (str, bytes,)):
         return value
     value = clean(value)
     value = value.strip()
@@ -217,14 +217,14 @@ def no_ESC(a_string):
 
 def print2(gonzo=b""):
     """
-    print2 prints to 2 aka stderr.
+        print2 prints to 2 aka stderr.
 
-example:
-                >>> from threefive.stuff import print2
-                >>> print2('hello')
-                hello
+    example:
+                    >>> from threefive.stuff import print2
+                    >>> print2('hello')
+                    hello
 
-                    
+
     """
     if "HTTP_USER_AGENT" in environ:
         print(f'<script>alert("{gonzo}");</script>')
