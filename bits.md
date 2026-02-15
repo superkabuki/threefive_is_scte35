@@ -59,8 +59,8 @@ def babits():
     the bitarray package suggested as an alternative approach
     https://wiki.python.org/moin/BitManipulation
     """
-    bits = bin( int.from_bytes(BITES, byteorder="big"))[2:]
-    bits = bitarray(bits)
+    bits = bitarray()
+    bits.frombytes(BITES)
     a=ba2int(bits[3:14])
     b=ba2int(bits[14:46])
     c=ba2int(bits[46:78])
@@ -94,48 +94,49 @@ if __name__=='__main__':
 # The Results ( lower is better)
 ```js
 a@fu:~/scratch$ python3 bittime.py 
+a@fu:~/scratch$ python3 bittime.py 
 
 Testing with b'Adrian is super cool.' * 1
 
-	bitn	 1.0533314130007057
-	Python	 1.0576630479990854
-	bitarray 4.63300140100182
+	bitn	 1.040204357006587
+	Python	 1.0617029780114535
+	bitarray 3.7936903860099846
 
 Testing with b'Adrian is super cool.' * 5
 
-	bitn	 1.1732930180005496
-	Python	 1.6305488669968327
-	bitarray 7.181534543000453
+	bitn	 1.160293379012728
+	Python	 1.614508280006703
+	bitarray 3.8220152690046234
 
 Testing with b'Adrian is super cool.' * 10
 
-	bitn	 1.258845651995216
-	Python	 2.3609297400034848
-	bitarray 10.367007496999577
+	bitn	 1.2404183509934228
+	Python	 2.376827971005696
+	bitarray 3.8759478259889875
 
 Testing with b'Adrian is super cool.' * 20
 
-	bitn	 1.3913910670016776
-	Python	 3.685456153994892
-	bitarray 16.468871650999063
+	bitn	 1.377104152998072
+	Python	 3.7534151280124206
+	bitarray 3.8682709689892363
 
 Testing with b'Adrian is super cool.' * 40
 
-	bitn	 1.6337268499992206
-	Python	 6.356403646997933
-	bitarray 28.879704566999862
+	bitn	 1.6330131349968724
+	Python	 6.381160921999253
+	bitarray 3.9043904160062084
 
 Testing with b'Adrian is super cool.' * 80
 
-	bitn	 2.203413962997729
-	Python	 11.787694664999435
-	bitarray 54.989689134999935
+	bitn	 2.114325287999236
+	Python	 11.836203131999355
+	bitarray 3.9711879559908994
 
 Testing with b'Adrian is super cool.' * 160
 
-	bitn	 3.237896588005242
-	Python	 22.546146710999892
-	bitarray 104.07794349399774
+	bitn	 3.0401179079926806
+	Python	 22.452344535005977
+	bitarray 4.012048262011376
 ```
 
 ### Try the test yourself.
