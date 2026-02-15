@@ -6,6 +6,7 @@ the class SCTE35Base.
 import json
 from .bitn import NBin
 from .stuff import print2, red
+from pprint import pprint
 
 
 class SCTE35Base:
@@ -46,6 +47,14 @@ class SCTE35Base:
     def as_90k(int_time):
         """
         ticks to 90k timestamps
+
+        example:
+                        >>> from threefive import TimeSignal
+                        >>> ts=TimeSignal()
+                        >>> ts.as_90k(123456789)
+                        1371.7421
+
+        
         """
         return round((int_time / 90000.0), 6)
 
@@ -53,6 +62,14 @@ class SCTE35Base:
     def as_ticks(float_time):
         """
         90k timestamps to ticks
+
+        example:
+                        >>> from threefive import TimeSignal
+                        >>> ts=TimeSignal()
+                        >>> ts.as_ticks(1371.7421)
+                        123456789
+
+        
         """
         return int(round(float_time * 90000))
 
@@ -117,14 +134,54 @@ class SCTE35Base:
 
     def has(self, what):
         """
-        has runs hasattr with self and what
-        returns value if set.
-        """
-        obj = self
-        if hasattr(obj, what):
-            return getattr(obj, what)
+        has check if what is an attribute
+        of the calling object (self).
+        
+        if what is an attribute of this
+        object, return it.
+
+        If what is Not an attribute,
         return None
 
+        example:
+                >>> from threefive import Cue, TimeSignal
+                >>> ts=TimeSignal()
+                >>> ts.has('command_type')  # ts has command_type so it's value of 6 is returned
+                6
+                >>> ts.has("pts_time")    # pts_time is set to None, None is returned.
+                >>> ts.has("your_momma")  # ts does not have your_momma, None is returned.
+                # has methods can be chained
+                >>> cue=Cue()
+                >>> cue.command=ts
+                >>> cue.has("command").has("command_type")
+                6
+                
+        """
+        if what in vars(self):
+            return vars(self)[what]
+        return None
+
+    def inspect(self):
+        '''
+            inspect show all of the vars of this object
+            not kv_clean`ed.
+
+        example:
+                        >>> from threefive import TimeSignal
+                        >>> ts=TimeSignal()
+                        >>> ts.inspect()
+                        command_length = 0
+                        command_type = 6
+                        name = Time Signal
+                        bites = None
+                        time_specified_flag = None
+                        pts_time = None
+
+
+        '''
+        {print2(f'{k} = {v}') for k,v in vars(self).items()}
+        
+        
     def json(self):
         """
         json returns self as kv_clean'ed json
