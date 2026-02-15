@@ -21,6 +21,8 @@
 ___
 
 ### [ News ]
+
+* __threefive's [__bitn__ in a bit slicing shootout with bitarray and python.](bits.md) __Guess who wins.__
    
 * __Python3 vs. Pypy3__ [__parsing SCTE35 with threefive__](https://github.com/superkabuki/threefive_is_scte35#python3-vs-pypy3-running-threefive) (watch the cool video)
  
