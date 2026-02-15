@@ -14,7 +14,7 @@ Type "help", "copyright", "credits" or "license" for more information.
 >>>> from threefive import reader
 >>>> from threefive.uxp import UltraXmlParser
 
->>>> data = reader('/home/a/fu.mpd').decode()
+>>>> data = reader('/home/a/fu.mpd').read()
 
 >>>> u = UltraXmlParser()  # <---   use Ultra Xml Parser (Supreme)
 >>>> n =u.parse(data)     # <--- UltraXmlParser.parse(data) returns a Node instance
@@ -60,6 +60,19 @@ Type "help", "copyright", "credits" or "license" for more information.
          </Event>
 ]
 ```
+#### Get the attributes and the value of the Binary node for each event.
+```py3
+>>> for e in events: print(e.attrs, e.children[0].children[0].value)
+... 
+{'presentation_time': 1725946427520, 'duration': 38400, 'id': 14268737} /DAgAAAAAAAAAP/wDwUA2blBf//+ADS8AMAAAAAAAORhJCQ=
+{'presentation_time': 1725946548480, 'duration': 38400, 'id': 14268738} /DAgAAAAAAAAAP/wDwUA2blCf//+ADS8AMAAAAAAAORhJCQ=
+{'presentation_time': 1725946669440, 'duration': 38400, 'id': 14268739} /DAgAAAAAAAAAP/wDwUA2blDf//+ADS8AMAAAAAAAORhJCQ=
+{'presentation_time': 1725946790400, 'duration': 38400, 'id': 14268740} /DAgAAAAAAAAAP/wDwUA2blEf//+ADS8AMAAAAAAAORhJCQ=
+{'presentation_time': 1725946911360, 'duration': 38400, 'id': 14268741} /DAgAAAAAAAAAP/wDwUA2blFf//+ADS8AMAAAAAAAORhJCQ=
+{'presentation_time': 1725947032320, 'duration': 38400, 'id': 14268742} /DAgAAAAAAAAAP/wDwUA2blGf//+ADS8AMAAAAAAAORhJCQ=
+
+
+```
 
 #### __These events can be modified or deleted and the changes applied in real time.__
 
@@ -79,7 +92,7 @@ Type "help", "copyright", "credits" or "license" for more information.
 4
 ```
 
-#### you can also search with __Node.findattr(attr)__ for xml nodes that have an attribute
+#### you can also search with _Node.findattr(attr)_ for xml nodes that have an attribute
 
 ```py3
 >>>> bwidth_nodes=n.findattr("bandwidth")
@@ -151,6 +164,7 @@ Type "help", "copyright", "credits" or "license" for more information.
 , <hottamale:Representation   hottamale:id="video" hottamale:bandwidth="1000000" hottamale:ScanType="progressive"/>
 ]
 ```
+### Turn attribbutes into child nodes, recursively.
 
 ### Help is built-in
 
