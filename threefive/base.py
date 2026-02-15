@@ -164,7 +164,6 @@ class SCTE35Base:
     def inspect(self):
         '''
             inspect show all of the vars of this object
-            not kv_clean`ed.
 
         example:
                         >>> from threefive import TimeSignal
@@ -179,7 +178,7 @@ class SCTE35Base:
 
 
         '''
-        {print2(f'{k} = {v}') for k,v in vars(self).items()}
+        {print2(f'\t{k} = {v}') for k,v in vars(self).items()}
         
         
     def json(self):
