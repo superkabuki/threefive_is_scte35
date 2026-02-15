@@ -40,13 +40,13 @@ class Cue(SCTE35Base):
                     >>> cue = threefive.Cue(Base64)
                     >>> cue.show()
 
-        * Instance variables can be accessed via dot notation.
+        *Instance variables can be accessed via dot notation.
 
-        >>>> cue.command
+        >>> cue.command
         {'command_length': 5, 'name': 'Time Signal', 'time_specified_flag': True,
         'pts_time': 21695.740089}
 
-        >>>> cue.command.pts_time=56.345
+        >>> cue.command.pts_time=56.345
     """
 
     def __init__(self, data=None, packet_data=None):
@@ -191,7 +191,6 @@ class Cue(SCTE35Base):
         example:
                         >>> from threefive.cue import fix-bad_b64
                         >>> fix-bad_b64("/DAvAAAAAAAA///wBQb+dGKQoAAZAhdDVUVJSAAAjn+fCAgAAAAALKChijUCAKnMZ1g")
-
                         /DAvAAAAAAAA///wBQb+dGKQoAAZAhdDVUVJSAAAjn+fCAgAAAAALKChijUCAKnMZ1g=
 
         """
@@ -314,7 +313,6 @@ class Cue(SCTE35Base):
             >>> from threefive import Cue
             >>> cue=Cue('0xfc301600000000000000fff00506feceda3b7700000d10b0ea')
             >>> cue.bytes()
-            b'\xfc0\x16\x00\x00\x00\x00\x00\x00\x00\xff\xf0\x05\x06\xfe\xce\xda;w\x00\x00\r\x10\xb0\xea'
         """
         return self.bites
 
@@ -452,17 +450,14 @@ class Cue(SCTE35Base):
     def load(self, data):
         """
         Cue.load loads SCTE35 data into the Cue instance.
-        data is a dict or json or xml
-        with any or all of these keys
-        data = {
-            'info_section': {dict} ,
-            'command': {dict},
-            'descriptors': [list of {dicts}],
-            }
-        * You can load partial data into a Cue instance.
+        data is a dict or json or xml of a threefive.Cue instance,
+        or part of a Cue instance.
+       *threefive will try to determine what it is if possible.
+        
+        *You can load partial data into a Cue instance.
             for instance, you can load just the command if you want.
 
-        * load doesn't need to be called directly
+        *load doesn't need to be called directly
           unless you initialize a Cue without data.
 
         example:
