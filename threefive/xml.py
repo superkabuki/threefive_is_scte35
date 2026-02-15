@@ -168,20 +168,24 @@ class Node:
     An instance of Node has:
 
         tag :      <tag> </tag>
+        
         value  :    <tag>value</tag>
+        
         attrs :     <tag attrs[k]="attrs[v]">
+        
         children :  <tag><children[0]></children[0]</tag>
+
         depth:      tab depth for printing (automatically set)
+
         namespace:    a NameSpace instance for the Node
 
-    Use like this:
+example:
 
-        from threefive.xml import Node
-
-        ts = Node('TimeSignal')
-        st = Node('SpliceTime',attrs={'pts_time':3442857000})
-        ts.addchild(st)
-        print(ts)
+        >>> from threefive.xml import Node
+        >>> ts = Node('TimeSignal')
+        >>> st = Node('SpliceTime',attrs={'pts_time':3442857000})
+        >>> ts.addchild(st)
+        >>> print(ts)
     """
 
     def __init__(self, tag, value="", attrs=None, ns=None):
