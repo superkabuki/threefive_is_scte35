@@ -1,7 +1,7 @@
 """
-stuff.py helper functions and such common to threefive.
+stuff.py functions and such common to threefive.
 
-
+print2, pif, iso8601, red, blue
 """
 
 import datetime
@@ -80,7 +80,9 @@ def ishex(data):
                     True
 
     """
-    data = clean(data)
+    data= clean(data)
+    if  data is None:
+        return False
     hexed = "0123456789abcdef"
     data = data.lower().strip("0x")
     return all([c in hexed for c in data])
@@ -93,6 +95,8 @@ def isjson(data):
     is json.
     """
     data = clean(data)
+    if  data is None:
+        return False
     return data.startswith("{") & data.endswith("}")
 
 
@@ -111,6 +115,8 @@ def isfloat(value):
 
     """
     value = clean(value)
+    if value is None:
+        return False
     return "." in value and value.replace(".", "", 1).isdigit()
 
 
@@ -120,6 +126,8 @@ def isxml(data):
     is xml.
     """
     data = clean(data)
+    if data is None:
+        return False
     return data.startswith("<") & data.endswith(">")
 
 
@@ -200,8 +208,7 @@ def badtype(data, shouldbe):
     shouldbe: type
     """
     t = _type2string(type(data))
-    s = _type2string(shouldbe)
-    red(f"Data needs to be a {s} not {t}")
+    red(f"Data needs to be type {shouldbe} not {t}")
     return False
 
 
