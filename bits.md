@@ -166,11 +166,68 @@ Testing with b'Adrian is super cool.' * 160
 
 ```
 #### Python 3.11  test Results
-#### bitn won every round of testing.
+# __threefive.bitn won every round__ of testing.
 ___
 
 ### Pypy3 7.3.11
-```
 
+```js
+a@fu:~/scratch$ pypy3 bittime.py 
+
+Testing with b'Adrian is super cool.' * 1
+
+	bitn	 0.22715547600819264
+	Python	 0.9996345910039963
+	bitarray 45.995913716004
+	bitstring 96.82065459499427
+
+Testing with b'Adrian is super cool.' * 5
+
+	bitn	 0.34516811798675917
+	Python	 2.9047348639869597
+	bitarray 44.1155027620116
+	bitstring 96.45787117099098
+
+Testing with b'Adrian is super cool.' * 10
+
+	bitn	 0.5786345939995954
+	Python	 5.574217579007382
+	bitarray 48.36206529100309
+	bitstring 101.53963250300149
+
+Testing with b'Adrian is super cool.' * 20
+
+	bitn	 0.9784251679957379
+	Python	 10.5978108959971
+	bitarray 52.27717763998953
+	bitstring 116.60560560699378
+
+Testing with b'Adrian is super cool.' * 40
+
+	bitn	 1.7605186730070272
+	Python	 20.255990684992867
+	bitarray 50.55730177099758
+	bitstring 102.30023813599837
+
+Testing with b'Adrian is super cool.' * 80
+
+	bitn	 3.3384858630015515
+	Python	 40.508384133005165
+	bitarray 59.98209859900817
+	bitstring 113.77907062099257
+
+Testing with b'Adrian is super cool.' * 160
+
+	bitn	 6.676850318006473
+	bitarray 63.06353982099972
+	Python 	 93.83531636900443
+	bitstring 115.59813323599519
+```
+### Pypy3 Test Results
+# __threefive.bitn won every round__ of testing.
+
+What's really interesting is how badly the python suggested approach, bitarray, and bitstring performed on pypy3.
+I'm a big fan of ppypy3's performance, threefive runs four times faster on pypy3, even though it's just regular python code.
+I may run Cprofile on it and see where it bottlenecks.
 
 ### Try the test yourself.
