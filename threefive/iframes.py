@@ -109,7 +109,7 @@ class IFramer:
             pts = self._parse_pts(pkt)
             pts = self._to90k(pts)
             if not self.shush:
-                print2(pts)
+                print(pts)
         return pts
 
     def ticks(self, pkt):
