@@ -160,27 +160,7 @@ class SCTE35Base:
         if what in vars(self):
             return vars(self)[what]
         return None
-
-    def inspect(self):
-        '''
-            inspect show all of the vars of this object
-
-        example:
-                        >>> from threefive import TimeSignal
-                        >>> ts=TimeSignal()
-                        >>> ts.inspect()
-                        command_length = 0
-                        command_type = 6
-                        name = Time Signal
-                        bites = None
-                        time_specified_flag = None
-                        pts_time = None
-
-
-        '''
-        {print2(f'\t{k} = {v}') for k,v in vars(self).items()}
-        
-        
+   
     def json(self):
         """
         json returns self as kv_clean'ed json
