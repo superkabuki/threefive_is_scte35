@@ -8,7 +8,6 @@ gums, Grande Unicast Multicast Sender
 """
 import argparse
 import os
-import socket
 import sys
 import time
 from functools import partial
