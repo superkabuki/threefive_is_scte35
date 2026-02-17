@@ -55,8 +55,9 @@ def _setSO_REUSEADDR(socked):
     _setSO_REUSEADDR  turn on REUSEADDR
     if present
     """
-    if hasattr(socked, "SO_REUSEADDR"):
+    try:
         socked.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    finally:
         blue(f"SO_REUSEADDR {socked.getsockopt(socket.SOL_SOCKET,socket.SO_REUSEADDR)}")
 
 
@@ -65,8 +66,9 @@ def _setSO_REUSEPORT(socked):
     _setSO_REUSEPORT  turn on REUSEPORT
     if present
     """
-    if hasattr(socked, "SO_REUSEPORT"):
+    try:
         socked.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)
+    finally:
         blue(f"SO_REUSEPORT {socked.getsockopt(socket.SOL_SOCKET,socket.SO_REUSEPORT)}")
 
 
@@ -82,11 +84,13 @@ def setIP_MULTICAST_LOOP(socked):
     """
     setIP_MULTICAST_LOOP turn on IP_MULTICAST_LOOP
     """
-    if getattr(socked, "IP_MULTICAST_LOOP"):
+    try:
         socked.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_LOOP, 1)
+    finally:
         blue(
             f"IP_MULTICAST_LOOP {socked.getsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_LOOP)}"
         )
+
 
 
 def mcast_ttl(socked, ttl):
@@ -105,6 +109,7 @@ def udp_sender():
     a udp sender socket
     """
     socked = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
+    setIP_MULTICAST_LOOP(socked)
     _setSO_SNDBUF(socked)
     _setSO_REUSEADDR(socked)
     _setSO_REUSEPORT(socked)
@@ -117,6 +122,7 @@ def udp_receiver():
     a udp receiver socket
     """
     socked = Socked(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
+    setIP_MULTICAST_LOOP(socked)
     _setSO_RCVBUF(socked)
     _setSO_REUSEADDR(socked)
     _setSO_REUSEPORT(socked)
