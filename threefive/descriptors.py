@@ -461,7 +461,7 @@ class SegmentationDescriptor(SpliceDescriptor):
         sd = Node("SegmentationDescriptor", attrs=sd_attrs, ns=ns)
         sd = self._xml_delivery_node(sd, ns)
         comment = f"{upid_map[self.segmentation_upid_type][0]}"
-        the_upid = self.mk_the_upid()
+        the_upid = self._mk_the_upid()
         the_upid.upid_value = self.segmentation_upid
         upid_node = the_upid.xml(ns=ns)
         sd.addcomment(comment)
