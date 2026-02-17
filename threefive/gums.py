@@ -13,7 +13,7 @@ import time
 from functools import partial
 from .udp import udp_sender, mcast_ttl
 from .new_reader import reader
-from .stuff import blue, reblue, print2, pif
+from .stuff import blue, print2, pif
 from .speedo import Speedo
 from .throttle import Throttle
 
