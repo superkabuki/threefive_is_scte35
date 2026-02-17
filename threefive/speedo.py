@@ -6,7 +6,6 @@ calulate data transfer rates.
 
 """
 
-import sys
 import time
 from .stuff import print2, reblue
 
