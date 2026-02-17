@@ -254,7 +254,7 @@ class Scte35Profile:
             line = "#EXT-X-CUE-IN\n"
         return line
 
-    def _incr_seg_type(line, dscptr):
+    def _incr_seg_type(self,line, dscptr):
         self.seg_type = dscptr.segmentation_type_id + 1
         if dscptr.has("segmentation_duration"):
             line = self._mk_cueout_line(dscptr.segmentation_duration)
@@ -955,10 +955,10 @@ class HlsParser:
         media = media.replace("\n", "")
         try:
             self._chk_ts(media)
-        except:
+        except ERR:
             try:
                 self._chk_aac(media)
-            except:
+            except ERR:
                 red(f"Skipping {media}\n")
                 return
         pane = Pane(media, lines)
