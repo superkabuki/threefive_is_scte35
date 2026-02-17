@@ -6,7 +6,7 @@ from .bitn import Bitn
 from .base import SCTE35Base
 from .segmentation import table20, table22, dvb_table2
 from .upids import upid_map
-from .stuff import red, ERR, clean, k_by_v, pif
+from .stuff import red,  clean, k_by_v, pif
 from .xml import Node
 
 
