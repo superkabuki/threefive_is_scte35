@@ -7,6 +7,7 @@ threefive.encode has helper functions for Cue encoding.
 
 from .commands import SpliceNull, SpliceInsert, TimeSignal
 from .cue import Cue
+from.stuff import pif
 
 
 def mk_splice_null():
@@ -38,7 +39,7 @@ def mk_time_signal(pts=None):
     ts = TimeSignal()
     ts.time_specified_flag = False
     if pts:
-        pts = float(pts)
+        pts = pif(pts)
         ts.time_specified_flag = True
         ts.pts_time = pts
     cue.command = ts
@@ -98,12 +99,12 @@ def mk_splice_insert(event_id, pts=None, duration=None, out=False):
     if pts:
         sin.splice_immediate_flag = False
         sin.time_specified_flag = True
-        sin.pts_time = float(pts)
+        sin.pts_time = pif(pts)
     else:
         sin.component_count = 0
     # If we have a duration, set duration
     if duration:
-        duration = float(duration)
+        duration = pif(duration)
         sin.break_duration = duration
         sin.break_auto_return = True
         sin.duration_flag = True
