@@ -41,10 +41,6 @@ def un_xml(v):
         "false": False,
         "true": True,
     }
-    ##    if v.isdigit():
-    ##        return int(v)
-    ##    if v.replace(".", "").isdigit():
-    ##        return float(v)
     v = pif(v)
     if v in mapped:
         return mapped[v]
