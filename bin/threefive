@@ -17,7 +17,7 @@ from threefive.new_reader import reader
 from threefive import Cue, Stream, print2, blue, version, red
 from threefive.stuff import ERR
 
-# import cProfile
+#import cProfile
 # from sideways import cli as sidecli
 
 write2 = False
@@ -44,13 +44,13 @@ HELP = f"""
                 http(s), multicast, SRT, and UDP.
 
  {U}{B}Input {U}    {B}Output{U}  {B}Example Command{U}
-    
- {U}mpegts {U}   base64 {U}{BLUE} threefive https://example.com/video.ts base64{NORM} 
- {U}base64 {U}   hex    {U}{BLUE} threefive '/DAWAAAAAAAAAP/wBQb+AKmKxwAACzuu2Q==' hex{NORM} 
- {U}xmlbin {U}   int    {U}{BLUE} threefive < xmlbin.xml int{NORM} 
- {U}xml    {U}   json   {U}{BLUE} threefive < xml.xml{NORM} 
- {U}mpegts {U}   json   {U}{BLUE} threefive video.ts{NORM} 
- {U}json{U}      xml    {U}{BLUE} threefive < json.json  xml{NORM} 
+
+ {U}mpegts {U}   base64 {U}{BLUE} threefive https://example.com/video.ts base64{NORM}
+ {U}base64 {U}   hex    {U}{BLUE} threefive '/DAWAAAAAAAAAP/wBQb+AKmKxwAACzuu2Q==' hex{NORM}
+ {U}xmlbin {U}   int    {U}{BLUE} threefive < xmlbin.xml int{NORM}
+ {U}xml    {U}   json   {U}{BLUE} threefive < xml.xml{NORM}
+ {U}mpegts {U}   json   {U}{BLUE} threefive video.ts{NORM}
+ {U}json{U}      xml    {U}{BLUE} threefive < json.json  xml{NORM}
 
 {BLUE} Additional Commands{U}
 
@@ -59,14 +59,14 @@ HELP = f"""
     threefive bump help
  {B} hls         {U}{NORM}{BLUE} SCTE-35 HLS decode{U}
     threefive hls https://example.com/master.m3u8{U}
-    threefive hls help 
+    threefive hls help
  {B} iframes     {U}{BLUE} Show MPEGTS iframes{NORM}
     threefive iframes video.ts
  {B} inject      {U}{NORM}{BLUE} SuperKabuki SCTE-35 MPEGTS Packet Injection Engine{U}
     threefive inject help
  {B} mcast       {U}{NORM}{BLUE} Multicast sender(server){U}
     threefive mcast  -i video.ts
-    threefive mcast help 
+    threefive mcast help
  {B} packets     {U}{NORM}{BLUE} Print raw SCTE-35 packets{NORM}
     threefive packets udp://@235.35.3.5:3535
  {B} proxy       {U}{NORM}{BLUE} Parse a MPEGTS stream, copy it to stdout{NORM}
@@ -462,7 +462,7 @@ def chk_funk_map():
 # cli map
 
 cli_map = {
-    "bump": bumpcli, 
+    "bump": bumpcli,
     "mcast": gumscli,
     "superkabuki": skcli,
     "inject": skcli,
