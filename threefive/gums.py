@@ -32,7 +32,7 @@ class GumS:
     GumS is the Gonzo Unicast and Multicast Sender
     """
 
-    def __init__(self, addr=None, mttl=64, bind_addr="0.0.0.0"):
+    def __init__(self, addr=None, mttl=32, bind_addr="0.0.0.0"):
         self.dest_ip, self.dest_port = addr.rsplit(":", 1)
         self.src_ip = bind_addr.rsplit(":", 1)[0]
         self.src_port = 0
@@ -132,7 +132,7 @@ def parse_args():
     parser.add_argument(
         "-t",
         "--ttl",
-        default=64,
+        default=32,
         help=f"Multicast TTL (1 - 255) [default:{REV}32{NORM}]",
     )
 
@@ -178,7 +178,7 @@ def cli():
 
     args = parse_args()
     # daemonize()
-    ttl = int(args.ttl).to_bytes(1, byteorder="big")
+    ttl = pif(args.ttl).to_bytes(1, byteorder="big")
     dest_addr = args.addr
     gummie = GumS(dest_addr, ttl, args.bind_addr)
     gummie.send_stream(args.input)
