@@ -5,7 +5,6 @@ Home of the reader function
 """
 
 import socket
-import struct
 import sys
 import urllib.request
 
