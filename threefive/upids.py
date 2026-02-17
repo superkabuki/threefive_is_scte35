@@ -102,7 +102,6 @@ class Adid(Upid):
                     >>> 'ABCD0123456H'
     """
 
-    pass
 
 
 class Tid(Upid):
@@ -115,7 +114,7 @@ class Tid(Upid):
                     >>> 'MV0004146400'
     """
 
-    pass
+
 
 
 class NoUpid(Upid):
@@ -384,7 +383,6 @@ class Scr(Upid):
 
     """
 
-    pass
 
 
 class Umid(Upid):
@@ -426,7 +424,6 @@ class Uuid(Upid):
     UUID - type: 0x10  length: 16
     """
 
-    pass
 
 
 upid_map = {
