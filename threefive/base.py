@@ -6,7 +6,6 @@ the class SCTE35Base.
 import json
 from .bitn import NBin
 from .stuff import print2, red
-from pprint import pprint
 
 
 class SCTE35Base:
@@ -54,7 +53,7 @@ class SCTE35Base:
                         >>> ts.as_90k(123456789)
                         1371.7421
 
-        
+
         """
         return round((int_time / 90000.0), 6)
 
@@ -69,7 +68,7 @@ class SCTE35Base:
                         >>> ts.as_ticks(1371.7421)
                         123456789
 
-        
+
         """
         return int(round(float_time * 90000))
 
@@ -136,7 +135,7 @@ class SCTE35Base:
         """
         has check if what is an attribute
         of the calling object (self).
-        
+
         if what is an attribute of this
         object, return it.
 
@@ -155,12 +154,32 @@ class SCTE35Base:
                 >>> cue.command=ts
                 >>> cue.has("command").has("command_type")
                 6
-                
+
         """
         if what in vars(self):
             return vars(self)[what]
         return None
-   
+
+    def inspect(self):
+        '''
+            inspect show all of the vars of this object
+
+        example:
+                        >>> from threefive import TimeSignal
+                        >>> ts=TimeSignal()
+                        >>> ts.inspect()
+                        command_length = 0
+                        command_type = 6
+                        name = Time Signal
+                        bites = None
+                        time_specified_flag = None
+                        pts_time = None
+
+
+        '''
+        {print2(f'\t{k} = {v}') for k,v in vars(self).items()}
+
+
     def json(self):
         """
         json returns self as kv_clean'ed json
