@@ -452,7 +452,7 @@ class Cue(SCTE35Base):
         data is a dict or json or xml of a threefive.Cue instance,
         or part of a Cue instance.
        *threefive will try to determine what it is if possible.
-        
+
         *You can load partial data into a Cue instance.
             for instance, you can load just the command if you want.
 
