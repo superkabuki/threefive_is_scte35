@@ -41,7 +41,7 @@ import argparse
 import sys
 
 from .cue import Cue
-from .stuff import blue
+from .stuff import blue,pif
 from .stream import Stream
 
 
@@ -169,7 +169,7 @@ class StreamBumper(Stream):
         """
         self.outfile = args.outfile
         self.infile = args.infile
-        self.secs = float(args.secs)
+        self.secs = pif(args.secs)
         super().__init__(self.infile)
 
     def _parse_args(self):
