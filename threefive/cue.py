@@ -4,7 +4,6 @@ threefive.Cue Class
 
 from base64 import b64decode, b64encode
 import json
-import re
 from .stuff import clean, red, ishex, isjson, isxml, pif
 from .bitn import NBin
 from .base import SCTE35Base
