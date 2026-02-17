@@ -28,40 +28,14 @@ RESET = " \033[0m"
 write2 = True
 
 
-def codec_detect(data):
-    """
-    codec_detect decode bytes by trying multiple encodings
-    to find one that is compatible.
-    """
-    codecs = [
-        "utf8",
-        "ascii",
-        "latin1",
-        "cp437",
-        "cp1250",
-        "cp1251",
-        "big5",
-        "euc_kr",
-        "koi8_r",
-        "koi8_t",
-        "utf16",
-        "utf32",
-    ]
-    for codec in codecs:
-        try:
-            data = data.decode(encoding=codec)
-            return codec, data
-        except ERR:
-            return False,data
-
-
 def clean(data):
     """
     clean strip and if it's a byte string
     convert to a string
     """
     if isinstance(data, bytes):
-        codec, data = codec_detect(data)
+        data = data.decode("utf8",errors="ignore")
+     #   codec, data = codec_detect(data)
     if not isinstance(data, str):
         badtype(data, str)
     else:
