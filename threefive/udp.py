@@ -110,7 +110,7 @@ def _udp_flags(socked):
     setIP_MULTICAST_LOOP(socked)
     _setSO_REUSEADDR(socked)
     _setSO_REUSEPORT(socked)
-    setTIMEOUT(socked, TIMEOUT)    
+    setTIMEOUT(socked, TIMEOUT)
 
 
 def udp_sender():
