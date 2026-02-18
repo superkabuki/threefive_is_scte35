@@ -30,17 +30,8 @@ ___
 * [__threefive does Multicast very well__](#-threefive-streams-multicast-its-easy-), both as a sender and receiver.  
 ___
 
-## [ Latest version is  v3.0.73 ]
+## [ Latest version is  v3.0.75 ]
 * [__Super low cyclomatic complexity score__](cyclomatic.md)
-* __Cli tool__ new features
-	* New  __bump__ keyword to adjust SCTE-35 PTS. Supports positive and negative adjustments.
-    * New __rt__  keyword parses SCTE-35, writes a SCTE-35 sidecar file, and outputs the MPEGTS stream to stdout at realtime speed.   
-* __threefive hls__ can now handle __SCTE-35 as Integer values in HLS tags__
-* All __ansi color codes striped__ when output is not a tty._
-*  __threefive.Cue.xmlbin()__ now returns a __threefive.xml.Node instance like__ __threefive.Cue.xml()__. 
-* __threefive.Stream__ has a new method __threefive.Stream.rt(func=show_cue)__  that parses SCTE-35 and proxies the stream to stdout at realtime speed.
-* __threefive mcast__ now throttles Multicast output to realtime speed.
-* __threefive packets__ and __threefive pts__ now works with __SRT__.
 
 ___
 
