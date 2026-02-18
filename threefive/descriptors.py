@@ -492,5 +492,6 @@ def splice_descriptor(bites):
         spliced = descriptor_map[tag](bites)
     else:
         spliced = SpliceDescriptor(bites)
+       # red(f"tag not in descriptor map. {list(descriptor_map.keys())} are valid tags")
     spliced.decode()
     return spliced
