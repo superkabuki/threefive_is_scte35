@@ -143,8 +143,9 @@ class Cue(SCTE35Base):
         """
         tag_n_len = TWO
         while len(loop_bites) > tag_n_len:
-            spliced = splice_descriptor(loop_bites)
-            sd_size = tag_n_len + spliced.descriptor_length
+            dlen=loop_bites[1]
+            sd_size = tag_n_len +  dlen #spliced.descriptor_length
+            spliced = splice_descriptor(loop_bites[:sd_size])
             loop_bites = loop_bites[sd_size:]
             del spliced.bites
             self.descriptors.append(spliced)
@@ -321,10 +322,10 @@ class Cue(SCTE35Base):
         encoded as a hex string
 
         example:
-                >>> from threefive import Cue
-                >>> cue=Cue( '/DAWAAAAAAAAAP/wBQb+zto7dwAADRCw6g==')
-                 >>> cue.hex()
-                '0xfc301600000000000000fff00506feceda3b7700000d10b0ea'
+            >>> from threefive import Cue
+            >>> cue=Cue( '/DAWAAAAAAAAAP/wBQb+zto7dwAADRCw6g==')
+             >>> cue.hex()
+            '0xfc301600000000000000fff00506feceda3b7700000d10b0ea'
         """
         return hex(self.int())
 
