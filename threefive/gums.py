@@ -69,6 +69,7 @@ class GumS:
                 self.socked.sendto(dgram, self.dest_grp)
                 throttle.throttle(packets[-1])
                 speedo.plus(len(dgram))
+
         speedo.end()
 
     def send_stream(self, vid):
@@ -91,8 +92,8 @@ class GumS:
         src_ip, src_port = self.socked.getsockname()
         print2(f"\n\t{pre} Stream\n\t{proto}{self.dest_ip}:{self.dest_port}")
         print2(f"\n\tSource\n\t{src_ip}:{src_port}\n")
-
         self._iter_dgrams(vid)
+        time.sleep(3)
         self.socked.close()
 
 
