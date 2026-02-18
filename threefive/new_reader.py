@@ -88,7 +88,7 @@ def _do_srt(srt_url, headers={}):
     preflags = {
         SRTO_TRANSTYPE: SRT_LIVE,
         SRTO_RCVSYN: 1,
-        SRTO_RCVBUF: 32768000,
+        SRTO_RCVBUF: 65768000,
     }
 
     preflags.update(headers)
