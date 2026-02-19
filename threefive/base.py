@@ -52,8 +52,6 @@ class SCTE35Base:
                         >>> ts=TimeSignal()
                         >>> ts.as_90k(123456789)
                         1371.7421
-
-
         """
         return round((int_time / 90000.0), 6)
 
@@ -67,8 +65,6 @@ class SCTE35Base:
                         >>> ts=TimeSignal()
                         >>> ts.as_ticks(1371.7421)
                         123456789
-
-
         """
         return int(round(float_time * 90000))
 
@@ -94,7 +90,7 @@ class SCTE35Base:
         return (hexed.replace("0x", "0x0", 1), hexed)[len(hexed) % 2 == 0]
 
     @staticmethod
-    def idxsplit(gonzo, sep):
+    def idxsplit(data, sep):
         """
         idxsplit is like split but you keep
         the sep.
@@ -103,15 +99,15 @@ class SCTE35Base:
                 >>> idxsplit('123456789',4)
                 >>>'456789'
         """
-        if sep in gonzo:
-            return gonzo[gonzo.index(sep) :]
-        return gonzo
+        if sep in data:
+            return data[data.index(sep) :]
+        return data
 
     @staticmethod
-    def _json2dict(gonzo):
-        if isinstance(gonzo, str):
-            gonzo = json.loads(gonzo)
-        return gonzo
+    def _json2dict(data):
+        if isinstance(data, str):
+            data = json.loads(data)
+        return data
 
     def _chk_var(self, var_type, nbin_method, var_name, bit_count):
         """
@@ -121,9 +117,8 @@ class SCTE35Base:
         if self._bool_int(var_value, var_type) or self._wrong_type(var_value, var_type):
             self._err2(var_name, var_value, bit_count, var_type)
             return -1
-        else:
-            nbin_method(var_value, bit_count)
-            return 0
+        nbin_method(var_value, bit_count)
+        return 0
 
     def get(self):
         """
@@ -159,26 +154,6 @@ class SCTE35Base:
         if what in vars(self):
             return vars(self)[what]
         return None
-
-    def inspect(self):
-        '''
-            inspect show all of the vars of this object
-
-        example:
-                        >>> from threefive import TimeSignal
-                        >>> ts=TimeSignal()
-                        >>> ts.inspect()
-                        command_length = 0
-                        command_type = 6
-                        name = Time Signal
-                        bites = None
-                        time_specified_flag = None
-                        pts_time = None
-
-
-        '''
-        {print2(f'\t{k} = {v}') for k,v in vars(self).items()}
-
 
     def json(self):
         """
@@ -217,21 +192,21 @@ class SCTE35Base:
         if k in vars(self):
             self.__dict__[k] = v
 
-    def _vrfy_load(self, gonzo):
-        _ = {self._chk_vars(k, v) for k, v in gonzo.items()}
+    def _vrfy_load(self, data):
+        _ = {self._chk_vars(k, v) for k, v in data.items()}
 
-    def _load_dict(self, gonzo):
-        if isinstance(gonzo, dict):
-            self._vrfy_load(gonzo)
+    def _load_dict(self, data):
+        if isinstance(data, dict):
+            self._vrfy_load(data)
 
-    def load(self, gonzo):
+    def load(self, data):
         """
         load is used to load
         data from a dict or json string.
         only updates vars that exist in the obj.
         """
-        gonzo = self._json2dict(gonzo)
-        self._load_dict(gonzo)
+        data = self._json2dict(data)
+        self._load_dict(data)
 
     def show(self):
         """
