@@ -4,7 +4,7 @@ threefive.Cue Class
 
 from base64 import b64decode, b64encode
 import json
-from .stuff import clean, red, ishex, isjson, isxml, pif
+from .stuff import clean, red, isjson, isxml, pif
 from .bitn import NBin
 from .base import SCTE35Base
 from .section import SpliceInfoSection
@@ -22,7 +22,6 @@ from .words import (
     EIGHT,
     ELEVEN,
     FOURTEEN,
-    SIXTEEN,
     EQUALSIGN,
 )
 from .xml import Node
@@ -34,10 +33,10 @@ class Cue(SCTE35Base):
         The threefive.Cue class parses individual SCTE-35 Cues or messages.
 
     example:
-                    >>> import threefive
-                    >>> Base64 = "/DAvAAAAAAAA///wBQb+dGKQoAAZAhdDVUVJSAAAjn+fCAgAAAAALKChijUCAKnMZ1g="
-                    >>> cue = threefive.Cue(Base64)
-                    >>> cue.show()
+        >>> import threefive
+        >>> Base64 = "/DAvAAAAAAAA///wBQb+dGKQoAAZAhdDVUVJSAAAjn+fCAgAAAAALKChijUCAKnMZ1g="
+        >>> cue = threefive.Cue(Base64)
+        >>> cue.show()
 
         *Instance variables can be accessed via dot notation.
 
@@ -136,6 +135,7 @@ class Cue(SCTE35Base):
             bites = self._decode_splice_command(bites)
             bites = self._decode_descriptors(bites)
             return self._decode_crc(bites)
+        return False
 
     def _descriptor_loop(self, loop_bites):
         """
@@ -161,10 +161,10 @@ class Cue(SCTE35Base):
                 data as a dict of dicts.
 
         example:
-                        >>> import threefive
-                        >>> Base64 = "/DAvAAAAAAAA///wBQb+dGKQoAAZAhdDVUVJSAAAjn+fCAgAAAAALKChijUCAKnMZ1g="
-                        >>> cue = threefive.Cue(Base64)
-                        >>> cue.get()
+                >>> import threefive
+                >>> Base64 = "/DAvAAAAAAAA///wBQb+dGKQoAAZAhdDVUVJSAAAjn+fCAgAAAAALKChijUCAKnMZ1g="
+                >>> cue = threefive.Cue(Base64)
+                >>> cue.get()
 
         """
         scte35_data = False
@@ -263,7 +263,7 @@ class Cue(SCTE35Base):
                 str: self._bits_b64,
             }
             td = type(data)
-            if td in type_map.keys():
+            if td in type_map:
                 type_map[td](data)
 
     # encode stuff
