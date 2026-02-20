@@ -76,6 +76,12 @@ class SpliceDescriptor(SCTE35Base):
         id_int = int.from_bytes(self.identifier.encode(), byteorder="big")
         nbin.add_int(id_int, 32)
 
+    def xml(self,ns='scte35'):
+        id_int=int.from_bytes(self.identifier.encode(), byteorder="big")
+        pd=Node("PrivateDescriptor", attrs={"descriptorTag":self.tag,"identifier":id_int,},ns=ns)
+        pb =Node("PrivateBytes",self.private_data.encode().hex())
+        pd.addchild(pb)
+        return pd
 
 class DVBDASDescriptor(SpliceDescriptor):
     """
