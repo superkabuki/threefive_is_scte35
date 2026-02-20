@@ -56,7 +56,8 @@ class SpliceDescriptor(SCTE35Base):
 
     def encode(self, nbin=None):
         """
-        SpliceDescriptor.encode
+        SpliceDescriptor.encode for super() calls
+        and PrivateDescriptors
         """
         nbin = self._chk_nbin(nbin)
         self._encode_id(nbin)
@@ -65,8 +66,8 @@ class SpliceDescriptor(SCTE35Base):
                 self.private_data = self.private_data.encode()
             nbin.add_bites(self.private_data)
         if self.tag in descriptor_map:
-            return nbin
-        return nbin.bites
+            return nbin # for super() calls
+        return nbin.bites # for PrivateDescriptors
 
     def _encode_id(self, nbin):
         """
@@ -77,6 +78,9 @@ class SpliceDescriptor(SCTE35Base):
         nbin.add_int(id_int, 32)
 
     def xml(self,ns='scte35'):
+        """
+        xml for Private Descriptors
+        """
         id_int=int.from_bytes(self.identifier.encode(), byteorder="big")
         pd=Node("PrivateDescriptor", attrs={"descriptorTag":self.tag,"identifier":id_int,},ns=ns)
         pb =Node("PrivateBytes",self.private_data.encode().hex())
