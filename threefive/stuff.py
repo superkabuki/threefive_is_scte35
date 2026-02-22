@@ -34,8 +34,8 @@ def clean(data):
     convert to a string
     """
     if isinstance(data, bytes):
-        data = data.decode("utf8",errors="ignore")
-     #   codec, data = codec_detect(data)
+        data = data.decode("utf8", errors="ignore")
+    #   codec, data = codec_detect(data)
     if not isinstance(data, str):
         badtype(data, str)
     else:
@@ -54,8 +54,8 @@ def ishex(data):
                     True
 
     """
-    data= clean(data)
-    if  data is None:
+    data = clean(data)
+    if data is None:
         return False
     hexed = "0123456789abcdef"
     data = data.lower().strip("0x")
@@ -69,7 +69,7 @@ def isjson(data):
     is json.
     """
     data = clean(data)
-    if  data is None:
+    if data is None:
         return False
     return data.startswith("{") & data.endswith("}")
 
@@ -125,7 +125,13 @@ def pif(value):
                     7
 
     """
-    if not isinstance(value, (str, bytes,)):
+    if not isinstance(
+        value,
+        (
+            str,
+            bytes,
+        ),
+    ):
         return value
     value = clean(value)
     value = value.strip()
