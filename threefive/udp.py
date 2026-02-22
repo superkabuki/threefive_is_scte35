@@ -92,7 +92,6 @@ def setIP_MULTICAST_LOOP(socked):
         )
 
 
-
 def mcast_ttl(socked, ttl):
     """
     mcast_ttl
