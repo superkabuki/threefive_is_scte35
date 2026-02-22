@@ -6,7 +6,7 @@ from .bitn import Bitn
 from .base import SCTE35Base
 from .segmentation import table20, table22, dvb_table2
 from .upids import upid_map
-from .stuff import red,  clean, k_by_v, pif
+from .stuff import red, clean, k_by_v, pif
 from .xml import Node
 
 
@@ -66,8 +66,8 @@ class SpliceDescriptor(SCTE35Base):
                 self.private_data = self.private_data.encode()
             nbin.add_bites(self.private_data)
         if self.tag in descriptor_map:
-            return nbin # for super() calls
-        return nbin.bites # for PrivateDescriptors
+            return nbin  # for super() calls
+        return nbin.bites  # for PrivateDescriptors
 
     def _encode_id(self, nbin):
         """
@@ -77,15 +77,23 @@ class SpliceDescriptor(SCTE35Base):
         id_int = int.from_bytes(self.identifier.encode(), byteorder="big")
         nbin.add_int(id_int, 32)
 
-    def xml(self,ns='scte35'):
+    def xml(self, ns="scte35"):
         """
         xml for Private Descriptors
         """
-        id_int=int.from_bytes(self.identifier.encode(), byteorder="big")
-        pd=Node("PrivateDescriptor", attrs={"descriptorTag":self.tag,"identifier":id_int,},ns=ns)
-        pb =Node("PrivateBytes",self.private_data.encode().hex())
+        id_int = int.from_bytes(self.identifier.encode(), byteorder="big")
+        pd = Node(
+            "PrivateDescriptor",
+            attrs={
+                "descriptorTag": self.tag,
+                "identifier": id_int,
+            },
+            ns=ns,
+        )
+        pb = Node("PrivateBytes", self.private_data.encode().hex())
         pd.addchild(pb)
         return pd
+
 
 class DVBDASDescriptor(SpliceDescriptor):
     """
@@ -502,6 +510,6 @@ def splice_descriptor(bites):
         spliced = descriptor_map[tag](bites)
     else:
         spliced = SpliceDescriptor(bites)
-       # red(f"tag not in descriptor map. {list(descriptor_map.keys())} are valid tags")
+    # red(f"tag not in descriptor map. {list(descriptor_map.keys())} are valid tags")
     spliced.decode()
     return spliced
