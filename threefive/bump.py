@@ -41,7 +41,7 @@ import argparse
 import sys
 
 from .cue import Cue
-from .stuff import blue,pif
+from .stuff import blue, pif
 from .stream import Stream
 
 
