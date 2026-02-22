@@ -3,8 +3,6 @@ hlsprofile.py contains Scte35Profile for the HLSParser class.
 
 """
 
-
-
 import os
 
 from .stuff import pif
@@ -13,7 +11,6 @@ from .stuff import pif
 ROLLOVER = 95443.717678
 REV = "\033[7m"
 NORM = "\033[0m"
-
 
 
 class Scte35Profile:
@@ -182,7 +179,8 @@ class Scte35Profile:
         if os.path.isfile(pro_file):
             with open(pro_file, "r", encoding="utf-8") as pro_handle:
                 self._parse_profile(pro_handle)
-#####
+
+    #####
 
     def set_pts(self, cue):
         """
@@ -245,7 +243,7 @@ class Scte35Profile:
             line = "#EXT-X-CUE-IN\n"
         return line
 
-    def _incr_seg_type(self,line, dscptr):
+    def _incr_seg_type(self, line, dscptr):
         self.seg_type = dscptr.segmentation_type_id + 1
         if dscptr.has("segmentation_duration"):
             line = self._mk_cueout_line(dscptr.segmentation_duration)
