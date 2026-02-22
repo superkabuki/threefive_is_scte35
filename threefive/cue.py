@@ -12,20 +12,22 @@ from .commands import command_map
 from .descriptors import splice_descriptor, descriptor_map
 from .crc import crc32
 from .segmentation import table22
-from .words import (
-    MINUSONE,
-    ZERO,
-    ONE,
-    TWO,
-    THREE,
-    FOUR,
-    EIGHT,
-    ELEVEN,
-    FOURTEEN,
-    EQUALSIGN,
-)
+
 from .xml import Node
 from .uxp import xml2cue
+
+
+MINUSONE = -0x1
+ZERO = 0x0
+ONE = 0x1
+TWO = 0x2
+THREE = 0x3
+FOUR = 0x4
+EIGHT = 0x8
+ELEVEN = 0xB
+FOURTEEN = 0xE
+FIFTEEN = 0xF
+EQUALSIGN = "="
 
 
 class Cue(SCTE35Base):
@@ -143,8 +145,8 @@ class Cue(SCTE35Base):
         """
         tag_n_len = TWO
         while len(loop_bites) > tag_n_len:
-            dlen=loop_bites[1]
-            sd_size = tag_n_len +  dlen #spliced.descriptor_length
+            dlen = loop_bites[1]
+            sd_size = tag_n_len + dlen  # spliced.descriptor_length
             spliced = splice_descriptor(loop_bites[:sd_size])
             loop_bites = loop_bites[sd_size:]
             del spliced.bites
@@ -449,34 +451,34 @@ class Cue(SCTE35Base):
 
     def load(self, data):
         """
-        Cue.load loads SCTE35 data into the Cue instance.
-        data is a dict or json or xml of a threefive.Cue instance,
-        or part of a Cue instance.
-       *threefive will try to determine what it is if possible.
+         Cue.load loads SCTE35 data into the Cue instance.
+         data is a dict or json or xml of a threefive.Cue instance,
+         or part of a Cue instance.
+        *threefive will try to determine what it is if possible.
 
-        *You can load partial data into a Cue instance.
-            for instance, you can load just the command if you want.
+         *You can load partial data into a Cue instance.
+             for instance, you can load just the command if you want.
 
-        *load doesn't need to be called directly
-          unless you initialize a Cue without data.
+         *load doesn't need to be called directly
+           unless you initialize a Cue without data.
 
-        example:
-                        >>> from threefive import Cue
-                        >>> xml='''<scte35:SpliceInfoSection xmlns:scte35="https://scte.org/schemas/35"
-                        ptsAdjustment="0" protocolVersion="0" sapType="3" tier="4095">
-                          <scte35:TimeSignal>
-                              <scte35:SpliceTime ptsTime="38560.095189"/>
-                            </scte35:TimeSignal>
-                        </scte35:SpliceInfoSection>
-                        '''
-                        >>> cue=Cue()
-                        >>> cue.load(xml)
-                        True
+         example:
+                         >>> from threefive import Cue
+                         >>> xml='''<scte35:SpliceInfoSection xmlns:scte35="https://scte.org/schemas/35"
+                         ptsAdjustment="0" protocolVersion="0" sapType="3" tier="4095">
+                           <scte35:TimeSignal>
+                               <scte35:SpliceTime ptsTime="38560.095189"/>
+                             </scte35:TimeSignal>
+                         </scte35:SpliceInfoSection>
+                         '''
+                         >>> cue=Cue()
+                         >>> cue.load(xml)
+                         True
         """
         if isinstance(data, bytes):
             data = clean(data)
         if isinstance(data, str):
-            data=data.strip()
+            data = data.strip()
             if isxml(data):
                 self._from_xml(data)
                 return True
@@ -484,7 +486,13 @@ class Cue(SCTE35Base):
         if isinstance(data, (dict,)):
             self._load_info_section(data)
             self._load_command(data)
-        if isinstance(data, (dict,list,)):
+        if isinstance(
+            data,
+            (
+                dict,
+                list,
+            ),
+        ):
             self._load_descriptors(data["descriptors"])
             self.encode()
             self.decode()
@@ -500,7 +508,7 @@ class Cue(SCTE35Base):
         data = clean(data)
         if "Binary" in data:
             # Should be base64, but threefive allows any SCTE35 format
-            b64 = data.split("Binary>", 1)[-1].split("<")[0]
+            b64 = data.split("Binary>", 1)[MINUSONE].split("<")[ZERO]
             self._bits_decode(b64)
             self.decode()
         elif "SpliceInfoSection" in data:
