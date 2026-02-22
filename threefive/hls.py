@@ -25,8 +25,6 @@ HEADER_TAGS = list(HEADER_TAGS)
 HEADER_TAGS.append("#EXTM3U")
 
 
-
-
 class Pane:
     """
     Pane class. Sliding_Window slides Panes
@@ -498,8 +496,8 @@ class HlsParser:
             first = f"{REV}Media {NORM}"
             second = f'{self.media[-1].rsplit("/", 1)[1].split("?", 1)[0].strip()}'
             gonzo = f"{first}{second}"
-        third = f"\t{REV}{self.hls_pts} {NORM}"
-        reblue(f"{third}{self.pts:.6f} {gonzo}")
+        third = f"{REV}{self.hls_pts} {NORM}"
+        reblue(f"{NORM}  {third}{self.pts:.6f} {gonzo}")
 
     def _ts_pts(self, seg):
         """
