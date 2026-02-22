@@ -164,7 +164,7 @@ class Stream(Based):
         if not isinstance(tsdata, str):
             self._tsdata = tsdata
         else:
-            self._tsdata = reader(tsdata,headers=headers)
+            self._tsdata = reader(tsdata, headers=headers)
         self.show_null = show_null
         self.start = {}
         self.info = False
