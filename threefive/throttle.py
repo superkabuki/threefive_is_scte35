@@ -74,7 +74,7 @@ class Throttle:
             self.actualstop = time.time()
             ptime = round(pts - self.first, 6)
             atime = round(self.actualstop - self.actualstart, 6)
-            diffed = round((ptime - atime), 6)
+            diffed = round((ptime - atime) * 0.99, 6)
             self._sleep(diffed)
 
     def _set_first(self, pts):
