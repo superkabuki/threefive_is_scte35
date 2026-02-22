@@ -103,7 +103,6 @@ class Adid(Upid):
     """
 
 
-
 class Tid(Upid):
     """
     Tid Upid
@@ -113,8 +112,6 @@ class Tid(Upid):
     TID Upid example value:
                     >>> 'MV0004146400'
     """
-
-
 
 
 class NoUpid(Upid):
@@ -384,7 +381,6 @@ class Scr(Upid):
     """
 
 
-
 class Umid(Upid):
     """
     Umid Upid
@@ -423,7 +419,6 @@ class Uuid(Upid):
 
     UUID - type: 0x10  length: 16
     """
-
 
 
 upid_map = {
