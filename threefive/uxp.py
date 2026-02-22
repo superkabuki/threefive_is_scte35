@@ -371,8 +371,8 @@ def xml2cue(ex):
     xml2cue parse xml to find SCTE-35 data
     """
     u = UltraXmlParser()
-    if isinstance(ex,Node):
-        ex=ex.mk()
+    if isinstance(ex, Node):
+        ex = ex.mk()
     bignode = u.parse(ex)
     if isinstance(bignode, Node):
         nc = NodeConverter()
