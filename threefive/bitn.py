@@ -37,7 +37,7 @@ class Bitn:
     """
 
     def __init__(self, bites):
-        self.idx = len(bites) << 3
+        self.idx = len(bites) << 3  # This is correct, int.bit_length() is Not.
         self.bits = int.from_bytes(bites, byteorder="big")
 
     def __repr__(self):
