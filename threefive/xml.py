@@ -159,29 +159,29 @@ class NameSpace:
 
 class Node:
     """
-    The Node class is to create an xml node.
+        The Node class is to create an xml node.
 
-    An instance of Node has:
+        An instance of Node has:
 
-        tag :      <tag> </tag>
-        
-        value  :    <tag>value</tag>
-        
-        attrs :     <tag attrs[k]="attrs[v]">
-        
-        children :  <tag><children[0]></children[0]</tag>
+            tag :      <tag> </tag>
 
-        depth:      tab depth for printing (automatically set)
+            value  :    <tag>value</tag>
 
-        namespace:    a NameSpace instance for the Node
+            attrs :     <tag attrs[k]="attrs[v]">
 
-example:
+            children :  <tag><children[0]></children[0]</tag>
 
-        >>> from threefive.xml import Node
-        >>> ts = Node('TimeSignal')
-        >>> st = Node('SpliceTime',attrs={'pts_time':3442857000})
-        >>> ts.addchild(st)
-        >>> print(ts)
+            depth:      tab depth for printing (automatically set)
+
+            namespace:    a NameSpace instance for the Node
+
+    example:
+
+            >>> from threefive.xml import Node
+            >>> ts = Node('TimeSignal')
+            >>> st = Node('SpliceTime',attrs={'pts_time':3442857000})
+            >>> ts.addchild(st)
+            >>> print(ts)
     """
 
     def __init__(self, tag, value="", attrs=None, ns=None):
