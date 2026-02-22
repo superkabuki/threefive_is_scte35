@@ -4,19 +4,19 @@ hlstags.py
 """
 
 from .stuff import pif, ERR
-from .words import (
-    MINUSONE,
-    ZERO,
-    ONE,
-    TWO,
-    COLON,
-    COMMA,
-    EQUALSIGN,
-    DBLQUOTE,
-    OCTOTHORPE,
-    SPACE,
-    NOTHING,
-)
+
+MINUSONE = -1
+ZERO = 0
+ONE = 1
+TWO = 2
+COLON = ":"
+COMMA = ","
+EQUALSIGN = "="
+DBLQUOTE = '"'
+OCTOTHORPE = "#"
+SPACE = " "
+NOTHING = ""
+
 
 BASIC_TAGS = (
     "#EXTM3U",
