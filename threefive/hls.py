@@ -969,6 +969,8 @@ HELPME = """
 
 	* parse an m3u8:    threefive hls  https://example.com/out/master.m3u8
 
+hls is part of threefive.
+
 """
 
 
