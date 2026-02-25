@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 """
 threefive/bump.py
 
@@ -176,13 +178,14 @@ class StreamBumper(Stream):
         """
         _parse_args parse command line args
         """
-        parser = argparse.ArgumentParser()
+        parser = argparse.ArgumentParser( epilog="bump is part of threefive.\n\n")
         parser.add_argument(
             "-i",
             "--infile",
             default=sys.stdin.buffer,
             help=f""" Input source, stdin, file, http(s), udp, or multicast mpegts
                                     [ default:{REV}sys.stdin.buffer{NORM} ]
+                                    bump is part of {REV}threefive{NORM}.
                                     """,
         )
         parser.add_argument(
