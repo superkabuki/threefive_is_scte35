@@ -6,4 +6,4 @@ threefive documentation
    :maxdepth: 2
    :caption: Contents:
 
-   threefive
+   cue
