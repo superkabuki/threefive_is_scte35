@@ -1,7 +1,7 @@
 import os
 import sys
 # Assumes your project's source code is one level up from the docs folder
-sys.path.insert(0, os.path.abspath('../threefive')) 
+sys.path.insert(0, os.path.abspath('../')) 
 
 # Also, ensure 'sphinx_rtd_theme' (or your chosen theme) is set as the html theme
 # html_theme = 'sphinx_rtd_theme'
