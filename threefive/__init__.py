@@ -2,6 +2,9 @@
 threefive.__init__.py
 """
 
+from .version import version
+__version__= version
+
 from .base import SCTE35Base
 from .cue import Cue
 from .encode import mk_splice_insert, mk_splice_null, mk_time_signal
