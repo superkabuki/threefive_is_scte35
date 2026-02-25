@@ -1,23 +1,27 @@
 PY3 = python3
 PYPY3 = pypy3
 
-default: install
+build_cmd = -m build -n
+install_cmd = -m pip   install  . --user --no-build-isolation --break-system-packages 
+
 
 clean:
 	rm -f dist/*
 	rm -rf build/*
 
-pypy3: pkg
-	$(PYPY3) -m pip install . --break-system-packages	
+default: install
 
-install: pkg
-	$(PY3)  -m pip install . --break-system-packages	
+install: python3
 
 pkg: clean
-	$(PY3) -m build -n
+	$(PY3) $(build_cmd)
 	
+pypy3: clean
+	$(PYPY3) $(build_cmd)
+	$(PYPY3) $(install_cmd)	
+
+python3: clean pkg
+	$(PY3)  $(install_cmd)
+
 upload: clean pkg	
 	twine upload dist/*
-
-
-
