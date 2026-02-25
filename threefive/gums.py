@@ -102,7 +102,7 @@ def parse_args():
     parse_args parse command line args
     """
 
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser( epilog="mcast is part of threefive.\n\n")
 
     parser.add_argument(
         "-i",
@@ -114,6 +114,7 @@ def parse_args():
                 [default:{REV}sys.stdin.buffer{NORM}]
              """,
     )
+
 
     parser.add_argument(
         "-a",
