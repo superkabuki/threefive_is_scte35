@@ -1,0 +1,40 @@
+
+[project]
+name = "threefive"
+version = "3.0.77"
+authors = [
+  { name="AdrianofDoom", email="spam@iodisco.com" },
+]
+description = "threefive is The #1 SCTE-35 Decoder and Encoder on the Planet."
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies=[
+        "pyaes",
+        "srtfu >= 0.0.11",
+    ]
+
+
+
+classifiers = [
+        "Environment :: Console",
+        "Operating System :: OS Independent",
+        "Operating System :: POSIX :: BSD :: OpenBSD",
+        "Operating System :: POSIX :: Linux",
+        "Topic :: Multimedia :: Video",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: Implementation :: PyPy",
+        "Programming Language :: Python :: Implementation :: CPython",
+]
+license = "Sleepycat"
+license-files = ["LICEN[CS]E*"]
+
+[project.urls]
+Homepage = "https://github.com/superkabuki/threefive"
+Issues = "https://github.com/superkabuki/threefive/issues"
+
+[project.scripts]
+bump = "threefive.bump:cli"
+mcast = "threefive.gums:cli"
+hls = "threefive.hls:cli"
+sixfix = "threefive.sixfix:cli"
+threefive = "threefive.cli:threefivecli"
