@@ -338,6 +338,7 @@ class Mpu(Upid):
     def _decode_adfr(self):
         """
         decode_adfr handles Addressabkle TV MPU Upids
+        
         """
         data = bytes.fromhex(self.upid_value["private_data"][2:])
         self.upid_value["version"] = data[0]
@@ -346,7 +347,7 @@ class Mpu(Upid):
         )
         self.upid_value["date"] = int.from_bytes(data[3:7], byteorder="big")
         self.upid_value["break_code"] = int.from_bytes(data[7:9], byteorder="big")
-        self.upid_value["duration"] = hex(int.from_bytes(data[9:11], byteorder="big"))
+        self.upid_value["duration"] = hex(int.from_bytes(data[9:12], byteorder="big"))
 
     def decode(self):
         """
