@@ -22,7 +22,8 @@ ___
 
 ### [ News ]
 
-   
+* __Python 3.14__ is the release where all those __deprection warnings turn into errors__. Don't worry folk, __threefive v3.0.77__ is python3.14 __ready.__
+    
 * __Python3 vs. Pypy3__ [__parsing SCTE35 with threefive__](https://github.com/superkabuki/threefive_is_scte35#python3-vs-pypy3-running-threefive) (watch the cool video)
  
 * __threefive now supports__ [__Secure Reliable Transport__](https://github.com/superkabuki/threefive_is_scte35/blob/main/README.md#threefive-now-supports-srt)  (watch the cool video)
