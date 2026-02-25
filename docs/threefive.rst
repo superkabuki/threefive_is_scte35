@@ -1,12 +1,4 @@
 
-threefive.aac module
---------------------
-
-.. automodule:: threefive.aac
-   :members:
-   :show-inheritance:
-   :undoc-members:
-
 threefive.base module
 ---------------------
 
@@ -23,14 +15,6 @@ threefive.bitn module
    :show-inheritance:
    :undoc-members:
 
-threefive.bump module
----------------------
-
-.. automodule:: threefive.bump
-   :members:
-   :show-inheritance:
-   :undoc-members:
-
 threefive.commands module
 -------------------------
 
@@ -39,21 +23,6 @@ threefive.commands module
    :show-inheritance:
    :undoc-members:
 
-threefive.crc module
---------------------
-
-.. automodule:: threefive.crc
-   :members:
-   :show-inheritance:
-   :undoc-members:
-
-threefive.crctable module
--------------------------
-
-.. automodule:: threefive.crctable
-   :members:
-   :show-inheritance:
-   :undoc-members:
 
 threefive.cue module
 --------------------
@@ -63,6 +32,15 @@ threefive.cue module
    :show-inheritance:
    :undoc-members:
 
+threefive.commands module
+--------------------
+
+.. automodule:: threefive.commands
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+
 threefive.descriptors module
 ----------------------------
 
@@ -71,57 +49,26 @@ threefive.descriptors module
    :show-inheritance:
    :undoc-members:
 
-threefive.encode module
------------------------
-
-.. automodule:: threefive.encode
-   :members:
-   :show-inheritance:
-   :undoc-members:
-
-threefive.gums module
----------------------
-
-.. automodule:: threefive.gums
-   :members:
-   :show-inheritance:
-   :undoc-members:
-
-threefive.hls module
+threefive.upids module
 --------------------
 
-.. automodule:: threefive.hls
+.. automodule:: threefive.upids
    :members:
    :show-inheritance:
    :undoc-members:
 
-threefive.hlstags module
-------------------------
+threefive.stream module
+--------------------
 
-.. automodule:: threefive.hlstags
+.. automodule:: threefive.stream
    :members:
    :show-inheritance:
    :undoc-members:
 
-threefive.iframes module
-------------------------
+threefive.xml module
+--------------------
 
-.. automodule:: threefive.iframes
+.. automodule:: threefive.xml
    :members:
    :show-inheritance:
    :undoc-members:
-
-threefive.new\_reader module
-----------------------------
-
-.. automodule:: threefive.new_reader
-   :members:
-   :show-inheritance:
-   :undoc-members:
-
-threefive.packetdata module
----------------------------
-
-.. automodule:: threefive.packetdata
-   :members:
-   :show-inheritance:
