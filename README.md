@@ -1,6 +1,5 @@
 #### Need to inject SCTE-35 into HLS?  [X9k3.](https://github.com/superkabuki/x9k3) 
 
-
 # [ threefive ]
 ## https://github.com/superkabuki/threefive
 
@@ -22,10 +21,11 @@ ___
 
 ### [ News ]
 
+* I have been __trying to setup threefive on readthedocs__,it not going very well, but I am working on it.
+* __threefive no longer uses setuptools for packaging__ and I know you don't care.
+* __I am currently not banned__ on the python site, and __my jihad against pep 668__ has resumed.  
 * __Python 3.14__ is the release where all those __deprection warnings turn into errors__. Don't worry folk, __threefive v3.0.77__ is python3.14 __ready.__
-    
-* __Python3 vs. Pypy3__ [__parsing SCTE35 with threefive__](https://github.com/superkabuki/threefive_is_scte35#python3-vs-pypy3-running-threefive) (watch the cool video)
- 
+* __Python3 vs. Pypy3__ [__parsing SCTE35 with threefive__](https://github.com/superkabuki/threefive_is_scte35#python3-vs-pypy3-running-threefive) (watch the cool video) 
 * __threefive now supports__ [__Secure Reliable Transport__](https://github.com/superkabuki/threefive_is_scte35/blob/main/README.md#threefive-now-supports-srt)  (watch the cool video)
 
 * [__threefive does Multicast very well__](#-threefive-streams-multicast-its-easy-), both as a sender and receiver.  
