@@ -314,27 +314,49 @@ ___
 
 ### [cli tool]
 
-* The default action is to read a input and write a SCTE-35 output.
+* The default action is to read a SCTE-35 input and write a SCTE-35 output.
 
   *  __Inputs:__  mpegts, base64, hex, json,and xml, and xmlbin.
-
+  *  __Protocol:__ SCTE35 can read from  strings, pipes, files, stdin, http(s), multicast,srt and udp.
   *  __Outputs:__ base64, bytes, hex, int, json, xml, and xmlbin.
 
-  *  __Sources:__ SCTE35 can read from  strings, files, stdin, http(s), multicast,srt and udp.
+#### Parse SCTE-35 from MPEGTS
+* __SCTE-35 Input__: MPEGTS
+* __Protocols__: pipes, files, stdin, http(s), multicast,SRT and UDP.
+* __SCTE-35 Output__: JSON _(default)_ __base64, bytes, hex, int, xml__, and __xmlbin__.
 
-|Input     |Output     | How to use                                              |
-|----------|-----------|---------------------------------------------------------|
-|__mpegts__|__base64__ | threefive https://example.com/video.ts  __base64__      |
+|SCTE-35 Input  | Protocol   | SCTE-35 Output     | Command                                             |
+|-------|------------|-----------|---------------------------------------------------------|
+|__MPEGTS__|file|__JSON__   | __threefive__ video.ts										 |  
+|__.__|https|__base64__ | __threefive__ https://example.com/video.ts  __base64__      |
+|__.__|multicast|__bytes__ | __threefive__ udp://@235.3.5:3535  __bytes__      |
+|__.__|SRT|__hex__ | __threefive__ srt://1.2.3.4:4201  __hex__      |
+|__.__|UDP|__int__ | __threefive__ udp://10.10.10.10:1011  __int__      |
+|__.__|Pipe|__xml__| cat video.ts \| __threefive__  __xml__                           |
+|__.__|stdin|__xml+bin__| __threefive__  __xmlbin__ < video.ts|
+
+#### Parse SCTE-35 Cues
+|SCTE-35 Input  |  SCTE-35 Output     | Command                                             |
+|-------|-----------|---------------------------------------------------------|
+|__base64__|__json__    | __threefive__ '/DAWAAAAAAAAAP/wBQb+AKmKxwAACzuu2Q==' |
+|__.__|__bytes__    | __threefive__ '/DAWAAAAAAAAAP/wBQb+AKmKxwAACzuu2Q==' __bytes__|
+|__.__|__hex__    | __threefive__ '/DAWAAAAAAAAAP/wBQb+AKmKxwAACzuu2Q==' __hex__|
+|__.__|__int__    | __threefive__ '/DAWAAAAAAAAAP/wBQb+AKmKxwAACzuu2Q==' __int__|
+|__.__|__xml__    | __threefive__ '/DAWAAAAAAAAAP/wBQb+AKmKxwAACzuu2Q==' __xml__|
+|__.__|__xmlbin__    | __threefive__ '/DAWAAAAAAAAAP/wBQb+AKmKxwAACzuu2Q==' __xmlbin__|
+|__hex__  | __json__  | __threefive__ 0xfc301600000000000000fff00506fe00a98ac700000b3baed9|
+|__.__  | __base64__  | __threefive__ 0xfc301600000000000000fff00506fe00a98ac700000b3baed9 __base64__ |
+|__.__  | __bytes__  | __threefive__ 0xfc301600000000000000fff00506fe00a98ac700000b3baed9 __bytes__ |
+|__.__  | __int__  | __threefive__ 0xfc301600000000000000fff00506fe00a98ac700000b3baed9 __int__ |
+|__.__  | __xml__  | __threefive__ 0xfc301600000000000000fff00506fe00a98ac700000b3baed9 __xml__ |
+|__.__  | __xmlbin__  | __threefive__ 0xfc301600000000000000fff00506fe00a98ac700000b3baed9 __xmlbin__ |
+| __int__ | __xml__    | __threefive__ 1583008701074197245727019716796221242036302348025116111908569 __xml__ |  
+|__xmlbin__|__int__    | __threefive__   < xmlbin.xml __int__                        |
 |          |           |                                                         |
-|__base64__|__hex__    | threefive '/DAWAAAAAAAAAP/wBQb+AKmKxwAACzuu2Q==' __hex__|
-|          |           |                               |                     |
-|__xmlbin__|__int__    | threefive   < xmlbin.xml __int__                        |
+|__xml__   |__json__   | __threefive__   < xml.xml                                   |
 |          |           |                                                         |
-|__xml__   |__json__   | threefive   < xml.xml                                   |
-|          |           |                                                         |
-|__mpegts__|__xml+bin__| threefive video.ts __xmlbin__                           |
 |          |   |   |                                                     |
-|__json__  |__xml__    | threefive  < json.json  __xml__                         |
+|__json__  |__xml__    | __threefive__  < json.json  __xml__                         |
 |          |           |                                                         |
 
 
