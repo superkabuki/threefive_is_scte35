@@ -37,7 +37,7 @@ ___
 ___
 
 
-####  [__More Examples__](https://github.com/superkabuki/threefive/tree/main/examples)
+#  [__[Examples]__](https://github.com/superkabuki/threefive/tree/main/examples)
 
 
 # [ Documentation ]
