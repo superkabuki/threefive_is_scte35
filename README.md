@@ -21,7 +21,7 @@ ___
 
 ### [ News ]
 
-* I have been __trying to setup threefive on readthedocs__,it not going very well, but I am working on it.
+* I have been __trying to setup threefive on readthedocs__,it is not going very well, but I am working on it.
 * __threefive no longer uses setuptools for packaging__ and I know you don't care.
 * __I am currently not banned__ on the python site, and __my jihad against pep 668__ has resumed. 
 * __Python 3.14__ is the release where all those __deprection warnings turn into errors__. Don't worry folk, __threefive v3.0.77__ is python3.14 __ready.__
@@ -36,218 +36,6 @@ ___
 
 ___
 
-## [Fun Facts]
-* threefive is single threaded.
-* threefive has more left shifts than multiplication operations.
-* threefive doesn't have a single lambda call.
-___
-
-##  [Examples]
-<i>These examples show how to parse SCTE-35<BR> 
-from various SCTE-35 data formats, with both the cli and with the library.</i> 
- <details><summary>MPEGTS</summary>
- 
-* MPEGTS streams can be  Files, Http(s), Multicast,SRT, UDP Unicast, or  stdin. 
-* __cli__
-
-```js
-threefive https://example.com/video.ts
-```
-* wildcards work too.
-```js
-threefive /mpegts/*.ts
-```
-
-* __lib__
-```py3
-
-from threefive import Stream
-stream = Stream('https://example.com/video.ts')
-stream.decode()
-
-```
-</details>
-<details><summary>Base64</summary>
-
-* __cli__
-```js
-threefive '/DAsAAAAAyiYAP/wCgUAAAABf1+ZmQEBABECD0NVRUkAAAAAf4ABADUAAC2XQZU='
-```
-* __lib__
-```py3
-
-from threefive import Cue
-data = '/DAsAAAAAyiYAP/wCgUAAAABf1+ZmQEBABECD0NVRUkAAAAAf4ABADUAAC2XQZU='
-cue=Cue(data)
-cue.show()
-```
-
-</details>
-
-
-<details><summary>Bytes</summary>
-
-* __cli__
-	* Bytes don't work on the cli
-
-* __lib__
-```py3
-
-from threefive import Cue
-data =  b'\xfc0\x16\x00\x00\x00\x00\x00\x00\x00\xff\xf0\x05\x06\xfe\x00\xc0D\xa0\x00\x00\x00\xb5k\x88'
-cue=Cue(data)
-cue.show()
-```
-
-</details>
-
-<details><summary>Hex</summary>
-
-* Can be a hex literal or hex string or bytes.
-
-* __cli__
-```js
-threefive  0xfc301600000000000000fff00506fed605225b0000b0b65f3b
-```
-* __lib__
-```py3
-
-from threefive import Cue
-data =  0xfc301600000000000000fff00506fed605225b0000b0b65f3b
-cue=Cue(data)
-cue.show()
-```
-
-</details>
-
-
-<details><summary>Int</summary>
-
-* Can be a literal integer or string or bytes.
-
-* __cli__
-```js
-threefive  1583008701074197245727019716796221243043855984942057168199483
-```
-* __lib__
-```py3
-
-from threefive import Cue
-data =  1583008701074197245727019716796221243043855984942057168199483
-cue=Cue(data)
-cue.show()
-```
-
-
-</details>
-
-
-<details><summary>JSON</summary>
-
-* __cli__
-	* 	put JSON SCTE-35 in a file and redirect it into threefive
-    *   cat files to threefive works too.
-    *   echo JSON or type JSON on the command line.
-   
-```js
-threefive  < json.json
-```
-* __lib__
-
-```py3
-
- from threefive import Cue
- data = '''{
-    "info_section": {
-        "table_id": "0xfc",
-        "section_syntax_indicator": false,
-        "private": false,
-        "sap_type": "0x03",
-        "sap_details": "No Sap Type",
-        "section_length": 22,
-        "protocol_version": 0,
-        "encrypted_packet": false,
-        "encryption_algorithm": 0,
-        "pts_adjustment": 0.0,
-        "cw_index": "0x00",
-        "tier": "0x0fff",
-        "splice_command_length": 5,
-        "splice_command_type": 6,
-        "descriptor_loop_length": 0,
-        "crc": "0xb56b88"
-    },
-    "command": {
-        "command_length": 5,
-        "command_type": 6,
-        "name": "Time Signal",
-        "time_specified_flag": true,
-        "pts_time": 140.005333
-    },
-    "descriptors": []
-}
-'''
-cue=Cue(data)
-cue.show()
-```
-
-</details>
-
-
-<details><summary><u>Xml</u></summary>
-
-* __cli__
-	* put xml SCTE-35 in a [file](xml.xml) and redirect it into threefive
-    * cat files to threefive works too.
-    * echo xml or type xml on the command line.
-     
-	```js
-	threefive < xml.xml
-	```
-* __lib__
-```py3
-from threefive import Cue
-data =  '''
-<scte35:SpliceInfoSection xmlns:scte35="https://scte.org/schemas/35" 
-        ptsAdjustment="0" protocolVersion="0" sapType="3" tier="4095">
-   <scte35:TimeSignal>
-      <scte35:SpliceTime ptsTime="12600480"/>
-   </scte35:TimeSignal>
-</scte35:SpliceInfoSection>
-'''
-cue=Cue(data)
-
-cue.show()
-```
-
-
-</details>
-
-
-
-<details><summary>Xml+binary</summary>
-
-* __cli__
-	* write xml+binary to a [file](xmlbin.xml) and redirect it to threefive
-    * cat files to threefive works too.
-    * echo xml+binary or type xml+binary on the command line.
-```js
-threefive < xmlbin.xml
-```
-* __lib__
-```py3
-
-from threefive import Cue
-data = '''<scte35:Signal xmlns:scte35="https://scte.org/schemas/35">
-    <scte35:Binary>/DAWAAAAAAAAAP/wBQb+AMBEoAAAALVriA==</scte35:Binary>
-</scte35:Signal>
-'''
-cue=Cue(data)
-cue.show()
-```
-
-</details>
-
-</samp>
 
 ####  [__More Examples__](https://github.com/superkabuki/threefive/tree/main/examples)
 
@@ -316,14 +104,11 @@ ___
 
 * The default action is to read a SCTE-35 input and write a SCTE-35 output.
 
-  *  __Inputs:__  mpegts, base64, hex, json,and xml, and xmlbin.
-  *  __Protocol:__ SCTE35 can read from  strings, pipes, files, stdin, http(s), multicast,srt and udp.
-  *  __Outputs:__ base64, bytes, hex, int, json, xml, and xmlbin.
-
 #### Parse SCTE-35 from MPEGTS
+
 * __SCTE-35 Input__: MPEGTS
 * __Protocols__: pipes, files, stdin, http(s), multicast,SRT and UDP.
-* __SCTE-35 Output__: JSON _(default)_ __base64, bytes, hex, int, xml__, and __xmlbin__.
+* __SCTE-35 Output__: JSON _(default)_ base64, bytes, hex, int, xml, and xmlbin.
 
 |SCTE-35 Input  | Protocol   | SCTE-35 Output     | Command                                             |
 |-------|------------|-----------|---------------------------------------------------------|
@@ -336,31 +121,35 @@ ___
 |__.__|stdin|__xml+bin__| __threefive__  __xmlbin__ < video.ts|
 
 #### Parse SCTE-35 Cues
+
+  *  __Any Input can be used with Any Output__
+  *  The __default output__ is JSON
+  *  __SCTE-35 Inputs:__  base64, hex, int, JSON,int,xml,and xmlbin.
+  *  __SCTE-35 Outputs:__ base64, bytes, hex, int,JSON, xml, and xmlbin.
+
+> here are several examples.
+
 |SCTE-35 Input  |  SCTE-35 Output     | Command                                             |
 |-------|-----------|---------------------------------------------------------|
-|__base64__|__json__    | __threefive__ '/DAWAAAAAAAAAP/wBQb+AKmKxwAACzuu2Q==' |
+|__base64__|__JSON__    | __threefive__ '/DAWAAAAAAAAAP/wBQb+AKmKxwAACzuu2Q==' |
 |__.__|__bytes__    | __threefive__ '/DAWAAAAAAAAAP/wBQb+AKmKxwAACzuu2Q==' __bytes__|
 |__.__|__hex__    | __threefive__ '/DAWAAAAAAAAAP/wBQb+AKmKxwAACzuu2Q==' __hex__|
-|__.__|__int__    | __threefive__ '/DAWAAAAAAAAAP/wBQb+AKmKxwAACzuu2Q==' __int__|
 |__.__|__xml__    | __threefive__ '/DAWAAAAAAAAAP/wBQb+AKmKxwAACzuu2Q==' __xml__|
-|__.__|__xmlbin__    | __threefive__ '/DAWAAAAAAAAAP/wBQb+AKmKxwAACzuu2Q==' __xmlbin__|
-|__hex__  | __json__  | __threefive__ 0xfc301600000000000000fff00506fe00a98ac700000b3baed9|
+|__hex__  | __JSON__  | __threefive__ 0xfc301600000000000000fff00506fe00a98ac700000b3baed9|
 |__.__  | __base64__  | __threefive__ 0xfc301600000000000000fff00506fe00a98ac700000b3baed9 __base64__ |
-|__.__  | __bytes__  | __threefive__ 0xfc301600000000000000fff00506fe00a98ac700000b3baed9 __bytes__ |
 |__.__  | __int__  | __threefive__ 0xfc301600000000000000fff00506fe00a98ac700000b3baed9 __int__ |
-|__.__  | __xml__  | __threefive__ 0xfc301600000000000000fff00506fe00a98ac700000b3baed9 __xml__ |
 |__.__  | __xmlbin__  | __threefive__ 0xfc301600000000000000fff00506fe00a98ac700000b3baed9 __xmlbin__ |
-| __int__ | __xml__    | __threefive__ 1583008701074197245727019716796221242036302348025116111908569 __xml__ |  
+| __int__ | __JSON__    | __threefive__ 1583008701074197245727019716796221242036302348025116111908569  |  
+|__.__ | __hex__    | __threefive__ 1583008701074197245727019716796221242036302348025116111908569 __hex__ |  
+|__.__ | __xml__    | __threefive__ 1583008701074197245727019716796221242036302348025116111908569 __xml__ |
+|__JSON__ |__base64__    | __threefive__  < json.json  __base64__                         |
+|__.__  |__bytes__    | __threefive__  < json.json  __bytes__                         |
+|__.__  |__xml__    | __threefive__  < json.json  __xml__                         |
+|__xml__   |__JSON__   | __threefive__   < xml.xml                                   |
 |__xmlbin__|__int__    | __threefive__   < xmlbin.xml __int__                        |
-|          |           |                                                         |
-|__xml__   |__json__   | __threefive__   < xml.xml                                   |
-|          |           |                                                         |
-|          |   |   |                                                     |
-|__json__  |__xml__    | __threefive__  < json.json  __xml__                         |
-|          |           |                                                         |
 
 
-* __Additional functionality__ in the threefive cli tool.
+#### __Additional functionality__ in the threefive cli tool.
 
 | Description                              | How To Use                                       |
 |------------------------------------------|---------------------------------------------------------|
