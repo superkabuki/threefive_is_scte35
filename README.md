@@ -21,24 +21,15 @@ ___
 
 ### [ News ]
 
-* I have been __trying to setup threefive on readthedocs__,it is not going very well, but I am working on it.
 * __threefive no longer uses setuptools for packaging__ and I know you don't care.
-* __I am currently not banned__ on the python site, and __my jihad against pep 668__ has resumed. 
-* __Python 3.14__ is the release where all those __deprection warnings turn into errors__. Don't worry folk, __threefive v3.0.77__ is python3.14 __ready.__
 * __Python3 vs. Pypy3__ [__parsing SCTE35 with threefive__](https://github.com/superkabuki/threefive_is_scte35#python3-vs-pypy3-running-threefive) (watch the cool video) 
 * __threefive now supports__ [__Secure Reliable Transport__](https://github.com/superkabuki/threefive_is_scte35/blob/main/README.md#threefive-now-supports-srt)  (watch the cool video)
-
-* [__threefive does Multicast very well__](#-threefive-streams-multicast-its-easy-), both as a sender and receiver.  
+* I have been __trying to setup threefive on readthedocs__,it's not going very well, but I'm working on it.
 ___
 
 ## [ Latest version is  v3.0.75 ]
-* [__Super low cyclomatic complexity score__](cyclomatic.md)
-
-___
-
 
 #  [__[Examples]__](https://github.com/superkabuki/threefive/tree/main/examples)
-
 
 # [ Documentation ]
 
@@ -46,16 +37,12 @@ ___
 	* [threefive SCTE-35 __Online Parser__](https://iodisco.com/scte35) hosted on my server_
 	* [ SCTE-35 __Online Parser__ powered by threefive](http://www.domus1938.com/scte35parser) _another online parser powered by threefive_
 	* [SCTE-35 __As a Service__](sassy.md) _if you can make an http request, you can parse SCTE-35, no install needed._
-
-	
 * [__install__](#install) 
 	* [SCTE-35 Decoding __Quick Start__ ](#quick-start) _threefive makes decoding SCTE-35 fast and easy_
 	* [SCTE-35 __Examples__](https://github.com/superkabuki/threefive/tree/main/examples) _examples of all kinds of SCTE-35 stuff_
-
-* __Command line__
+* __command line__
 	* [SCTE-35 __Cli__](#-the-cli-tool-) _decode SCTE-35 on the command line_
-
-* __Library__
+* __library__
  	* [__Using the threefive.Cue class__](https://github.com/superkabuki/threefive/blob/main/lib.md) 
 	* [__Using the threefive library__](#using-the-library) _decode SCTE-35 with less than ten lines of code_
  	* * [threefive __Classes__](#classes) _threefive is OO, made to subclass_
@@ -63,19 +50,13 @@ ___
 		* [__Stream__ Class](https://github.com/superkabuki/threefive/blob/main/stream.md) _this is the class for parsing MPEGTS_
 
 * [Use __threefive to stream Multicast__](#-threefive-streams-multicast-its-easy-) _threefive is a multicast client and server_
-
 * [SCTE-35 __Sidecar Files__](https://github.com/superkabuki/SCTE-35_Sidecar_Files) _threefive supports SCTE-35 sidecar files_
-
 * [__SuperKabuki__ SCTE-35 MPEGTS __Packet Injection__](inject.md) _inject SCTE-35 into MPEGTS streams_ 
-
 * [SCTE-35 __HLS__](https://github.com/superkabuki/threefive/blob/main/hls.md) _parse SCTE-35 in HLS__
 * [SCTE-35 __XML__ ](https://github.com/superkabuki/SCTE-35/blob/main/xml.md) and [More __XML__](node.md) _threefive can parse and encode SCTE-35 xml_
-
 * [__Encode__ SCTE-35](https://github.com/superkabuki/threefive/blob/main/encode.md) _threefive can encode SCTE-35 in every SCTE-35 format_
-
 * [Make your __threefive__ script an executable with __cython__](cython.md) _threefive is compatible with all python tools_
 </samp>
-
 
 ##  [Install]
 * python3 via pip
@@ -96,16 +77,10 @@ ___
 
 
 ## [Quick Start] 
-
-
 * Most of the stuff in threefive all works the same way.
-
 ### [cli tool]
-
 * The default action is to read a SCTE-35 input and write a SCTE-35 output.
-
 #### Parse SCTE-35 from MPEGTS
-
 * __SCTE-35 Input__: MPEGTS
 * __Protocols__: pipes, files, stdin, http(s), multicast,SRT and UDP.
 * __SCTE-35 Output__: JSON _(default)_ base64, bytes, hex, int, xml, and xmlbin.
@@ -177,7 +152,6 @@ ___
 |                                          |                                                         |
 | __Multicast__ anything                   |threefive __mcast__ some.file                            |
 |                                          |                                                         |
-
 ___
 
 ## [XML]
@@ -187,13 +161,10 @@ ___
      * The cli tool comes with builtin documentation just type `threefive help`
 ## [HLS]
 * [Advanced Parsing of SCTE-35 in HLS with threefive](https://github.com/superkabuki/threefive/blob/main/hls.md) All HLS SCTE-35 tags, Sidecar Files, AAC ID3 Header Timestamps, SCTE-35 filters... Who loves you baby?
-
 ##  [MPEGTS Packet Injection]
 * [The SuperKabuki MPEGTS Packet Injection Engine in the Cli](inject.md)
-
 ##  [SCTE-35 As a Service]
 * Decode SCTE-35 without installing anything. If you can make an https request, you can use [__Sassy__](sassy.md) to decode SCTE-35. . 
-
 ##  [Classes]
 * The python built in help is always the most up to date docs for the library.
 
