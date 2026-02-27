@@ -77,12 +77,15 @@ ___
 
 
 ## [Quick Start] 
-* Most of the stuff in threefive all works the same way.
-### [cli tool]
+## [CLI]
 * The default action is to read a SCTE-35 input and write a SCTE-35 output.
-#### Parse SCTE-35 from MPEGTS
+
+---
+
+## [ Parse SCTE-35 from MPEGTS ]
+  
 * __SCTE-35 Input__: MPEGTS
-* __Protocols__: pipes, files, stdin, http(s), multicast,SRT and UDP.
+*  __Protocols__: pipes, files, stdin, http(s), multicast,SRT and UDP.
 * __SCTE-35 Output__: JSON _(default)_ base64, bytes, hex, int, xml, and xmlbin.
 
 |SCTE-35 Input  | Protocol   | SCTE-35 Output     | Command                                             |
@@ -94,15 +97,15 @@ ___
 |__.__|UDP|__int__ | __threefive__ udp://10.10.10.10:1011  __int__      |
 |__.__|Pipe|__xml__| cat video.ts \| __threefive__  __xml__                           |
 |__.__|stdin|__xml+bin__| __threefive__  __xmlbin__ < video.ts|
+___
+## [ Parse SCTE-35 Cues ]
 
-#### Parse SCTE-35 Cues
-
-  *  __Any Input can be used with Any Output__
   *  The __default output__ is JSON
   *  __SCTE-35 Inputs:__  base64, hex, int, JSON,int,xml,and xmlbin.
   *  __SCTE-35 Outputs:__ base64, bytes, hex, int,JSON, xml, and xmlbin.
+  *  __Any Input can be used with Any Output__
 
-> here are several examples.
+> __Here are several examples.__
 
 |SCTE-35 Input  |  SCTE-35 Output     | Command                                             |
 |-------|-----------|---------------------------------------------------------|
@@ -123,8 +126,11 @@ ___
 |__xml__   |__JSON__   | __threefive__   < xml.xml                                   |
 |__xmlbin__|__int__    | __threefive__   < xmlbin.xml __int__                        |
 
-
-#### __Additional functionality__ in the threefive cli tool.
+---
+## [__Additional functionality__]
+* threefive has several additional features, mostly related to MPEGTS streams.
+* threefive has built in help, just type `threefive help`
+* This table shows how to use them.
 
 | Description                              | How To Use                                       |
 |------------------------------------------|---------------------------------------------------------|
@@ -152,17 +158,13 @@ ___
 |                                          |                                                         |
 | __Multicast__ anything                   |threefive __mcast__ some.file                            |
 |                                          |                                                         |
-___
+---
 
 ## [XML]
 * [XML](https://github.com/superkabuki/SCTE-35/blob/main/xml.md) __New__! _updated 05/01/2025_
-## [Cli]
-* [SCTE-35 Cli Super Tool](#the-cli-tool) Encodes, Decodes, and Recodes. This is pretty cool, it does SCTE-35 seven different ways.
-     * The cli tool comes with builtin documentation just type `threefive help`
+
 ## [HLS]
 * [Advanced Parsing of SCTE-35 in HLS with threefive](https://github.com/superkabuki/threefive/blob/main/hls.md) All HLS SCTE-35 tags, Sidecar Files, AAC ID3 Header Timestamps, SCTE-35 filters... Who loves you baby?
-##  [MPEGTS Packet Injection]
-* [The SuperKabuki MPEGTS Packet Injection Engine in the Cli](inject.md)
 ##  [SCTE-35 As a Service]
 * Decode SCTE-35 without installing anything. If you can make an https request, you can use [__Sassy__](sassy.md) to decode SCTE-35. . 
 ##  [Classes]
