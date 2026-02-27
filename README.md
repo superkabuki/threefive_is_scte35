@@ -38,10 +38,8 @@ ___
 	* [ SCTE-35 __Online Parser__ powered by threefive](http://www.domus1938.com/scte35parser) _another online parser powered by threefive_
 	* [SCTE-35 __As a Service__](sassy.md) _if you can make an http request, you can parse SCTE-35, no install needed._
 * [__install__](#install) 
-	* [SCTE-35 Decoding __Quick Start__ ](#quick-start) _threefive makes decoding SCTE-35 fast and easy_
-	* [SCTE-35 __Examples__](https://github.com/superkabuki/threefive/tree/main/examples) _examples of all kinds of SCTE-35 stuff_
-* __command line__
-	* [SCTE-35 __Cli__](#-the-cli-tool-) _decode SCTE-35 on the command line_
+* __command line tool__
+	* [SCTE-35 __Cli__](#cli) _decode SCTE-35 on the command line_
 * __library__
  	* [__Using the threefive.Cue class__](https://github.com/superkabuki/threefive/blob/main/lib.md) 
 	* [__Using the threefive library__](#using-the-library) _decode SCTE-35 with less than ten lines of code_
