@@ -31,7 +31,7 @@ class Speedo:
         elapsed = self.now() - self.start
         mb = self.total_bytes / MILLION
         rate = mb / elapsed
-        out = f"\t{mb:0.2f} MB sent in {elapsed:5.2f} seconds. {rate:3.2f} MB/Sec     "
+        out = f"\t{mb:0.2f} MB in {elapsed:5.2f} seconds. {rate:3.2f} MB/Sec     "
         reblue(out)
 
     def end(self):
