@@ -69,6 +69,8 @@ class GumS:
                 self.socked.sendto(dgram, self.dest_grp)
                 throttle.throttle(packets[-1])
                 speedo.plus(len(dgram))
+            flush=b'\xff' * 1316
+            self.socked.sendto(flush, self.dest_grp)            
 
         speedo.end()
 
@@ -102,16 +104,15 @@ def parse_args():
     parse_args parse command line args
     """
 
-    parser = argparse.ArgumentParser( epilog="mcast is part of threefive.\n\n")
+    parser = argparse.ArgumentParser( epilog="gums is part of threefive.\n\n")
 
     parser.add_argument(
         "-i",
         "--input",
         default=sys.stdin.buffer,
         help=f"""like "/home/a/vid.ts"
-                or "udp://@235.35.3.5:3535"
                 or "https://futzu.com/xaa.ts"
-                [default:{REV}sys.stdin.buffer{NORM}]
+                [default: sys.stdin.buffer]
              """,
     )
 
@@ -120,21 +121,21 @@ def parse_args():
         "-a",
         "--addr",
         default=DEFAULT_MULTICAST,
-        help=f"Destination IP:Port  [default:{REV}235.35.3.5:3535{NORM}]",
+        help=f"Destination IP:Port  [default: 235.35.3.5:3535]",
     )
 
     parser.add_argument(
         "-b",
         "--bind_addr",
         default="0.0.0.0",
-        help=f" Local IP to bind [default:{REV}0.0.0.0{NORM}]",
+        help=f" Local IP to bind [default: 0.0.0.0]",
     )
 
     parser.add_argument(
         "-t",
         "--ttl",
         default=32,
-        help=f"Multicast TTL (1 - 255) [default:{REV}32{NORM}]",
+        help=f"Multicast TTL (1 - 255) [default: 32]",
     )
 
     return parser.parse_args()
