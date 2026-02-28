@@ -61,19 +61,8 @@ HELP = f"""
 
 {BLUE} Additional Commands{U}
 
- {B} bump        {U}{BLUE} Adjust SCTE-35 PTS values by seconds {NORM}
-    threefive bump -i input.ts -o output.ts --bump 56.4
-    threefive bump help
- {B} hls         {U}{NORM}{BLUE} SCTE-35 HLS decode{U}
-    threefive hls https://example.com/master.m3u8{U}
-    threefive hls help
  {B} iframes     {U}{BLUE} Show MPEGTS iframes{NORM}
     threefive iframes video.ts
- {B} inject      {U}{NORM}{BLUE} SuperKabuki SCTE-35 MPEGTS Packet Injection Engine{U}
-    threefive inject help
- {B} mcast       {U}{NORM}{BLUE} Multicast sender(server){U}
-    threefive mcast  -i video.ts
-    threefive mcast help
  {B} packets     {U}{NORM}{BLUE} Print raw SCTE-35 packets{NORM}
     threefive packets udp://@235.35.3.5:3535
  {B} proxy       {U}{NORM}{BLUE} Parse a MPEGTS stream, copy it to stdout{NORM}
@@ -84,8 +73,6 @@ HELP = f"""
     threefive rt video.ts
  {B} sidecar     {U}{NORM}{BLUE} Create a SCTE-35 sidecar file{NORM}
     threefive sidecar video.ts
- {B} sixfix      {U}{NORM}{BLUE} Convert ffmpeg bin data back to SCTE-35{NORM}
-    threefive sixfix video.ts
  {B} show        {U}{NORM}{BLUE} Probe MPEGTS video{NORM}
     threefive show video.ts
  {B} speedo      {U}{NORM}{BLUE} Show MPEGTS video parse speed{NORM}
@@ -93,7 +80,6 @@ HELP = f"""
  {B} version     {U}{NORM}{BLUE} Show version{NORM}
     threefive version
  {B} help        {U}{NORM} {BLUE}Help{NORM}
-
     threefive help
 
 """
