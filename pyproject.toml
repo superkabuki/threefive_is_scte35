@@ -34,7 +34,8 @@ Issues = "https://github.com/superkabuki/threefive/issues"
 
 [project.scripts]
 bump = "threefive.bump:cli"
-mcast = "threefive.gums:cli"
+gums = "threefive.gums:cli"
 hls = "threefive.hls:cli"
 sixfix = "threefive.sixfix:cli"
+superkabuki = "threefive.superkabuki:cli"
 threefive = "threefive.cli:threefivecli"
