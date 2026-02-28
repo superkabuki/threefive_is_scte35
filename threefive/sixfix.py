@@ -12,6 +12,34 @@ from .pmt import PMT
 
 fixme = []
 
+HELPME="""
+  sixfix checks MPEGTS for SCTE-35 Streams
+  that have been change to bin data (type 0x06)
+  and changes them back to SCTE-35 (type 0x86) streams.
+
+  Output files are created in the current directory
+  and prefixed with 'sixfix-'.
+
+  Only bin data streams containing SCTE-35 will be converted.
+
+  Multiple files can be specified on the command line.
+  Wild cards work too.
+
+  Example Usage:
+
+        sixfix video.ts
+        
+        sixfix video1.ts video2.ts
+
+        sixfix video*.ts
+
+        sixfix https://example.com/video.ts
+
+        sixfix srt://10.10.10.13:4201
+
+
+sixfix is part of threefive.
+"""
 
 def passed(cue):
     """
@@ -19,8 +47,7 @@ def passed(cue):
     used to pull pids from streams containing SCTE-35
     so that we don't convert non-SCTE-35 0x06 streams.
     """
-    global fixme
-    fixme.append(cue.packet_data.pid)
+    globals()['fixme'].append(cue.packet_data.pid)
     return cue
 
 
@@ -31,11 +58,10 @@ class PreFix(Stream):
 
     def decode(self, func=passed):
         super().decode(func=passed)
-        global fixme
-        fixme = list(set(fixme))
-        if fixme:
-            print("fixing these pids", fixme)
-        return fixme
+        tofix = list(set(globals()['fixme']))
+        if tofix:
+            print("fixing these pids", tofix)
+        return tofix
 
 
 class SixFix(Stream):
@@ -188,10 +214,9 @@ def sixfix(arg):
     sixfix converts 0x6 bin data mpegts streams
     that contain SCTE-35 data to stream type 0x86
     """
-    global fixme
-    fixme = []
+    globals()['fixme'] = []
     s1 = PreFix(arg)
-    blue(f"reading {arg}")
+    print2(f"reading {arg}")
     sixed = s1.decode(func=passed)
 
     if not sixed:
@@ -204,7 +229,15 @@ def sixfix(arg):
     return
 
 
+def _chk_help():
+    for h in ['help','-h', '--help']:
+        if h in sys.argv:
+            print(HELPME)
+            sys.exit()
+
+
 def cli():
+    _chk_help()
     args = sys.argv[1:]
     _ = [sixfix(arg) for arg in args]
 
