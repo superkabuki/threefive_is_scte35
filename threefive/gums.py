@@ -70,7 +70,7 @@ class GumS:
                 throttle.throttle(packets[-1])
                 speedo.plus(len(dgram))
             flush=b'\xff' * 1316
-            self.socked.sendto(flush, self.dest_grp)            
+            self.socked.sendto(flush, self.dest_grp)
 
         speedo.end()
 
@@ -110,7 +110,7 @@ def parse_args():
         "-i",
         "--input",
         default=sys.stdin.buffer,
-        help=f"""like "/home/a/vid.ts"
+        help="""like "/home/a/vid.ts"
                 or "https://futzu.com/xaa.ts"
                 [default: sys.stdin.buffer]
              """,
@@ -121,21 +121,21 @@ def parse_args():
         "-a",
         "--addr",
         default=DEFAULT_MULTICAST,
-        help=f"Destination IP:Port  [default: 235.35.3.5:3535]",
+        help="Destination IP:Port  [default: 235.35.3.5:3535]",
     )
 
     parser.add_argument(
         "-b",
         "--bind_addr",
         default="0.0.0.0",
-        help=f" Local IP to bind [default: 0.0.0.0]",
+        help=" Local IP to bind [default: 0.0.0.0]",
     )
 
     parser.add_argument(
         "-t",
         "--ttl",
         default=32,
-        help=f"Multicast TTL (1 - 255) [default: 32]",
+        help="Multicast TTL (1 - 255) [default: 32]",
     )
 
     return parser.parse_args()
