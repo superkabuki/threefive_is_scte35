@@ -53,15 +53,14 @@ class SuperKabuki(SixFix):
         """
         _parse_args parse command line args
         """
-        parser = argparse.ArgumentParser()
+        parser = argparse.ArgumentParser(epilog="superkabuki is part of threefive.\n\n")
         parser.add_argument(
             "-i",
             "--input",
             default=sys.stdin.buffer,
             help=f""" Input source, like "/home/a/vid.ts"
                                     or "udp://@235.35.3.5:3535"
-                                    or "https://futzu.com/xaa.ts"
-                                    [ default:{REV}sys.stdin.buffer{NORM} ]
+                                    [default: sys.stdin.buffer]
                                     """,
         )
 
@@ -69,21 +68,21 @@ class SuperKabuki(SixFix):
             "-o",
             "--output",
             default=sys.stdout.buffer,
-            help=f"Output file  [ default:{REV}sys.stdout.buffer{NORM} ]",
+            help=f"Output file  [default: sys.stdout.buffer]",
         )
 
         parser.add_argument(
             "-s",
             "--sidecar",
             default="sidecar.txt",
-            help=f"Sidecar file for SCTE35 [ default:{REV}sidecar.txt{NORM} ]",
+            help=f"Sidecar file for SCTE35 [default: sidecar.txt]",
         )
         parser.add_argument(
             "-p",
             "--scte35_pid",
             default="0x86",
             # type=int,
-            help=f"Pid for SCTE-35 packets [ default:{REV}0x86{NORM} ]",
+            help=f"Pid for SCTE-35 packets [default: 0x86]",
         )
         parser.add_argument(
             "-t",
