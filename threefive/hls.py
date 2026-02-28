@@ -782,9 +782,10 @@ class HlsParser:
 
 
 def _chk_help():
-    if "help" in sys.argv:
-        print(HELPME)
-        sys.exit()
+    for h in ['help','-h', '--help']:
+        if h in sys.argv:
+            print(HELPME)
+            sys.exit()
 
 
 def _chk_profile():
@@ -968,6 +969,7 @@ HELPME = """
 	* Generate a new hls.profile:   threefive hls profile
 
 	* parse an m3u8:    threefive hls  https://example.com/out/master.m3u8
+
 
 hls is part of threefive.
 
