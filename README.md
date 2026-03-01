@@ -38,8 +38,12 @@ ___
 	* [ SCTE-35 __Online Parser__ powered by threefive](http://www.domus1938.com/scte35parser) _another online parser powered by threefive_
 	* [SCTE-35 __As a Service__](sassy.md) _if you can make an http request, you can parse SCTE-35, no install needed._
 * [__install__](#install) 
-* __command line tool__
-	* [SCTE-35 __Cli__](#cli) _decode SCTE-35 on the command line_
+* __command line tools__
+	* [ __threefive cli__](#cli) _decode SCTE-35 on the command line_
+ 	* [__bump__](#bump)
+  	* [__gums__](#gums)
+  	* [__hls__](#hls)
+  	* [__sixfix__](#sixfix) 
 * __library__
  	* [__Using the threefive.Cue class__](https://github.com/superkabuki/threefive/blob/main/lib.md) 
 	* [__Using the threefive library__](#using-the-library) _decode SCTE-35 with less than ten lines of code_
@@ -77,7 +81,6 @@ ___
 ## [Quick Start] 
 ## [CLI]
 * The default action is to read a SCTE-35 input and write a SCTE-35 output.
-
 ---
 
 ## [ Parse SCTE-35 from MPEGTS ]
@@ -146,21 +149,101 @@ ___
 
 ## Other tools
 threefive also comes with: 
-* __bump__ , 
-	* bump adjusts SCTE-35 PTS in an MPEGTS stream 
-* __gums__
-	*  the Grande Udp Multicast Server
-* __hls__
-	* parse HLS for SCTE-35. Supports all HLS SCTE-35 tags. 
-* __sixfix__
-	* when ffmpeg changes a SCTE-35 stream to bin data stream, sixfix changes it back. 
+### bump 
 
-| Tool                             | How To Use                                       |Help				|
-|------------------------------------------|------------------------------------------|---------------|
-| __bump__ | __bump__ -i input.ts -o output.ts -b -37.45   |__bump -h__ | 
-| __gums__	| __gums__ -i video.ts	|	__gums -h__   						|
-| __hls__  |__hls__ https://example.com/master.m3u8        | __hls -h__ |
-| __sixfix__| __sixfix__ video.ts                           | __sixfix -h__ |
+* bump adjusts SCTE-35 PTS in an MPEGTS stream
+
+```js
+$ bump -h
+usage: bump [-h] [-i INFILE] [-o OUTFILE] [-s SECS]
+
+options:
+  -h, --help            show this help message and exit
+  -i INFILE, --infile INFILE
+                        Input source, stdin, file, http(s), udp, or multicast
+                        mpegts [default: sys.stdin.buffer]
+  -o OUTFILE, --outfile OUTFILE
+                        Output file [default: sys.stdout.buffer]
+  -s SECS, --secs SECS  Adjustment to apply to SCTE-35 Cues. [default: 0.0]
+
+bump is part of threefive.
+```
+
+---
+
+### gums
+*  the Grande Udp Multicast Server
+
+```js
+$ gums -h
+usage: gums [-h] [-i INPUT] [-a ADDR] [-b BIND_ADDR] [-t TTL]
+
+options:
+  -h, --help            show this help message and exit
+  -i INPUT, --input INPUT
+                        like "/home/a/vid.ts" or "https://futzu.com/xaa.ts"
+                        [default: sys.stdin.buffer]
+  -a ADDR, --addr ADDR  Destination IP:Port [default: 235.35.3.5:3535]
+  -b BIND_ADDR, --bind_addr BIND_ADDR
+                        Local IP to bind [default: 0.0.0.0]
+  -t TTL, --ttl TTL     Multicast TTL (1 - 255) [default: 32]
+
+gums is part of threefive.
+```
+### hls
+
+* parse HLS for SCTE-35. Supports all HLS SCTE-35 tags.
+
+```js
+$ hls -h
+
+[ threefive hls ]
+
+[ Help ]
+
+    To display this help:
+	scte35 hls help
+
+[ Input ]
+    threefive hls takes an m3u8 URI as input.
+    M3U8 formats supported:
+        * master  ( When a master.m3u8 used,
+                   threefive hls parses the first rendition it finds )
+        * rendition
+    Segment types supported:
+    * AAC
+    * AC3
+    * MPEGTS
+    *codecs:
+        * video
+            * mpeg2, h.264, h.265
+        * audio
+            * mpeg2, aac, ac3, mp3
+```
+
+### __sixfix__
+* when ffmpeg changes a SCTE-35 stream to bin data stream, sixfix changes it back. 
+
+```js
+$ sixfix -h
+
+  sixfix checks MPEGTS for SCTE-35 Streams
+  that have been change to bin data (type 0x06)
+  and changes them back to SCTE-35 (type 0x86) streams.
+  Output files are created in the current directory
+  and prefixed with 'sixfix-'.
+  Only bin data streams containing SCTE-35 will be converted.
+  Multiple files can be specified on the command line.
+  Wild cards work too.
+
+  Example Usage:
+        sixfix video.ts
+        sixfix video1.ts video2.ts
+        sixfix video*.ts
+        sixfix https://example.com/video.ts
+        sixfix srt://10.10.10.13:4201
+sixfix is part of threefive.
+```
 
 ## [XML]
 * [XML](https://github.com/superkabuki/SCTE-35/blob/main/xml.md) __New__! _updated 05/01/2025_
