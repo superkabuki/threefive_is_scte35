@@ -132,31 +132,35 @@ ___
 
 | Description                              | How To Use                                       |
 |------------------------------------------|---------------------------------------------------------|
-| Adjust __SCTE-35__ PTS values by seconds  | threefive __bump__ -i input.ts -o output.ts -b -37.45   |
-|											|														|
-| Parse HLS for __SCTE35__                 |threefive __hls__ https://example.com/master.m3u8        |
-|                                          |                                                         |
 | Inject __SCTE35__ packets                |threefive __inject__ -i in.video -s sidecar.txt -o out.ts|
-|                                          |                                                         |
 | Show raw __SCTE35__ packets              |threefive __packets__ udp://@235.35.3.5:3535             |
-|											|														| 
 | Copy MPEGTS stream to stdout at realtime speed| threefive __rt__ input.ts | mplayer -				|
-|                                          |                                                         |
 | Create __SCTE35__ sidecar file           |threefive __sidecar__ video.ts                           |
-|                                          |                                                         |
-|Fix __SCTE-35__ data mangled by __ffmpeg__| threefive __sixfix__ video.ts                           |
-|                                          |                                                         |
 | Show streams in mpegts stream            | threefive __show__ https://example.com/video.ts         |
-|                                          |                                                         |
 | Show __iframes__ in mpegts stream        |threefive __iframes__ srt://10.10.1.3:9000               |
-|                                          |                                                         |
 | Show __PTS__ values from mpegts stream   | threefive __pts__ udp://192.168.1.10:9000               |
-|                                          |                                                         |
 |__Proxy__ the __mpegts__ stream to stdout |threefive __proxy__ https://wexample.com/video.ts        |
 |                                          |                                                         |
-| __Multicast__ anything                   |threefive __mcast__ some.file                            |
 |                                          |                                                         |
 ---
+
+## Other tools
+threefive also comes with: 
+* __bump__ , 
+	* bump adjusts SCTE-35 PTS in an MPEGTS stream 
+* __gums__
+	*  the Grande Udp Multicast Server
+* __hls__
+	* parse HLS for SCTE-35. Supports all HLS SCTE-35 tags. 
+* __sixfix__
+	* when ffmpeg changes a SCTE-35 stream to bin data stream, sixfix changes it back. 
+
+| Tool                             | How To Use                                       |Help				|
+|------------------------------------------|------------------------------------------|---------------|
+| __bump__ | __bump__ -i input.ts -o output.ts -b -37.45   |__bump -h__ | 
+| __gums__	| __gums__ -i video.ts	|	__gums -h__   						|
+| __hls__  |__hls__ https://example.com/master.m3u8        | __hls -h__ |
+| __sixfix__| __sixfix__ video.ts                           | __sixfix -h__ |
 
 ## [XML]
 * [XML](https://github.com/superkabuki/SCTE-35/blob/main/xml.md) __New__! _updated 05/01/2025_
