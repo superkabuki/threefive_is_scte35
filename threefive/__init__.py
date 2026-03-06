@@ -8,6 +8,7 @@ __version__= version
 from .base import SCTE35Base
 from .cue import Cue
 from .encode import mk_splice_insert, mk_splice_null, mk_time_signal
+from .hlstags import TagParser
 from .iframes import IFramer
 from .new_reader import reader
 from .section import SpliceInfoSection
@@ -25,6 +26,7 @@ from .stuff import (
     k_by_v,
     iso8601,
     pif,
+    ERR,
 )
 from .uxp import UltraXmlParser, xml2cue
 from .version import version
