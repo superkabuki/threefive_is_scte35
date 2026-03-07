@@ -39,11 +39,12 @@ ___
 	* [SCTE-35 __As a Service__](sassy.md) _if you can make an http request, you can parse SCTE-35, no install needed._
 * [__install__](#install) 
 * __command line tools__
-	* [ __threefive cli__](#cli) _decode SCTE-35 on the command line_
- 	* [__scte35bump__](#scte35bump)
-  	* [__gums__](#gums)
-  	* [__scte35hls__](#scte35hls)
-  	* [__scte35fix__](#scte35fix) 
+	* [ __threefive__](#cli) _decode SCTE-35 on the command line_
+  	* [__scte35bump__](#scte35bump) _adjust SCTE-35 PTS in MPEGTS streams_ 
+    * [__scte35fix__](#scte35fix)  _ffmpeg changes scte-35 streams into bin data, scte35fix changes them back._
+  	* [__scte35hls__](#scte35hls) _scte35hls parses hls and ABR hls for scte-35. All hls scte-35 tags are supported__ 
+	* [__scte35inject__](scte35inject.md) _scte35inject inject scte-35 into mpegts._
+  	* [__gums__](#gums) _gums is a  multicast sender(server) for video_ 
 * __library__
  	* [__Using the threefive.Cue class__](https://github.com/superkabuki/threefive/blob/main/lib.md) 
 	* [__Using the threefive library__](#using-the-library) _decode SCTE-35 with less than ten lines of code_
