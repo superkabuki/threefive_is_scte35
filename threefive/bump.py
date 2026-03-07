@@ -178,7 +178,7 @@ class StreamBumper(Stream):
         """
         _parse_args parse command line args
         """
-        parser = argparse.ArgumentParser( epilog="scte35bump is part of threefive.\n\n")
+        parser = argparse.ArgumentParser(epilog="scte35bump is part of threefive.\n\n")
         parser.add_argument(
             "-i",
             "--infile",
