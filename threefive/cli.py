@@ -20,7 +20,7 @@ from .iframes import IFramer
 from .new_reader import reader
 from .cue import Cue
 from .stream import Stream
-from .stuff import  print2, blue, red
+from .stuff import  print2, red
 from .stuff import ERR
 from .version import version
 
@@ -388,7 +388,7 @@ def to_funk(this):
         return
     try:
         try_stream(this)
-    except:
+except ERR:
         try_cue(this)
 
 
