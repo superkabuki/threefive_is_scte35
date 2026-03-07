@@ -40,10 +40,10 @@ ___
 * [__install__](#install) 
 * __command line tools__
 	* [ __threefive cli__](#cli) _decode SCTE-35 on the command line_
- 	* [__bump__](#bump)
+ 	* [__scte35bump__](#scte35bump)
   	* [__gums__](#gums)
-  	* [__hls__](#hls)
-  	* [__sixfix__](#sixfix) 
+  	* [__scte35hls__](#scte35hls)
+  	* [__scte35fix__](#scte35fix) 
 * __library__
  	* [__Using the threefive.Cue class__](https://github.com/superkabuki/threefive/blob/main/lib.md) 
 	* [__Using the threefive library__](#using-the-library) _decode SCTE-35 with less than ten lines of code_
@@ -149,13 +149,13 @@ ___
 
 ## Other tools
 threefive also comes with: 
-### bump 
+### scte35bump 
 
 * bump adjusts SCTE-35 PTS in an MPEGTS stream
 
 ```js
-$ bump -h
-usage: bump [-h] [-i INFILE] [-o OUTFILE] [-s SECS]
+$ scte35bump -h
+usage: scte35bump [-h] [-i INFILE] [-o OUTFILE] [-s SECS]
 
 options:
   -h, --help            show this help message and exit
@@ -166,7 +166,7 @@ options:
                         Output file [default: sys.stdout.buffer]
   -s SECS, --secs SECS  Adjustment to apply to SCTE-35 Cues. [default: 0.0]
 
-bump is part of threefive.
+scte35bump is part of threefive.
 ```
 
 ---
@@ -190,19 +190,19 @@ options:
 
 gums is part of threefive.
 ```
-### hls
+### scte35hls
 
 * parse HLS for SCTE-35. Supports all HLS SCTE-35 tags.
 
 ```js
-$ hls -h
+$ scte35hls -h
 
 [ threefive hls ]
 
 [ Help ]
 
     To display this help:
-	scte35 hls help
+	scte35hls help
 
 [ Input ]
     threefive hls takes an m3u8 URI as input.
@@ -221,13 +221,13 @@ $ hls -h
             * mpeg2, aac, ac3, mp3
 ```
 
-### __sixfix__
-* when ffmpeg changes a SCTE-35 stream to bin data stream, sixfix changes it back. 
+### __scte35fix__
+* when ffmpeg changes a SCTE-35 stream to bin data stream, scte35fix changes it back. 
 
 ```js
-$ sixfix -h
+$ scte35fix -h
 
-  sixfix checks MPEGTS for SCTE-35 Streams
+  scte35fix checks MPEGTS for SCTE-35 Streams
   that have been change to bin data (type 0x06)
   and changes them back to SCTE-35 (type 0x86) streams.
   Output files are created in the current directory
@@ -237,12 +237,12 @@ $ sixfix -h
   Wild cards work too.
 
   Example Usage:
-        sixfix video.ts
-        sixfix video1.ts video2.ts
-        sixfix video*.ts
-        sixfix https://example.com/video.ts
-        sixfix srt://10.10.10.13:4201
-sixfix is part of threefive.
+        scte35fix video.ts
+        scte35fix video1.ts video2.ts
+        scte35fix video*.ts
+        scte35fix https://example.com/video.ts
+        scte35fix srt://10.10.10.13:4201
+scte35fix is part of threefive.
 ```
 
 ## [XML]
