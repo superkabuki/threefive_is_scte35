@@ -388,7 +388,7 @@ def to_funk(this):
         return
     try:
         try_stream(this)
-except ERR:
+    except ERR:
         try_cue(this)
 
 
