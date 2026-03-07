@@ -13,7 +13,7 @@ from .pmt import PMT
 fixme = []
 
 HELPME="""
-  sixfix checks MPEGTS for SCTE-35 Streams
+  scte35fix checks MPEGTS for SCTE-35 Streams
   that have been change to bin data (type 0x06)
   and changes them back to SCTE-35 (type 0x86) streams.
 
@@ -27,15 +27,15 @@ HELPME="""
 
   Example Usage:
 
-        sixfix video.ts
+        scte35fix video.ts
         
-        sixfix video1.ts video2.ts
+        scte35fix video1.ts video2.ts
 
-        sixfix video*.ts
+        scte35fix video*.ts
 
-        sixfix https://example.com/video.ts
+        scte35fix https://example.com/video.ts
 
-        sixfix srt://10.10.10.13:4201
+        scte35fix srt://10.10.10.13:4201
 
 
 scte35fix is part of threefive.
