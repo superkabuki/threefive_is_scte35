@@ -183,7 +183,7 @@ class StreamBumper(Stream):
             "-i",
             "--infile",
             default=sys.stdin.buffer,
-            help=f""" Input source, stdin, file, http(s), udp, or multicast mpegts
+            help=""" Input source, stdin, file, http(s), udp, or multicast mpegts
                                     [default: sys.stdin.buffer]
                                     """,
         )
@@ -191,13 +191,13 @@ class StreamBumper(Stream):
             "-o",
             "--outfile",
             default=sys.stdout.buffer,
-            help=f"Output file  [default: sys.stdout.buffer]",
+            help="Output file  [default: sys.stdout.buffer]",
         )
         parser.add_argument(
             "-s",
             "--secs",
             default=0.0,
-            help=f"Adjustment to apply to SCTE-35 Cues. [default: 0.0]",
+            help="Adjustment to apply to SCTE-35 Cues. [default: 0.0]",
         )
         args = parser.parse_args()
         self._apply_args(args)
