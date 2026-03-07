@@ -192,7 +192,7 @@ def packet_chk(this):
     and displays SCTE-35 packets if present.
     """
     supa = SupaStream(this)
-    supa.decode()
+    supa.decode_next()
 
 
 def proxy_chk(this):
