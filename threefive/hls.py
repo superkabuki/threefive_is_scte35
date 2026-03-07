@@ -964,11 +964,11 @@ HELPME = """
 
 [ Example Usage ]
 
-	* Show this help:   threefive hls help
+	* Show this help:   scte35hls help
 
-	* Generate a new hls.profile:   threefive hls profile
+	* Generate a new hls.profile:   scte35hls profile
 
-	* parse an m3u8:    threefive hls  https://example.com/out/master.m3u8
+	* parse an m3u8:    scte35hls  https://example.com/out/master.m3u8
 
 
 scte35hls is part of threefive.
