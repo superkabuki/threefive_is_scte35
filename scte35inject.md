@@ -1,12 +1,12 @@
-# Super Kabuki MPEGTS Packet Injection 
+# MPEGTS  SCTE-35 Packet Injection 
 
 ## Cli
 
 
 ```js
 
-a@fu:~/threefive$ threefive inject help
-usage: threefive inject [-h] [-i INPUT] [-o OUTPUT] [-s SIDECAR] [-p SCTE35_PID] [-t]
+a@fu:~/threefive$ scte35inject help
+usage: scte35inject [-h] [-i INPUT] [-o OUTPUT] [-s SIDECAR] [-p SCTE35_PID] [-t]
                          [-v]
 
 optional arguments:
@@ -24,6 +24,7 @@ optional arguments:
   -t, --time_signals    Flag to insert Time Signal cues at iframes.
   -v, --version         Show version
 
+scte35inject is part of threefive
 ```
 ## testing example
 * insert a TimeSignal at every iframe
@@ -32,7 +33,7 @@ optional arguments:
 a@fu:~/threefive$ touch sidecar.txt       
 
 
-@fu:~/threefive$ threefive inject  -t -i ~/mpegts2/mpegts/nmax.ts  -p 777 -o injected-nmax.ts
+@fu:~/threefive$ scte35inject  -t -i ~/mpegts2/mpegts/nmax.ts  -p 777 -o injected-nmax.ts
 
 Output File:	injected-nmax.ts
 
@@ -43,7 +44,7 @@ Output File:	injected-nmax.ts
 ## Usage example
 
 ```js
-a@fu:~/threefive$ threefive inject --input ~/mpegts2/mpegts/nmax.ts --sidecar ~/sidecar.txt --scte35_pid 777 --output injected-nmax.ts
+a@fu:~/threefive$ scte35inject --input ~/mpegts2/mpegts/nmax.ts --sidecar ~/sidecar.txt --scte35_pid 777 --output injected-nmax.ts
 
 Output File:	injected-nmax.ts
 
