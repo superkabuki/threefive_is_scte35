@@ -24,11 +24,21 @@ ___
 * __threefive no longer uses setuptools for packaging__ and I know you don't care.
 * __Python3 vs. Pypy3__ [__parsing SCTE35 with threefive__](https://github.com/superkabuki/threefive_is_scte35#python3-vs-pypy3-running-threefive) (watch the cool video) 
 * __threefive now supports__ [__Secure Reliable Transport__](https://github.com/superkabuki/threefive_is_scte35/blob/main/README.md#threefive-now-supports-srt)  (watch the cool video)
-* I have been __trying to setup threefive on readthedocs__,it's not going very well, but I'm working on it.
+* I have been __trying to setup threefive on readthedocs__,it's not going very well, but I'm working on it. 
 ___
 
-## [ Latest version is  v3.0.75 ]
-
+## [ Latest version is  v3.0.77 ]
+* No more setup tools! threefive now uses a toml file, I'm just trying to be cool with the python kids. 
+* fix for addressable tv Upids
+* fix for private descriptor encoding and xml encoding.
+* the threefive cli tool has spun off several new cli tools. I had to split the cli up, the help was just way too long. 
+	* In addition to the threefive cli you also get: 
+		* scte35bump  _adjust scte-35 pts in mpegts streams_ 
+ 		* scte35fix   _change bin data streams back to scte-35_
+  		* scte35 hls  _parse scte-35 from hls tags and segments_
+    	* scte35inject _inject scte-35 packets into mpegts streams_
+     	* gums _(the Grande Unified unicast and Multicast Server)_
+        
 #  [__[Examples]__](https://github.com/superkabuki/threefive/tree/main/examples)
 
 # [ Documentation ]
