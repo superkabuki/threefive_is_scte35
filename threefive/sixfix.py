@@ -38,7 +38,7 @@ HELPME="""
         sixfix srt://10.10.10.13:4201
 
 
-sixfix is part of threefive.
+scte35fix is part of threefive.
 """
 
 def passed(cue):
