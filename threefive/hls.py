@@ -831,51 +831,28 @@ def cli():
 
 HELPME = """
 
-[ threefive hls ]
-
-[ Help ]
-
-    To display this help:
-
-	scte35 hls help
+[ scte35hls ]
 
 [ Input ]
 
-    threefive hls takes an m3u8 URI as input.
+    scte35hls takes an m3u8 URI as input.
 
-    M3U8 formats supported:
-        * master  ( When a master.m3u8 used,
-                   threefive hls parses the first rendition it finds )
-        * rendition
-    Segment types supported:
-    * AAC
-    * AC3
-    * MPEGTS
-    *codecs:
-        * video
-            * mpeg2, h.264, h.265
-        * audio
-            * mpeg2, aac, ac3, mp3
+[what is supported]
 
-    Protocols supported:
-    * file
-    * http(s)
-    * UDP
-    * Multicast
-
-    Encryption supported:
-    * AES-128 (segments are automatically decrypted)
+    M3U8 formats: master, rendition
+    Segment types: AAC, AC3, MPEGTS
+    Video codecs: mpeg2, h.264, h.265
+	Audio codecs: mpeg2, aac, ac3, mp3
+    Protocols: File, Http(s), Multicast, SRT, Stdin, UDP
+    Encryption: AES-128 (automatic)
 
 [ SCTE-35 ]
 
-    threefive hls displays SCTE-35 Embedded Cues as well as SCTE-35 HLS Tags.
-
-    Supported SCTE-35:
-    * All Commands, Descriptors, and UPIDS
-      in the 2022-b SCTE-35 specification.
-
-    Supported HLS Tags
-    * #EXT-OATCLS-SCTE35
+  scte35hls parses SCTE-35 Embedded Cues as well as SCTE-35 HLS Tags.
+  
+  [ Supported HLS Tags ]
+  
+	* #EXT-OATCLS-SCTE35
     * #EXT-X-CUE-OUT-CONT
     * #EXT-X-DATERANGE
     * #EXT-X-SCTE35
@@ -886,9 +863,7 @@ HELPME = """
 
     SCTE-35 parsing can be fine tuned by setting a parsing profile.
 
-    running the command:
-
-            threefive hls profile
+    running the command:   scte35hls profile
 
     will generate a default profile and write a file named hls.profile
     in the current working directory.
@@ -926,14 +901,16 @@ HELPME = """
     * Integers can be base 10 or base 16
 
 [ Output Files ]
-
-    * Created in the current working directory
-    * Clobbered on start of showcues
-    * Profile rules applied to the output:
-        * hls.m3u8  - live playable rewrite of the m3u8 with the profile SCTE-35 rules.
+	scte35 hls creates a few output files.
+        
+	* Profile rules applied to the output:
+    
+		* hls.m3u8  - live playable rewrite of the m3u8 with the profile SCTE-35 rules.
         * hls.sidecar - list of ( pts, HLS SCTE-35 tag ) pairs
-    * Profile rules not applied to the output:
-        * hlsflat.m3u8  - hls live streams are flattened out into a vod playlist.
+   
+	* Profile rules not applied to the output:
+        
+		* hlsflat.m3u8  - hls live streams are flattened out into a vod playlist.
                      When the live m3u8  first loads, every line is written to hlsflat.m3u8
                      Wnen a live m3u8 is reloaded, everything except the headers
                     is appended to hlsflat.m3u8. This give you a VOD style m3u8
@@ -947,20 +924,6 @@ HELPME = """
             2023-10-13T05:59:50.24Z Resuming Ad Break
             2023-10-13T05:59:50.34Z Setting Break Timer to 17.733
             2023-10-13T05:59:50.44Z Setting Break Duration to 60.067
-
-    * mpegts streams are listed on start ( like ffprobe )
-
-        Program: 1
-            Service:
-            Provider:
-            Pid:	480
-            Pcr Pid:	481
-            Streams:
-                Pid: 481[0x1e1]	Type: 0x1b AVC Video
-                Pid: 482[0x1e2]	Type: 0xf AAC Audio
-                Pid: 483[0x1e3]	Type: 0x86 SCTE35 Data
-                Pid: 484[0x1e4]	Type: 252 Unknown
-                Pid: 485[0x1e5]	Type: 0x15 ID3 Timed Meta Data
 
 [ Example Usage ]
 
