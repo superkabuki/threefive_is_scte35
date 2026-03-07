@@ -1,4 +1,4 @@
-# MPEGTS  SCTE-35 Packet Injection 
+# SCTE-35 Packet Injection 
 
 ## Cli
 
