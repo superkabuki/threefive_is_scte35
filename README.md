@@ -1,5 +1,6 @@
 #### Need to inject SCTE-35 into HLS?  [X9k3.](https://github.com/superkabuki/x9k3) 
 
+
 # [ threefive ]
 ## https://github.com/superkabuki/threefive
 
@@ -21,6 +22,8 @@ ___
 
 ### [ News ]
 
+### Death to PEP 668.
+
 * __threefive no longer uses setuptools for packaging__ and I know you don't care.
 * __Python3 vs. Pypy3__ [__parsing SCTE35 with threefive__](https://github.com/superkabuki/threefive_is_scte35#python3-vs-pypy3-running-threefive) (watch the cool video) 
 * __threefive now supports__ [__Secure Reliable Transport__](https://github.com/superkabuki/threefive_is_scte35/blob/main/README.md#threefive-now-supports-srt)  (watch the cool video)
@@ -28,10 +31,17 @@ ___
 ___
 
 ## [ Latest version is  v3.0.77 ]
-* No more setup tools! threefive now uses a toml file, I'm just trying to be cool with the python kids. 
-* fix for addressable tv Upids
-* fix for private descriptor encoding and xml encoding.
-* the threefive cli tool has spun off several new cli tools. I had to split the cli up, the help was just way too long. 
+* threefive cyclomatic complexity score is 1.9350282485875707, the standard libbrary is almost double. _lower is better_.
+* pylint score is __9.82 / 10__
+*  __5116 lines of code with 2553 lines of comments__, that's a __sweet code/comment ratio__.
+* __threefive is fully python v3.14 compliant__
+   * I fixed everything they broke/changed between v3.09 and 3.14.
+   * 0 deprecation warnings.
+* __No more setup tools!__ threefive now uses a __toml file and a Makefile__ to generate packages,
+	* I'm just trying to fit in with the cool python kids. 
+* __fix__ for addressable tv Upids
+* __fix__ for private descriptor encoding and xml encoding.
+* __New__ the threefive cli tool has spun off several new cli tools. I had to split the cli up, the help was just way too long. 
 	* In addition to the __threefive__ cli you also get: 
 		* __scte35bump__  _adjust scte-35 pts in mpegts streams_ 
  		* __scte35fix__   _change bin data streams back to scte-35_
