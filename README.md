@@ -1,5 +1,7 @@
 #### Need to inject SCTE-35 into HLS?  [X9k3.](https://github.com/superkabuki/x9k3) 
 
+>  _Everything I mean to be in threefive, is in threefive v3.0.77. threefive has no opponent, this is the best threefive ever made. This is the best SCTE-35 tool available anywhere. I'm not just talking smack. This isn't me bragging. this is threefive son, the code is so damn clean you could eat off of it._ ~ Adrian 
+
 
 # [ threefive ]
 ## https://github.com/superkabuki/threefive
@@ -20,9 +22,10 @@
 
 ___
 
+
+
 ### [ News ]
 
-### Death to PEP 668.
 
 * __threefive no longer uses setuptools for packaging__ and I know you don't care.
 * __Python3 vs. Pypy3__ [__parsing SCTE35 with threefive__](https://github.com/superkabuki/threefive_is_scte35#python3-vs-pypy3-running-threefive) (watch the cool video) 
@@ -31,9 +34,10 @@ ___
 ___
 
 ## [ Latest version is  v3.0.77 ]
-* threefive cyclomatic complexity score is 1.9350282485875707, the standard libbrary is almost double. _lower is better_.
+
+* threefive cyclomatic complexity score is 1.9350282485875707.
 * pylint score is __9.82 / 10__
-*  __5116 lines of code with 2553 lines of comments__, that's a __sweet code/comment ratio__.
+*  __5116 lines of code with 2553 lines of comments__.
 * __threefive is fully python v3.14 compliant__
    * I fixed everything they broke/changed between v3.09 and 3.14.
    * 0 deprecation warnings.
