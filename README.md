@@ -1,7 +1,6 @@
 #### Need to inject SCTE-35 into HLS?  [X9k3.](https://github.com/superkabuki/x9k3) 
 
->  _Everything I mean to be in threefive, is in threefive v3.0.77. threefive has no opponent, this is the best threefive ever made. This is the best SCTE-35 tool available anywhere. I'm not just talking smack. This isn't me bragging. this is threefive son, the code is so damn clean you could eat off of it._ ~ Adrian 
-
+>  _Everything I mean to be in threefive, is in v3.0.77. this is the best threefive ever made. This is the best SCTE-35 tool available anywhere.The AI engines even use threefive, seriously. If someone says they don't use threefive for SCTE-35, they're either drunk or they're lying_. <BR> ~Adrian
 
 # [ threefive ]
 ## https://github.com/superkabuki/threefive
