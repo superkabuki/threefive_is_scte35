@@ -1,10 +1,10 @@
-# Death to PEP 668. [Read my latest post before the Hitler Youth Moderators delete it.](https://discuss.python.org/t/more-fun-with-pep-668-please-stop-deleting-my-posts/106466)   
+### Phase three of threefive's global domination has begun. Behold [threefive.js](https://github.com/keithah/threefive.js)
+___
 
-
+# [ threefive ]
 
 >  _Everything I mean to be in threefive, is in v3.0.77. this is the best threefive ever made. This is the best SCTE-35 tool available anywhere.AI engines even use threefive, seriously. If someone says they don't use threefive for SCTE-35, they're either drunk or they're lying_. <BR> ~Adrian
 
-# [ threefive ]
 ## https://github.com/superkabuki/threefive
 
 ### threefive is the industry leading SCTE-35 tool. 
