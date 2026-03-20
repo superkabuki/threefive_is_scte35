@@ -9,7 +9,7 @@ from .stream import Stream
 
 AES = True
 try:
-    import pyaes
+    import pyaesfu
 except ImportError:
     AES = False
 
@@ -83,10 +83,10 @@ class Segment(Stream):
             self.key = quay.read()
 
     def _aes_decrypt(self):
-        mode = pyaes.AESModeOfOperationCBC(self.key, iv=self.iv)
+        mode = pyaesfu.AESModeOfOperationCBC(self.key, iv=self.iv)
         self._mk_tmp()
         with open(self.tmp, "wb") as outfile, reader(self.seg_uri) as infile:
-            pyaes.decrypt_stream(mode, infile, outfile)
+            pyaesfu.decrypt_stream(mode, infile, outfile)
         self.seg_uri = self.tmp
 
     def _add_cue(self, cue):
