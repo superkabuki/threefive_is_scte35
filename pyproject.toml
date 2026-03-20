@@ -9,7 +9,7 @@ description = "threefive is The #1 SCTE-35 Decoder and Encoder on the Planet."
 readme = "README.md"
 requires-python = ">=3.9"
 dependencies=[
-        "pyaes",
+        "pyaesfu",
         "srtfu >= 0.0.11",
     ]
 
