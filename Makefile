@@ -1,9 +1,20 @@
-PY3 = python3
-PYPY3 = pypy3
+#  The Makefile of Doom for python packaging
+#
+#  make install   ->  installs the package  in the current directory
+#  make upload -> make a package from the current directory  and uploads to pypi.org
+#
+# set py3 on the command line  to use pypy3 or a different python version
+#
+#  like 
+#           make install  py3=pypy3
+#
+#  default is python3
+#
+
+py3 = python3
 
 build_cmd = -m build -n
 install_cmd = -m pip   install  . --user --no-build-isolation --break-system-packages 
-
 
 default: install
 
@@ -11,20 +22,14 @@ clean:
 	rm -f dist/*
 	rm -rf build/*
 
-install: python3
+install:  pkg
+	$(py3)  $(install_cmd)
+
 
 pkg: clean
-	$(PY3) $(build_cmd)
+	$(py3) $(build_cmd)
 	
-pypy3: clean
-	$(PYPY3) $(build_cmd)
-	$(PYPY3) $(install_cmd)	
-
-python3: clean
-	$(PY3) $(build_cmd)
-	$(PY3)  $(install_cmd)
-
-upload: clean pkg	
+upload: pkg	
 	twine upload dist/*
 
 
