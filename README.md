@@ -39,7 +39,8 @@ ___
 
 * threefive cyclomatic complexity score is 1.9337094499294782 _( that's better than the Python standard library)_ .
 * pylint score is __9.82 / 10__
-*  __5116 lines of code with 2553 lines of comments__.
+* __threefive now has NO External Dependencies__
+	* SRT and AES support is now optional 
 * __threefive is fully python v3.14 compliant__
    * I fixed everything they broke/changed between v3.09 and 3.14.
    * 0 deprecation warnings.
@@ -88,15 +89,24 @@ ___
 </samp>
 
 ##  [Install]
-* python3 via pip
+* __python3 via pip__
 ```rebol
 python3 -mpip install threefive
 ```
-* pypy3 
+* __pypy3 via pip__ 
 ```rebol
 pypy3 -mpip install threefive
 ```
-* from the git repo
+* __To add SRT support__
+```py3
+python3 -m pip install srtfu
+```
+* __To add Automatic AES decryption__
+```py3
+python3 -mpip install pyaes
+```
+
+* __From the git repo__
 ```rebol
 git clone https://github.com/superkabuki/scte35.git
 cd threefive
