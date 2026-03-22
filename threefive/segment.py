@@ -5,12 +5,13 @@ The threefive.Segment class
 import os
 from .new_reader import reader
 from .stream import Stream
-
+from .stuff import print2
 
 AES = True
 try:
     import pyaesfu
 except ImportError:
+    print2('pip install pyaes for AES support')
     AES = False
 
 
