@@ -1,9 +1,9 @@
-### Phase three of threefive's global domination has begun. Behold [threefive.js](https://github.com/keithah/threefive.js)
-___
+### It is now official, phase three of threefive's global domination has begun. Behold [threefive.js](https://github.com/keithah/threefive.js)
+_(ominous music plays in the background)_
 
 # [ threefive ]
 
->  _Everything I mean to be in threefive, is in v3.0.77. this is the best threefive ever made. This is the best SCTE-35 tool available anywhere.AI engines even use threefive, seriously. If someone says they don't use threefive for SCTE-35, they're either drunk or they're lying_. <BR> ~Adrian
+>  _... If someone says they don't use threefive for SCTE-35, they're either drunk or they're lying_. <BR> ~Adrian
 
 ## https://github.com/superkabuki/threefive
 
@@ -35,9 +35,9 @@ ___
 * I have been __trying to setup threefive on readthedocs__,it's not going very well, but I'm working on it. 
 ___
 
-## [ Latest version is  v3.0.77 ]
+## [ Latest version is  v3.0.81 ]
 
-* threefive cyclomatic complexity score is 1.9350282485875707.
+* threefive cyclomatic complexity score is 1.9337094499294782 _( that's better than the Python standard library)_ .
 * pylint score is __9.82 / 10__
 *  __5116 lines of code with 2553 lines of comments__.
 * __threefive is fully python v3.14 compliant__
