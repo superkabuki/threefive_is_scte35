@@ -7,8 +7,11 @@ Home of the reader function
 import socket
 import sys
 import urllib.request
-
-from srtfu import SRTfu, SRTO_TRANSTYPE, SRT_LIVE, SRTO_RCVSYN, SRTO_RCVBUF
+try:
+    from srtfu import SRTfu, SRTO_TRANSTYPE, SRT_LIVE, SRTO_RCVSYN, SRTO_RCVBUF
+    HAS_SRT=True
+except ImportError:
+    HAS_SRT=False
 from .udp import udp_receiver, mcast_ttl
 from .stuff import blue, ERR, pif, print2
 
@@ -30,6 +33,14 @@ def corsreader(uri, headers={}):
     """
     all_headers = {**CORS, **headers}
     return reader(uri, headers=all_headers)
+
+
+def try_srt(url, headers={}):
+    if HAS_SRT:
+        return _do_srt(uri, headers=headers)
+    else:
+        print2('pip install srtfu to add SRT support')
+    return False
 
 
 def reader(uri, headers={}):
@@ -74,7 +85,7 @@ def reader(uri, headers={}):
         return urllib.request.urlopen(req)
     # SRT
     if uri.startswith("srt://"):
-        return _do_srt(uri, headers=headers)
+        return try_srt(uri, headers=headers)
     # File
     return open(uri, "rb")
 
