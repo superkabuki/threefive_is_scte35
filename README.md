@@ -38,7 +38,6 @@ ___
 ## [ Latest version is  v3.0.81 ]
 
 * threefive cyclomatic complexity score is 1.9337094499294782 _( that's better than the Python standard library)_ .
-* pylint score is __9.82 / 10__
 * __threefive now has NO External Dependencies__
 	* SRT and AES support is now optional 
 * __threefive is fully python v3.14 compliant__
