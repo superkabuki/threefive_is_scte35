@@ -106,11 +106,27 @@ python3 -mpip install pyaes
 ```
 
 * __From the git repo__
+
 ```rebol
 git clone https://github.com/superkabuki/scte35.git
 cd threefive
 make install
 ```
+* I've jazzed up the makefile to make it easier to install for different python  versions and pypy3
+```rebol
+git clone https://github.com/superkabuki/scte35.git
+cd threefive
+
+make install py3=pypy3
+
+# OR
+
+make install py3=python3.14
+
+# works for any python in your path or use a full path if needed.
+
+```
+
 ___
 
 
