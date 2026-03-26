@@ -1,5 +1,8 @@
 ### It is now official, phase three of threefive's global domination has begun. Behold [threefive.js](https://github.com/keithah/threefive.js)
-_(ominous music plays in the background)_
+_threefive has been ported to Javascript, C#, and Go._
+
+
+
 
 # [ threefive ]
 
