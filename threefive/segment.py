@@ -9,7 +9,7 @@ from .stuff import print2
 
 AES = True
 try:
-    import pyaesfu
+    import pyaes
 except ImportError:
     print2('pip install pyaes for AES support')
     AES = False
