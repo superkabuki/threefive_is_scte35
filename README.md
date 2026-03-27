@@ -60,14 +60,13 @@ for cue in list_o_cues:
 * I have been __trying to setup threefive on readthedocs__,it's not going very well, but I'm working on it. 
 ___
 
-## [ Latest version is  v3.0.81 ]
+## [ Latest version is  v3.0.83 ]
 
-* threefive cyclomatic complexity score is 1.9337094499294782 _( that's better than the Python standard library)_ .
+* __v3.0.83__ is to fix a bug 3.0.81 related to AES decryption..
+*  threefive cyclomatic complexity score is 1.9337094499294782 _( that's better than the Python standard library)_ .
 * __threefive now has NO External Dependencies__
 	* SRT and AES support is now optional 
 * __threefive is fully python v3.14 compliant__
-   * I fixed everything they broke/changed between v3.09 and 3.14.
-   * 0 deprecation warnings.
 * __No more setup tools!__ threefive now uses a __toml file and a Makefile__ to generate packages,
 	* I'm just trying to fit in with the cool python kids. 
 * __fix__ for addressable tv Upids
