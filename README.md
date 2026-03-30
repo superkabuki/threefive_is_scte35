@@ -5,7 +5,6 @@
 
 # [ threefive ]
 
->  _... If someone says they don't use threefive for SCTE-35, they're either drunk or they're lying_. <BR> ~Adrian
 
 ## https://github.com/superkabuki/threefive
 
@@ -15,15 +14,6 @@
 *   __Decodes SCTE-35__ from `MPEGTS`✔ `Base64`✔ `Bytes`✔ `DASH`✔ `Hex` ✔ `HLS`✔ `Integers`✔ `JSON`✔ `XML`✔ `XML+Binary`✔
   
 *   __Encodes SCTE-35__ to `MPEGTS`✔ `Base64`✔ `Bytes`✔ `Hex`✔ `Integers`✔ `JSON`✔ `XML`✔ `XML+Binary`✔
-
-*   __Injects SCTE-35 Packets__ into `MPEGTS`✔.
-
-*   __Network support__ for `HTTP(s)`✔ `Multicast`✔ `UDP`✔ `SRT`✔
-
-*   __Built-in__ `Multicast Server`✔
-
-*   __Automatic__ `AES decryption`✔
-
 ___
 
 # Tip of the week.
@@ -32,7 +22,7 @@ ___
 ```py3
 from threefive import Stream
 
-strm=Stream('some_video.ts')
+strm=Stream('https://example.com/video.ts')
 list_o_cues=[]
 for cue in strm.decode_next():    # Stream.decode_next is a generator
 	list_o_cues.append(cue)       # these will be threefive.Cue instances
@@ -56,20 +46,16 @@ for cue in list_o_cues:
 * __threefive no longer uses setuptools for packaging__ and I know you don't care.
 * __Python3 vs. Pypy3__ [__parsing SCTE35 with threefive__](https://github.com/superkabuki/threefive_is_scte35#python3-vs-pypy3-running-threefive) (watch the cool video) 
 * __threefive now supports__ [__Secure Reliable Transport__](https://github.com/superkabuki/threefive_is_scte35/blob/main/README.md#threefive-now-supports-srt)  (watch the cool video)
-* I have been __trying to setup threefive on readthedocs__,it's not going very well, but I'm working on it. 
 ___
 
 ## [ Latest version is  v3.0.83 ]
 
-* __v3.0.83__ is to fix a bug 3.0.81 related to AES decryption..
 *  threefive cyclomatic complexity score is 1.9337094499294782 _( that's better than the Python standard library)_ .
 * __threefive now has NO External Dependencies__
 	* SRT and AES support is now optional 
 * __threefive is fully python v3.14 compliant__
 * __No more setup tools!__ threefive now uses a __toml file and a Makefile__ to generate packages,
 	* I'm just trying to fit in with the cool python kids. 
-* __fix__ for addressable tv Upids
-* __fix__ for private descriptor encoding and xml encoding.
 * __New__ the threefive cli tool has spun off several new cli tools. I had to split the cli up, the help was just way too long. 
 	* In addition to the __threefive__ cli you also get: 
 		* __scte35bump__  _adjust scte-35 pts in mpegts streams_ 
@@ -78,7 +64,7 @@ ___
     	* __scte35inject__ _inject scte-35 packets into mpegts streams_
      	* __gums__ _(the Grande Unified unicast and Multicast Server)_
         
-#  [__[Examples]__](https://github.com/superkabuki/threefive/tree/main/examples)
+#  [__Examples__](https://github.com/superkabuki/threefive/tree/main/examples)
 
 
 
@@ -88,6 +74,7 @@ ___
 	* [threefive SCTE-35 __Online Parser__](https://iodisco.com/scte35) hosted on my server_
 	* [ SCTE-35 __Online Parser__ powered by threefive](http://www.domus1938.com/scte35parser) _another online parser powered by threefive_
 	* [SCTE-35 __As a Service__](sassy.md) _if you can make an http request, you can parse SCTE-35, no install needed._
+
 * [__install__](#install) 
 * __command line tools__
 	* [ __threefive__](#cli) _decode SCTE-35 on the command line_
