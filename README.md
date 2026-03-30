@@ -58,8 +58,8 @@ ___
   		* __scte35hls__  _parse scte-35 from hls tags and segments_
     	* __scte35inject__ _inject scte-35 packets into mpegts streams_
      	* __gums__ _(the Grande Unified unicast and Multicast Server)_
-        
-#  [__Examples__](https://github.com/superkabuki/threefive/tree/main/examples)
+___        
+#  [__[ Examples ]__](https://github.com/superkabuki/threefive/tree/main/examples)
 
 
 
