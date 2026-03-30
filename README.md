@@ -17,31 +17,26 @@
 ___
 
 # Tip of the week.
-## Q. How do I get a list of all the SCTE-35 cues in a stream?
-## A.  Like this
+## Q. How do I get a list of all of the SCTE-35 cues in a stream?
+## A. Call Stream.decode_next(), it's a python generator.
 ```py3
 from threefive import Stream
 
 strm=Stream('https://example.com/video.ts')
 list_o_cues=[]
-for cue in strm.decode_next():    # Stream.decode_next is a generator
+for cue in strm.decode_next():    
 	list_o_cues.append(cue)       # these will be threefive.Cue instances
 
 # then you can do stuff like
 
-for cue in list_o_cues:
+_=[cue.show() for cue in list_o_cues]
 
+for cue in list_o_cues:
 	print(cue.xml())
 
-	print(cue.command)
-
-	cue.show()
 ```	
-* I have always felt that if you use a library, you shouldn't have to write a lot of code.
-
 
 ### [ News ]
-
 
 * __threefive no longer uses setuptools for packaging__ and I know you don't care.
 * __Python3 vs. Pypy3__ [__parsing SCTE35 with threefive__](https://github.com/superkabuki/threefive_is_scte35#python3-vs-pypy3-running-threefive) (watch the cool video) 
