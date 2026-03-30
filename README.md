@@ -85,9 +85,7 @@ ___
 		* [__Cue__ Class](https://github.com/superkabuki/threefive/blob/main/cue.md) _this class you'll use often_ 
 		* [__Stream__ Class](https://github.com/superkabuki/threefive/blob/main/stream.md) _this is the class for parsing MPEGTS_
 
-* [Use __threefive to stream Multicast__](#-threefive-streams-multicast-its-easy-) _threefive is a multicast client and server_
 * [SCTE-35 __Sidecar Files__](https://github.com/superkabuki/SCTE-35_Sidecar_Files) _threefive supports SCTE-35 sidecar files_
-* [__SuperKabuki__ SCTE-35 MPEGTS __Packet Injection__](inject.md) _inject SCTE-35 into MPEGTS streams_ 
 * [SCTE-35 __HLS__](https://github.com/superkabuki/threefive/blob/main/hls.md) _parse SCTE-35 in HLS__
 * [SCTE-35 __XML__ ](https://github.com/superkabuki/SCTE-35/blob/main/xml.md) and [More __XML__](node.md) _threefive can parse and encode SCTE-35 xml_
 * [__Encode__ SCTE-35](https://github.com/superkabuki/threefive/blob/main/encode.md) _threefive can encode SCTE-35 in every SCTE-35 format_
@@ -606,10 +604,8 @@ Type "help", "copyright", "credits" or "license" for more information.
 * [__SCTE-35 Inputs__](#inputs)
 * [__SCTE-35 Outputs__](#outputs)
 * [Parse __MPEGTS__ streams for __SCTE-35__](#streams)
-* [Parse __SCTE-35__ in __hls__](#hls)
 * [Display __MPEGTS__ __iframes__](#iframes)
 * [Display raw __SCTE-35 packets__ from __video streams__](#packets)
-* [__Repair SCTE-35 streams__ changed to __bin data__ by __ffmpeg__](#sixfix)
 
 #### `Inputs`
 
@@ -654,14 +650,12 @@ threefive '/DAWAAAAAAAAAP/wBQb+ztd7owAAdIbbmw=='
 |  __Stdin__        |  `threefive < video.ts`            |
 |  __UDP Multicast__|  `threefive udp://@235.35.3.5:9999`                                                                          |
 |  __UDP Unicast__  |                                                                      `threefive udp://10.0.0.7:5555`                                              |
-|  __HLS__          |                                                                                                    `threefive hls https://example.com/master.m3u8`|
-|               |                                                                                                                                                    |
 
 
 #### Outputs
 * output type is determined by the key words __base64, bytes, hex, int, json, and xmlbin__.
 * __json is the default__.
-* __Any input (except HLS,) can be returned as any output__
+* __Any input  can be returned as any output__
   * examples __Base64 to Hex__ etc...) 
 
 
@@ -673,12 +667,6 @@ threefive '/DAWAAAAAAAAAP/wBQb+ztd7owAAdIbbmw=='
 | __Integer__     |                                                                                                                                                                                                                                                       `threefive '/DAsAAAAAyiYAP/wCgUAAAABf1+ZmQEBABECD0NVRUkAAAAAf4ABADUAAC2XQZU='  int`   |
 | __JSON__        |                                                                                                                                                                                                                                                                                                              `threefive 0xfc301600000000000000fff00506fed605225b0000b0b65f3b json ` |
 | __Xml+bin__     |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        `threefive 0xfc301600000000000000fff00506fed605225b0000b0b65f3b xmlbin   `      |`
-
-#### `hls`
-* parse hls manifests and segments for SCTE-35
-```smalltalk
-threefive hls https://example.com/master.m3u8
-```
 ___
 #### `Iframes`
 * Show iframes PTS in an MPEGTS video
@@ -716,13 +704,7 @@ ___
 threefive sidecar video.ts
 ```
 ___
-#### `sixfix`  
-* Fix SCTE-35 data mangled by ffmpeg
 
-```smalltalk
-threefive sixfix video.ts
-```
-___
 #### `show`  
 
 * Probe mpegts video _( kind of like ffprobe )_
@@ -746,54 +728,6 @@ ___
 ___
 
 
-## [ threefive Streams Multicast, it's easy. ]
-* The threefive cli has long been a Multicast Receiver( client )
-* The cli now comes with a builtin Multicast Sender( server).
-* It's optimized for MPEGTS (1316 byte Datagrams) but you can send any video or file.
-* The defaults will work in most situations, you don't even have to set the address.
-* threefive cli also supports UDP Unicast Streaming.
-
-If you're tired of configuring strange kernel settings with sysctl trying to get multicast to work,<br> 
-threefive multicast is written from scratch in raw sockets and autoconfigures most settings,<br> 
-threefive adjusts the SO_RCVBUF, SO_SNDBUF, SO_REUSEADDR,SO_REUSEPORT,IP_MULTICAST_TTL and IP_MULTICAST_LOOP for you.<br>
-all you really need to do is make sure multicast is enabled on the network device, threefive can handle the rest.<br>
-```js
-ip link set wlp2s0  multicast on
-
-```
-
-   
-```js
-a@fu:~$ threefive mcast help
-usage: threefive mcast [-h] [-i INPUT] [-a ADDR] [-b BIND_ADDR] [-t TTL]
-
-optional arguments:
-  -h, --help            show this help message and exit
-  -i INPUT, --input INPUT
-                        like "/home/a/vid.ts" or "udp://@235.35.3.5:3535" or
-                        "https://futzu.com/xaa.ts"
-                        [default:sys.stdin.buffer]
-  -a ADDR, --addr ADDR  Destination IP:Port [default:235.35.3.5:3535]
-  -b BIND_ADDR, --bind_addr BIND_ADDR
-                        Local IP to bind [default:0.0.0.0]
-  -t TTL, --ttl TTL     Multicast TTL (1 - 255) [default:32]
-a@fu:~$ 
-```
-
-* the video shows three streams being read and played from threefive's multicast, one stream is being converted to srt.
-* the command
-```sh
-a@fu:~/scratch/threefive$ threefive mcast -i ~/mpegts/ms.ts 
-
-```
-
-https://github.com/user-attachments/assets/df95b8da-5ca6-4bf3-b029-c95204841e43
-
-* __threefive mcast__ sends __1316 byte datagrams__. Here's `tcpdump multicast`output. 
-
-<img width="1126" height="679" alt="image" src="https://github.com/user-attachments/assets/b29f33c7-d35c-42be-95fb-2c6e72d1ab9b" />
-
-___
 
 
 ## [iodisco.com/scte35](https://iodisco.com/scte35)
