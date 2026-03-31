@@ -755,5 +755,5 @@ class Stream(Based):
         """
         if stream_type in ["0x86"]:
             self.pids.scte35.add(pid)
-        if stream_type in ["0x06", "0x6"]:
+        if stream_type in ["0x06", "0x6","0x05","0x5"]:
             self.pids.maybe_scte35.add(pid)
