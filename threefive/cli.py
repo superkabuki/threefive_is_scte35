@@ -84,6 +84,14 @@ HELP = f"""
 
 """
 
+def  done():
+    """
+    done prints the threefive version, interpreter version,
+    and calls sys.exit()
+    """
+    print2(f'threefive: {version} on python: {sys.version}')
+    sys.exit()
+
 
 class SupaStream(Stream):
     """
@@ -136,7 +144,7 @@ def print_help():
     and displays the help if found
     """
     print2(HELP)
-    sys.exit()
+    done()
 
 
 def print_version():
@@ -163,15 +171,15 @@ def print_key_in_argv(key, val):
     """
     if key in sys.argv:
         val()
-        sys.exit()
+        done()
 
 
 def chk_print_map():
     """
     chk_print_map checks for print_map.keys() in sys.argv
     """
-    for k, v in print_map.items():
-        print_key_in_argv(k, v)
+    _= [v()  for k, v in print_map.items() if k in sys.argv]
+     #   print_key_in_argv(k, v)
 
 
 # functions for mpegts_map
@@ -268,7 +276,7 @@ def mpegts_key_in_argv(args, key):
         for arg in args:
             print2(arg)
             mpegts_map[key](arg)
-        sys.exit()
+        done()
 
 
 def chk_mpegts_map():
@@ -408,7 +416,7 @@ def is_pkt(args, rdr, one):
     strm = Stream(sys.stdin.buffer)
     strm._parse(one + two)  # dont drop first packet
     strm.decode(func=funk())
-    sys.exit()  # I keep forgetting why I do this
+    done()  # I keep forgetting why I do this
 
 
 def stdin_is_readable():
@@ -449,7 +457,7 @@ def chk_funk_map():
     args = chk_stdin(args)
     if args:
         _ = [to_funk(arg) for arg in args]  # multiple file input
-    sys.exit()
+    done()
 
 
 # cli map
@@ -485,7 +493,7 @@ def cli_key_in_argv(key, val):
         sys.argv[0] = f"{sys.argv[0]} {key}"
         sys.argv.remove(key)
         val()
-        sys.exit()
+        done()
 
 
 def chk_cli_map():
@@ -514,6 +522,3 @@ def threefivecli():
     chk_mpegts_map()
     chk_funk_map()
 
-
-if __name__ == "__main__":
-    threefivecli()
