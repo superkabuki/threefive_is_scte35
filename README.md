@@ -1,6 +1,5 @@
 ### Try [threefive.js](https://github.com/keithah/threefive.js)
 
-# Speaking of AI, if you use tik tok you are feeding data to China's AI. You are making the Chinese government stronger. In my opinion, using tik tok is treason. China is coming for the U.S. and if you don't like Trump wait until you meet the Red Party. You can be an influencer at a forced labor camp, you pinko Commie bastard. 
 
 
 # [ threefive ]
