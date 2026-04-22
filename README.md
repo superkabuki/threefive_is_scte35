@@ -1,9 +1,10 @@
 ### Try [threefive.js](https://github.com/keithah/threefive.js)
 
 
+___
 
 # [ threefive ]
-
+> The two blond Chinese girls are coming over tonight to show me some "real" Kung Fu movies. We're going to drop the disco ball and let it get funky.I figure I should be back in four or five days with only minor injuries.
 
 ## https://github.com/superkabuki/threefive
 
