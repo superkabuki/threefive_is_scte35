@@ -4,8 +4,6 @@
 ___
 
 # [ threefive ]
-> The two blond Chinese girls are coming over tonight to show me some "real" Kung Fu movies. We're going to drop the disco ball and let it get funky.I figure I should be back in four or five days with only minor injuries.
-
 ## https://github.com/superkabuki/threefive
 
 ### threefive is the industry leading SCTE-35 tool. 
@@ -15,6 +13,32 @@ ___
   
 *   __Encodes SCTE-35__ to `MPEGTS`✔ `Base64`✔ `Bytes`✔ `Hex`✔ `Integers`✔ `JSON`✔ `XML`✔ `XML+Binary`✔
 ___
+
+## The State of Stuff:
+<pre>
+I would like to announce that have once again officially flip-flopped my position on including PCR values.
+Firstly, SCTE-35 does not use PCR timestamps. 
+Secondly, there is no guarantee that the PCR and PTS values remain in sync or 
+even related in any way. 
+Often when video is spliced or re-encoded, 
+the original PCR values will remain while the PTS is recalculated. 
+The reason threefive can parse raw video despite being written in a scripting language 
+is because I've spent a lot of time working on the performance. 
+Performance wise I have also noticed PCR is parsed a lot more frequently than PTS. 
+Profiling threefive with one of my test files shows 1,604,796 calls to parse the PTS
+and 8,022,706 calls to parse PCR. That's a big difference. 
+Running that same test file and parsing PCR and PTS takes roughly fourteen seconds, 
+parsing only PTS with the test file takes ten seconds. 
+It seems like an easy choice, 
+improve perfomance by not parsing data that really isn't relavant to the task at hand. 
+However, I can think of a few guys who will not take this decision well, 
+so to keep them from sending me death threats, in the next release of threefive, 
+calling Stream.decode() will not include PCR values, 
+but calling Stream.decode_pcr() will include both PCR and PTS values.
+
+I think that is reasonable. If you don't, open an issue and make your case.
+	
+</pre>
 
 # Tip of the week.
 ## Q. How do I get a list of all of the SCTE-35 cues in a stream?
