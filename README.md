@@ -13,7 +13,7 @@ ___
   
 *   __Encodes SCTE-35__ to `MPEGTS`✔ `Base64`✔ `Bytes`✔ `Hex`✔ `Integers`✔ `JSON`✔ `XML`✔ `XML+Binary`✔
 ___
-## Breaking News: Python 3.14 is slower that python 3.11 
+## Breaking News: Python 3.14 is slower than python 3.11 
 <pre> 
 	, 
 	at least running my code. Yesterday I spent several hours
