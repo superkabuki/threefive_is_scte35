@@ -20,7 +20,7 @@ ___
 	trying to get 3.14 as fast 3.11, 
 	I tried iter(partial to an inter(partial, threads, multiprocess, memoryview, and more.
 	The only way I could make 3.14 run threefive as fast as 3.11 was 
-	multiprocess with 1 reader process and four consumer processes,
+	multiprocess with 1 Queue, 1 reader process, and four consumer processes,
 	which is a bit much I think.
 	So despite all blog posts clsiming 3.14 is much faster, I respectfully disagree.
 	Disabling the GIL, is actually slower for me, and the JIT has no effect on OpenBSD or Linux.
