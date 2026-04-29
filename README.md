@@ -13,22 +13,51 @@ ___
   
 *   __Encodes SCTE-35__ to `MPEGTS`✔ `Base64`✔ `Bytes`✔ `Hex`✔ `Integers`✔ `JSON`✔ `XML`✔ `XML+Binary`✔
 ___
-## Breaking News: Python 3.14 is slower than python 3.11 
-<pre> 
-	, 
-	at least running my code. Yesterday I spent several hours
-	trying to get 3.14 as fast 3.11, 
-	I tried iter(partial to an inter(partial, threads, multiprocess, memoryview, and more.
-	The only way I could make 3.14 run threefive as fast as 3.11 was 
-	multiprocess with 1 Queue, 1 reader process, and four consumer processes,
-	which is a bit much I think.
-	So despite all blog posts clsiming 3.14 is much faster, I respectfully disagree.
-	Disabling the GIL, is actually slower for me, and the JIT has no effect on OpenBSD or Linux.
+## Breaking News:How to make python3 run threefive almost as fast as pypy3.
+* This parses SCTE-35 from an MPEGTS stream using a multiprocessing pool and multiple threefive.Stream instances.
+*  Works great with python3.11 and 3.14, kind of sucks using pypy3
+*  __pypy3 is still faster using a single process than python3 using multiprocess__
 
-	Side Note: 
-	pypy3 runs threefive 4 times faster than python 3.11 and 6 times faster than python 3.14
-	
-</pre>
+* use like `python3 chunkymp.py video.ts`
+
+* chunkymp.py
+  
+```py3
+import multiprocessing
+import sys
+from threefive import Stream, reader
+
+pkt_size=188
+chunk_size= pkt_size*3500
+
+def chunk_parser(chunk):
+    """
+    chunk_parser parse a chunk
+    """
+    st=Stream(None)
+    return [cue for cue in [st._parse(pkt) for pkt in st.packetize( chunk)] if cue]
+
+
+def chunker(file_path):
+    """
+    chunker chunk generator
+    """
+    with reader(file_path) as r:
+        while True:
+            chunk = r.read(chunk_size)
+            if not chunk:
+                break
+            yield chunk
+
+if __name__ == '__main__':
+    file_path = sys.argv[1]  
+    with multiprocessing.Pool(processes=multiprocessing.cpu_count()-1) as pool:
+        results = pool.imap(chunk_parser, chunker(file_path),chunksize=1)
+        for cues in results:
+             _=[cue.show() for cue in cues]
+```
+
+
 ---
 
 ## The State of Stuff:
