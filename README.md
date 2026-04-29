@@ -13,12 +13,12 @@ ___
   
 *   __Encodes SCTE-35__ to `MPEGTS`✔ `Base64`✔ `Bytes`✔ `Hex`✔ `Integers`✔ `JSON`✔ `XML`✔ `XML+Binary`✔
 ___
-## Breaking News: How to make python3 run threefive almost as fast as pypy3.
+## Breaking News: Make threefive run twice as fast with python3.11 and python3.14 
 * This parses SCTE-35 from an MPEGTS stream using a multiprocessing pool and multiple threefive.Stream instances.
-*  Works great with python3.11 and 3.14, kind of sucks using pypy3
-*  __pypy3 is still faster using a single process than python3 using multiprocess__
-
-* use like `python3 chunkymp.py video.ts`
+*  Works great with python3.11 and 3.14
+* Test it
+	* `time python3 chunkymp.py video.ts`
+	* compare with `time threefive video.ts`
 
 * chunkymp.py
   
