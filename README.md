@@ -14,7 +14,7 @@ ___
 *   __Encodes SCTE-35__ to `MPEGTS`✔ `Base64`✔ `Bytes`✔ `Hex`✔ `Integers`✔ `JSON`✔ `XML`✔ `XML+Binary`✔
 ___
 ## Breaking News: Make threefive run twice as fast with python3.11 and python3.14 
-* Side Note: `threefive is fast enough to parse 13k video` as is now, this is just me trying to see how fast I can make threefive run on python3.
+* Side Note: __threefive is fast enough to parse 13k video__ as is now, this is just me trying to see how fast I can make threefive run on python3.
 * This parses SCTE-35 from an MPEGTS stream using a multiprocessing pool and multiple threefive.Stream instances.
 *  Works great with python3.11 and 3.14
 * Test it
