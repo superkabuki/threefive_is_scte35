@@ -26,6 +26,7 @@ ___
 ```py3
 import multiprocessing
 import sys
+from functools import partial 
 from threefive import Stream, reader
 
 pkt_size=188
@@ -36,6 +37,8 @@ def chunk_parser(chunk):
     chunk_parser parse a chunk
     """
     st=Stream(None)
+    st.pids=pids
+    st.maps =maps
     return [cue for cue in [st._parse(pkt) for pkt in st.packetize( chunk)] if cue]
 
 
@@ -50,42 +53,35 @@ def chunker(file_path):
                 break
             yield chunk
 
+def pid_primer(filepath):
+    """
+    pid_primer discovers the stucture
+    of an MPEGTS stream and
+    returns pids and maps to prime
+    threefive.Stream instances
+    """
+    stp=Stream(filepath)
+    stp.show()
+    return stp.pids, stp.maps
+
 if __name__ == '__main__':
-    file_path = sys.argv[1]  
-    with multiprocessing.Pool(processes=multiprocessing.cpu_count()-1) as pool:
-        results = pool.imap(chunk_parser, chunker(file_path),chunksize=1)
+    filepath = sys.argv[1]
+    global pids, maps
+    pids, maps =pid_primer(filepath)
+    with multiprocessing.Pool(processes=multiprocessing.cpu_count()-1,) as pool:
+        results = pool.imap(chunk_parser, chunker(filepath),chunksize=1)
         for cues in results:
              _=[cue.show() for cue in cues]
-```
 
+```
+* python3.11 is still faster than python 3.14
+<img width="1137" height="379" alt="image" src="https://github.com/user-attachments/assets/39f5ee20-b624-4d84-b319-902c55834bf0" />
+
+* a single process of pypy3, still beats multiprocess python3.11 and python3.14
+<img width="1110" height="175" alt="image" src="https://github.com/user-attachments/assets/e9753d1f-e063-4d9f-bc81-c8777df48b0b" />
+ 
 
 ---
-
-## The State of Stuff:
-<pre>
-I would like to announce that have once again officially flip-flopped my position on including PCR values.
-Firstly, SCTE-35 does not use PCR timestamps. 
-Secondly, there is no guarantee that the PCR and PTS values remain in sync or 
-even related in any way. 
-Often when video is spliced or re-encoded, 
-the original PCR values will remain while the PTS is recalculated. 
-The reason threefive can parse raw video despite being written in a scripting language 
-is because I've spent a lot of time working on the performance. 
-Performance wise I have also noticed PCR is parsed a lot more frequently than PTS. 
-Profiling threefive with one of my test files shows 1,604,796 calls to parse the PTS
-and 8,022,706 calls to parse PCR. That's a big difference. 
-Running that same test file and parsing PCR and PTS takes roughly fourteen seconds, 
-parsing only PTS with the test file takes ten seconds. 
-It seems like an easy choice, 
-improve perfomance by not parsing data that really isn't relavant to the task at hand. 
-However, I can think of a few guys who will not take this decision well, 
-so to keep them from sending me death threats, in the next release of threefive, 
-calling Stream.decode() will not include PCR values, 
-but calling Stream.decode_pcr() will include both PCR and PTS values.
-
-I think that is reasonable. If you don't, open an issue and make your case.
-	
-</pre>
 
 # Tip of the week.
 ## Q. How do I get a list of all of the SCTE-35 cues in a stream?
