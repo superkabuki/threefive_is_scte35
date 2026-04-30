@@ -26,11 +26,11 @@ ___
 ```py3
 import multiprocessing
 import sys
+from functools import partial 
 from threefive import Stream, reader
 
 pkt_size=188
 chunk_size= pkt_size*3500
-
 
 def chunk_parser(chunk):
     """
@@ -39,6 +39,7 @@ def chunk_parser(chunk):
     st=Stream(None)
     st.pids=pids
     st.maps =maps
+   
     return [cue for cue in [st._parse(pkt) for pkt in st.packetize( chunk)] if cue]
 
 
@@ -53,17 +54,18 @@ def chunker(file_path):
                 break
             yield chunk
 
-
 def pid_primer(filepath):
     """
-    pid_primer discovers the stucture
-    of an MPEGTS stream to prime
-    threefive.Stream instances
+    pid_primer discovers the stucture of an
+    MPEGTS stream  to prime
+    Stream instances
     """
     stp=Stream(filepath)
     stp.show()
+    stp.maps.prgm_pts = {}
+    stp.maps.partial = {}
+    stp.maps.last = {}
     return stp.pids, stp.maps
-
 
 if __name__ == '__main__':
     filepath = sys.argv[1]
