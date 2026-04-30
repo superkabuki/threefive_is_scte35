@@ -82,12 +82,6 @@ if __name__ == "__main__":
         _ = [cue.show() for cues in results for cue in cues]
 
 ```
-* python3.11 is still faster than python 3.14
-<img width="1137" height="379" alt="image" src="https://github.com/user-attachments/assets/39f5ee20-b624-4d84-b319-902c55834bf0" />
-
-* a single process of pypy3, still beats multiprocess python3.11 and python3.14
-<img width="1110" height="175" alt="image" src="https://github.com/user-attachments/assets/e9753d1f-e063-4d9f-bc81-c8777df48b0b" />
- 
 
 ---
 
