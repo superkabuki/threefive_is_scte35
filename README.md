@@ -16,15 +16,8 @@ ___
 ## Make threefive run twice as fast with python3.11 and python3.14 
 * Side Note: __threefive is fast enough to parse 13k video__ as is now, this is just me trying to see how fast I can make threefive run on python3.
 * This parses SCTE-35 from an MPEGTS stream.
-* __This is the super funk version__:
-	*  multiple nested list comprehensions
- 	*   iter(partial
-  	*   a multiprocessing pool with a pool initializer
-  	*   pool.imap
-  	*   a couple globals
-  	*   a generator
-  	*   multiple threefive.Stream instances.
-  	
+* __This is the super funk version__, lots of performance tuning.
+	
 *  Works great with python3.11 and 3.14
 * Test it
 	* `time python3 chunkymp.py video.ts`
