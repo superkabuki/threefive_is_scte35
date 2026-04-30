@@ -13,9 +13,18 @@ ___
   
 *   __Encodes SCTE-35__ to `MPEGTS`✔ `Base64`✔ `Bytes`✔ `Hex`✔ `Integers`✔ `JSON`✔ `XML`✔ `XML+Binary`✔
 ___
-## Breaking News: Make threefive run twice as fast with python3.11 and python3.14 
+## Make threefive run twice as fast with python3.11 and python3.14 
 * Side Note: __threefive is fast enough to parse 13k video__ as is now, this is just me trying to see how fast I can make threefive run on python3.
-* This parses SCTE-35 from an MPEGTS stream using a multiprocessing pool and multiple threefive.Stream instances.
+* This parses SCTE-35 from an MPEGTS stream.
+* __This is the super funk version__:
+	*  multiple nested list comprehensions
+ 	*   iter(partial
+  	*   a multiprocessing pool with a pool initializer
+  	*   pool.imap
+  	*   a couple globals
+  	*   a generator
+  	*   multiple threefive.Stream instances.
+  	
 *  Works great with python3.11 and 3.14
 * Test it
 	* `time python3 chunkymp.py video.ts`
@@ -24,57 +33,62 @@ ___
 * chunkymp.py
   
 ```py3
+'''
+chunkymp.py -  testing multiprocess performance of threefive on python 3.11 and 3.14
+'''
 import multiprocessing
 import sys
-from functools import partial 
+from functools import partial
 from threefive import Stream, reader
 
-pkt_size=188
-chunk_size= pkt_size*3500
+pkt_size = 188
+chunk_size = pkt_size * 3500
+
 
 def chunk_parser(chunk):
     """
     chunk_parser parse a chunk
     """
-    st=Stream(None)
-    st.pids=pids
-    st.maps =maps
-   
-    return [cue for cue in [st._parse(pkt) for pkt in st.packetize( chunk)] if cue]
+    st = Stream(None)
+    st.pids = pids
+    st.maps = maps
+    return [cue for cue in [st._parse(pkt) for pkt in st.packetize(chunk)] if cue]
 
 
 def chunker(file_path):
     """
-    chunker chunk generator
+    chunker video chunk generator
     """
     with reader(file_path) as r:
-        while True:
-            chunk = r.read(chunk_size)
-            if not chunk:
-                break
+        for chunk in iter(partial(r.read, chunk_size), b""):
             yield chunk
 
-def pid_primer(filepath):
+
+def init_pool(filepath):
     """
-    pid_primer discovers the stucture of an
-    MPEGTS stream  to prime
-    Stream instances
+    init_pool discovers the stucture of an
+    MPEGTS stream to prime
+    Stream instances in the pool
     """
-    stp=Stream(filepath)
+    global pids
+    global maps
+    stp = Stream(filepath)
     stp.show()
     stp.maps.prgm_pts = {}
     stp.maps.partial = {}
-    stp.maps.last = {}
-    return stp.pids, stp.maps
+    pids = stp.pids
+    maps = stp.maps
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     filepath = sys.argv[1]
-    global pids, maps
-    pids, maps =pid_primer(filepath)
-    with multiprocessing.Pool(processes=multiprocessing.cpu_count()-1,) as pool:
-        results = pool.imap(chunk_parser, chunker(filepath),chunksize=1)
-        for cues in results:
-             _=[cue.show() for cue in cues]
+    with multiprocessing.Pool(
+        processes=multiprocessing.cpu_count() - 1,
+        initializer=init_pool,
+        initargs=(filepath,),
+    ) as pool:
+        results = pool.imap(chunk_parser, chunker(filepath), chunksize=10)
+        _ = [cue.show() for cues in results for cue in cues]
 
 ```
 * python3.11 is still faster than python 3.14
