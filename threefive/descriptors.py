@@ -494,10 +494,9 @@ class Property(SCTE35Base):
     """
     Property class for EventDescriptors
     """
-    data_type_map= { '0x00': 'hex',
-                    '0x01': 'decimal',
-                    '0x02': 'ascii hex',}
-    
+    data_type_map= { '0x00': 'hexidecimal',
+                                       '0x01': 'decimal',
+                                       '0x02': 'text',}
     def __init__(self):
         self.property_name_length=None
         self.property_name=None
@@ -515,7 +514,13 @@ class Property(SCTE35Base):
         self.property_data_type=bitbin.as_hex(8)
         self.property_data_type_name= self.data_type_map[self.property_data_type]
         self.property_value_length=bitbin.as_int(8)
-        self.property_value=bitbin.as_bytes(self.property_value_length  << 3 ).decode()
+        if self.property_data_type=='0x00':
+            self.property_value=bitbin.as_hex(self.property_value_length  << 3 )
+        elif self.property_data_type=='0x01':
+            self.property_value=bitbin.as_int(self.property_value_length  << 3 )
+        else:
+            self.property_value=bitbin.as_bytes(self.property_value_length  << 3 ).decode()
+
 
 
 class EventDescriptor(SpliceDescriptor):
@@ -565,6 +570,8 @@ class EventDescriptor(SpliceDescriptor):
             prop.decode(bitbin)
             self.properties.append(vars(prop))
             pc -=1
+
+
 
 
 # map of known descriptors and associated classes
