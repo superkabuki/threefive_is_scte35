@@ -491,13 +491,28 @@ class SegmentationDescriptor(SpliceDescriptor):
 
 
 class EventDescriptor(SpliceDescriptor):
+    state_map= { '0x00': "start",
+                                '0x01': "active",
+                                '0x02': "paused",
+                                '0x03': "resume",
+                                '0x04': "fetch", }
+
+    type_map={ '0x00': "network",
+                                '0x01': "program",
+                                '0x02': "chapter",
+                                '0x03': "break",
+                                '0x04':"opportunity",
+                                '0x05': "advertisement",}
+
     def __init__(self, bites=None):
         super().__init__(bites)
         self.tag = 5
         self.name = "Event Descriptor"
         self.event_identifier =None
         self.event_state = None
+        self.event_state_message=None
         self.event_type =None
+        self.event_type_message=None
         self.elapsed = None
         self.remain = None
         self.property_count =0
@@ -508,11 +523,15 @@ class EventDescriptor(SpliceDescriptor):
         """
         bitbin = Bitn(self.bites)
         self.event_identifier=bitbin.as_int(32)
-        self.event_state=bitbin.as_int(8)
-        self.event_type=bitbin.as_int(8)
-        self.elapsed=bitbin.as_int(40)
-        self.remain=bitbin.as_int(40)
+        self.event_state=bitbin.as_hex(8)
+        self.event_state_message=self.state_map[self.event_state]
+        self.event_type=bitbin.as_hex(8)
+        self.event_type_message= self.type_map[self.event_type]
+        self.elapsed=bitbin.as_int(40)/10000.0
+        self.remain=bitbin.as_int(40)/10000.0 - self.elapsed
         self.property_count=bitbin.as_int(8)        
+
+
 
 # map of known descriptors and associated classes
 descriptor_map = {
