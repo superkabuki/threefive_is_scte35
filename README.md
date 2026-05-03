@@ -16,70 +16,83 @@ ___
 ## Make threefive run twice as fast with python3.11 and python3.14 
 * Side Note: __threefive is fast enough to parse 13k video__ as is now, this is just me trying to see how fast I can make threefive run on python3.
 * This parses SCTE-35 from an MPEGTS stream.
-* __This is the super funk version__, both python3.11, and python3.14 run twice as fast.
+* __This is the super funk version__
+	* python3.11 runs almost twice as fast
+ 	* python3.14 runs almost three times faster
 * Test it
-	* `time python3 chunkymp.py video.ts`
+	* `time python3 mps.py video.ts`
 	* compare with `time threefive video.ts`
-
-* chunkymp.py
+* __Expect a multiprocessing option to be included in the next threefive release__.
+* mps.py
   
 ```py3
-'''
-chunkymp.py -  testing multiprocess performance of threefive on python 3.11 and 3.14
-'''
+"""
+mps.py -  testing multiprocess performance of threefive on python 3.11 and 3.14
+"""
+
 import multiprocessing
 import sys
 from functools import partial
 from threefive import Stream, reader
 
-pkt_size = 188
-chunk_size = pkt_size * 3500
+PKTSIZE = 188
+CHUNKSIZE = PKTSIZE * 7700
+POOLSIZE = 6
+
+multiprocessing.set_start_method = "spawn"
 
 
-def chunk_parser(chunk):
-    """
-    chunk_parser parse a chunk
-    """
-    st = Stream(None)
-    st.pids = pids
-    st.maps = maps
-    return [cue for cue in [st._parse(pkt) for pkt in st.packetize(chunk)] if cue]
+class MPStream:
+    def __init__(self, filepath):
+        self.filepath = filepath
+        self.pids = None
+        self.maps = None
+        self.init_pool()
 
+    def init_pool(self):
+        """
+        init_pool discovers the stucture of an
+        MPEGTS stream to prime
+        Stream instances in the pool
+        """
+        stp = Stream(self.filepath)
+        stp.show()
+        stp.maps.prgm_pts = {}
+        stp.maps.partial = {}
+        self.pids = stp.pids
+        self.maps = stp.maps
 
-def chunker(file_path):
-    """
-    chunker video chunk generator
-    """
-    with reader(file_path) as r:
-        for chunk in iter(partial(r.read, chunk_size), b""):
-            yield chunk
+    def chunk_parser(self, chunk):
+        """
+        chunk_parser parse a chunk
+        """
+        st = Stream(None)
+        st.pids = self.pids
+        st.maps = self.maps
+        return [cue for cue in [st._parse(pkt) for pkt in st.packetize(chunk)] if cue]
 
+    def chunker(self):
+        """
+        chunker video chunk generator
+        """
+        with reader(self.filepath) as r:
+            for chunk in iter(partial(r.read, CHUNKSIZE), b""):
+                yield chunk
 
-def init_pool(filepath):
-    """
-    init_pool discovers the stucture of an
-    MPEGTS stream to prime
-    Stream instances in the pool
-    """
-    global pids
-    global maps
-    stp = Stream(filepath)
-    stp.show()
-    stp.maps.prgm_pts = {}
-    stp.maps.partial = {}
-    pids = stp.pids
-    maps = stp.maps
+    def run(self):
+        """
+        run create pool and parse mpegts stream
+        """
+        with multiprocessing.Pool(
+            POOLSIZE,
+        ) as pool:
+            results = pool.imap(self.chunk_parser, self.chunker(), chunksize=10)
+            _ = [cue.show() for cues in results for cue in cues]
 
 
 if __name__ == "__main__":
-    filepath = sys.argv[1]
-    with multiprocessing.Pool(
-        processes=multiprocessing.cpu_count() - 1,
-        initializer=init_pool,
-        initargs=(filepath,),
-    ) as pool:
-        results = pool.imap(chunk_parser, chunker(filepath), chunksize=10)
-        _ = [cue.show() for cues in results for cue in cues]
+    mps = MPStream(sys.argv[1])
+    mps.run()
 
 ```
 
