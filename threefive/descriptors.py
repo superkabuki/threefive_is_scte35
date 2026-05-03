@@ -490,6 +490,34 @@ class SegmentationDescriptor(SpliceDescriptor):
         return sd
 
 
+class Property(SCTE35Base):
+    """
+    Property class for EventDescriptors
+    """
+    data_type_map= { '0x00': 'hex',
+                    '0x01': 'decimal',
+                    '0x02': 'ascii hex',}
+    
+    def __init__(self):
+        self.property_name_length=None
+        self.property_name=None
+        self.property_data_type=None
+        self.property_data_type_name=None
+        self.property_value_length=None
+        self.property_value=None
+
+    def decode(self, bitbin):
+        """
+        decode for Property class
+        """
+        self.property_name_length=bitbin.as_int(8)
+        self.property_name=bitbin.as_bytes(self.property_name_length << 3).decode()
+        self.property_data_type=bitbin.as_hex(8)
+        self.property_data_type_name= self.data_type_map[self.property_data_type]
+        self.property_value_length=bitbin.as_int(8)
+        self.property_value=bitbin.as_bytes(self.property_value_length  << 3 ).decode()
+
+
 class EventDescriptor(SpliceDescriptor):
     state_map= { '0x00': "start",
                                 '0x01': "active",
@@ -516,6 +544,7 @@ class EventDescriptor(SpliceDescriptor):
         self.elapsed = None
         self.remain = None
         self.property_count =0
+        self.properties=[]
 
     def decode(self):
         """
@@ -529,8 +558,13 @@ class EventDescriptor(SpliceDescriptor):
         self.event_type_message= self.type_map[self.event_type]
         self.elapsed=bitbin.as_int(40)/10000.0
         self.remain=bitbin.as_int(40)/10000.0 - self.elapsed
-        self.property_count=bitbin.as_int(8)        
-
+        self.property_count=bitbin.as_int(8)
+        pc = self.property_count
+        while pc:
+            prop = Property()
+            prop.decode(bitbin)
+            self.properties.append(vars(prop))
+            pc -=1
 
 
 # map of known descriptors and associated classes
