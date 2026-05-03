@@ -490,12 +490,37 @@ class SegmentationDescriptor(SpliceDescriptor):
         return sd
 
 
+class EventDescriptor(SpliceDescriptor):
+    def __init__(self, bites=None):
+        super().__init__(bites)
+        self.tag = 5
+        self.name = "Event Descriptor"
+        self.event_identifier =None
+        self.event_state = None
+        self.event_type =None
+        self.elapsed = None
+        self.remain = None
+        self.property_count =0
+
+    def decode(self):
+        """
+        decode SCTE35 Event Descriptor
+        """
+        bitbin = Bitn(self.bites)
+        self.event_identifier=bitbin.as_int(32)
+        self.event_state=bitbin.as_int(8)
+        self.event_type=bitbin.as_int(8)
+        self.elapsed=bitbin.as_int(40)
+        self.remain=bitbin.as_int(40)
+        self.property_count=bitbin.as_int(8)        
+
 # map of known descriptors and associated classes
 descriptor_map = {
     0: AvailDescriptor,
     1: DtmfDescriptor,
     2: SegmentationDescriptor,
     3: TimeDescriptor,
+    5: EventDescriptor,
     240: DVBDASDescriptor,
 }
 
