@@ -131,7 +131,7 @@ class ProgramInfo(Based):
             vee = f"{hex(vee)}\t{streamtype_map[vee]}"
         else:
             vee = f"{vee} Unknown"
-        print2(f"\t  {k} [{hex(k)}]\t{vee}")
+        print2(f"#\t  {k} [{hex(k)}]\t{vee}")
 
     def show(self):
         """
@@ -141,14 +141,14 @@ class ProgramInfo(Based):
         serv = clean(self.service)
         prov = clean(self.provider)
         print2("")
-        print2(f"\tService:  {serv}")
-        print2(f"\tProvider: {prov}")
-        print2(f"\tPid:      {self.pid}")
-        print2(f"\tPcr Pid:  {self.pcr_pid}")
-        print2("\tStreams:")
+        print2(f"#\tService:  {serv}")
+        print2(f"#\tProvider: {prov}")
+        print2(f"#\tPid:      {self.pid}")
+        print2(f"#\tPcr Pid:  {self.pcr_pid}")
+        print2("#\tStreams:")
         # sorted_dict = {k:my_dict[k] for k in sorted(my_dict)})
         keys = sorted(self.streams)
-        print2("\t  Pid\t\tType")
+        print2("#\t  Pid\t\tType")
         for k in keys:
             self._mk_vee(k)
 
@@ -436,7 +436,7 @@ class Stream(Based):
         if self.maps.prgm.keys():
             sopro = sorted(self.maps.prgm.items())
             for k, vee in sopro:
-                print2(f"\nProgram: {k}")
+                print2(f"\n# Program: {k}")
                 vee.show()
 
     def show_pts(self):
