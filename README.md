@@ -15,7 +15,7 @@ ___
 ___
 ## News:
 
-* threefive.Stream.decode() now does interpreter detection now uses multiprocessing for python3.11 and python3.14 for a serious speedup. pypy3 is still faster. 
+* __threefive.Stream.decode()__ now does __interpreter detection__ and uses __multiprocessing__ for __python3.11__ and __python3.14__ for a serious speedup. __pypy3 is still faster__. 
 * threefive's __Cyclomatic Complexity__ score: __1.94__.
 * __Event Descriptors__ and __Property__ types from __the recently published 2026 SCTE-35 Specification part 2__ have been added.   
 ___
