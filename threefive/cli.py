@@ -20,11 +20,11 @@ from .iframes import IFramer
 from .new_reader import reader
 from .cue import Cue
 from .stream import Stream
-from .stuff import  print2, red
+from .stuff import print2, red
 from .stuff import ERR
 from .version import version
 
-#import cProfile
+# import cProfile
 # from sideways import cli as sidecli
 
 write2 = False
@@ -84,12 +84,13 @@ HELP = f"""
 
 """
 
-def  done():
+
+def done():
     """
     done prints the threefive version, interpreter version,
     and calls sys.exit()
     """
-    print2(f'threefive: {version} on python: {sys.version}')
+    # print2(f'threefive: {version} on python: {sys.version}')
     sys.exit()
 
 
@@ -178,8 +179,8 @@ def chk_print_map():
     """
     chk_print_map checks for print_map.keys() in sys.argv
     """
-    _= [v()  for k, v in print_map.items() if k in sys.argv]
-     #   print_key_in_argv(k, v)
+    _ = [v() for k, v in print_map.items() if k in sys.argv]
+    #   print_key_in_argv(k, v)
 
 
 # functions for mpegts_map
@@ -248,12 +249,14 @@ def sidecar_chk(this):
     strm = Stream(this)
     strm.decode(func=mk_sidecar)
 
+
 def speedo_chk(this):
     """
     speedo_chk displays parse speed for mpegts streams
     """
     strm = Stream(this)
     strm.speed()
+
 
 mpegts_map = {
     "packets": packet_chk,
@@ -384,7 +387,7 @@ def try_cue(this):
         if cue:
             funk()(cue)  #   funk works here too.
     except ERR:
-        red(f'\n "{this}" isn`t working for me.')
+        red(f"\n {type(ERR)}")
 
 
 def to_funk(this):
@@ -521,4 +524,3 @@ def threefivecli():
     chk_print_map()
     chk_mpegts_map()
     chk_funk_map()
-
