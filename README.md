@@ -13,91 +13,12 @@ ___
   
 *   __Encodes SCTE-35__ to `MPEGTS`✔ `Base64`✔ `Bytes`✔ `Hex`✔ `Integers`✔ `JSON`✔ `XML`✔ `XML+Binary`✔
 ___
-## Make threefive run twice as fast with python3.11 and python3.14 
-* Side Note: __threefive is fast enough to parse 13k video__ as is now, this is just me trying to see how fast I can make threefive run on python3.
-* This parses SCTE-35 from an MPEGTS stream.
-* __This is the super funk version__
-	* python3.11 runs almost twice as fast
- 	* python3.14 runs almost three times faster
-* Test it
-	* `time python3 mps.py video.ts`
-	* compare with `time threefive video.ts`
-* __Expect a multiprocessing option to be included in the next threefive release__.
-* mps.py
-  
-```py3
-"""
-mps.py -  testing multiprocess performance of threefive on python 3.11 and 3.14
-"""
+## News:
 
-import multiprocessing
-import sys
-from functools import partial
-from threefive import Stream, reader
-
-PKTSIZE = 188
-CHUNKSIZE = PKTSIZE * 7700
-POOLSIZE = 6
-
-multiprocessing.set_start_method = "spawn"
-
-
-class MPStream:
-    def __init__(self, filepath):
-        self.filepath = filepath
-        self.pids = None
-        self.maps = None
-        self.init_pool()
-
-    def init_pool(self):
-        """
-        init_pool discovers the stucture of an
-        MPEGTS stream to prime
-        Stream instances in the pool
-        """
-        stp = Stream(self.filepath)
-        stp.show()
-        stp.maps.prgm_pts = {}
-        stp.maps.partial = {}
-        self.pids = stp.pids
-        self.maps = stp.maps
-
-    def chunk_parser(self, chunk):
-        """
-        chunk_parser parse a chunk
-        """
-        st = Stream(None)
-        st.pids = self.pids
-        st.maps = self.maps
-        return [cue for cue in [st._parse(pkt) for pkt in st.packetize(chunk)] if cue]
-
-    def chunker(self):
-        """
-        chunker video chunk generator
-        """
-        with reader(self.filepath) as r:
-            for chunk in iter(partial(r.read, CHUNKSIZE), b""):
-                yield chunk
-
-    def run(self):
-        """
-        run create pool and parse mpegts stream
-        """
-        with multiprocessing.Pool(
-            POOLSIZE,
-        ) as pool:
-            results = pool.imap(self.chunk_parser, self.chunker(), chunksize=10)
-            _ = [cue.show() for cues in results for cue in cues]
-
-
-if __name__ == "__main__":
-    mps = MPStream(sys.argv[1])
-    mps.run()
-
-```
-
----
-
+* threefive.Stream.decode() now does interpreter detection now uses multiprocessing for python3.11 and python3.14 for a serious speedup. pypy3 is still faster. 
+* threefive's __Cyclomatic Complexity__ score: __1.94__.
+* __Event Descriptors__ and __Property__ types from __the recently published 2026 SCTE-35 Specification part 2__ have been added.   
+___
 # Tip of the week.
 ## Q. How do I get a list of all of the SCTE-35 cues in a stream?
 ## A. Call Stream.decode_next(), it's a python generator.
