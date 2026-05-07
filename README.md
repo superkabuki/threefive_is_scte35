@@ -9,13 +9,28 @@
   
 *   __Encodes SCTE-35__ to `MPEGTS`✔ `Base64`✔ `Bytes`✔ `Hex`✔ `Integers`✔ `JSON`✔ `XML`✔ `XML+Binary`✔
 ___
-## News:
+## Latest Speed Test pypy3 vs. python3.11 vs. python3.14:
 
-* __threefive.Stream.decode()__ now does __interpreter detection__ and uses __multiprocessing__ for __python3.11__ and __python3.14__ for a __serious speedup__. pypy3 is still faster. 
-* threefive's __Cyclomatic Complexity__ score: __1.94__.
+* __threefive.Stream.decode()__ now does __interpreter detection__ and uses __multiprocessing__ for __python3.11__ and __python3.14__ for a __serious speedup__.
+* Using multiprocessing cuts parsing time in half for python 3.11 even more for python3.14
+* single process pypy3 is still faster though.
+
+* The test is to parse a 3.7 GB file for 286 SCTE-35 Cues.
+
+* Results
+
+| interpreter| time     |
+|------------|----------|
+|__pypy3__       |__3.689 secs__|
+|python3.11  |5.405 secs|
+|python3.14  |5.640 secs|
+
+<img width="1578" height="917" alt="image" src="https://github.com/user-attachments/assets/fd94c872-71fb-4289-9891-f40bb6efd81c" />
+
+
+## News
 * __Event Descriptors__ and __Property__ types from __the recently published 2026 SCTE-35 Specification part 2__ have been added.   
 * __threefive no longer uses setuptools for packaging__ and I know you don't care.
-* __Python3 vs. Pypy3__ [__parsing SCTE35 with threefive__](https://github.com/superkabuki/threefive_is_scte35#python3-vs-pypy3-running-threefive) (watch the cool video) _I need to make a new video, things have changed a little_
 * __threefive now supports__ [__Secure Reliable Transport__](https://github.com/superkabuki/threefive_is_scte35/blob/main/README.md#threefive-now-supports-srt)  (watch the cool video)
 ___
 ## Try these:	
