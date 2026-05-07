@@ -9,9 +9,17 @@
   
 *   __Encodes SCTE-35__ to `MPEGTS`✔ `Base64`✔ `Bytes`✔ `Hex`✔ `Integers`✔ `JSON`✔ `XML`✔ `XML+Binary`✔
 ___
+
+
+## News
+* __threefive.Stream.decode()__ now does __interpreter detection__ and uses __multiprocessing__ for __python3.11__ and __python3.14__ for a __serious speedup__.
+* __Event Descriptors__ and __Property__ types from __the recently published 2026 SCTE-35 Specification part 2__ have been added.   
+* __threefive no longer uses setuptools for packaging__ and I know you don't care.
+* __threefive now supports__ [__Secure Reliable Transport__](https://github.com/superkabuki/threefive_is_scte35/blob/main/README.md#threefive-now-supports-srt)  (watch the cool video)
+___
+
 ## Latest Speed Test pypy3 vs. python3.11 vs. python3.14:
 
-* __threefive.Stream.decode()__ now does __interpreter detection__ and uses __multiprocessing__ for __python3.11__ and __python3.14__ for a __serious speedup__.
 * Using multiprocessing cuts parsing time in half for python 3.11 even more for python3.14
 * single process pypy3 is still faster though.
 
@@ -27,20 +35,15 @@ ___
 
 <img width="1578" height="917" alt="image" src="https://github.com/user-attachments/assets/fd94c872-71fb-4289-9891-f40bb6efd81c" />
 
-
-## News
-* __Event Descriptors__ and __Property__ types from __the recently published 2026 SCTE-35 Specification part 2__ have been added.   
-* __threefive no longer uses setuptools for packaging__ and I know you don't care.
-* __threefive now supports__ [__Secure Reliable Transport__](https://github.com/superkabuki/threefive_is_scte35/blob/main/README.md#threefive-now-supports-srt)  (watch the cool video)
 ___
+
+
 ## Try these:	
 ####  Parse SCTE-35 in MPEGTS over HTTP, in your browser with[ Go, Wasm and Super Karate Death Car](https://bigcorp.ltd/gowasm)
 ####  [threefive.js](https://github.com/keithah/threefive.js) _threefive in typescript. Keith is a friend of mine. This is good stuff_ 
 
 
 ___
-
-
 
 ## [ Latest version is  v3.0.83 ]
 
