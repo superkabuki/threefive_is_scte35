@@ -1,9 +1,3 @@
-## Try these:
-###  [skdc online MPEGTS SCTE-35 parser](https://bigcorp.ltd/gowasm)
-###  [threefive.js](https://github.com/keithah/threefive.js) 
-
-
-___
 
 # [ threefive ]
 ## https://github.com/superkabuki/threefive
@@ -17,36 +11,21 @@ ___
 ___
 ## News:
 
-* __threefive.Stream.decode()__ now does __interpreter detection__ and uses __multiprocessing__ for __python3.11__ and __python3.14__ for a serious speedup. __pypy3 is still faster__. 
+* __threefive.Stream.decode()__ now does __interpreter detection__ and uses __multiprocessing__ for __python3.11__ and __python3.14__ for a __serious speedup__. pypy3 is still faster. 
 * threefive's __Cyclomatic Complexity__ score: __1.94__.
 * __Event Descriptors__ and __Property__ types from __the recently published 2026 SCTE-35 Specification part 2__ have been added.   
-___
-# Tip of the week.
-## Q. How do I get a list of all of the SCTE-35 cues in a stream?
-## A. Call Stream.decode_next(), it's a python generator.
-```py3
-from threefive import Stream
-
-strm=Stream('https://example.com/video.ts')
-list_o_cues=[]
-for cue in strm.decode_next():    
-	list_o_cues.append(cue)       # these will be threefive.Cue instances
-
-# then you can do stuff like
-
-_=[cue.show() for cue in list_o_cues]
-
-for cue in list_o_cues:
-	print(cue.xml())
-
-```	
-
-### [ News ]
-
 * __threefive no longer uses setuptools for packaging__ and I know you don't care.
-* __Python3 vs. Pypy3__ [__parsing SCTE35 with threefive__](https://github.com/superkabuki/threefive_is_scte35#python3-vs-pypy3-running-threefive) (watch the cool video) 
+* __Python3 vs. Pypy3__ [__parsing SCTE35 with threefive__](https://github.com/superkabuki/threefive_is_scte35#python3-vs-pypy3-running-threefive) (watch the cool video) _I need to make a new video, things have changed a little_
 * __threefive now supports__ [__Secure Reliable Transport__](https://github.com/superkabuki/threefive_is_scte35/blob/main/README.md#threefive-now-supports-srt)  (watch the cool video)
 ___
+## Try these:	
+####  Parse SCTE-35 in MPEGTS over HTTP, in your browser with[ Go, Wasm and Super Karate Death Car](https://bigcorp.ltd/gowasm)
+####  [threefive.js](https://github.com/keithah/threefive.js) _threefive in typescript. Keith is a friend of mine. This is good stuff_ 
+
+
+___
+
+
 
 ## [ Latest version is  v3.0.83 ]
 
