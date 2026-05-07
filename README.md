@@ -11,38 +11,11 @@
 ___
 
 
-## News
+## [ News ]
 * __threefive.Stream.decode()__ now does __interpreter detection__ and uses __multiprocessing__ for __python3.11__ and __python3.14__ for a __serious speedup__.
 * __Event Descriptors__ and __Property__ types from __the recently published 2026 SCTE-35 Specification part 2__ have been added.   
 * __threefive no longer uses setuptools for packaging__ and I know you don't care.
 * __threefive now supports__ [__Secure Reliable Transport__](https://github.com/superkabuki/threefive_is_scte35/blob/main/README.md#threefive-now-supports-srt)  (watch the cool video)
-___
-
-## Latest Speed Test pypy3 vs. python3.11 vs. python3.14:
-
-* Using multiprocessing cuts parsing time in half for python 3.11 even more for python3.14
-* single process pypy3 is still faster though.
-
-* The test is to parse a 3.7 GB file for 286 SCTE-35 Cues.
-
-* Results
-
-| interpreter| time     |
-|------------|----------|
-|__pypy3__       |__3.689 secs__|
-|python3.11  |5.405 secs|
-|python3.14  |5.640 secs|
-
-<img width="1578" height="917" alt="image" src="https://github.com/user-attachments/assets/fd94c872-71fb-4289-9891-f40bb6efd81c" />
-
-___
-
-
-## Try these:	
-####  Parse SCTE-35 in MPEGTS over HTTP, in your browser with[ Go, Wasm and Super Karate Death Car](https://bigcorp.ltd/gowasm)
-####  [threefive.js](https://github.com/keithah/threefive.js) _threefive in typescript. Keith is a friend of mine. This is good stuff_ 
-
-
 ___
 
 ## [ Latest version is  v3.0.83 ]
@@ -60,7 +33,37 @@ ___
   		* __scte35hls__  _parse scte-35 from hls tags and segments_
     	* __scte35inject__ _inject scte-35 packets into mpegts streams_
      	* __gums__ _(the Grande Unified unicast and Multicast Server)_
-___        
+___      
+
+
+### [ Speed Test ]  
+#### pypy3 vs. python3.11 vs. python3.14 running threefive 3.0.0x840c (_pre-release_) 
+
+* Using multiprocessing cuts parsing time in half for python 3.11 even more for python3.14
+   
+* single process pypy3 is still faster though.
+
+* The test is to parse a 3.7 GB file for 286 SCTE-35 Cues.
+
+* Results
+
+| interpreter| time     |
+|------------|----------|
+|__pypy3__  |__3.532 secs__|
+|python3.11  |5.520 secs|
+|python3.14  |5.521 secs|
+
+* When I did the same test for threefive v3.0.83, pypy3 was 4.1 seconds, python3.11 was 10 seconds, and python3.14 was over 14 secs
+
+
+___
+
+
+## [ Try these ]	
+####  Parse SCTE-35 in MPEGTS over HTTP, in your browser with[ Go, Wasm and Super Karate Death Car](https://bigcorp.ltd/gowasm)
+####  [threefive.js](https://github.com/keithah/threefive.js) _threefive in typescript. Keith is a friend of mine. This is good stuff_ 
+
+___
 #  [__[ Examples ]__](https://github.com/superkabuki/threefive/tree/main/examples)
 
 
