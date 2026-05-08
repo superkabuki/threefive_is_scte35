@@ -90,7 +90,7 @@ def done():
     done prints the threefive version, interpreter version,
     and calls sys.exit()
     """
-    # print2(f'threefive: {version} on python: {sys.version}')
+    print2(f"threefive: {version} on python: {sys.version}")
     sys.exit()
 
 
