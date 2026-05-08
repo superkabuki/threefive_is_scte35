@@ -16,7 +16,7 @@ import multiprocessing
 
 
 PKTSIZE = 188
-CHUNKSIZE = PKTSIZE * 7700
+CHUNKSIZE = PKTSIZE * 10500
 POOLSIZE = 6
 
 multiprocessing.set_start_method = "spawn"
@@ -89,14 +89,6 @@ def show_cue(cue):
     when a SCTE-35 packet is found.
     """
     cue.show()
-
-
-def show_cue_stderr(cue):
-    """
-    print2 cue data to sys.stderr
-    for Stream.decode_proxy
-    """
-    cue.to_stderr()
 
 
 class Based:
@@ -198,13 +190,13 @@ class Stream(Based):
     # the _CONST are deprecated
     # please switch to CONST
 
-    _PACKET_SIZE = PACKET_SIZE = 188
-    _SYNC_BYTE = SYNC_BYTE = 0x47
-    _MIN_PMT_COUNT = 16
+    PACKET_SIZE = 188
+    SYNC_BYTE = 0x47
+    MIN_PMT_COUNT = 16
     # tids
-    _PMT_TID = PMT_TID = b"\x02"
-    _SCTE35_TID = SCTE35_TID = b"\xfc"
-    _SDT_TID = SDT_TID = b"\x42"
+    PMT_TID = b"\x02"
+    SCTE35_TID = b"\xfc"
+    SDT_TID = b"\x42"
     ROLLOVER = 8589934591  # 95443.717678
     ROLLOVER9K = 95443.717678
     SCTE35_PES_START = b"\x00\x00\x01\xfc"
@@ -430,7 +422,7 @@ class Stream(Based):
         self.info = True
         for pkt in self.iter_pkts():
             self._parse(pkt)
-            if self.pmt_count > self._MIN_PMT_COUNT:
+            if self.pmt_count > self.MIN_PMT_COUNT:
                 blue(f"PMT Count: {self.pmt_count}")
                 break
         if self.maps.prgm.keys():
@@ -532,13 +524,13 @@ class Stream(Based):
         in the dict Stream._pid_pts
         """
         payload = self._parse_payload(pkt)
-        if len(payload) > 13:
-            if self._pts_flag(payload):
-                pts = self.mk_pts(payload)
-                prgm = self.pid2prgm(pid)
-                self.maps.prgm_pts[prgm] = pts
-                if prgm not in self.start:
-                    self.start[prgm] = pts
+        #      if len(payload) > 13:
+        if self._pts_flag(payload):
+            pts = self.mk_pts(payload)
+            prgm = self.pid2prgm(pid)
+            self.maps.prgm_pts[prgm] = pts
+            if prgm not in self.start:
+                self.start[prgm] = pts
         return False
 
     def _mk_pcr(self, pkt, pid):
@@ -565,7 +557,6 @@ class Stream(Based):
 
     def _pmt_pid(self, pay, pid):
         last = None
-        #        if pid in self.pids.pmt:
         self.pmt_count += 1
         prgm = self.pid2prgm(pid)
         if prgm in self.pmt_payloads:
@@ -574,15 +565,6 @@ class Stream(Based):
             prgm = self.pid2prgm(pid)
             self.pmt_payloads[prgm] = pay
             self._parse_pmt(pay, pid)
-
-    def _pat_pid(self, pay, pid):
-        if pid == self.pids.PAT_PID:
-            if not self._same_as_last(pay, self.pids.PAT_PID):
-                self._parse_pat(pay)
-
-    ##    def _sdt_pid(self, pay, pid):
-    ##        if pid == self.pids.SDT_PID:
-    ##            self._parse_sdt(pay)
 
     def _parse_tables(self, pkt, pid):
         pay = self._parse_payload(pkt)
@@ -603,11 +585,10 @@ class Stream(Based):
         pid = self._parse_pid(pkt[1], pkt[2])
         if pid in self.pids.tables:
             return self._parse_tables(pkt, pid)
-        if pid in self.pids.pcr:
-            if self._pusi_flag(pkt):
+        if self._pusi_flag(pkt):
+            if pid in self.pids.pcr:
                 self._parse_pts(pkt, pid)
-            return False
-        if self._pid_has_scte35(pid):
+        if pid in (self.pids.scte35 or self.pids.maybe_scte35):
             return self._parse_scte35(pkt, pid)
         return False
 
@@ -621,12 +602,6 @@ class Stream(Based):
             if self._pcr_flag(pkt):
                 self._mk_pcr(pkt, pid)
         return cue
-
-    def _pid_has_scte35(self, pid):
-        #  return pid in self.pids.scte35.union(self.pids.maybe_scte35) # Sucks.
-        # return (pid in self.pids.scte35 or pid in self.pids.maybe_scte35) # Fast
-        return pid in (self.pids.scte35 or self.pids.maybe_scte35)  # Fastest
-        # return pid in (self.pids.scte35|self.pids.maybe_scte35)  # wtf? Super Sucks
 
     def _chk_partial(self, pay, pid, sep):
         if pid in self.maps.partial:
@@ -710,49 +685,11 @@ class Stream(Based):
         pinfo.provider = pn
         pinfo.service = sn
 
-    ##    def _parse_sdt(self, pay):
-    ##        """
-    ##        _parse_sdt parses the SDT for program metadata
-    ##        """
-    ##        pay = self._chk_partial(pay, self.pids.SDT_PID, self.SDT_TID)
-    ##        if not pay:
-    ##            return False
-    ##        seclen = self._parse_length(pay[1], pay[2])
-    ##        if self._section_incomplete(pay, self.pids.SDT_PID, seclen):
-    ##            return False
-    ##        ##        if not self._same_as_last(pay,pid):
-    ##        ##            return False
-    ##        idx = 11
-    ##        while idx < seclen + 3:
-    ##            service_id = self._parse_program(pay[idx], pay[idx + 1])
-    ##            idx += 3
-    ##            dloop_len = self._parse_length(pay[idx], pay[idx + 1])
-    ##            idx += 2
-    ##            i = 0
-    ##            while i < dloop_len:
-    ##                if pay[idx] == 0x48:
-    ##                    i += 3
-    ##                    spnl = pay[idx + i]
-    ##                    i += 1
-    ##                    provider_name = pay[idx + i : idx + i + spnl]
-    ##                    i += spnl
-    ##                    snl = pay[idx + i]
-    ##                    i += 1
-    ##                    service_name = pay[idx + i : idx + i + snl]
-    ##                    i += snl
-    ##                    self._mk_pinfo(service_id, provider_name, service_name)
-    ##                i = dloop_len
-    ##                idx += i
-    ##                return True
-    ##        return False
-
     def _parse_pat(self, pay):
         """
         parse program association table
         for program to pmt_pid mappings.
         """
-        ##        if self._same_as_last(pay, self.pids.PAT_PID):
-        ##            return False
         pay = self._chk_partial(pay, self.pids.PAT_PID, b"")
         seclen = self._parse_length(pay[2], pay[3])
         if self._section_incomplete(pay, self.pids.PAT_PID, seclen):
