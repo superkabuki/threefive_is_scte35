@@ -494,84 +494,107 @@ class Property(SCTE35Base):
     """
     Property class for EventDescriptors
     """
-    data_type_map= { '0x00': 'hexidecimal',
-                                       '0x01': 'decimal',
-                                       '0x02': 'text',}
+
+    data_type_map = {
+        "0x00": "hexidecimal",
+        "0x01": "decimal",
+        "0x02": "text",
+    }
+
     def __init__(self):
-        self.property_name_length=None
-        self.property_name=None
-        self.property_data_type=None
-        self.property_data_type_name=None
-        self.property_value_length=None
-        self.property_value=None
+        self.property_name_length = None
+        self.property_name = None
+        self.property_data_type = None
+        self.property_data_type_name = None
+        self.property_value_length = None
+        self.property_value = None
 
     def decode(self, bitbin):
         """
         decode for Property class
         """
-        self.property_name_length=bitbin.as_int(8)
-        self.property_name=bitbin.as_bytes(self.property_name_length << 3).decode()
-        self.property_data_type=bitbin.as_hex(8)
-        self.property_data_type_name= self.data_type_map[self.property_data_type]
-        self.property_value_length=bitbin.as_int(8)
-        if self.property_data_type=='0x00':
-            self.property_value=bitbin.as_hex(self.property_value_length  << 3 )
-        elif self.property_data_type=='0x01':
-            self.property_value=bitbin.as_int(self.property_value_length  << 3 )
+        self.property_name_length = bitbin.as_int(8)
+        self.property_name = bitbin.as_bytes(self.property_name_length << 3).decode()
+        self.property_data_type = bitbin.as_hex(8)
+        self.property_data_type_name = self.data_type_map[self.property_data_type]
+        self.property_value_length = bitbin.as_int(8)
+        if self.property_data_type == "0x00":
+            self.property_value = bitbin.as_hex(self.property_value_length << 3)
+        elif self.property_data_type == "0x01":
+            self.property_value = bitbin.as_int(self.property_value_length << 3)
         else:
-            self.property_value=bitbin.as_bytes(self.property_value_length  << 3 ).decode()
+            self.property_value = bitbin.as_bytes(
+                self.property_value_length << 3
+            ).decode()
+
+    def encode(self):
+        nbin = super().encode(nbin)
+        self._chk_var(int, nbin.add_int, "property_name_length", 8)
+        self._chk_var(str, nbin.add_hex, "property_data_type", 8)
+        self._chk_var(int, nbin.add_int, "property_value_length", 8)
+        if self.property_data_type == "0x00":
+            self._chk_var(str, nbin.add_hex, "property_value", self.property_value_length << 3)
+        elif self.property_data_type == "0x01":
+            self._chk_var(int, nbin.add_int, "property_value", self.property_value_length << 3)
+        else:
+            self.property_value = self.property_value.encode()
+            self._chk_var(int, nbin.add_bytes, "property_value", self.property_value_length << 3)
+            self.property_value = self.property_value.decode()
+
 
 
 
 class EventDescriptor(SpliceDescriptor):
-    state_map= { '0x00': "start",
-                                '0x01': "active",
-                                '0x02': "paused",
-                                '0x03': "resume",
-                                '0x04': "fetch", }
+    state_map = {
+        "0x00": "start",
+        "0x01": "active",
+        "0x02": "paused",
+        "0x03": "resume",
+        "0x04": "fetch",
+    }
 
-    type_map={ '0x00': "network",
-                                '0x01': "program",
-                                '0x02': "chapter",
-                                '0x03': "break",
-                                '0x04':"opportunity",
-                                '0x05': "advertisement",}
+    type_map = {
+        "0x00": "network",
+        "0x01": "program",
+        "0x02": "chapter",
+        "0x03": "break",
+        "0x04": "opportunity",
+        "0x05": "advertisement",
+    }
 
     def __init__(self, bites=None):
         super().__init__(bites)
         self.tag = 5
         self.name = "Event Descriptor"
-        self.event_identifier =None
+        self.event_identifier = None
         self.event_state = None
-        self.event_state_message=None
-        self.event_type =None
-        self.event_type_message=None
+        self.event_state_message = None
+        self.event_type = None
+        self.event_type_message = None
         self.elapsed = None
         self.remain = None
-        self.property_count =0
-        self.properties=[]
+        self.property_count = 0
+        self.properties = []
 
     def decode(self):
         """
         decode SCTE35 Event Descriptor
         """
         bitbin = Bitn(self.bites)
-        self.event_identifier=bitbin.as_int(32)
-        self.event_state=bitbin.as_hex(8)
-        self.event_state_message=self.state_map[self.event_state]
-        self.event_type=bitbin.as_hex(8)
-        self.event_type_message= self.type_map[self.event_type]
-        self.elapsed=bitbin.as_int(40)/10000.0
-        self.remain=bitbin.as_int(40)/10000.0 - self.elapsed
-        self.property_count=bitbin.as_int(8)
+        self.event_identifier = bitbin.as_int(32)
+        self.event_state = bitbin.as_hex(8)
+        self.event_state_message = self.state_map[self.event_state]
+        self.event_type = bitbin.as_hex(8)
+        self.event_type_message = self.type_map[self.event_type]
+        self.elapsed = bitbin.as_int(40) / 10000.0
+        self.remain = bitbin.as_int(40) / 10000.0 - self.elapsed
+        self.property_count = bitbin.as_int(8)
         pc = self.property_count
         while pc:
             prop = Property()
             prop.decode(bitbin)
             self.properties.append(vars(prop))
-            pc -=1
-
-
+            pc -= 1
 
 
 # map of known descriptors and associated classes
