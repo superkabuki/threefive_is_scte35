@@ -1,7 +1,7 @@
 """
 Mpeg-TS Stream parsing class Stream
 """
-
+import os
 import sys
 from functools import partial
 from .cue import Cue
@@ -16,7 +16,7 @@ import multiprocessing
 
 
 PKTSIZE = 188
-CHUNKSIZE = PKTSIZE * 10500
+CHUNKSIZE = PKTSIZE * 7770
 POOLSIZE = 6
 
 multiprocessing.set_start_method = "spawn"
@@ -30,11 +30,42 @@ def no_op(cue):
     return cue
 
 
+
+def show_cue(cue):
+    """
+    default function call for Stream.decode
+    when a SCTE-35 packet is found.
+    """
+    cue.show()
+
+
+class Based:
+    """
+    Based is a base class
+    """
+
+    def __repr__(self):
+        stuff = []
+        for k, v in self.__dict__.items():
+            stuff.append(f"\n{k}:\t{v}")
+        return "\n".join(stuff)
+
+    @staticmethod
+    def as_hms(secs_of_time):
+        """
+        as_hms converts timestamp to
+        00:00:00.000 format
+        """
+        hours, seconds = divmod(secs_of_time, 3600)
+        mins, seconds = divmod(seconds, 60)
+        seconds = round(seconds)
+        output = f"{int(hours):02}:{int(mins):02}:{seconds}"
+        return output
+
+
 """
 mps.py -  testing multiprocess performance of threefive on python 3.11 and 3.14
 """
-
-
 class MPStream:
     def __init__(self, filepath):
         self.filepath = filepath
@@ -83,26 +114,6 @@ class MPStream:
             _ = [cue.show() for cues in results for cue in cues]
 
 
-def show_cue(cue):
-    """
-    default function call for Stream.decode
-    when a SCTE-35 packet is found.
-    """
-    cue.show()
-
-
-class Based:
-    """
-    Based is a base class
-    """
-
-    def __repr__(self):
-        stuff = []
-        for k, v in self.__dict__.items():
-            stuff.append(f"\n{k}:\t{v}")
-        return "\n".join(stuff)
-
-
 class ProgramInfo(Based):
     """
     ProgramInfo is a class to
@@ -111,8 +122,8 @@ class ProgramInfo(Based):
     """
 
     def __init__(self, pid=None, pcr_pid=None):
-        self.provider = b""
-        self.service = b""
+      #  self.provider = b""
+       # self.service = b""
         self.streams = {}  # pid to stream_type mapping
         self.pid = pid
         self.pcr_pid = pcr_pid
@@ -130,14 +141,10 @@ class ProgramInfo(Based):
         show print2 the Program Infomation
         in a familiar format.
         """
-        serv = clean(self.service)
-        prov = clean(self.provider)
         print2("")
-        print2(f"#\tService:  {serv}")
-        print2(f"#\tProvider: {prov}")
-        print2(f"#\tPid:      {self.pid}")
-        print2(f"#\tPcr Pid:  {self.pcr_pid}")
-        print2("#\tStreams:")
+        print2(f"#   Program Pid: {self.pid}")
+        print2(f"#   Pcr Pid:     {self.pcr_pid}")
+        print2("#   Streams:")
         # sorted_dict = {k:my_dict[k] for k in sorted(my_dict)})
         keys = sorted(self.streams)
         print2("#\t  Pid\t\tType")
@@ -309,12 +316,13 @@ class Stream(Based):
         """
         throttler = Throttle()
         for pkt in self.iter_pkts():
-            cue = self._parse(pkt)
-            if cue:
-                func(cue)
-            throttler.throttle(pkt)
-            sys.stdout.buffer.write(pkt)
-        sys.stdout.buffer.flush()
+            if pkt[6] !=255:
+                cue = self._parse(pkt)
+                if cue:
+                    func(cue)
+                throttler.throttle(pkt)
+                sys.stdout.buffer.write(pkt)
+            sys.stdout.buffer.flush()
         return False
 
     def packetize(self, chunk):
@@ -339,11 +347,47 @@ class Stream(Based):
         but also shows parsing speed.
         """
         speedo = Speedo()
-        num_pkts = 1400
+        num_pkts = 3500
         for chunk in self.chunked(num_pkts=num_pkts):
             speedo.plus(len(chunk))
         speedo.end()
         return False
+
+    def duration(self):
+        """
+        duration - get duration for local video files
+        """
+        prgm=1
+        duration=0
+        num_pkts =1000
+        head,tail= 0,0
+
+        for pkt in self.iter_pkts(num_pkts=num_pkts):
+            pid = self._parse_pid(pkt[1], pkt[2])
+            if self._pusi_flag(pkt):
+                self._parse_pts(pkt, pid)
+                pts = self.pid2pts(pid)
+                if pts:
+                    head = pts
+                    break
+        fsize =os.stat(self.tsfile).st_size
+        spot = self._tsdata.tell()
+        tail_size = 188*num_pkts
+        print2(tail_size)
+        if (fsize -spot) >tail_size:
+            self._tsdata.seek(-tail_size, 2)
+        while self._tsdata.tell() <= fsize-188:
+            pkt=self._tsdata.read(188)
+            pid = self._parse_pid(pkt[1], pkt[2])
+            if self._pusi_flag(pkt):
+                self._parse_pts(pkt, pid)
+                pts = self.pid2pts(pid)
+            tail=self.pid2pts(pid)
+        print2(f'Start: {head} End: {tail}')
+        if tail < head:
+            tail += self.ROLLOVER9K
+        duration=self.as_hms(tail - head)
+        return duration
 
     def decode(self, func=show_cue):
         """
@@ -357,6 +401,9 @@ class Stream(Based):
             return False
         num_pkts = 1400
         for pkt in self.iter_pkts(num_pkts=num_pkts):
+            if not pkt:
+                break
+   #         if pkt[6] != 255:
             cue = self._parse(pkt)
             if cue:
                 func(cue)
@@ -419,6 +466,7 @@ class Stream(Based):
         displays streams that will be
         parsed for SCTE-35.
         """
+        print2(f'\n# {self.tsfile}\n')
         self.info = True
         for pkt in self.iter_pkts():
             self._parse(pkt)
@@ -440,7 +488,7 @@ class Stream(Based):
         for pkt in self.iter_pkts():
             pid = self._parse_info(pkt)
             if self._pusi_flag(pkt):
-                self._chk_pts(pkt, pid)
+                self._parse_pts(pkt, pid)
                 pts = self.pid2pts(pid)
                 if pts:
                     if pts != last_pts:
@@ -524,13 +572,13 @@ class Stream(Based):
         in the dict Stream._pid_pts
         """
         payload = self._parse_payload(pkt)
-        #      if len(payload) > 13:
-        if self._pts_flag(payload):
-            pts = self.mk_pts(payload)
-            prgm = self.pid2prgm(pid)
-            self.maps.prgm_pts[prgm] = pts
-            if prgm not in self.start:
-                self.start[prgm] = pts
+        if len(payload) > 13:
+            if self._pts_flag(payload):
+                pts = self.mk_pts(payload)
+                prgm = self.pid2prgm(pid)
+                self.maps.prgm_pts[prgm] = pts
+                if prgm not in self.start:
+                    self.start[prgm] = pts
         return False
 
     def _mk_pcr(self, pkt, pid):
@@ -559,9 +607,7 @@ class Stream(Based):
         last = None
         self.pmt_count += 1
         prgm = self.pid2prgm(pid)
-        if prgm in self.pmt_payloads:
-            last = self.pmt_payloads[prgm]
-        if pay != last:
+        if pay not in self.pmt_payloads.values():
             prgm = self.pid2prgm(pid)
             self.pmt_payloads[prgm] = pay
             self._parse_pmt(pay, pid)
@@ -582,14 +628,16 @@ class Stream(Based):
         return pid
 
     def _parse(self, pkt):
+   #     if pkt[6]==255:
+     #       return False
         pid = self._parse_pid(pkt[1], pkt[2])
         if pid in self.pids.tables:
             return self._parse_tables(pkt, pid)
-        if self._pusi_flag(pkt):
-            if pid in self.pids.pcr:
-                self._parse_pts(pkt, pid)
         if pid in (self.pids.scte35 or self.pids.maybe_scte35):
             return self._parse_scte35(pkt, pid)
+        if pid in self.pids.pcr:
+            if self._pusi_flag(pkt):
+                self._parse_pts(pkt, pid)
         return False
 
     def _parse_with_pcr(self, pkt):
