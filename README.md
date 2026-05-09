@@ -1,10 +1,12 @@
 # [ threefive ]
 
-* I did three out of the six mentioned.
-
-<img width="837" height="697" alt="image" src="https://github.com/user-attachments/assets/cebc63cf-531c-4242-899d-41bfe359d6ad" />
-
 ## https://github.com/superkabuki/threefive
+
+* In case you were wondering ....
+
+<img width="707" height="612" alt="image" src="https://github.com/user-attachments/assets/571f4640-ef50-4ddd-bde7-a3d866622d68" />
+
+
 
 ### threefive is the industry leading SCTE-35 tool. 
 #### Need to inject SCTE-35 into HLS?  [X9k3.](https://github.com/superkabuki/x9k3) 
