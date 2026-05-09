@@ -90,7 +90,7 @@ def done():
     done prints the threefive version, interpreter version,
     and calls sys.exit()
     """
-    print2(f"threefive: {version} on python: {sys.version}")
+    print2(f"# threefive: {version} on python: {sys.version}")
     sys.exit()
 
 
@@ -258,15 +258,24 @@ def speedo_chk(this):
     strm.speed()
 
 
+def duration_chk(this):
+    """
+    duration_chk display video duration for local video files
+    """
+    strm = Stream(this)
+    print2(f'{this} duration: {strm.duration()}')
+
+
 mpegts_map = {
-    "packets": packet_chk,
-    "proxy": proxy_chk,
-    "pts": pts_chk,
-    "rt": rt_chk,
-    "show": show_chk,
-    "sidecar": sidecar_chk,
-    "speedo": speedo_chk,
-    "iframes": iframe_chk,
+    "duration" : duration_chk,
+    "packets" : packet_chk,
+    "proxy" : proxy_chk,
+    "pts" : pts_chk,
+    "rt" : rt_chk,
+    "show" : show_chk,
+    "sidecar" :  sidecar_chk,
+    "speedo" :  speedo_chk,
+    "iframes" :  iframe_chk,
 }
 
 
