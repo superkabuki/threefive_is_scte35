@@ -170,12 +170,16 @@ class SCTE35Base:
         def _b2l(val):
             if isinstance(val, SCTE35Base):
                 val.kv_clean()
+                print(val)
             if isinstance(val, (list)):
-                val = [_b2l(v) for v in val]
+                if val and isinstance(val[0], SCTE35Base):
+                    val = [v.kv_clean() for v in val]
+                else:
+                    val = [_b2l(v) for v in val]
             if isinstance(val, (dict)):
                 val = {k: _b2l(v) for k, v in val.items()}
             if isinstance(val, (bytes, bytearray)):
-                val = list(val)
+                val = val.decode()
             return val
 
         return {
