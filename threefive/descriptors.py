@@ -501,7 +501,8 @@ class Property(SCTE35Base):
         "0x02": "text",
     }
 
-    def __init__(self):
+    def __init__(self,bites=None ):
+        self.bites=bites
         self.property_name_length = None
         self.property_name = None
         self.property_data_type = None
@@ -509,12 +510,14 @@ class Property(SCTE35Base):
         self.property_value_length = None
         self.property_value = None
 
-    def decode(self, bitbin):
+    def decode(self,bitbin=None):
         """
         decode for Property class
         """
+        if bitbin is None:
+            bitbin = Bitn(self.bites)
         self.property_name_length = bitbin.as_int(8)
-        self.property_name = bitbin.as_bytes(self.property_name_length << 3).decode()
+        self.property_name = bitbin.as_bytes(self.property_name_length  << 3)
         self.property_data_type = bitbin.as_hex(8)
         self.property_data_type_name = self.data_type_map[self.property_data_type]
         self.property_value_length = bitbin.as_int(8)
@@ -523,13 +526,14 @@ class Property(SCTE35Base):
         elif self.property_data_type == "0x01":
             self.property_value = bitbin.as_int(self.property_value_length << 3)
         else:
-            self.property_value = bitbin.as_bytes(
+            self.property_value =bitbin.as_bytes(
                 self.property_value_length << 3
-            ).decode()
+            )
 
-    def encode(self):
-        nbin = super().encode(nbin)
+    def encode(self, nbin=None):
+        nbin = self._chk_nbin(nbin)
         self._chk_var(int, nbin.add_int, "property_name_length", 8)
+        nbin.add_bites(self.property_name)
         self._chk_var(str, nbin.add_hex, "property_data_type", 8)
         self._chk_var(int, nbin.add_int, "property_value_length", 8)
         if self.property_data_type == "0x00":
@@ -537,14 +541,28 @@ class Property(SCTE35Base):
         elif self.property_data_type == "0x01":
             self._chk_var(int, nbin.add_int, "property_value", self.property_value_length << 3)
         else:
-            self.property_value = self.property_value.encode()
-            self._chk_var(int, nbin.add_bytes, "property_value", self.property_value_length << 3)
-            self.property_value = self.property_value.decode()
+            nbin.add_bites( self.property_value)
 
+    def xml(self, ns="scte35"):
+        """
+        xml method for Property Object Types
 
+        <Property propertyName="adsInfo"
+        propertyDataType="text">breakid=485740807</Property>
+
+        """
+        attrs={"propertyName":  self.property_name,
+                   "propertyDataType":self.property_data_type_name ,
+        }
+        prop= Node('Property',self.property_value,attrs , ns=ns)
+        return prop
 
 
 class EventDescriptor(SpliceDescriptor):
+    """
+    EventDescriptor class
+    """
+
     state_map = {
         "0x00": "start",
         "0x01": "active",
@@ -562,7 +580,8 @@ class EventDescriptor(SpliceDescriptor):
         "0x05": "advertisement",
     }
 
-    def __init__(self, bites=None):
+    def __init__(self, bites=b''):
+        self.bites=bites
         super().__init__(bites)
         self.tag = 5
         self.name = "Event Descriptor"
@@ -576,11 +595,12 @@ class EventDescriptor(SpliceDescriptor):
         self.property_count = 0
         self.properties = []
 
-    def decode(self):
+    def decode(self, bitbin=None):
         """
         decode SCTE35 Event Descriptor
         """
-        bitbin = Bitn(self.bites)
+        if bitbin is None:
+            bitbin = Bitn(self.bites)
         self.event_identifier = bitbin.as_int(32)
         self.event_state = bitbin.as_hex(8)
         self.event_state_message = self.state_map[self.event_state]
@@ -593,9 +613,46 @@ class EventDescriptor(SpliceDescriptor):
         while pc:
             prop = Property()
             prop.decode(bitbin)
-            self.properties.append(vars(prop))
+            self.properties.append(prop)
             pc -= 1
 
+    def encode(self,nbin=None):
+        """
+        encode for Event Descriptors
+        """
+        self.bites =None
+        nbin = super().encode(nbin)
+        ei=self.event_identifier
+        nbin.add_int(ei, 32)
+        self._chk_var(str,nbin.add_hex, "event_state", 8)
+        self._chk_var(str, nbin.add_hex, "event_type", 8)
+        elapsed=int(self.elapsed* 10000.0)
+        remain= int(self.remain *10000.0)+elapsed
+        nbin.add_int(elapsed , 40)
+        nbin.add_int( remain, 40)
+        nbin.add_int(len(self.properties), 8)
+        for prop in self.properties:
+            prop.encode(nbin)
+        return nbin.bites
+
+
+    def xml(self,ns="scte35"):
+        """
+        xml method for Event Descriptors
+
+        <EventDescriptor eventIdentifier="44" eventState="start"
+        eventType="opportunity" elapsed="0" remain="1500000">
+        """
+        attrs = {'eventIdentifier': self.event_identifier,
+                     'eventState':self.event_state_message,
+                    'eventType':self.event_type_message,
+                    'elapsed': self.elapsed,
+                   'remain': self.remain,}
+
+        ed = Node('EventDescriptor',attrs=attrs,ns=ns)
+        for prop in self.properties:
+            ed.addchild(prop.xml())
+        return ed
 
 # map of known descriptors and associated classes
 descriptor_map = {
