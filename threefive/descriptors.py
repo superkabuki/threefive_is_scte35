@@ -551,8 +551,8 @@ class Property(SCTE35Base):
         propertyDataType="text">breakid=485740807</Property>
 
         """
-        attrs={"propertyName":  self.property_name,
-                   "propertyDataType":self.property_data_type_name ,
+        attrs={"property_name":  self.property_name,
+                   "property_data_type":self.property_data_type_name ,
         }
         prop= Node('Property',self.property_value,attrs , ns=ns)
         return prop
@@ -643,9 +643,9 @@ class EventDescriptor(SpliceDescriptor):
         <EventDescriptor eventIdentifier="44" eventState="start"
         eventType="opportunity" elapsed="0" remain="1500000">
         """
-        attrs = {'eventIdentifier': self.event_identifier,
-                     'eventState':self.event_state_message,
-                    'eventType':self.event_type_message,
+        attrs = {'event_identifier': self.event_identifier,
+                     'event_state':self.event_state_message,
+                    'event_type':self.event_type_message,
                     'elapsed': self.elapsed,
                    'remain': self.remain,}
 
