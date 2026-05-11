@@ -554,7 +554,10 @@ class Property(SCTE35Base):
         attrs={"property_name":  self.property_name,
                    "property_data_type":self.property_data_type_name ,
         }
-        prop= Node('Property',self.property_value,attrs , ns=ns)
+        p_value=self.property_value
+        if isinstance(self.property_value,(bytes,)):
+            p_value=self.property_value.decode()    
+        prop= Node('Property',p_value,attrs , ns=ns)
         return prop
 
 
@@ -646,8 +649,8 @@ class EventDescriptor(SpliceDescriptor):
         attrs = {'event_identifier': self.event_identifier,
                      'event_state':self.event_state_message,
                     'event_type':self.event_type_message,
-                    'elapsed': self.elapsed,
-                   'remain': self.remain,}
+                    'elapsed': int(self.elapsed *10000),
+                   'remain': int(self.remain*10000),}
 
         ed = Node('EventDescriptor',attrs=attrs,ns=ns)
         for prop in self.properties:
