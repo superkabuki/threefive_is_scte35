@@ -67,12 +67,18 @@ threefive video.ts 2>&1 | sed  -n '/^\#/!p' -
 * When I did the same test for threefive v3.0.83, pypy3 was 4.1 seconds, python3.11 was 10 seconds, and python3.14 was over 14 secs
 
 
+## [ Try these in your browser ]	
+####  Parse SCTE-35 in MPEGTS over HTTP, in your browser with[ Go, Wasm and Super Karate Death Car](https://bigcorp.ltd/gowasm)
+
+#### Parse, edit, and convert SCTE-35 Cues in your browser with [fastcgi, python3, threefive, and nstuff](https://iodisco.com/scte35)  
+
+####  Parse SCTE-35 in MPEGTS over HTTP, in your browser with[ threefive.js,javascript, and a little sed](https://bigcorp.ltd/bread) just to keep things interesting.
+
+#### Decode SCTE-35 data via Http request in a browser, with curl, or whatever with [Sassy](https://github.com/superkabuki/threefive_is_scte35/blob/main/sassy.md) , SCTE-35 as a Service. 
+
 ___
 
 
-## [ Try these ]	
-####  Parse SCTE-35 in MPEGTS over HTTP, in your browser with[ Go, Wasm and Super Karate Death Car](https://bigcorp.ltd/gowasm)
-####  [threefive.js](https://github.com/keithah/threefive.js) _threefive in typescript. Keith is a friend of mine. This is good stuff_ 
 
 ___
 #  [__[ Examples ]__](https://github.com/superkabuki/threefive/tree/main/examples)
