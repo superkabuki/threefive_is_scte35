@@ -210,10 +210,11 @@ cue.show()
 * [aac_id3header.py](aac_id3header.py) - use the __threefive.aac.AacParser__ class to parse __HLS AAC__ segments for __PTS__ in __ID3 header tags__. _(__Updated__ 01/07/2026)_
 * [id3.aac](id3.aac) test file for __aac_id3header.py__   _(__New!__ 01/12/2026)_
 * [base64toxmlbin.py](base64toxmlbin.py) - __convert__ __base64__ encoded __SCTE-35__ to __xml+binary__ encoded SCTE-35 and back.
-* [cue2vtt.py](cue2vtt.py) - display __SCTE-35__ data on video using __WebVTT__ subtitles to __verify__ __SCTE-35__ __splice points__.
+* [cue2vtt.py](cue2vtt.py) - display __SCTE-35__ in  __WebVTT__ subtitles to __verify__ __SCTE-35__ __splice points__.
 * [decodenext.py](decodenext.py) - parse __MPEGTS__ streams for __SCTE-35__ using __Stream.decode_next()__.  _(__Updated__ 01/12/2026)_
 * [dtmf.py](dtmf.py) - parse __base64__ __SCTE-35__ with a __DTMF__ descriptor and __re-encode__ to __SCTE-35__ in __Hex__ format.
 * [edit_break_duration.py](edit_break_duration.py) - change the __SCTE-35__ __break duration__ and __re-encode__ __SCTE-35__.
+* [event_descriptors.py](event_descriptors.py) - The __Event Descriptor__ examples from the __2026 SCTE-35 part 2 specification__. _(__New!__ 05/10/2026)_
 * [encode_time_signal.py](encode_time_signal.py) - __encode__ a __SCTE-35__ __Cue__ with a __TimeSignal__ from scratch.
 * [parsehlstags.py](parsehlstags.py) - use the __TagParser__ class to parse __HLS tags__ from a __m3u8__ file and group the tags by segment.
 * [proxy.py](proxy.py) - how to use the __Stream.proxy()__ method for parsing __SCTE-35__ and __piping__ video.
