@@ -42,7 +42,7 @@ ___
 ___      
 
 ### If you parse the output from the threefive cli....
-* Comments, even printed comments, that are not the output start with an octothorpe '#' and can be stripped, if needed, with sed 
+* Comments, errors, and warnings, even printed comments, errors, and warnings, that are not the output, start with an octothorpe '#' and can be stripped, if needed, with sed. 
 ```sed
 threefive video.ts 2>&1 | sed  -n '/^\#/!p' -  
 ```
