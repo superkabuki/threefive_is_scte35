@@ -8,7 +8,6 @@
 
 
 
-
 ### threefive is the industry leading SCTE-35 tool. 
 #### Need to inject SCTE-35 into HLS?  [X9k3.](https://github.com/superkabuki/x9k3) 
 
@@ -42,6 +41,11 @@ ___
      	* __gums__ _(the Grande Unified unicast and Multicast Server)_
 ___      
 
+### If you parse the output from the threefive cli....
+* Comments, even printed comments, that are not the output start with an octothorpe '#' and can be stripped, if needed, with sed 
+```sed
+threefive video.ts 2>&1 | sed  -n '/^\#/!p' -  
+```
 
 ### [ Speed Test ]  
 #### pypy3 vs. python3.11 vs. python3.14 running threefive 3.0.0x840c (_pre-release_) 
