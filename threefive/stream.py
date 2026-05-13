@@ -390,6 +390,7 @@ class Stream(Based):
         duration=self.as_hms(tail - head)
         return duration
 
+
     def decode(self, func=show_cue):
         """
         Stream.decode reads self.tsdata to find SCTE35 packets.
