@@ -24,7 +24,7 @@ ___
 * __threefive now supports__ [__Secure Reliable Transport__](https://github.com/superkabuki/threefive_is_scte35/blob/main/README.md#threefive-now-supports-srt)  (watch the cool video)
 ___
 
-## [ Latest version is  v3.0.85 ]
+## [ Latest version is  v3.0.87 ]
 
 *  threefive cyclomatic complexity score is 1.9337094499294782 _( that's better than the Python standard library)_ .
 * __threefive now has NO External Dependencies__
