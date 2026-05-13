@@ -1,6 +1,7 @@
 # [ threefive ]
 
 ## https://github.com/superkabuki/threefive
+### threefive is the industry leading SCTE-35 tool. 
 
 * In case you were wondering ....
   
@@ -8,7 +9,6 @@
 
 
 
-### threefive is the industry leading SCTE-35 tool. 
 #### Need to inject SCTE-35 into HLS?  [X9k3.](https://github.com/superkabuki/x9k3) 
 
 *   __Decodes SCTE-35__ from `MPEGTS`✔ `Base64`✔ `Bytes`✔ `DASH`✔ `Hex` ✔ `HLS`✔ `Integers`✔ `JSON`✔ `XML`✔ `XML+Binary`✔
@@ -24,7 +24,7 @@ ___
 * __threefive now supports__ [__Secure Reliable Transport__](https://github.com/superkabuki/threefive_is_scte35/blob/main/README.md#threefive-now-supports-srt)  (watch the cool video)
 ___
 
-## [ Latest version is  v3.0.83 ]
+## [ Latest version is  v3.0.85 ]
 
 *  threefive cyclomatic complexity score is 1.9337094499294782 _( that's better than the Python standard library)_ .
 * __threefive now has NO External Dependencies__
@@ -75,10 +75,6 @@ threefive video.ts 2>&1 | sed  -n '/^\#/!p' -
 ####  Parse SCTE-35 in MPEGTS over HTTP, in your browser with[ threefive.js,javascript, and a little sed](https://bigcorp.ltd/bread) just to keep things interesting.
 
 #### Decode SCTE-35 data via Http request in a browser, with curl, or whatever with [Sassy](https://github.com/superkabuki/threefive_is_scte35/blob/main/sassy.md) , SCTE-35 as a Service. 
-
-___
-
-
 
 ___
 #  [__[ Examples ]__](https://github.com/superkabuki/threefive/tree/main/examples)
