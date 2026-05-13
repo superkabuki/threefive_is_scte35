@@ -153,6 +153,7 @@ def print_version():
     print_version print the threefive version
     """
     print2(version)
+    done()
 
 
 print_map = {
