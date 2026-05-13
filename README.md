@@ -315,17 +315,6 @@ ___
 * [Encode SCTE-35](https://github.com/superkabuki/threefive/blob/main/encode.md) Some encoding code examples. 
 ___
 
-
-## __Python3 vs Pypy3 running threefive__
-
-* __( You have to unmute the audio )__
-
-https://github.com/user-attachments/assets/9e88fb38-6ad0-487a-a801-90faba9d72c6
-
-
-
-___
-
 # Using the library
 * Let me show you how easy threefive is to use.
 
@@ -698,13 +687,6 @@ ___
 
 ## [iodisco.com/scte35](https://iodisco.com/scte35)
 
-
-
-
-
- <svg width="100" height="100">
-  <circle cx="50" cy="50" r="40" stroke="green" stroke-width="4" fill="yellow" />
-</svg> 
 
  <img width="258" height="256" alt="image" src="https://github.com/user-attachments/assets/642cb803-9465-408e-bb6e-03549eb22d78" />
 
