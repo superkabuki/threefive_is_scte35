@@ -500,6 +500,11 @@ class Property(SCTE35Base):
         "0x01": "decimal",
         "0x02": "text",
     }
+    zero=['umid','airingId','eidr','atscCId','mpu','uuid',]
+    one=['archiveAllowed','contentRestrictions', 'spotReplacement',
+         'contentIdentifiction',]
+    two=['adld','isan','tmsid','adi','callsign','franchise','owner',
+         'sequence','adsInfo','SCR','dtmf',]
 
     def __init__(self,bites=None ):
         self.bites=bites
@@ -651,7 +656,6 @@ class EventDescriptor(SpliceDescriptor):
                     'event_type':self.event_type_message,
                     'elapsed': int(self.elapsed *10000),
                    'remain': int(self.remain*10000),}
-
         ed = Node('EventDescriptor',attrs=attrs,ns=ns)
         for prop in self.properties:
             ed.addchild(prop.xml())
