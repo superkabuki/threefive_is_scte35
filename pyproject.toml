@@ -1,7 +1,7 @@
 
 [project]
 name = "threefive"
-version = "3.0.83"
+version = "3.0.85"
 authors = [
   { name="AdrianofDoom", email="spam@iodisco.com" },
 ]
@@ -12,8 +12,6 @@ dependencies=[
 
     ]
 
-
-
 classifiers = [
         "Environment :: Console",
         "Operating System :: OS Independent",
@@ -22,6 +20,7 @@ classifiers = [
         "Programming Language :: Python :: Implementation :: PyPy",
         "Programming Language :: Python :: Implementation :: CPython",
 ]
+
 license = "Sleepycat"
 license-files = ["LICEN[CS]E*"]
 
