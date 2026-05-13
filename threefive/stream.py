@@ -104,7 +104,7 @@ class MPStream:
             for chunk in iter(partial(r.read, CHUNKSIZE), b""):
                 yield chunk
 
-    def run(self):
+    def  decode(self,func=show_cue):
         """
         run create pool and parse mpegts stream
         """
@@ -112,7 +112,7 @@ class MPStream:
             POOLSIZE,
         ) as pool:
             results = pool.imap(self.chunk_parser, self.chunker(), chunksize=10)
-            _ = [cue.show() for cues in results for cue in cues]
+            _ = [func(cue) for cues in results for cue in cues]
 
 
 class ProgramInfo(Based):
@@ -398,7 +398,7 @@ class Stream(Based):
         """
         if "PyPy" not in sys.version:
             mps = MPStream(self.tsfile)
-            mps.run()
+            mps.decode(func=func)
             return False
         num_pkts = 1400
         for pkt in self.iter_pkts(num_pkts=num_pkts):
