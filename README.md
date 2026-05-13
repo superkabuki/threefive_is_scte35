@@ -2,6 +2,7 @@
 
 ## https://github.com/superkabuki/threefive
 ### threefive is the industry leading SCTE-35 tool. 
+_threefive has been pip __installed 1,173,383 times__ according to pypi.org_  
 
 *   __Decodes SCTE-35__ from `MPEGTS`✔ `Base64`✔ `Bytes`✔ `DASH`✔ `Hex` ✔ `HLS`✔ `Integers`✔ `JSON`✔ `XML`✔ `XML+Binary`✔
   
