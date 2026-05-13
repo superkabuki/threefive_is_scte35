@@ -64,7 +64,8 @@ class Based:
 
 
 """
-mps.py -  testing multiprocess performance of threefive on python 3.11 and 3.14
+mps.py - improve performance of threefive on python 3.11 and 3.14
+via multiprocessing. pypy3 is faster in a single process.
 """
 class MPStream:
     def __init__(self, filepath):
