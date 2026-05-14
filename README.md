@@ -1,7 +1,7 @@
 # [ threefive ]
-
 ## https://github.com/superkabuki/threefive
-### threefive is the industry leading SCTE-35 tool. 
+
+## threefive is the only tool that supports SCTE-35-1 and SCTE-35-2 
 
 *   __Decodes SCTE-35__ from `MPEGTS`✔ `Base64`✔ `Bytes`✔ `DASH`✔ `Hex` ✔ `HLS`✔ `Integers`✔ `JSON`✔ `XML`✔ `XML+Binary`✔
   
