@@ -3,29 +3,18 @@
 
 ## threefive is the only tool that supports SCTE-35-1 and SCTE-35-2 
 
-*   __Decodes SCTE-35__ from `MPEGTS`✔ `Base64`✔ `Bytes`✔ `DASH`✔ `Hex` ✔ `HLS`✔ `Integers`✔ `JSON`✔ `XML`✔ `XML+Binary`✔
-  
+*   __Decodes SCTE-35__ from `MPEGTS`✔ `Base64`✔ `Bytes`✔ `DASH`✔ `Hex` ✔ `HLS`✔ `Integers`✔ `JSON`✔ `XML`✔ `XML+Binary`✔  
 *   __Encodes SCTE-35__ to `MPEGTS`✔ `Base64`✔ `Bytes`✔ `Hex`✔ `Integers`✔ `JSON`✔ `XML`✔ `XML+Binary`✔
 ___
 
 ## [ News ]
-* __threefive.Stream.decode()__ now does __interpreter detection__ and uses __multiprocessing__ for __python3.11__ and __python3.14__ for a __serious speedup__.
-* __Event Descriptors__ and __Property__ types from __the recently published 2026 SCTE-35 Specification part 2__ have been added.   
-* __threefive now supports__ [__Secure Reliable Transport__](https://github.com/superkabuki/threefive_is_scte35/blob/main/README.md#threefive-now-supports-srt)  (watch the cool video)
+
+* threefive now has support for SCTE-35-2. __Event Descriptors__ and __Property__ types from __the recently published 2026 SCTE-35 Specification can be decoded, modified, and encoded with threefive.   
 ___
 
 ## [ Latest version is  v3.0.87 ]
-* __New__ the threefive cli tool has spun off several new cli tools. I had to split the cli up, the help was just way too long. 
-	* In addition to the __threefive__ cli you also get: 
-		* __scte35bump__  _adjust scte-35 pts in mpegts streams_ 
- 		* __scte35fix__   _change bin data streams back to scte-35_
-  		* __scte35hls__  _parse scte-35 from hls tags and segments_
-    	* __scte35inject__ _inject scte-35 packets into mpegts streams_
-     	* __gums__ _(the Grande Unified unicast and Multicast Server)_
-___      
-
-#  [__[ Examples ]__](https://github.com/superkabuki/threefive/tree/main/examples)
-
+___
+##  [ Examples ]
 * [aac_id3header.py](aac_id3header.py) - use the __threefive.aac.AacParser__ class to parse __HLS AAC__ segments for __PTS__ in __ID3 header tags__. _(__Updated__ 01/07/2026)_
 * [id3.aac](id3.aac) test file for __aac_id3header.py__   _(__New!__ 01/12/2026)_
 * [base64toxmlbin.py](base64toxmlbin.py) - __convert__ __base64__ encoded __SCTE-35__ to __xml+binary__ encoded SCTE-35 and back.
@@ -41,9 +30,7 @@ ___
 * [spliceinsert.py](spliceinsert.py) - a __SCTE-35__ __Splice Insert__ example.  
 * [upid_custom_output.py](upid_custom_output.py) - __customizing Upid data output__ for a variety of __Upids__. _(__New!__ 01/11/2026)_
 * [custom_upid_handling.py](custom_upid_handling.py) -  Custom __user defined UPID__ handling example. _(__New!__ 01/11/2026)_
-
-
-
+___
 # [ Documentation ]
 #### Need to inject SCTE-35 into HLS?  [X9k3.](https://github.com/superkabuki/x9k3) 
 * __use threefive on the web__
@@ -66,7 +53,6 @@ ___
  	* * [threefive __Classes__](#classes) _threefive is OO, made to subclass_
 		* [__Cue__ Class](https://github.com/superkabuki/threefive/blob/main/cue.md) _this class you'll use often_ 
 		* [__Stream__ Class](https://github.com/superkabuki/threefive/blob/main/stream.md) _this is the class for parsing MPEGTS_
-
 * [SCTE-35 __Sidecar Files__](https://github.com/superkabuki/SCTE-35_Sidecar_Files) _threefive supports SCTE-35 sidecar files_
 * [SCTE-35 __HLS__](https://github.com/superkabuki/threefive/blob/main/hls.md) _parse SCTE-35 in HLS__
 * [SCTE-35 __XML__ ](https://github.com/superkabuki/SCTE-35/blob/main/xml.md) and [More __XML__](node.md) _threefive can parse and encode SCTE-35 xml_
@@ -116,14 +102,218 @@ make install py3=python3.14
 
 ___
 
-
 ## [Quick Start] 
+<i>These examples show how to parse SCTE-35<BR> 
+from various SCTE-35 data formats, with both the cli and with the library.</i> 
+ <details><summary>MPEGTS</summary>
+ 
+* MPEGTS streams can be  Files, Http(s), Multicast,SRT, UDP Unicast, or  stdin. 
+* __cli__
 
-## [CLI]
+```js
+threefive https://example.com/video.ts
+```
+* wildcards work too.
+```js
+threefive /mpegts/*.ts
+```
+
+* __lib__
+```py3
+
+from threefive import Stream
+stream = Stream('https://example.com/video.ts')
+stream.decode()
+
+```
+</details>
+<details><summary>Base64</summary>
+
+* __cli__
+```js
+threefive '/DAsAAAAAyiYAP/wCgUAAAABf1+ZmQEBABECD0NVRUkAAAAAf4ABADUAAC2XQZU='
+```
+* __lib__
+```py3
+
+from threefive import Cue
+data = '/DAsAAAAAyiYAP/wCgUAAAABf1+ZmQEBABECD0NVRUkAAAAAf4ABADUAAC2XQZU='
+cue=Cue(data)
+cue.show()
+```
+
+</details>
+
+
+<details><summary>Bytes</summary>
+
+* __cli__
+	* Bytes don't work on the cli
+
+* __lib__
+```py3
+
+from threefive import Cue
+data =  b'\xfc0\x16\x00\x00\x00\x00\x00\x00\x00\xff\xf0\x05\x06\xfe\x00\xc0D\xa0\x00\x00\x00\xb5k\x88'
+cue=Cue(data)
+cue.show()
+```
+
+</details>
+
+<details><summary>Hex</summary>
+
+* Can be a hex literal or hex string or bytes.
+
+* __cli__
+```js
+threefive  0xfc301600000000000000fff00506fed605225b0000b0b65f3b
+```
+* __lib__
+```py3
+
+from threefive import Cue
+data =  0xfc301600000000000000fff00506fed605225b0000b0b65f3b
+cue=Cue(data)
+cue.show()
+```
+
+</details>
+
+
+<details><summary>Int</summary>
+
+* Can be a literal integer or string or bytes.
+
+* __cli__
+```js
+threefive  1583008701074197245727019716796221243043855984942057168199483
+```
+* __lib__
+```py3
+
+from threefive import Cue
+data =  1583008701074197245727019716796221243043855984942057168199483
+cue=Cue(data)
+cue.show()
+```
+
+
+</details>
+
+
+<details><summary>JSON</summary>
+
+* __cli__
+	* 	put JSON SCTE-35 in a file and redirect it into threefive
+    *   cat files to threefive works too.
+    *   echo JSON or type JSON on the command line.
+   
+```js
+threefive  < json.json
+```
+* __lib__
+
+```py3
+
+ from threefive import Cue
+ data = '''{
+    "info_section": {
+        "table_id": "0xfc",
+        "section_syntax_indicator": false,
+        "private": false,
+        "sap_type": "0x03",
+        "sap_details": "No Sap Type",
+        "section_length": 22,
+        "protocol_version": 0,
+        "encrypted_packet": false,
+        "encryption_algorithm": 0,
+        "pts_adjustment": 0.0,
+        "cw_index": "0x00",
+        "tier": "0x0fff",
+        "splice_command_length": 5,
+        "splice_command_type": 6,
+        "descriptor_loop_length": 0,
+        "crc": "0xb56b88"
+    },
+    "command": {
+        "command_length": 5,
+        "command_type": 6,
+        "name": "Time Signal",
+        "time_specified_flag": true,
+        "pts_time": 140.005333
+    },
+    "descriptors": []
+}
+'''
+cue=Cue(data)
+cue.show()
+```
+
+</details>
+
+
+<details><summary><u>Xml</u></summary>
+
+* __cli__
+	* put xml SCTE-35 in a [file](xml.xml) and redirect it into threefive
+    * cat files to threefive works too.
+    * echo xml or type xml on the command line.
+     
+	```js
+	threefive < xml.xml
+	```
+* __lib__
+```py3
+from threefive import Cue
+data =  '''
+<scte35:SpliceInfoSection xmlns:scte35="https://scte.org/schemas/35" 
+        ptsAdjustment="0" protocolVersion="0" sapType="3" tier="4095">
+   <scte35:TimeSignal>
+      <scte35:SpliceTime ptsTime="12600480"/>
+   </scte35:TimeSignal>
+</scte35:SpliceInfoSection>
+'''
+cue=Cue(data)
+
+cue.show()
+```
+
+
+</details>
+
+
+
+<details><summary>Xml+binary</summary>
+
+* __cli__
+	* write xml+binary to a [file](xmlbin.xml) and redirect it to threefive
+    * cat files to threefive works too.
+    * echo xml+binary or type xml+binary on the command line.
+```js
+threefive < xmlbin.xml
+```
+* __lib__
+```py3
+
+from threefive import Cue
+data = '''<scte35:Signal xmlns:scte35="https://scte.org/schemas/35">
+    <scte35:Binary>/DAWAAAAAAAAAP/wBQb+AMBEoAAAALVriA==</scte35:Binary>
+</scte35:Signal>
+'''
+cue=Cue(data)
+cue.show()
+```
+
+</details>
+
+</samp>
+
+### [CLI]
 The threefive cli tool is able to parse SCTE-35 from MPEGTS Streams,Base64,Hex,Integers,JSON XML,and XMLBinary.
 The format is auto-detected.
 
-## [ Parse SCTE-35 from MPEGTS ]
+#### [ Parse SCTE-35 from MPEGTS ]
 SCTE-35 can be parsed from MPEGTS over a variety of protocols.
 * __SCTE-35 Input__: MPEGTS
 *  __Protocols__: pipes, files, stdin, http(s), multicast,SRT and UDP.
@@ -139,7 +329,7 @@ SCTE-35 can be parsed from MPEGTS over a variety of protocols.
 |__.__|Pipe|__xml__| cat video.ts \| __threefive__  __xml__                           |
 |__.__|stdin|__xml+bin__| __threefive__  __xmlbin__ < video.ts|
 ___
-## [ Parse SCTE-35 Cues ]
+#### [ Parse SCTE-35 Cues ]
 
   *  The __default output__ is JSON
   *  __SCTE-35 Inputs:__  base64, hex, int, JSON,int,xml,and xmlbin.
@@ -168,7 +358,7 @@ ___
 |__xmlbin__|__int__    | __threefive__   < xmlbin.xml __int__                        |
 
 ---
-## [__Additional functionality__]
+#### [__Additional functionality__]
 * threefive has several additional features, mostly related to MPEGTS streams.
 * threefive has built in help, just type `threefive help`
 * This table shows how to use them.
@@ -187,9 +377,9 @@ ___
 |                                          |                                                         |
 ---
 
-## Other tools
+### Other tools
 threefive also comes with: 
-### scte35bump 
+#### scte35bump 
 
 * bump adjusts SCTE-35 PTS in an MPEGTS stream
 
@@ -211,7 +401,7 @@ scte35bump is part of threefive.
 
 ---
 
-### gums
+#### gums
 *  the Grande Udp Multicast Server
 
 ```js
@@ -230,7 +420,7 @@ options:
 
 gums is part of threefive.
 ```
-### scte35hls
+#### scte35hls
 
 * parse HLS for SCTE-35. Supports all HLS SCTE-35 tags.
 
@@ -261,7 +451,7 @@ $ scte35hls -h
             * mpeg2, aac, ac3, mp3
 ```
 
-### __scte35fix__
+#### __scte35fix__
 * when ffmpeg changes a SCTE-35 stream to bin data stream, scte35fix changes it back. 
 
 ```js
@@ -285,14 +475,14 @@ $ scte35fix -h
 scte35fix is part of threefive.
 ```
 
-## [XML]
+### [XML]
 * [XML](https://github.com/superkabuki/SCTE-35/blob/main/xml.md) __New__! _updated 05/01/2025_
 
-## [HLS]
+### [HLS]
 * [Advanced Parsing of SCTE-35 in HLS with threefive](https://github.com/superkabuki/threefive/blob/main/hls.md) All HLS SCTE-35 tags, Sidecar Files, AAC ID3 Header Timestamps, SCTE-35 filters... Who loves you baby?
-##  [SCTE-35 As a Service]
+###  [SCTE-35 As a Service]
 * Decode SCTE-35 without installing anything. If you can make an https request, you can use [__Sassy__](sassy.md) to decode SCTE-35. . 
-##  [Classes]
+###  [Classes]
 * The python built in help is always the most up to date docs for the library.
 
 ```py3
@@ -326,8 +516,6 @@ https://github.com/user-attachments/assets/a323ea90-867f-480f-a55f-e9339263e511
 ___
 
 ## [more]
-
-* [Online SCTE-35 Parser](https://iodisco.com/scte35)  Supporte Base64, Bytes,Hex,Int, Json, Xml, and Xml+binary.
 
 * [Encode SCTE-35](https://github.com/superkabuki/threefive/blob/main/encode.md) Some encoding code examples. 
 ___
@@ -567,147 +755,6 @@ Type "help", "copyright", "credits" or "license" for more information.
    <scte35:AvailDescriptor providerAvailId="16"/>
 </scte35:SpliceInfoSection>
 ```
-
-
-## [ The Cli tool ]
-
-#### The cli tool installs automatically with pip or the Makefile.
-
-* [__SCTE-35 Inputs__](#inputs)
-* [__SCTE-35 Outputs__](#outputs)
-* [Parse __MPEGTS__ streams for __SCTE-35__](#streams)
-* [Display __MPEGTS__ __iframes__](#iframes)
-* [Display raw __SCTE-35 packets__ from __video streams__](#packets)
-
-#### `Inputs`
-
-* Most __inputs__ are __auto-detected.__ 
-* __stdin__ is __auto selected__ and __auto detected.__
-* __SCTE-35 data is printed to stderr__
-* __stdout is used when piping video__
-* mpegts can be specified by file name or URI.
-```rebol
-threefive udp://@235.2.5.35:3535
-```
-* If a file comtains a SCTE-35 cue as a string( base64,hex,int,json,or xml+bin), redirect the file contents.
-```rebol
-
-  threefive < json.json  
-
- ```
-
-* quoted strings(( base64,hex,int,json or xml+bin), can be passed directly on the command line as well.
-
-```awk
-
-threefive '/DAWAAAAAAAAAP/wBQb+ztd7owAAdIbbmw=='
-
-```
-
-
-| Input Type |     Cli Example                                                                                             |
-|------------|-------------------------------------------------------------------------------------------------------------|
-| __Base64__     |  `threefive '/DAsAAAAAyiYAP/wCgUAAAABf1+ZmQEBABECD0NVRUkAAAAAf4ABADUAAC2XQZU='`
-| __Hex__        |`threefive 0xfc301600000000000000fff00506fed605225b0000b0b65f3b`|
-| __HLS__         |`threefive hls https://example.com/master.m3u8`                                                             |
-| __JSON__        |`threefive < json.json`  |
-| __Xmlbin__      | `js threefive < xmlbin.xml`                                                                                 |
-
-# `Streams`
-
-|Protocol       |  Cli Example                                                                                                                                       |
-|---------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
-|  __File__         |   `threefive video.ts`                                                                                                                            |
-|  __Http(s)__      |   `threefive https://example.com/video.ts`                                                                                                        |
-|  __Stdin__        |  `threefive < video.ts`            |
-|  __UDP Multicast__|  `threefive udp://@235.35.3.5:9999`                                                                          |
-|  __UDP Unicast__  |                                                                      `threefive udp://10.0.0.7:5555`                                              |
-
-
-#### Outputs
-* output type is determined by the key words __base64, bytes, hex, int, json, and xmlbin__.
-* __json is the default__.
-* __Any input  can be returned as any output__
-  * examples __Base64 to Hex__ etc...) 
-
-
-| Output Type | Cli Example         |
-|-------------|----------------------------------------------------------|
-|__Base 64__     |                                                                                                                                                                    `threefive 0xfc301600000000000000fff00506fed605225b0000b0b65f3b  base64  `                                                                                                                                                                                                                                                                                                                                         |
-| __Bytes__       |                                                                                 `threefive 0xfc301600000000000000fff00506fed605225b0000b0b65f3b  bytes`                                                                                                                                                                                                                                                                                                                                                                                                                               |
-| __Hex__         | `threefive '/DAsAAAAAyiYAP/wCgUAAAABf1+ZmQEBABECD0NVRUkAAAAAf4ABADUAAC2XQZU='  hex`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
-| __Integer__     |                                                                                                                                                                                                                                                       `threefive '/DAsAAAAAyiYAP/wCgUAAAABf1+ZmQEBABECD0NVRUkAAAAAf4ABADUAAC2XQZU='  int`   |
-| __JSON__        |                                                                                                                                                                                                                                                                                                              `threefive 0xfc301600000000000000fff00506fed605225b0000b0b65f3b json ` |
-| __Xml+bin__     |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        `threefive 0xfc301600000000000000fff00506fed605225b0000b0b65f3b xmlbin   `      |`
-___
-#### `Iframes`
-* Show iframes PTS in an MPEGTS video
-
-```smalltalk
-threefive iframes https://example.com/video.ts
-```
-___
-
-#### `packets`   
-* Print raw SCTE-35 packets from multicast mpegts video
-
-```smalltalk
-threefive packets udp://@235.35.3.5:3535
-```
-___
-#### `proxy`   
-* Parse a https stream and write raw video to stdout
-
-```smalltalk
-threefive proxy video.ts
-```
-___
-#### `pts`    
-* Print PTS from mpegts video
-
-```smalltalk
-threefive pts video.ts
-```
-___
-#### `sidecar`  
-* Parse a stream, write pts,write SCTE-35 Cues to sidecar.txt
-
-```smalltalk
-threefive sidecar video.ts
-```
-___
-
-#### `show`  
-
-* Probe mpegts video _( kind of like ffprobe )_
-
-```smalltalk
- threefive show video.ts
-```
-___
-#### `version`     
-* Show version
-
-```smalltalk
- threefive version
-```
-___
-#### `help`        
-* Help
-```rebol
- threefive help
-```
-___
-
-
-
-
-## [iodisco.com/scte35](https://iodisco.com/scte35)
-
-
- <img width="258" height="256" alt="image" src="https://github.com/user-attachments/assets/642cb803-9465-408e-bb6e-03549eb22d78" />
-
-
 ## [ Try these in your browser ]	
 ####  Parse SCTE-35 in MPEGTS over HTTP, in your browser with[ Go, Wasm and Super Karate Death Car](https://bigcorp.ltd/gowasm)
 
@@ -717,9 +764,3 @@ ___
 
 #### Decode SCTE-35 data via Http request in a browser, with curl, or whatever with [Sassy](https://github.com/superkabuki/threefive_is_scte35/blob/main/sassy.md) , SCTE-35 as a Service. 
 
-
-
-
-___
- [__Install__](#install) |[__SCTE-35 Cli__](#the-cli-tool) |  [__Cue__ Class](https://github.com/superkabuki/threefive/blob/main/cue.md) | [__Stream__ Class](https://github.com/superkabuki/threefive/blob/main/stream.md) | [__Online SCTE-35 Parser__](https://iodisco.com/scte35) | [__SCTE-35 Examples__](https://github.com/superkabuki/threefive/tree/main/examples)
- | [__SCTE-35 XML__ ](https://github.com/superkabuki/SCTE-35/blob/main/xml.md) and [More __XML__](node.md) | [__threefive runs Four Times Faster on pypy3__](https://pypy.org/) 
