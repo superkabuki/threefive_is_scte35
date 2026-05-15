@@ -33,10 +33,14 @@ ___
 ___
 # [ Documentation ]
 #### Need to inject SCTE-35 into HLS?  [X9k3.](https://github.com/superkabuki/x9k3) 
-* __use threefive on the web__
-	* [threefive SCTE-35 __Online Parser__](https://iodisco.com/scte35) hosted on my server_
-	* [ SCTE-35 __Online Parser__ powered by threefive](http://www.domus1938.com/scte35parser) _another online parser powered by threefive_
-	* [SCTE-35 __As a Service__](sassy.md) _if you can make an http request, you can parse SCTE-35, no install needed._
+### __use threefive and friends on the web__
+
+* [threefive SCTE-35 __Online Parser__](https://iodisco.com/scte35) __hosted on my server iodisco.com__
+* Parse SCTE-35 in MPEGTS over HTTP, in your browser with[ Go, Wasm and Super Karate Death Car](https://bigcorp.ltd/gowasm) __hosted om my server bigcorp.ltd__
+*  Parse SCTE-35 in MPEGTS over HTTP, in your browser with[ threefive.js,javascript, and a little sed](https://bigcorp.ltd/bread) just to keep things interesting. __hosted om my server bigcorp.ltd__
+* [ SCTE-35 __Online Parser__ powered by threefive](http://www.domus1938.com/scte35parser) _another online parser powered by threefive_ not hosted on my servers.
+* [SCTE-35 __As a Service__](sassy.md) _if you can make an http request, you can parse SCTE-35, no install needed._
+__hosted on my server iodisco.com__
 
 * [__install__](#install)
 * [__quick start__](https://github.com/superkabuki/threefive_is_scte35/blob/main/README.md#quick-start)
@@ -755,12 +759,4 @@ Type "help", "copyright", "credits" or "license" for more information.
    <scte35:AvailDescriptor providerAvailId="16"/>
 </scte35:SpliceInfoSection>
 ```
-## [ Try these in your browser ]	
-####  Parse SCTE-35 in MPEGTS over HTTP, in your browser with[ Go, Wasm and Super Karate Death Car](https://bigcorp.ltd/gowasm)
-
-#### Parse, edit, and convert SCTE-35 Cues in your browser with [fastcgi, python3, threefive, and nstuff](https://iodisco.com/scte35)  
-
-####  Parse SCTE-35 in MPEGTS over HTTP, in your browser with[ threefive.js,javascript, and a little sed](https://bigcorp.ltd/bread) just to keep things interesting.
-
-#### Decode SCTE-35 data via Http request in a browser, with curl, or whatever with [Sassy](https://github.com/superkabuki/threefive_is_scte35/blob/main/sassy.md) , SCTE-35 as a Service. 
 
