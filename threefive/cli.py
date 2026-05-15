@@ -131,6 +131,103 @@ def mk_args(keys):
     return args
 
 
+def base64_out(cue):
+    """
+    print SCTE-35 from mpegts as base64
+    """
+    print2(cue.base64())
+
+
+def bytes_out(cue):
+    """
+    print SCTE-35 from mpegts as base64
+    """
+    print2(cue.bites)
+
+
+def hex_out(cue):
+    """
+    print SCTE-35 from mpegts as hex
+    """
+    print2(cue.hex())
+
+
+def int_out(cue):
+    """
+    print SCTE-35 from mpegts as int
+    """
+    print2(cue.int())
+
+
+def json_out(cue):
+    """
+    print SCTE-35 from mpegts as json
+    """
+    cue.show()
+
+
+def xmlbin_out(cue):
+    """
+    xml_out prints cue as xml+binary
+    """
+    print2(cue.xmlbin())
+
+
+def xml_out(cue):
+    """
+    xml_out prints cue as xml
+    """
+    print2(cue.xml())
+
+
+funk_map = {
+    "base64": base64_out,
+    "bytes": bytes_out,
+    "hex": hex_out,
+    "int": int_out,
+    "json": json_out,
+    "xml": xml_out,
+    "xmlbin": xmlbin_out,
+}
+
+
+def funk():
+    """
+    return a func
+    if a key in out_map
+    is also in sys.argv
+    """
+    func = json_out
+    for k, func in funk_map.items():
+        if k in sys.argv:
+            func = v
+    return func
+
+
+def pull_keyfunk():
+    """
+    pull_keyfunk pull key and func
+    from func_map
+    """
+    key="json"
+    func=json_out
+    for k, f in funk_map.items():
+        if k in sys.argv:
+            key, func=k,f
+    return key, func
+
+def mp_chk():
+    """
+    mp_chk decode mpegts wirh
+    multiprocessing
+    """
+    key,func=pull_keyfunk()
+    if key in sys.argv:
+        sys.argv.remove(key)
+    for this in sys.argv[1:]:
+        st = Stream(this)
+        st.mpdecode(func)
+
 # print_map functions
 
 
@@ -164,6 +261,8 @@ print_map = {
     "-v": print_version,
     "--version": print_version,
     "version": print_version,
+    "mp": mp_chk,
+
 }
 
 
@@ -184,6 +283,7 @@ def chk_print_map():
     #   print_key_in_argv(k, v)
 
 
+
 # functions for mpegts_map
 
 
@@ -194,6 +294,7 @@ def iframe_chk(this):
     """
     iframer = IFramer()
     iframer.do(this)
+
 
 
 def packet_chk(this):
@@ -300,83 +401,6 @@ def chk_mpegts_map():
     args = mk_args(m_keys)
     for key in m_keys:
         mpegts_key_in_argv(args, key)
-
-
-# func_map is used to generate  SCTE-35 output formats
-
-
-def base64_out(cue):
-    """
-    print SCTE-35 from mpegts as base64
-    """
-    print2(cue.base64())
-
-
-def bytes_out(cue):
-    """
-    print SCTE-35 from mpegts as base64
-    """
-    print2(cue.bites)
-
-
-def hex_out(cue):
-    """
-    print SCTE-35 from mpegts as hex
-    """
-    print2(cue.hex())
-
-
-def int_out(cue):
-    """
-    print SCTE-35 from mpegts as int
-    """
-    print2(cue.int())
-
-
-def json_out(cue):
-    """
-    print SCTE-35 from mpegts as json
-    """
-    cue.show()
-
-
-def xmlbin_out(cue):
-    """
-    xml_out prints cue as xml+binary
-    """
-    print2(cue.xmlbin())
-
-
-def xml_out(cue):
-    """
-    xml_out prints cue as xml
-    """
-    print2(cue.xml())
-
-
-funk_map = {
-    "base64": base64_out,
-    "bytes": bytes_out,
-    "hex": hex_out,
-    "int": int_out,
-    "json": json_out,
-    "xml": xml_out,
-    "xmlbin": xmlbin_out,
-}
-
-
-def funk():
-    """
-    return a func
-    if a key in out_map
-    is also in sys.argv
-    """
-    func = json_out
-    for k, v in funk_map.items():
-        if k in sys.argv:
-            func = v
-    return func
-
 
 def try_stream(this):
     """
