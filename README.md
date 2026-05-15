@@ -471,52 +471,7 @@ $ scte35fix -h
 scte35fix is part of threefive.
 ```
 
-### [XML]
-* [XML](https://github.com/superkabuki/SCTE-35/blob/main/xml.md) __New__! _updated 05/01/2025_
-
-### [HLS]
-* [Advanced Parsing of SCTE-35 in HLS with threefive](https://github.com/superkabuki/threefive/blob/main/hls.md) All HLS SCTE-35 tags, Sidecar Files, AAC ID3 Header Timestamps, SCTE-35 filters... Who loves you baby?
-###  [SCTE-35 As a Service]
-* Decode SCTE-35 without installing anything. If you can make an https request, you can use [__Sassy__](sassy.md) to decode SCTE-35. . 
-###  [Classes]
-* The python built in help is always the most up to date docs for the library.
-
-```py3
-
-a@fu:~/build7/threefive$ pypy3
-
->>>> from threefive import Stream
->>>> help(Stream)
-
-```
-
-* [Class Structure](https://github.com/superkabuki/threefive/blob/main/classes.md)
-* [Cue Class](https://github.com/superkabuki/threefive/blob/main/cue.md)  Cue is the main SCTE-35 class to use. 
-* [Stream Class](https://github.com/superkabuki/threefive/blob/main/stream.md)  The Stream class handles MPEGTS SCTE-35 streams local, Http(s), UDP, and Multicast.
-
-___
-
-### [threefive now supports SRT]
-
-* _( You have to unmute the audio )_
-
-https://github.com/user-attachments/assets/a323ea90-867f-480f-a55f-e9339263e511
-
-<BR> 
-
-* [more SRT and threefive info](srt.md)
-
-
-* _checkout [SRTfu](https://github.com/superkabuki/srtfu)_
-
-___
-
-## [more]
-
-* [Encode SCTE-35](https://github.com/superkabuki/threefive/blob/main/encode.md) Some encoding code examples. 
-___
-
-# Using the library
+### [Using the library]
 * Let me show you how easy threefive is to use.
 
 * reading SCTE-35 xml from a file
@@ -751,7 +706,7 @@ Type "help", "copyright", "credits" or "license" for more information.
    <scte35:AvailDescriptor providerAvailId="16"/>
 </scte35:SpliceInfoSection>
 ```
-### web
+### [web]
 
 * [threefive SCTE-35 __Online Parser__](https://iodisco.com/scte35) __hosted on my server iodisco.com__
 * Parse SCTE-35 in MPEGTS over HTTP, in your browser with[ Go, Wasm and Super Karate Death Car](https://bigcorp.ltd/gowasm) __hosted om my server bigcorp.ltd__
@@ -760,3 +715,49 @@ Type "help", "copyright", "credits" or "license" for more information.
 * [SCTE-35 __As a Service__](sassy.md) _if you can make an http request, you can parse SCTE-35, no install needed._
 __hosted on my server iodisco.com__
 
+
+### [XML]
+* [XML](https://github.com/superkabuki/SCTE-35/blob/main/xml.md) __New__! _updated 05/01/2025_
+
+### [HLS]
+* [Advanced Parsing of SCTE-35 in HLS with threefive](https://github.com/superkabuki/threefive/blob/main/hls.md) All HLS SCTE-35 tags, Sidecar Files, AAC ID3 Header Timestamps, SCTE-35 filters... Who loves you baby?
+ 
+###  [Classes]
+* The python built in help is always the most up to date docs for the library.
+
+```py3
+
+a@fu:~/build7/threefive$ pypy3
+
+>>>> from threefive import Stream
+>>>> help(Stream)
+
+```
+
+* [Class Structure](https://github.com/superkabuki/threefive/blob/main/classes.md)
+* [Cue Class](https://github.com/superkabuki/threefive/blob/main/cue.md)  Cue is the main SCTE-35 class to use. 
+* [Stream Class](https://github.com/superkabuki/threefive/blob/main/stream.md)  The Stream class handles MPEGTS SCTE-35 streams local, Http(s), UDP, and Multicast.
+
+___
+
+
+
+### [threefive now supports SRT]
+
+* _( You have to unmute the audio )_
+
+https://github.com/user-attachments/assets/a323ea90-867f-480f-a55f-e9339263e511
+
+<BR> 
+
+* [more SRT and threefive info](srt.md)
+
+
+* _checkout [SRTfu](https://github.com/superkabuki/srtfu)_
+
+___
+
+### [more]
+
+* [Encode SCTE-35](https://github.com/superkabuki/threefive/blob/main/encode.md) Some encoding code examples. 
+___
