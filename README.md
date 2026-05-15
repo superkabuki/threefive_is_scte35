@@ -51,7 +51,8 @@ ___
 	* [ SCTE-35 __Online Parser__ powered by threefive](http://www.domus1938.com/scte35parser) _another online parser powered by threefive_
 	* [SCTE-35 __As a Service__](sassy.md) _if you can make an http request, you can parse SCTE-35, no install needed._
 
-* [__install__](#install) 
+* [__install__](#install)
+* [__quick start__](https://github.com/superkabuki/threefive_is_scte35/blob/main/README.md#quick-start)
 * __command line tools__
 	* [ __threefive__](#cli) _decode SCTE-35 on the command line_
   	* [__scte35bump__](#scte35bump) _adjust SCTE-35 PTS in MPEGTS streams_ 
