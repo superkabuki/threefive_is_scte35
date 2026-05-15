@@ -103,11 +103,38 @@ ___
 
 ## [Quick Start] 
 ## [CLI]
-* The default action is to read a SCTE-35 input and write a SCTE-35 output.
----
+The threefive cli tool is able to parse SCTE-35 from MPEGTS Streams,Base64,Hex,Integers,JSON XML,and XMLBinary.
+The format is auto-detected.To decode SCTE-35 from any of the above:
+```sh
+threefive <input>
+```
+
+* example:
+
+```sh
+threefive video.ts
+```
+* another example:
+```sh
+threefive 0xfc301600000000000000fff00506fe00ddea0a0000044aefe0
+```
+* The default output format is JSON.
+* threefive can also output SCTE-35 as base64, bytes, hex, int, xml, and xmlbin.
+* To specify a SCTE-35 output format:
+```sh
+threefive <input> <output>
+```
+* example:
+```sh
+threefive '/DAWAAAAAAAAAP/wBQb+AJSZLAAAmTu+rg==' xml
+```
+* another example:
+```sh
+threefive https://iodisco.com/longb2.ts base64
+```
 
 ## [ Parse SCTE-35 from MPEGTS ]
-  
+SCTE-35 can be parsed from MPEGTS over a variety of protocols.
 * __SCTE-35 Input__: MPEGTS
 *  __Protocols__: pipes, files, stdin, http(s), multicast,SRT and UDP.
 * __SCTE-35 Output__: JSON _(default)_ base64, bytes, hex, int, xml, and xmlbin.
