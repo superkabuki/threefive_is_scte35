@@ -305,6 +305,8 @@ cue.show()
 
 </samp>
 
+##### [^](#-documentation-)
+
 ### [CLI]
 The threefive cli tool is able to parse SCTE-35 from MPEGTS Streams,Base64,Hex,Integers,JSON XML,and XMLBinary.
 The format is auto-detected.
