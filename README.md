@@ -31,6 +31,8 @@ ___
 * [upid_custom_output.py](upid_custom_output.py) - __customizing Upid data output__ for a variety of __Upids__. _(__New!__ 01/11/2026)_
 * [custom_upid_handling.py](custom_upid_handling.py) -  Custom __user defined UPID__ handling example. _(__New!__ 01/11/2026)_
 ___
+
+
 # [ Documentation ]
 #### Need to inject SCTE-35 into HLS?  [X9k3.](https://github.com/superkabuki/x9k3)
 * [__web based SCTE-35 tools__](#web) - threefive and friends over http. 
@@ -95,8 +97,10 @@ make install py3=python3.14
 # works for any python in your path or use a full path if needed.
 
 ```
-
+# [⇧](#-documentation-)
 ___
+
+# [⇧](#-documentation-)
 
 ## [Quick Start] 
 <i>These examples show how to parse SCTE-35<BR> 
@@ -305,11 +309,15 @@ cue.show()
 
 </samp>
 
-##### [^](#-documentation-)
+___
+
+# [⇧](#-documentation-)
 
 ### [CLI]
 The threefive cli tool is able to parse SCTE-35 from MPEGTS Streams,Base64,Hex,Integers,JSON XML,and XMLBinary.
 The format is auto-detected.
+
+# [⇧](#-documentation-)
 
 #### [ Parse SCTE-35 from MPEGTS ]
 SCTE-35 can be parsed from MPEGTS over a variety of protocols.
@@ -326,7 +334,11 @@ SCTE-35 can be parsed from MPEGTS over a variety of protocols.
 |__.__|UDP|__int__ | __threefive__ udp://10.10.10.10:1011  __int__      |
 |__.__|Pipe|__xml__| cat video.ts \| __threefive__  __xml__                           |
 |__.__|stdin|__xml+bin__| __threefive__  __xmlbin__ < video.ts|
+
 ___
+
+# [⇧](#-documentation-)
+
 #### [ Parse SCTE-35 Cues ]
 
   *  The __default output__ is JSON
@@ -355,7 +367,10 @@ ___
 |__xml__   |__JSON__   | __threefive__   < xml.xml                                   |
 |__xmlbin__|__int__    | __threefive__   < xmlbin.xml __int__                        |
 
----
+___
+
+# [⇧](#-documentation-)
+
 #### [__Additional functionality__]
 * threefive has several additional features, mostly related to MPEGTS streams.
 * threefive has built in help, just type `threefive help`
@@ -373,7 +388,11 @@ ___
 |__Proxy__ the __mpegts__ stream to stdout |threefive __proxy__ https://wexample.com/video.ts        |
 |                                          |                                                         |
 |                                          |                                                         |
----
+
+___
+
+# [⇧](#-documentation-)
+
 
 ### Other tools
 threefive also comes with: 
@@ -396,8 +415,9 @@ options:
 
 scte35bump is part of threefive.
 ```
+___
 
----
+# [⇧](#-documentation-)
 
 #### gums
 *  the Grande Udp Multicast Server
@@ -418,6 +438,9 @@ options:
 
 gums is part of threefive.
 ```
+
+# [⇧](#-documentation-)
+
 #### scte35hls
 
 * parse HLS for SCTE-35. Supports all HLS SCTE-35 tags.
@@ -449,6 +472,8 @@ $ scte35hls -h
             * mpeg2, aac, ac3, mp3
 ```
 
+# [⇧](#-documentation-)
+
 #### __scte35fix__
 * when ffmpeg changes a SCTE-35 stream to bin data stream, scte35fix changes it back. 
 
@@ -472,6 +497,9 @@ $ scte35fix -h
         scte35fix srt://10.10.10.13:4201
 scte35fix is part of threefive.
 ```
+___
+
+# [⇧](#-documentation-)
 
 ### [Using the library]
 * Let me show you how easy threefive is to use.
@@ -708,21 +736,28 @@ Type "help", "copyright", "credits" or "license" for more information.
    <scte35:AvailDescriptor providerAvailId="16"/>
 </scte35:SpliceInfoSection>
 ```
-### [web]
+___
 
+# [⇧](#-documentation-)
+
+### [web]
 * [threefive SCTE-35 __Online Parser__](https://iodisco.com/scte35) __hosted on my server iodisco.com__
 * Parse SCTE-35 in MPEGTS over HTTP, in your browser with[ Go, Wasm and Super Karate Death Car](https://bigcorp.ltd/gowasm) __hosted om my server bigcorp.ltd__
 *  Parse SCTE-35 in MPEGTS over HTTP, in your browser with[ threefive.js,javascript, and a little sed](https://bigcorp.ltd/bread) just to keep things interesting. __hosted om my server bigcorp.ltd__
 * [ SCTE-35 __Online Parser__ powered by threefive](http://www.domus1938.com/scte35parser) _another online parser powered by threefive_ not hosted on my servers.
 * [SCTE-35 __As a Service__](sassy.md) _if you can make an http request, you can parse SCTE-35, no install needed._
 __hosted on my server iodisco.com__
+___
 
+# [⇧](#-documentation-)
 
 ### [XML]
 * [XML](https://github.com/superkabuki/SCTE-35/blob/main/xml.md) __New__! _updated 05/01/2025_
 
 ### [HLS]
 * [Advanced Parsing of SCTE-35 in HLS with threefive](https://github.com/superkabuki/threefive/blob/main/hls.md) All HLS SCTE-35 tags, Sidecar Files, AAC ID3 Header Timestamps, SCTE-35 filters... Who loves you baby?
+
+ # [⇧](#-documentation-)
  
 ###  [Classes]
 * The python built in help is always the most up to date docs for the library.
@@ -742,7 +777,7 @@ a@fu:~/build7/threefive$ pypy3
 
 ___
 
-
+# [⇧](#-documentation-)
 
 ### [threefive now supports SRT]
 
@@ -759,7 +794,11 @@ https://github.com/user-attachments/assets/a323ea90-867f-480f-a55f-e9339263e511
 
 ___
 
+# [⇧](#-documentation-)
+
 ### [more]
 
 * [Encode SCTE-35](https://github.com/superkabuki/threefive/blob/main/encode.md) Some encoding code examples. 
 ___
+
+# [⇧](#-documentation-)
