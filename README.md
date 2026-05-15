@@ -32,16 +32,8 @@ ___
 * [custom_upid_handling.py](custom_upid_handling.py) -  Custom __user defined UPID__ handling example. _(__New!__ 01/11/2026)_
 ___
 # [ Documentation ]
-#### Need to inject SCTE-35 into HLS?  [X9k3.](https://github.com/superkabuki/x9k3) 
-### __use threefive and friends on the web__
-
-* [threefive SCTE-35 __Online Parser__](https://iodisco.com/scte35) __hosted on my server iodisco.com__
-* Parse SCTE-35 in MPEGTS over HTTP, in your browser with[ Go, Wasm and Super Karate Death Car](https://bigcorp.ltd/gowasm) __hosted om my server bigcorp.ltd__
-*  Parse SCTE-35 in MPEGTS over HTTP, in your browser with[ threefive.js,javascript, and a little sed](https://bigcorp.ltd/bread) just to keep things interesting. __hosted om my server bigcorp.ltd__
-* [ SCTE-35 __Online Parser__ powered by threefive](http://www.domus1938.com/scte35parser) _another online parser powered by threefive_ not hosted on my servers.
-* [SCTE-35 __As a Service__](sassy.md) _if you can make an http request, you can parse SCTE-35, no install needed._
-__hosted on my server iodisco.com__
-
+#### Need to inject SCTE-35 into HLS?  [X9k3.](https://github.com/superkabuki/x9k3)
+* [__web based SCTE-35 tools__](#web) - threefive and friends over http. 
 * [__install__](#install)
 * [__quick start__](https://github.com/superkabuki/threefive_is_scte35/blob/main/README.md#quick-start)
 * __command line tools__
@@ -759,4 +751,12 @@ Type "help", "copyright", "credits" or "license" for more information.
    <scte35:AvailDescriptor providerAvailId="16"/>
 </scte35:SpliceInfoSection>
 ```
+### web
+
+* [threefive SCTE-35 __Online Parser__](https://iodisco.com/scte35) __hosted on my server iodisco.com__
+* Parse SCTE-35 in MPEGTS over HTTP, in your browser with[ Go, Wasm and Super Karate Death Car](https://bigcorp.ltd/gowasm) __hosted om my server bigcorp.ltd__
+*  Parse SCTE-35 in MPEGTS over HTTP, in your browser with[ threefive.js,javascript, and a little sed](https://bigcorp.ltd/bread) just to keep things interesting. __hosted om my server bigcorp.ltd__
+* [ SCTE-35 __Online Parser__ powered by threefive](http://www.domus1938.com/scte35parser) _another online parser powered by threefive_ not hosted on my servers.
+* [SCTE-35 __As a Service__](sassy.md) _if you can make an http request, you can parse SCTE-35, no install needed._
+__hosted on my server iodisco.com__
 
