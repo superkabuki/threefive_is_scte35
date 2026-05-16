@@ -66,6 +66,7 @@ class Cue(SCTE35Base):
         self.packet_data = packet_data
         self.decode()
 
+
     def __repr__(self):
         return str(self.__dict__)
 
