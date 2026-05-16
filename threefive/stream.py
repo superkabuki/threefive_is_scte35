@@ -12,14 +12,15 @@ from .stuff import blue, clean, ERR, print2
 from .speedo import Speedo
 from .throttle import Throttle
 
-import multiprocessing
+from multiprocessing import Pool,set_start_method
+#from pathos.multiprocessing import ProcessingPool as Pool
 
 
 PKTSIZE = 188
-CHUNKSIZE = PKTSIZE * 9800
+CHUNKSIZE = PKTSIZE * 7770
 POOLSIZE = 6
 
-multiprocessing.set_start_method = "spawn"
+set_start_method = "spawn"
 
 
 def no_op(cue):
@@ -108,7 +109,7 @@ class MPStream:
         """
         run create pool and parse mpegts stream
         """
-        with multiprocessing.Pool(
+        with Pool(
             POOLSIZE,
         ) as pool:
             results = pool.imap(self.chunk_parser, self.chunker(), chunksize=10)
@@ -360,7 +361,7 @@ class Stream(Based):
         """
         prgm=1
         duration=0
-        num_pkts =500
+        num_pkts =1000
         head,tail= 0,0
 
         for pkt in self.iter_pkts(num_pkts=num_pkts):
@@ -386,20 +387,9 @@ class Stream(Based):
         if tail < head:
             tail += self.ROLLOVER9K
         duration=self.as_hms(tail - head)
-        print2(f'# Start: {head} End: {tail} Duration: {duration}')
-
+        print2(f'Start: {head} End: {tail} Duration: {duration}')
         return duration
 
-    def mpdecode(self,func=show_cue):
-        """
-        Stream.mpdecode uses multiprocessing and
-        reads self.tsdata to find SCTE35 packets.
-        func can be set to a custom function that accepts
-        a threefive.Cue instance as it's only argument.
-        """
-        mps = MPStream(self.tsfile)
-        mps.decode(func=func)
-        return False        
 
     def decode(self, func=show_cue):
         """
@@ -407,8 +397,11 @@ class Stream(Based):
         func can be set to a custom function that accepts
         a threefive.Cue instance as it's only argument.
         """
+        if "PyPy" not in sys.version:
+            mps = MPStream(self.tsfile)
+            mps.decode(func=func)
+            return False
         num_pkts = 2100
- ##       _=[func(cue) for cue in [self._parse(pkt) for pkt in self.iter_pkts(num_pkts=num_pkts)] if cue]
         for pkt in self.iter_pkts(num_pkts=num_pkts):
             if not pkt:
                 break
@@ -480,7 +473,7 @@ class Stream(Based):
         for pkt in self.iter_pkts():
             self._parse(pkt)
             if self.pmt_count > self.MIN_PMT_COUNT:
-             #   blue(f"PMT Count: {self.pmt_count}")
+                blue(f"PMT Count: {self.pmt_count}")
                 break
         if self.maps.prgm.keys():
             sopro = sorted(self.maps.prgm.items())
@@ -638,14 +631,13 @@ class Stream(Based):
 
     def _parse(self, pkt):
         pid = self._parse_pid(pkt[1], pkt[2])
-        if pid in self.pids.pcr:
-            if self._pusi_flag(pkt):
-                self._parse_pts(pkt, pid) 
         if pid in self.pids.tables:
             return self._parse_tables(pkt, pid)
         if pid in (self.pids.scte35 or self.pids.maybe_scte35):
             return self._parse_scte35(pkt, pid)
-
+ #       if pid in self.pids.pcr:
+        if self._pusi_flag(pkt):
+            self._parse_pts(pkt, pid)
         return False
 
     def _parse_with_pcr(self, pkt):
@@ -764,27 +756,6 @@ class Stream(Based):
             idx += chunk_size
         return True
 
-
-    def _pmt_preflight(self,pay,pid):
-        seclen=False
-        program_number=False
-        seclen = self._parse_length(pay[1], pay[2])
-        if self._section_incomplete(pay, pid, seclen):
-            return seclen, program_number
-        if self._same_as_last(pay, pid):
-            return seclen, program_number
-        program_number = self._parse_program(pay[3], pay[4])
-        return seclen, program_number
-
-    def _pmt_program_info(self,program_number, pcr_pid,pid):
-        if program_number not in self.maps.prgm:
-            self.maps.prgm[program_number] = ProgramInfo()
-        pinfo = self.maps.prgm[program_number]
-        pinfo.pid = pid
-        pinfo.pcr_pid = pcr_pid
-        self.pids.pcr.add(pcr_pid)
-        self.maps.pid_prgm[pcr_pid] = program_number
-
     def _parse_pmt(self, pay, pid):
         """
         parse program maps for streams
@@ -792,11 +763,22 @@ class Stream(Based):
         pay = self._chk_partial(pay, pid, self.PMT_TID)
         if not pay:
             return False
-        seclen, program_number=self._pmt_preflight(pay,pid)
+        seclen = self._parse_length(pay[1], pay[2])
+        if self._section_incomplete(pay, pid, seclen):
+            return False
+        if self._same_as_last(pay, pid):
+            return False
+        program_number = self._parse_program(pay[3], pay[4])
         if not program_number:
             return False
         pcr_pid = self._parse_pid(pay[8], pay[9])
-        self._pmt_program_info(program_number, pcr_pid,pid)
+        if program_number not in self.maps.prgm:
+            self.maps.prgm[program_number] = ProgramInfo()
+        pinfo = self.maps.prgm[program_number]
+        pinfo.pid = pid
+        pinfo.pcr_pid = pcr_pid
+        self.pids.pcr.add(pcr_pid)
+        self.maps.pid_prgm[pcr_pid] = program_number
         proginfolen = self._parse_length(pay[10], pay[11])
         idx = 12 + proginfolen
         si_len = seclen - (9 + proginfolen)
