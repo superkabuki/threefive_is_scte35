@@ -11,11 +11,6 @@ threefivecli() is the call for the threefive cli.
 
 import select
 import sys
-from .bump import cli as bumpcli
-from .gums import cli as gumscli
-from .hls import cli as hlscli
-from .sixfix import cli as sixcli
-from .superkabuki import cli as skcli
 from .iframes import IFramer
 from .new_reader import reader
 from .cue import Cue
@@ -127,106 +122,9 @@ def mk_args(keys):
     mk_args generates a list of args for inputs
     if no args are present,read from sys.stdin.buffer
     """
-    args = [arg for arg in sys.argv[1:] if arg not in keys]
-    return args
+    return [arg for arg in sys.argv[1:] if arg not in keys]
 
 
-def base64_out(cue):
-    """
-    print SCTE-35 from mpegts as base64
-    """
-    print2(cue.base64())
-
-
-def bytes_out(cue):
-    """
-    print SCTE-35 from mpegts as base64
-    """
-    print2(cue.bites)
-
-
-def hex_out(cue):
-    """
-    print SCTE-35 from mpegts as hex
-    """
-    print2(cue.hex())
-
-
-def int_out(cue):
-    """
-    print SCTE-35 from mpegts as int
-    """
-    print2(cue.int())
-
-
-def json_out(cue):
-    """
-    print SCTE-35 from mpegts as json
-    """
-    cue.show()
-
-
-def xmlbin_out(cue):
-    """
-    xml_out prints cue as xml+binary
-    """
-    print2(cue.xmlbin())
-
-
-def xml_out(cue):
-    """
-    xml_out prints cue as xml
-    """
-    print2(cue.xml())
-
-
-funk_map = {
-    "base64": base64_out,
-    "bytes": bytes_out,
-    "hex": hex_out,
-    "int": int_out,
-    "json": json_out,
-    "xml": xml_out,
-    "xmlbin": xmlbin_out,
-}
-
-
-def funk():
-    """
-    return a func
-    if a key in out_map
-    is also in sys.argv
-    """
-    func = json_out
-    for k, func in funk_map.items():
-        if k in sys.argv:
-            func = v
-    return func
-
-
-def pull_keyfunk():
-    """
-    pull_keyfunk pull key and func
-    from func_map
-    """
-    key="json"
-    func=json_out
-    for k, f in funk_map.items():
-        if k in sys.argv:
-            key, func=k,f
-    return key, func
-
-def mp_chk():
-    """
-    mp_chk decode mpegts wirh
-    multiprocessing
-    """
-    key,func=pull_keyfunk()
-    if key in sys.argv:
-        sys.argv.remove(key)
-    for this in sys.argv[1:]:
-        st = Stream(this)
-        st.mpdecode(func)
 
 # print_map functions
 
@@ -261,8 +159,6 @@ print_map = {
     "-v": print_version,
     "--version": print_version,
     "version": print_version,
-    "mp": mp_chk,
-
 }
 
 
@@ -283,7 +179,6 @@ def chk_print_map():
     #   print_key_in_argv(k, v)
 
 
-
 # functions for mpegts_map
 
 
@@ -294,7 +189,6 @@ def iframe_chk(this):
     """
     iframer = IFramer()
     iframer.do(this)
-
 
 
 def packet_chk(this):
@@ -402,6 +296,83 @@ def chk_mpegts_map():
     for key in m_keys:
         mpegts_key_in_argv(args, key)
 
+
+# func_map is used to generate  SCTE-35 output formats
+
+
+def base64_out(cue):
+    """
+    print SCTE-35 from mpegts as base64
+    """
+    print2(cue.base64())
+
+
+def bytes_out(cue):
+    """
+    print SCTE-35 from mpegts as base64
+    """
+    print2(cue.bites)
+
+
+def hex_out(cue):
+    """
+    print SCTE-35 from mpegts as hex
+    """
+    print2(cue.hex())
+
+
+def int_out(cue):
+    """
+    print SCTE-35 from mpegts as int
+    """
+    print2(cue.int())
+
+
+def json_out(cue):
+    """
+    print SCTE-35 from mpegts as json
+    """
+    cue.show()
+
+
+def xmlbin_out(cue):
+    """
+    xml_out prints cue as xml+binary
+    """
+    print2(cue.xmlbin())
+
+
+def xml_out(cue):
+    """
+    xml_out prints cue as xml
+    """
+    print2(cue.xml())
+
+
+funk_map = {
+    "base64": base64_out,
+    "bytes": bytes_out,
+    "hex": hex_out,
+    "int": int_out,
+    "json": json_out,
+    "xml": xml_out,
+    "xmlbin": xmlbin_out,
+}
+
+
+def funk():
+    """
+    return a func
+    if a key in out_map
+    is also in sys.argv
+    """
+    func = json_out
+    for k, v in funk_map.items():
+        if k in sys.argv:
+            func = v
+    return func
+
+
 def try_stream(this):
     """
     try_stream attempts to decode `this`
@@ -416,12 +387,14 @@ def try_cue(this):
     try_cue attempts to decode `this`
     with a Cue class instance.
     """
+    cue=None
     try:
         cue = Cue(this)
         if cue:
             funk()(cue)  #   funk works here too.
-    except ERR:
-        red(f"\n {type(ERR)}")
+    finally:
+        return
+        
 
 
 def to_funk(this):
@@ -492,21 +465,8 @@ def chk_funk_map():
     funk_keys = list(funk_map.keys())
     args = mk_args(funk_keys)
     args = chk_stdin(args)
-    if args:
-        _ = [to_funk(arg) for arg in args]  # multiple file input
+    _ = [to_funk(arg) for arg in args if args]  # multiple file input
     done()
-
-
-# cli map
-
-cli_map = {
-    "bump": bumpcli,
-    "mcast": gumscli,
-    "superkabuki": skcli,
-    "inject": skcli,
-    "sixfix": sixcli,
-}
-
 
 def dashdashhelp():
     """
@@ -521,27 +481,6 @@ def dashdashhelp():
         sys.argv[idx] = "--help"
 
 
-def cli_key_in_argv(key, val):
-    """
-    cli_key_in_argv if key in argv call val()
-    """
-    if key in sys.argv:
-        dashdashhelp()
-        sys.argv[0] = f"{sys.argv[0]} {key}"
-        sys.argv.remove(key)
-        val()
-        done()
-
-
-def chk_cli_map():
-    """
-    chk_cli_map check if a
-    cli_map key is present in sys.argv,
-    pass control to the cli function.
-    """
-    for k, v in cli_map.items():
-        cli_key_in_argv(k, v)
-
 
 def threefivecli():
     """
@@ -554,7 +493,7 @@ def threefivecli():
     yeah, that makes sense.
 
     """
-    chk_cli_map()
+    dashdashhelp()
     chk_print_map()
     chk_mpegts_map()
     chk_funk_map()
