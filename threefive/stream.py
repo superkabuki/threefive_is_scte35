@@ -23,15 +23,6 @@ POOLSIZE = 6
 set_start_method = "spawn"
 
 
-def no_op(cue):
-    """
-    no_op is just a dummy func to pass to Stream.decode()
-    to suppress output.
-    """
-    return cue
-
-
-
 def show_cue(cue):
     """
     default function call for Stream.decode
@@ -349,7 +340,7 @@ class Stream(Based):
         but also shows parsing speed.
         """
         speedo = Speedo()
-        num_pkts = 3500
+        num_pkts = 700
         for chunk in self.chunked(num_pkts=num_pkts):
             speedo.plus(len(chunk))
         speedo.end()
@@ -631,13 +622,13 @@ class Stream(Based):
 
     def _parse(self, pkt):
         pid = self._parse_pid(pkt[1], pkt[2])
+        if pid in self.pids.pcr:
+            if self._pusi_flag(pkt):
+                self._parse_pts(pkt, pid)
         if pid in self.pids.tables:
             return self._parse_tables(pkt, pid)
         if pid in (self.pids.scte35 or self.pids.maybe_scte35):
             return self._parse_scte35(pkt, pid)
- #       if pid in self.pids.pcr:
-        if self._pusi_flag(pkt):
-            self._parse_pts(pkt, pid)
         return False
 
     def _parse_with_pcr(self, pkt):
