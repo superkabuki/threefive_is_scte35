@@ -1,6 +1,7 @@
 """
 Mpeg-TS Stream parsing class Stream
 """
+import io
 import os
 import sys
 from functools import partial
@@ -12,15 +13,14 @@ from .stuff import blue, clean, ERR, print2
 from .speedo import Speedo
 from .throttle import Throttle
 
-from multiprocessing import Pool,set_start_method
-#from pathos.multiprocessing import ProcessingPool as Pool
+from multiprocessing import Pool, set_start_method
 
 
 PKTSIZE = 188
-CHUNKSIZE = PKTSIZE * 7770
+CHUNKSIZE = PKTSIZE * 9800
 POOLSIZE = 6
 
-set_start_method = "spawn"
+set_start_method = "fork"
 
 
 def show_cue(cue):
@@ -93,7 +93,8 @@ class MPStream:
         chunker video chunk generator
         """
         with reader(self.filepath) as r:
-            for chunk in iter(partial(r.read, CHUNKSIZE), b""):
+            while chunk := r.read(CHUNKSIZE):
+           # for chunk in iter(partial(r.read, CHUNKSIZE), b"" ):
                 yield chunk
 
     def  decode(self,func=show_cue):
@@ -319,17 +320,25 @@ class Stream(Based):
         return False
 
     def packetize(self, chunk):
+        """
+        packetize - turn chunk into 188 byte packets
+        """
         for i in range(0, len(chunk), self.PACKET_SIZE):
             yield chunk[i : i + self.PACKET_SIZE]
-
+            
     def chunked(self, num_pkts):
+        """
+        chunked - read chunks from stream
+        """
+        chunksize = self.PACKET_SIZE* num_pkts
         if self._find_start():
-            for chunk in iter(
-                partial(self._tsdata.read, self.PACKET_SIZE * num_pkts), b""
-            ):
+            while chunk := self._tsdata.read(chunksize):
                 yield chunk
 
     def iter_pkts(self, num_pkts=1400):
+        """
+        iter_pkts - iterate packets from stream
+        """
         for chunk in self.chunked(num_pkts):
             for pkt in self.packetize(chunk):
                 yield pkt
@@ -381,6 +390,13 @@ class Stream(Based):
         print2(f'Start: {head} End: {tail} Duration: {duration}')
         return duration
 
+    def mpdecode(self,func=show_cue):
+        """
+        mpdecode decode with multiprocessing
+        """
+        mps = MPStream(self.tsfile)
+        mps.decode(func=func)
+        return False        
 
     def decode(self, func=show_cue):
         """
@@ -389,17 +405,15 @@ class Stream(Based):
         a threefive.Cue instance as it's only argument.
         """
         if "PyPy" not in sys.version:
-            mps = MPStream(self.tsfile)
-            mps.decode(func=func)
-            return False
-        num_pkts = 2100
-        for pkt in self.iter_pkts(num_pkts=num_pkts):
-            if not pkt:
-                break
-            if pkt[6] != 255:
+            self.mpdecode()
+        num_pkts =3500
+        chunksize = self.PACKET_SIZE* num_pkts
+        while chunk := io.BufferedReader(self._tsdata, buffer_size=chunksize):
+            while pkt := chunk.read(188):
                 cue = self._parse(pkt)
-                if cue:
-                    func(cue)
+                if pkt[5] !=255:
+                    if cue:
+                        func(cue)
         return False
 
     def decode_next(self):
@@ -622,9 +636,9 @@ class Stream(Based):
 
     def _parse(self, pkt):
         pid = self._parse_pid(pkt[1], pkt[2])
-        if pid in self.pids.pcr:
-            if self._pusi_flag(pkt):
-                self._parse_pts(pkt, pid)
+    #    if pid in self.pids.pcr:
+        if self._pusi_flag(pkt):
+            self._parse_pts(pkt, pid)
         if pid in self.pids.tables:
             return self._parse_tables(pkt, pid)
         if pid in (self.pids.scte35 or self.pids.maybe_scte35):
