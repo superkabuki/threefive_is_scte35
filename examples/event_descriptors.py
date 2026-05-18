@@ -15,7 +15,8 @@ examples = {
 
 if __name__ == "__main__":
     for k, v in examples.items():
-        print(f"\n\n------- {k} -------\n")
+        side="-"*7 
+        print(f"\n\n{side} {k} {side}\n")
         print(v, "\n")
         cue = Cue(v)
         methods = {
@@ -28,5 +29,6 @@ if __name__ == "__main__":
             "xmlbin": cue.xmlbin,
         }
         for k, v in methods.items():
-            print(f"\n\t------- {k} -------\n")
+            side="-" *3
+            print(f"\n\t{side} {k} {side}\n")
             print(f"\t{v()}")
