@@ -6,7 +6,7 @@ import io
 import sys
 from collections import deque
 from functools import partial
-from .stuff import print2, ERR, blue
+from .stuff import print2, ERR
 from .stream import Stream, ProgramInfo
 from .pmt import PMT
 
@@ -28,7 +28,7 @@ HELPME="""
   Example Usage:
 
         scte35fix video.ts
-        
+
         scte35fix video1.ts video2.ts
 
         scte35fix video*.ts
@@ -130,7 +130,7 @@ class SixFix(Stream):
             self._parse_pkts(out_file)
 
     def _chk_payload(self, pay, pid):
-        pay = self._chk_partial(pay, pid, self._PMT_TID)
+        pay = self._chk_partial(pay, pid, self.PMT_TID)
         return pay
 
     def pmt2packets(self, pmt, program_number):
@@ -203,9 +203,9 @@ class SixFix(Stream):
         proginfolen = self._parse_length(pay[10], pay[11])
         idx = 12
         end = idx + proginfolen
-        info_bites = pay[idx:end]
+       # info_bites = pay[idx:end]
         idx = 12 + proginfolen
-        si_len = seclen - (9 + proginfolen)  #  ???
+    #    si_len = seclen - (9 + proginfolen)  #  ???
         return self.pmt2packets(pmt, program_number)
 
 
