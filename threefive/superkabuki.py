@@ -53,7 +53,9 @@ class SuperKabuki(SixFix):
         """
         _parse_args parse command line args
         """
-        parser = argparse.ArgumentParser(epilog="scte35inject is part of threefive.\n\n")
+        parser = argparse.ArgumentParser(
+            epilog="scte35inject is part of threefive.\n\n"
+        )
         parser.add_argument(
             "-i",
             "--input",
