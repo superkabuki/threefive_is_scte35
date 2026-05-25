@@ -69,7 +69,7 @@ class GumS:
                 self.socked.sendto(dgram, self.dest_grp)
                 throttle.throttle(packets[-1])
                 speedo.plus(len(dgram))
-            flush=b'\xff' * 1316
+            flush = b"\xff" * 1316
             self.socked.sendto(flush, self.dest_grp)
 
         speedo.end()
@@ -104,7 +104,7 @@ def parse_args():
     parse_args parse command line args
     """
 
-    parser = argparse.ArgumentParser( epilog="gums is part of threefive.\n\n")
+    parser = argparse.ArgumentParser(epilog="gums is part of threefive.\n\n")
 
     parser.add_argument(
         "-i",
@@ -115,7 +115,6 @@ def parse_args():
                 [default: sys.stdin.buffer]
              """,
     )
-
 
     parser.add_argument(
         "-a",
