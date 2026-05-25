@@ -12,7 +12,6 @@ from .commands import command_map
 from .descriptors import splice_descriptor, descriptor_map
 from .crc import crc32
 from .segmentation import table22
-
 from .xml import Node
 from .uxp import xml2cue
 
@@ -65,7 +64,6 @@ class Cue(SCTE35Base):
             self._bits_decode(data)
         self.packet_data = packet_data
         self.decode()
-
 
     def __repr__(self):
         return str(self.__dict__)
