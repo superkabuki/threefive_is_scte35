@@ -4,23 +4,21 @@ Mpeg-TS Stream parsing class Stream
 import io
 import os
 import sys
-from functools import partial
+from multiprocessing import Pool, set_start_method
 from .cue import Cue
 from .new_reader import reader
 from .packetdata import PacketData
 from .streamtypes import streamtype_map
-from .stuff import blue, clean, ERR, print2
+from .stuff import blue,  ERR, print2
 from .speedo import Speedo
 from .throttle import Throttle
-
-from multiprocessing import Pool, set_start_method
 
 
 PKTSIZE = 188
 CHUNKSIZE = PKTSIZE * 9800
 POOLSIZE = 6
 
-set_start_method = "fork"
+set_start_method ("fork")
 
 
 def show_cue(cue):
@@ -29,6 +27,10 @@ def show_cue(cue):
     when a SCTE-35 packet is found.
     """
     cue.show()
+
+
+def no_op():
+    pass
 
 
 class Based:
@@ -325,7 +327,7 @@ class Stream(Based):
         """
         for i in range(0, len(chunk), self.PACKET_SIZE):
             yield chunk[i : i + self.PACKET_SIZE]
-            
+
     def chunked(self, num_pkts):
         """
         chunked - read chunks from stream
@@ -340,10 +342,9 @@ class Stream(Based):
         iter_pkts - iterate packets from stream
         """
         for chunk in self.chunked(num_pkts):
-            for pkt in self.packetize(chunk):
-                yield pkt
+            yield from self.packetize(chunk)
 
-    def speed(self, func=show_cue):
+    def speed(self):
         """
         Stream.speed is identical to Stream.decode
         but also shows parsing speed.
@@ -359,7 +360,7 @@ class Stream(Based):
         """
         duration - get duration for local video files
         """
-        prgm=1
+      #  prgm=1
         duration=0
         num_pkts =1000
         head,tail= 0,0
@@ -396,7 +397,7 @@ class Stream(Based):
         """
         mps = MPStream(self.tsfile)
         mps.decode(func=func)
-        return False        
+        return False
 
     def decode(self, func=show_cue):
         """
@@ -406,14 +407,14 @@ class Stream(Based):
         """
         if "PyPy" not in sys.version:
             self.mpdecode()
-        num_pkts =3500
+        num_pkts =2100
         chunksize = self.PACKET_SIZE* num_pkts
         while chunk := io.BufferedReader(self._tsdata, buffer_size=chunksize):
             while pkt := chunk.read(188):
+               # if pkt[6] != 255:
                 cue = self._parse(pkt)
-                if pkt[5] !=255:
-                    if cue:
-                        func(cue)
+                if cue:
+                    func(cue)
         return False
 
     def decode_next(self):
@@ -462,7 +463,8 @@ class Stream(Based):
         for piping into another program like mplayer.
         SCTE-35 cues are print2`ed to stderr.
         """
-        for cue in self.iter_pkts():
+        for pkt in self.iter_pkts():
+            cue = self._parse(pkt)
             if cue:
                 func(cue)
             sys.stdout.buffer.write(pkt)
@@ -611,7 +613,6 @@ class Stream(Based):
         return pkt[head_size:]
 
     def _pmt_pid(self, pay, pid):
-        last = None
         self.pmt_count += 1
         prgm = self.pid2prgm(pid)
         if pay not in self.pmt_payloads.values():
@@ -636,14 +637,21 @@ class Stream(Based):
 
     def _parse(self, pkt):
         pid = self._parse_pid(pkt[1], pkt[2])
-    #    if pid in self.pids.pcr:
-        if self._pusi_flag(pkt):
-            self._parse_pts(pkt, pid)
+
         if pid in self.pids.tables:
             return self._parse_tables(pkt, pid)
         if pid in (self.pids.scte35 or self.pids.maybe_scte35):
             return self._parse_scte35(pkt, pid)
+        if pid in self.pids.pcr:
+            if self._pusi_flag(pkt):
+                self._parse_pts(pkt, pid)
         return False
+
+    def parse(self,pkt):
+        """
+        parse  parse pkt for tables and SCTE-35
+        """
+        return self._parse(pkt)
 
     def _parse_with_pcr(self, pkt):
         """
