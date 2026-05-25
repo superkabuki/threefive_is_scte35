@@ -23,8 +23,6 @@ from .version import version
 # import cProfile
 # from sideways import cli as sidecli
 
-write2 = False
-
 REV = "\033[7;1m"
 NORM = "\033[27m\033[0m"
 NORM = "\033[0m"
@@ -59,8 +57,6 @@ HELP = f"""
 
  {B} iframes     {U}{BLUE} Show MPEGTS iframes{NORM}
     threefive iframes video.ts
- {B} packets     {U}{NORM}{BLUE} Print raw SCTE-35 packets{NORM}
-    threefive packets udp://@235.35.3.5:3535
  {B} proxy       {U}{NORM}{BLUE} Parse a MPEGTS stream, copy it to stdout{NORM}
     threefive proxy video.ts
  {B} pts         {U}{NORM}{BLUE} Print PTS from MPEGTS video{NORM}
@@ -86,20 +82,8 @@ def done():
     done prints the threefive version, interpreter version,
     and calls sys.exit()
     """
-    print2(f"# threefive: {version} on python: {sys.version}")
+    # print2(f"# threefive: {version} on python: {sys.version}")
     sys.exit()
-
-
-class SupaStream(Stream):
-    """
-    SupaStream is subclass of Stream used
-    to print raw SCTE-35 packets.
-    """
-
-    def _parse_scte35(self, pkt, pid):
-        print2(pkt)
-        print2("")
-        super()._parse_scte35(pkt, pid)
 
 
 def mk_sidecar(cue):
@@ -126,10 +110,7 @@ def mk_args(keys):
     return [arg for arg in sys.argv[1:] if arg not in keys]
 
 
-
 # print_map functions
-
-
 def hls():
     sys.argv.remove("hls")
     hlscli()
@@ -181,8 +162,6 @@ def chk_print_map():
 
 
 # functions for mpegts_map
-
-
 def iframe_chk(this):
     """
     iframe_chk show iframes pts
@@ -190,15 +169,6 @@ def iframe_chk(this):
     """
     iframer = IFramer()
     iframer.do(this)
-
-
-def packet_chk(this):
-    """
-    packet_chk checks for the packet keyword
-    and displays SCTE-35 packets if present.
-    """
-    supa = SupaStream(this)
-    supa.decode()
 
 
 def proxy_chk(this):
@@ -255,24 +225,14 @@ def speedo_chk(this):
     strm.speed()
 
 
-def duration_chk(this):
-    """
-    duration_chk display video duration for local video files
-    """
-    strm = Stream(this)
-    print2(f'{this} duration: {strm.duration()}')
-
-
 mpegts_map = {
-    "duration" : duration_chk,
-    "packets" : packet_chk,
-    "proxy" : proxy_chk,
-    "pts" : pts_chk,
-    "rt" : rt_chk,
-    "show" : show_chk,
-    "sidecar" :  sidecar_chk,
-    "speedo" :  speedo_chk,
-    "iframes" :  iframe_chk,
+    "proxy": proxy_chk,
+    "pts": pts_chk,
+    "rt": rt_chk,
+    "show": show_chk,
+    "sidecar": sidecar_chk,
+    "speedo": speedo_chk,
+    "iframes": iframe_chk,
 }
 
 
@@ -388,14 +348,13 @@ def try_cue(this):
     try_cue attempts to decode `this`
     with a Cue class instance.
     """
-    cue=None
+    cue = None
     try:
         cue = Cue(this)
         if cue:
             funk()(cue)  #   funk works here too.
     finally:
         return
-        
 
 
 def to_funk(this):
@@ -468,6 +427,7 @@ def chk_funk_map():
     _ = [to_funk(arg) for arg in args if args]  # multiple file input
     done()
 
+
 def dashdashhelp():
     """
     dashdashhelp swaps out "help" with "--help"
@@ -479,7 +439,6 @@ def dashdashhelp():
     if "help" in sys.argv:
         idx = sys.argv.index("help")
         sys.argv[idx] = "--help"
-
 
 
 def threefivecli():
