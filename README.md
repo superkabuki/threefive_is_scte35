@@ -16,7 +16,7 @@ ___
 * threefive now has support for SCTE-35-2. __Event Descriptors__ and __Property__ types from __the recently published 2026 SCTE-35 Specification can be decoded, modified, and encoded with threefive.   
 ___
 
-## [ Latest version is  v3.0.87 ]
+## [ Latest version is  v3.0.89 ]
 ___
 ##  [ Examples ]
 * [aac_id3header.py](aac_id3header.py) - use the __threefive.aac.AacParser__ class to parse __HLS AAC__ segments for __PTS__ in __ID3 header tags__. _(__Updated__ 01/07/2026)_
