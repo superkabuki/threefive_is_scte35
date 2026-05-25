@@ -14,8 +14,9 @@ import sys
 from .iframes import IFramer
 from .new_reader import reader
 from .cue import Cue
+from .hls import cli as hlscli
 from .stream import Stream
-from .stuff import print2, red
+from .stuff import print2
 from .stuff import ERR
 from .version import version
 
@@ -401,7 +402,6 @@ def to_funk(this):
     """
     to_funk prints a cue in a variety of formats.
     """
-    cue = None
     if this in ["", b""]:
         return
     try:
@@ -418,7 +418,7 @@ def not_pkt(args, rdr, one):
     args.append((one + two).decode())  # no rewind on stdin?
 
 
-def is_pkt(args, rdr, one):
+def is_pkt(rdr, one):
     """
     is_pkt,  runs when stdin is an mpegts stream
     """
