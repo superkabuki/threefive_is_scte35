@@ -7,7 +7,7 @@ threefive.encode has helper functions for Cue encoding.
 
 from .commands import SpliceNull, SpliceInsert, TimeSignal
 from .cue import Cue
-from.stuff import pif
+from .stuff import pif
 
 
 def mk_splice_null():
