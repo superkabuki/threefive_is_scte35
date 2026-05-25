@@ -7,7 +7,6 @@ MPEGTS packet level throttlinig to simulate real time streaming.
 import sys
 import time
 from .iframes import IFramer
-from .stuff import print2
 
 
 class Throttle:
@@ -35,7 +34,7 @@ class Throttle:
         buff=0.002
         if duration > buff:
             time.sleep(duration - buff)
-        # witness on a spin-lock       
+        # witness on a spin-lock
         while time.perf_counter_ns() < end:
             pass
 
@@ -58,7 +57,7 @@ class Throttle:
         self.first = pts
         self.actualstart = time.perf_counter()
         if not self.shush:
-            print2(f"first: {pts} actualstart: {self.actualstart}")
+            print(f"first: {pts} actualstart: {self.actualstart}")
 
     def _print_throttle(self, diff):
         """
@@ -72,10 +71,11 @@ class Throttle:
         _diffsleep - sleep for diff
         """
         if 0 < diffed < 10:
-            self._print_throttle(diffed)
             self.ssleep(diffed)
+            self._print_throttle(diffed)
             self._reset_end()
         else:
+            print(f"Slow: {diffed}", file=sys.stderr, end="\r")
             self._reset()
 
     def _diff(self, pts):
@@ -104,6 +104,14 @@ class Throttle:
         """
         pts = self.ifr.parse(packet)
         self._throttle_pts(pts)
+
+    def throttle_time(self,seconds):
+        """
+        throttle_time - throttle for this many seconds
+
+        """
+        self.ssleep(seconds)
+
 
     def _throttle_pts(self, pts):
         """
