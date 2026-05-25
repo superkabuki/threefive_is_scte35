@@ -63,37 +63,23 @@ mps.py - improve performance of threefive on python 3.11 and 3.14
 via multiprocessing. pypy3 is faster in a single process.
 """
 class MPStream:
-    def __init__(self, filepath,pids=None,maps=None):
+
+    def __init__(self, filepath):
         self.filepath = filepath
-        self.pids = pids
-        self.maps = maps
-      #  self.init_pool()
-
-    def init_pool(self):
-        """
-        init_pool discovers the stucture of an
-        MPEGTS stream to prime
-        Stream instances in the pool
-        """
-        stp = Stream(self.filepath)
-        stp.show()
-        stp.maps.prgm_pts = {}
-        stp.maps.partial = {}
-        self.pids = stp.pids
-        self.maps = stp.maps
-
 
     def init_pool2(self):
         """
         init_pool2 discovers the stucture of an
         MPEGTS stream to prime
         Stream instances in the pool
+        init_pool2 is only called once before the Pool
+        is started.(init_pool was called once per  Pool member.
         """
         stp = Stream(self.filepath)
         stp.show()
         stp.maps.prgm_pts = {}
         stp.maps.partial = {}
-        return stp.pids, stp.maps      
+        return stp.pids, stp.maps
 
     def chunk_parser(self, pids,maps,chunk):
         """
@@ -102,7 +88,6 @@ class MPStream:
         st = Stream(None)
         st.pids = pids
         st.maps = maps
-        #print(st.pids, st.maps)
         return [cue for cue in [st._parse(pkt) for pkt in st.packetize(chunk)] if cue]
 
     def chunker(self):
@@ -111,7 +96,6 @@ class MPStream:
         """
         with reader(self.filepath) as r:
             while chunk := r.read(CHUNKSIZE):
-           # for chunk in iter(partial(r.read, CHUNKSIZE), b"" ):
                 yield chunk
 
     def  decode(self,func=show_cue):
@@ -423,12 +407,11 @@ class Stream(Based):
         a threefive.Cue instance as it's only argument.
         """
         if "PyPy" not in sys.version:
-            return self.mpdecode()
+            return self.mpdecode(func=func)
         num_pkts =2100
         chunksize = self.PACKET_SIZE* num_pkts
         while chunk := io.BufferedReader(self._tsdata, buffer_size=chunksize):
             while pkt := chunk.read(188):
-               # if pkt[6] != 255:
                 cue = self._parse(pkt)
                 if cue:
                     func(cue)
