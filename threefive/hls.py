@@ -849,9 +849,9 @@ HELPME = """
 [ SCTE-35 ]
 
   scte35hls parses SCTE-35 Embedded Cues as well as SCTE-35 HLS Tags.
-  
+
   [ Supported HLS Tags ]
-  
+
 	* #EXT-OATCLS-SCTE35
     * #EXT-X-CUE-OUT-CONT
     * #EXT-X-DATERANGE
@@ -902,14 +902,14 @@ HELPME = """
 
 [ Output Files ]
 	scte35 hls creates a few output files.
-        
+
 	* Profile rules applied to the output:
-    
+
 		* hls.m3u8  - live playable rewrite of the m3u8 with the profile SCTE-35 rules.
         * hls.sidecar - list of ( pts, HLS SCTE-35 tag ) pairs
-   
+
 	* Profile rules not applied to the output:
-        
+
 		* hlsflat.m3u8  - hls live streams are flattened out into a vod playlist.
                      When the live m3u8  first loads, every line is written to hlsflat.m3u8
                      Wnen a live m3u8 is reloaded, everything except the headers
