@@ -1,6 +1,7 @@
 """
 Mpeg-TS Stream parsing class Stream
 """
+
 import io
 import os
 import sys
@@ -10,7 +11,7 @@ from .cue import Cue
 from .new_reader import reader
 from .packetdata import PacketData
 from .streamtypes import streamtype_map
-from .stuff import blue,  ERR, print2
+from .stuff import blue, ERR, print2
 from .speedo import Speedo
 from .throttle import Throttle
 
@@ -19,7 +20,7 @@ PKTSIZE = 188
 CHUNKSIZE = PKTSIZE * 7777
 POOLSIZE = 6
 
-set_start_method ("fork")
+set_start_method("fork")
 
 
 def show_cue(cue):
@@ -62,6 +63,8 @@ class Based:
 mps.py - improve performance of threefive on python 3.11 and 3.14
 via multiprocessing. pypy3 is faster in a single process.
 """
+
+
 class MPStream:
 
     def __init__(self, filepath):
@@ -81,7 +84,7 @@ class MPStream:
         stp.maps.partial = {}
         return stp.pids, stp.maps
 
-    def chunk_parser(self, pids,maps,chunk):
+    def chunk_parser(self, pids, maps, chunk):
         """
         chunk_parser parse a chunk
         """
@@ -98,16 +101,16 @@ class MPStream:
             while chunk := r.read(CHUNKSIZE):
                 yield chunk
 
-    def  decode(self,func=show_cue):
+    def decode(self, func=show_cue):
         """
         run create pool and parse mpegts stream
         """
         with Pool(
             POOLSIZE,
         ) as pool:
-            pids,maps = self.init_pool2()
-            pfunc = partial(self.chunk_parser,pids,maps)
-            results = pool.imap(pfunc, self.chunker(),chunksize=10)
+            pids, maps = self.init_pool2()
+            pfunc = partial(self.chunk_parser, pids, maps)
+            results = pool.imap(pfunc, self.chunker(), chunksize=10)
             _ = [func(cue) for cues in results for cue in cues]
 
 
@@ -119,8 +122,8 @@ class ProgramInfo(Based):
     """
 
     def __init__(self, pid=None, pcr_pid=None):
-      #  self.provider = b""
-       # self.service = b""
+        #  self.provider = b""
+        # self.service = b""
         self.streams = {}  # pid to stream_type mapping
         self.pid = pid
         self.pcr_pid = pcr_pid
@@ -313,7 +316,7 @@ class Stream(Based):
         """
         throttler = Throttle()
         for pkt in self.iter_pkts():
-            if pkt[6] !=255:
+            if pkt[6] != 255:
                 cue = self._parse(pkt)
                 if cue:
                     func(cue)
@@ -333,7 +336,7 @@ class Stream(Based):
         """
         chunked - read chunks from stream
         """
-        chunksize = self.PACKET_SIZE* num_pkts
+        chunksize = self.PACKET_SIZE * num_pkts
         if self._find_start():
             while chunk := self._tsdata.read(chunksize):
                 yield chunk
@@ -361,10 +364,10 @@ class Stream(Based):
         """
         duration - get duration for local video files
         """
-      #  prgm=1
-        duration=0
-        num_pkts =1000
-        head,tail= 0,0
+        #  prgm=1
+        duration = 0
+        num_pkts = 1000
+        head, tail = 0, 0
 
         for pkt in self.iter_pkts(num_pkts=num_pkts):
             pid = self._parse_pid(pkt[1], pkt[2])
@@ -374,25 +377,25 @@ class Stream(Based):
                 if pts:
                     head = pts
                     break
-        fsize =os.stat(self.tsfile).st_size
+        fsize = os.stat(self.tsfile).st_size
         spot = self._tsdata.tell()
-        tail_size = 188*num_pkts
-        if (fsize -spot) >tail_size:
+        tail_size = 188 * num_pkts
+        if (fsize - spot) > tail_size:
             self._tsdata.seek(-tail_size, 2)
-        while self._tsdata.tell() <= fsize-188:
-            pkt=self._tsdata.read(188)
+        while self._tsdata.tell() <= fsize - 188:
+            pkt = self._tsdata.read(188)
             pid = self._parse_pid(pkt[1], pkt[2])
             if self._pusi_flag(pkt):
                 self._parse_pts(pkt, pid)
                 pts = self.pid2pts(pid)
-            tail=self.pid2pts(pid)
+            tail = self.pid2pts(pid)
         if tail < head:
             tail += self.ROLLOVER9K
-        duration=self.as_hms(tail - head)
-        print2(f'Start: {head} End: {tail} Duration: {duration}')
+        duration = self.as_hms(tail - head)
+        print2(f"Start: {head} End: {tail} Duration: {duration}")
         return duration
 
-    def mpdecode(self,func=show_cue):
+    def mpdecode(self, func=show_cue):
         """
         mpdecode decode with multiprocessing
         """
@@ -408,8 +411,8 @@ class Stream(Based):
         """
         if "PyPy" not in sys.version:
             return self.mpdecode(func=func)
-        num_pkts =2100
-        chunksize = self.PACKET_SIZE* num_pkts
+        num_pkts = 2100
+        chunksize = self.PACKET_SIZE * num_pkts
         while chunk := io.BufferedReader(self._tsdata, buffer_size=chunksize):
             while pkt := chunk.read(188):
                 cue = self._parse(pkt)
@@ -475,7 +478,7 @@ class Stream(Based):
         displays streams that will be
         parsed for SCTE-35.
         """
-        print2(f'\n# {self.tsfile}\n')
+        print2(f"\n# {self.tsfile}\n")
         self.info = True
         for pkt in self.iter_pkts():
             self._parse(pkt)
@@ -647,7 +650,7 @@ class Stream(Based):
                 self._parse_pts(pkt, pid)
         return False
 
-    def parse(self,pkt):
+    def parse(self, pkt):
         """
         parse  parse pkt for tables and SCTE-35
         """
