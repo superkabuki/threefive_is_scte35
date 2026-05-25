@@ -5,6 +5,7 @@ import io
 import os
 import sys
 from multiprocessing import Pool, set_start_method
+from functools import partial
 from .cue import Cue
 from .new_reader import reader
 from .packetdata import PacketData
@@ -15,7 +16,7 @@ from .throttle import Throttle
 
 
 PKTSIZE = 188
-CHUNKSIZE = PKTSIZE * 9800
+CHUNKSIZE = PKTSIZE * 7777
 POOLSIZE = 6
 
 set_start_method ("fork")
@@ -62,11 +63,11 @@ mps.py - improve performance of threefive on python 3.11 and 3.14
 via multiprocessing. pypy3 is faster in a single process.
 """
 class MPStream:
-    def __init__(self, filepath):
+    def __init__(self, filepath,pids=None,maps=None):
         self.filepath = filepath
-        self.pids = None
-        self.maps = None
-        self.init_pool()
+        self.pids = pids
+        self.maps = maps
+      #  self.init_pool()
 
     def init_pool(self):
         """
@@ -81,13 +82,27 @@ class MPStream:
         self.pids = stp.pids
         self.maps = stp.maps
 
-    def chunk_parser(self, chunk):
+
+    def init_pool2(self):
+        """
+        init_pool2 discovers the stucture of an
+        MPEGTS stream to prime
+        Stream instances in the pool
+        """
+        stp = Stream(self.filepath)
+        stp.show()
+        stp.maps.prgm_pts = {}
+        stp.maps.partial = {}
+        return stp.pids, stp.maps      
+
+    def chunk_parser(self, pids,maps,chunk):
         """
         chunk_parser parse a chunk
         """
         st = Stream(None)
-        st.pids = self.pids
-        st.maps = self.maps
+        st.pids = pids
+        st.maps = maps
+        #print(st.pids, st.maps)
         return [cue for cue in [st._parse(pkt) for pkt in st.packetize(chunk)] if cue]
 
     def chunker(self):
@@ -106,7 +121,9 @@ class MPStream:
         with Pool(
             POOLSIZE,
         ) as pool:
-            results = pool.imap(self.chunk_parser, self.chunker(), chunksize=10)
+            pids,maps = self.init_pool2()
+            pfunc = partial(self.chunk_parser,pids,maps)
+            results = pool.imap(pfunc, self.chunker(),chunksize=10)
             _ = [func(cue) for cues in results for cue in cues]
 
 
@@ -406,7 +423,7 @@ class Stream(Based):
         a threefive.Cue instance as it's only argument.
         """
         if "PyPy" not in sys.version:
-            self.mpdecode()
+            return self.mpdecode()
         num_pkts =2100
         chunksize = self.PACKET_SIZE* num_pkts
         while chunk := io.BufferedReader(self._tsdata, buffer_size=chunksize):
