@@ -782,7 +782,7 @@ class HlsParser:
 
 
 def _chk_help():
-    for h in ['help','-h', '--help']:
+    for h in ["help", "-h", "--help"]:
         if h in sys.argv:
             print(HELPME)
             sys.exit()
