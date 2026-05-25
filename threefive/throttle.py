@@ -25,13 +25,13 @@ class Throttle:
         self.ifr = IFramer(shush=True)
         self.shush = shush
 
-    def ssleep(self,duration):
+    def ssleep(self, duration):
         """
         ssleep- a more accurate sleep.
         """
         now = time.perf_counter()
         end = now + duration
-        buff=0.002
+        buff = 0.002
         if duration > buff:
             time.sleep(duration - buff)
         # witness on a spin-lock
@@ -105,13 +105,12 @@ class Throttle:
         pts = self.ifr.parse(packet)
         self._throttle_pts(pts)
 
-    def throttle_time(self,seconds):
+    def throttle_time(self, seconds):
         """
         throttle_time - throttle for this many seconds
 
         """
         self.ssleep(seconds)
-
 
     def _throttle_pts(self, pts):
         """
