@@ -31,7 +31,7 @@ if the Cue in the packet doesn't have cue.command.pts_time:
 
 final values are modolo`ed to the ROLLOVER.
 
-you just need one function call ,bump. 
+you just need one function call ,bump.
 
 example:
                 >>> from threefive import bump
@@ -108,7 +108,7 @@ class StreamBumper(Stream):
         return False
 
     def _scte35(self, pkt, pid):
-        if self._pid_has_scte35(pid):
+        if pid in (self.pids.scte35 or self.pids.maybe_scte35):
             pkt = self._bumped(pkt)
         return pkt
 
@@ -200,7 +200,7 @@ class StreamBumper(Stream):
             help="Adjustment to apply to SCTE-35 Cues. [default: 0.0]",
         )
         args = parser.parse_args()
-        self._apply_args(args)
+        self.apply_args(args)
 
 
 def bump(infile=sys.stdin.buffer, outfile=sys.stdout.buffer, secs=0.0):
