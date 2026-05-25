@@ -12,7 +12,7 @@ from .pmt import PMT
 
 fixme = []
 
-HELPME="""
+HELPME = """
   scte35fix checks MPEGTS for SCTE-35 Streams
   that have been change to bin data (type 0x06)
   and changes them back to SCTE-35 (type 0x86) streams.
@@ -41,13 +41,14 @@ HELPME="""
 scte35fix is part of threefive.
 """
 
+
 def passed(cue):
     """
     passed  is a function passed to decode
     used to pull pids from streams containing SCTE-35
     so that we don't convert non-SCTE-35 0x06 streams.
     """
-    globals()['fixme'].append(cue.packet_data.pid)
+    globals()["fixme"].append(cue.packet_data.pid)
     return cue
 
 
@@ -58,7 +59,7 @@ class PreFix(Stream):
 
     def decode(self, func=passed):
         super().decode(func=passed)
-        tofix = list(set(globals()['fixme']))
+        tofix = list(set(globals()["fixme"]))
         if tofix:
             print("fixing these pids", tofix)
         return tofix
@@ -203,9 +204,9 @@ class SixFix(Stream):
         proginfolen = self._parse_length(pay[10], pay[11])
         idx = 12
         end = idx + proginfolen
-       # info_bites = pay[idx:end]
+        # info_bites = pay[idx:end]
         idx = 12 + proginfolen
-    #    si_len = seclen - (9 + proginfolen)  #  ???
+        #    si_len = seclen - (9 + proginfolen)  #  ???
         return self.pmt2packets(pmt, program_number)
 
 
@@ -214,7 +215,7 @@ def sixfix(arg):
     sixfix converts 0x6 bin data mpegts streams
     that contain SCTE-35 data to stream type 0x86
     """
-    globals()['fixme'] = []
+    globals()["fixme"] = []
     s1 = PreFix(arg)
     print2(f"reading {arg}")
     sixed = s1.decode(func=passed)
@@ -230,7 +231,7 @@ def sixfix(arg):
 
 
 def _chk_help():
-    for h in ['help','-h', '--help']:
+    for h in ["help", "-h", "--help"]:
         if h in sys.argv:
             print(HELPME)
             sys.exit()
