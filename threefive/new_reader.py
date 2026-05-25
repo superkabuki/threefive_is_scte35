@@ -13,7 +13,7 @@ try:
 except ImportError:
     HAS_SRT=False
 from .udp import udp_receiver, mcast_ttl
-from .stuff import blue, ERR, pif, print2
+from .stuff import blue,  pif, print2
 
 
 CORS = {
@@ -35,11 +35,11 @@ def corsreader(uri, headers={}):
     return reader(uri, headers=all_headers)
 
 
-def try_srt(url, headers={}):
+def try_srt(uri, headers={}):
     if HAS_SRT:
         return _do_srt(uri, headers=headers)
-    else:
-        print2('pip install srtfu to add SRT support')
+
+    print2('pip install srtfu to add SRT support')
     return False
 
 
