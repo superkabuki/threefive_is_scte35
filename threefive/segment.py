@@ -11,7 +11,7 @@ AES = True
 try:
     import pyaes
 except ImportError:
-    print2('pip install pyaes for AES support')
+    print2("pip install pyaes for AES support")
     AES = False
 
 
