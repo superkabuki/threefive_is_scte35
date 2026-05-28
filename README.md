@@ -1,8 +1,6 @@
 # [ threefive ]
 
 
-<img width="1000" height="748" alt="100_0033" src="https://github.com/user-attachments/assets/dc967211-35d4-4aa5-af75-ce6099207946" />
-
 ## https://github.com/superkabuki/threefive
 
 ## threefive is the only tool that supports SCTE-35-1 and SCTE-35-2 
@@ -17,6 +15,20 @@ ___
 ___
 
 ## [ Latest version is  v3.0.89 ]
+### Super Speed up with threefive v3.0.89
+* One of my test for threefive is a 3.7 GB file with 286 SCTE-35 Cues.
+* v3.0.89 cuts parsing time over 50% in every python interpreter. 
+
+|interpreter| threefive v3.0.87| threefive v3.0.89|
+|-----------|------------------|------------------|
+|pypy3.9    |   4.13 seconds   |  __1.96 seconds__    |
+|python3.11 |   11.81 seconds  |  __4.618 seconds__   |
+|python3.14 |   14.33 seconds  |  __6.010 seconds__   |
+
+
+
+
+
 ___
 ##  [ Examples ]
 * [aac_id3header.py](aac_id3header.py) - use the __threefive.aac.AacParser__ class to parse __HLS AAC__ segments for __PTS__ in __ID3 header tags__. _(__Updated__ 01/07/2026)_
