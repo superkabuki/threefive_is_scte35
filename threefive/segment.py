@@ -112,12 +112,13 @@ class Segment(Stream):
         """
         if not self.shush:
             cue.show()
-        self._add_cue(cue)
+        self._add_cue(cue.encode())
 
     def decode(self, func=None):
         """
         decode a mpegts segment.
         """
+        func =self.show_cue
         num_pkts = 1400
         for pkt in self.iter_pkts(num_pkts=num_pkts):
             if not pkt:
