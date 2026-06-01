@@ -11,20 +11,7 @@ ___
 * threefive now has support for SCTE-35-2. __Event Descriptors__ and __Property__ types from __the recently published 2026 SCTE-35 Specification can be decoded, modified, and encoded with threefive.   
 ___
 
-## [ Latest version is  v3.0.89 ]
-### Super Speed up with threefive v3.0.89
-* One of my test for threefive is a 3.7 GB file with 286 SCTE-35 Cues.
-* v3.0.89 cuts parsing time over 50% in every python interpreter. 
-
-|interpreter| threefive v3.0.87| threefive v3.0.89|
-|-----------|------------------|------------------|
-|pypy3.9    |   4.13 seconds   |  __1.96 seconds__    |
-|python3.11 |   11.81 seconds  |  __4.618 seconds__   |
-|python3.14 |   14.33 seconds  |  __6.010 seconds__   |
-
-
-
-
+## [ Latest version is  v3.0.91 ]
 
 ___
 ##  [ Examples ](https://github.com/superkabuki/threefive_is_scte35/blob/main/examples)
