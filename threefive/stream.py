@@ -91,7 +91,11 @@ class MPStream:
         st = Stream(None)
         st.pids = pids
         st.maps = maps
-        return [cue for cue in [st._parse(pkt) for pkt in st.packetize(chunk)] if cue]
+        for pkt in st.packetize(chunk):
+            cue = st._parse(pkt)
+            if cue:
+                yield cue
+ #       return [cue for cue in [st._parse(pkt) for pkt in st.packetize(chunk)] if cue]
 
     def chunker(self):
         """
@@ -360,41 +364,6 @@ class Stream(Based):
         speedo.end()
         return False
 
-    def duration(self):
-        """
-        duration - get duration for local video files
-        """
-        #  prgm=1
-        duration = 0
-        num_pkts = 1000
-        head, tail = 0, 0
-
-        for pkt in self.iter_pkts(num_pkts=num_pkts):
-            pid = self._parse_pid(pkt[1], pkt[2])
-            if self._pusi_flag(pkt):
-                self._parse_pts(pkt, pid)
-                pts = self.pid2pts(pid)
-                if pts:
-                    head = pts
-                    break
-        fsize = os.stat(self.tsfile).st_size
-        spot = self._tsdata.tell()
-        tail_size = 188 * num_pkts
-        if (fsize - spot) > tail_size:
-            self._tsdata.seek(-tail_size, 2)
-        while self._tsdata.tell() <= fsize - 188:
-            pkt = self._tsdata.read(188)
-            pid = self._parse_pid(pkt[1], pkt[2])
-            if self._pusi_flag(pkt):
-                self._parse_pts(pkt, pid)
-                pts = self.pid2pts(pid)
-            tail = self.pid2pts(pid)
-        if tail < head:
-            tail += self.ROLLOVER9K
-        duration = self.as_hms(tail - head)
-        print2(f"Start: {head} End: {tail} Duration: {duration}")
-        return duration
-
     def mpdecode(self, func=show_cue):
         """
         mpdecode decode with multiprocessing
@@ -409,15 +378,11 @@ class Stream(Based):
         func can be set to a custom function that accepts
         a threefive.Cue instance as it's only argument.
         """
-        if "PyPy" not in sys.version:
-            return self.mpdecode(func=func)
         num_pkts = 2100
-        chunksize = self.PACKET_SIZE * num_pkts
-        while chunk := io.BufferedReader(self._tsdata, buffer_size=chunksize):
-            while pkt := chunk.read(188):
-                cue = self._parse(pkt)
-                if cue:
-                    func(cue)
+        for pkt in self.iter_pkts(2100):
+            cue = self._parse(pkt)
+            if cue:
+                func(cue)
         return False
 
     def decode_next(self):
