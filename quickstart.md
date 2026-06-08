@@ -10,26 +10,26 @@
 * __A network connection__
 
 ## [ Install ]
-```sh
+```sed
 python3 -mpip install threefive
 ```
 * and / or
-```sh 
+```sed 
 pypy3 -mpip install threefive
 ```
 * To add SRT support install __SRTfu__
-```sh
+```sed
 python3 -m pip install srtfu
 ```
 * To add AES decryption support install __pyaes__
-```sh
+```sed
 python3 -mpip install pyaes
 ```
 * __Installation Complete__.
 
-## [ Smoke Test] 
+## [ Smoke Test ] 
 ####  cli
-```sh
+```rebol
 a@fu:~/scratch/threefive$ threefive '/DAWAAAAAAAAAP/wBQb+AN3qCgAABErv4A=='
 ```
 * expected output
