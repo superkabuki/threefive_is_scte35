@@ -1,24 +1,18 @@
-# [ threefive ]
-
-## https://github.com/superkabuki/threefive
-
+# [ threefive ] 
 *   __Decodes SCTE-35__ from `MPEGTS`✔ `Base64`✔ `Bytes`✔ `DASH`✔ `Hex` ✔ `HLS`✔ `Integers`✔ `JSON`✔ `XML`✔ `XML+Binary`✔  
 *   __Encodes SCTE-35__ to `MPEGTS`✔ `Base64`✔ `Bytes`✔ `Hex`✔ `Integers`✔ `JSON`✔ `XML`✔ `XML+Binary`✔
 ___
 
 ## [ News ]
-
 * threefive now has support for SCTE-35-2. __Event Descriptors__ and __Property__ types from __the recently published 2026 SCTE-35 Specification can be decoded, modified, and encoded with threefive.   
 ___
 
 ## [ Latest version is  v3.0.91 ]
-
 ___
 ##  [[ Examples ]](https://github.com/superkabuki/threefive_is_scte35/blob/main/examples)
 ___
-## [ Tip of the Week ](totw.md)
-
-
+## [ [ Tip of the Week ] ](totw.md)
+___
 # [ Documentation ]
 #### Need to inject SCTE-35 into HLS?  [X9k3.](https://github.com/superkabuki/x9k3)
 * [__web based SCTE-35 tools__](#web) - threefive and friends over http. 
