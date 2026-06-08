@@ -5,7 +5,7 @@ Mpeg-TS Stream parsing class Stream
 import io
 import os
 import sys
-from multiprocessing import Pool, set_start_method
+from collections import deque
 from functools import partial
 from .cue import Cue
 from .new_reader import reader
@@ -14,13 +14,6 @@ from .streamtypes import streamtype_map
 from .stuff import blue, ERR, print2
 from .speedo import Speedo
 from .throttle import Throttle
-
-
-PKTSIZE = 188
-CHUNKSIZE = PKTSIZE * 7777
-POOLSIZE = 6
-
-set_start_method("fork")
 
 
 def show_cue(cue):
@@ -59,65 +52,6 @@ class Based:
         return output
 
 
-"""
-mps.py - improve performance of threefive on python 3.11 and 3.14
-via multiprocessing. pypy3 is faster in a single process.
-"""
-
-
-class MPStream:
-
-    def __init__(self, filepath):
-        self.filepath = filepath
-
-    def init_pool2(self):
-        """
-        init_pool2 discovers the stucture of an
-        MPEGTS stream to prime
-        Stream instances in the pool
-        init_pool2 is only called once before the Pool
-        is started.(init_pool was called once per  Pool member.
-        """
-        stp = Stream(self.filepath)
-        stp.show()
-        stp.maps.prgm_pts = {}
-        stp.maps.partial = {}
-        return stp.pids, stp.maps
-
-    def chunk_parser(self, pids, maps, chunk):
-        """
-        chunk_parser parse a chunk
-        """
-        st = Stream(None)
-        st.pids = pids
-        st.maps = maps
-        for pkt in st.packetize(chunk):
-            cue = st._parse(pkt)
-            if cue:
-                yield cue
- #       return [cue for cue in [st._parse(pkt) for pkt in st.packetize(chunk)] if cue]
-
-    def chunker(self):
-        """
-        chunker video chunk generator
-        """
-        with reader(self.filepath) as r:
-            while chunk := r.read(CHUNKSIZE):
-                yield chunk
-
-    def decode(self, func=show_cue):
-        """
-        run create pool and parse mpegts stream
-        """
-        with Pool(
-            POOLSIZE,
-        ) as pool:
-            pids, maps = self.init_pool2()
-            pfunc = partial(self.chunk_parser, pids, maps)
-            results = pool.imap(pfunc, self.chunker(), chunksize=10)
-            _ = [func(cue) for cues in results for cue in cues]
-
-
 class ProgramInfo(Based):
     """
     ProgramInfo is a class to
@@ -126,8 +60,6 @@ class ProgramInfo(Based):
     """
 
     def __init__(self, pid=None, pcr_pid=None):
-        #  self.provider = b""
-        # self.service = b""
         self.streams = {}  # pid to stream_type mapping
         self.pid = pid
         self.pcr_pid = pcr_pid
@@ -320,12 +252,9 @@ class Stream(Based):
         """
         throttler = Throttle()
         for pkt in self.iter_pkts():
-            if pkt[6] != 255:
-                cue = self._parse(pkt)
-                if cue:
-                    func(cue)
-                throttler.throttle(pkt)
-                sys.stdout.buffer.write(pkt)
+            self.pkt2cue(pkt, func)
+            throttler.throttle(pkt)
+            sys.stdout.buffer.write(pkt)
             sys.stdout.buffer.flush()
         return False
 
@@ -336,21 +265,15 @@ class Stream(Based):
         for i in range(0, len(chunk), self.PACKET_SIZE):
             yield chunk[i : i + self.PACKET_SIZE]
 
-    def chunked(self, num_pkts):
-        """
-        chunked - read chunks from stream
-        """
-        chunksize = self.PACKET_SIZE * num_pkts
-        if self._find_start():
-            while chunk := self._tsdata.read(chunksize):
-                yield chunk
-
-    def iter_pkts(self, num_pkts=1400):
+    def iter_pkts(self, num_pkts=3300):
         """
         iter_pkts - iterate packets from stream
         """
-        for chunk in self.chunked(num_pkts):
-            yield from self.packetize(chunk)
+        if self._find_start():
+            for chunk in iter(
+                partial(self._tsdata.read, num_pkts * self.PACKET_SIZE), b""
+            ):
+                yield from self.packetize(chunk)
 
     def speed(self):
         """
@@ -364,13 +287,17 @@ class Stream(Based):
         speedo.end()
         return False
 
-    def mpdecode(self, func=show_cue):
+    def pkt2cue(self, pkt, func):
         """
-        mpdecode decode with multiprocessing
+        pkt2cue parse a packet,
+        if Cue : func(Cue)
+        return a Cue instance or None
         """
-        mps = MPStream(self.tsfile)
-        mps.decode(func=func)
-        return False
+        cue = self._parse(pkt)
+        if cue:
+            func(cue)
+            return cue
+        return None
 
     def decode(self, func=show_cue):
         """
@@ -378,11 +305,8 @@ class Stream(Based):
         func can be set to a custom function that accepts
         a threefive.Cue instance as it's only argument.
         """
-        num_pkts = 2100
-        for pkt in self.iter_pkts(2100):
-            cue = self._parse(pkt)
-            if cue:
-                func(cue)
+        for pkt in self.iter_pkts():
+            self.pkt2cue(pkt, func)
         return False
 
     def decode_next(self):
@@ -391,7 +315,7 @@ class Stream(Based):
         SCTE35 cue as a threefive.Cue instance.
         """
         for pkt in self.iter_pkts():
-            cue = self._parse(pkt)
+            cue = self.pkt2cue(pkt)
             if cue:
                 yield cue
         return False
@@ -420,9 +344,10 @@ class Stream(Based):
         """
         decode_start_time
         """
-        self.decode(func=no_op)
-        if len(self.start.values()) > 0:
-            return self.start.popitem()[1]
+        for pkt in self.iter_pkts():
+            self.parse(pkt)
+            if len(self.start.values()) > 0:
+                return self.start.popitem()[1]
         return False
 
     def proxy(self, func=show_cue):
@@ -432,9 +357,7 @@ class Stream(Based):
         SCTE-35 cues are print2`ed to stderr.
         """
         for pkt in self.iter_pkts():
-            cue = self._parse(pkt)
-            if cue:
-                func(cue)
+            self.pkt2cue(pkt, func)
             sys.stdout.buffer.write(pkt)
         return False
 
@@ -460,17 +383,28 @@ class Stream(Based):
         """
         show_pts displays current pts by pid.
         """
+
+        def short_bus(short_list, limit=None):
+            short_list = deque(sorted(short_list))
+            if not limit:
+                limit = len(short_list)
+            for i in range(limit):
+                pts = short_list.popleft()
+                print(f"\t{self.pid2prgm(pid)}\t{pts}")
+
         print("\tPrgm\tPTS")
-        last_pts = None
+        short_list = deque()
         for pkt in self.iter_pkts():
             pid = self._parse_info(pkt)
             if self._pusi_flag(pkt):
-                self._parse_pts(pkt, pid)
-                pts = self.pid2pts(pid)
-                if pts:
-                    if pts != last_pts:
-                        print(f"\t{self.pid2prgm(pid)}\t{pts}")
-                    last_pts = pts
+                if pid in self.pids.pcr:
+                    self._parse_pts(pkt, pid)
+                    pts = self.pid2pts(pid)
+                    if pts:
+                        short_list.append(pts)
+                        if len(short_list) == 20:
+                            short_bus(short_list, 10)
+        short_bus(short_list)
 
     def pts(self):
         """
@@ -605,13 +539,12 @@ class Stream(Based):
 
     def _parse(self, pkt):
         pid = self._parse_pid(pkt[1], pkt[2])
-
         if pid in self.pids.tables:
             return self._parse_tables(pkt, pid)
         if pid in (self.pids.scte35 or self.pids.maybe_scte35):
             return self._parse_scte35(pkt, pid)
-        if pid in self.pids.pcr:
-            if self._pusi_flag(pkt):
+        if self._pusi_flag(pkt):
+            if pid in self.pids.pcr:
                 self._parse_pts(pkt, pid)
         return False
 
