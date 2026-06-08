@@ -10,19 +10,19 @@
 * __A network connection__
 
 ## [ Install ]
-```sed
+```rexx
 python3 -mpip install threefive
 ```
 * and / or
-```sed 
+```rexx
 pypy3 -mpip install threefive
 ```
 * To add SRT support install __SRTfu__
-```sed
+```rexx
 python3 -m pip install srtfu
 ```
 * To add AES decryption support install __pyaes__
-```sed
+```rexx
 python3 -mpip install pyaes
 ```
 * __Installation Complete__.
@@ -30,7 +30,7 @@ python3 -mpip install pyaes
 ## [ Smoke Test ] 
 ####  cli
 ```rebol
-a@fu:~/scratch/threefive$ threefive '/DAWAAAAAAAAAP/wBQb+AN3qCgAABErv4A=='
+a@fu:~$ threefive '/DAWAAAAAAAAAP/wBQb+AN3qCgAABErv4A=='
 ```
 * expected output
 ```json
@@ -115,7 +115,7 @@ and the threefive library.</i>
 * MPEGTS streams can be  Files, Http(s), Multicast,SRT, UDP Unicast, or  stdin. 
 * __cli__
 
-```js
+```rexx
 threefive https://example.com/video.ts
 ```
 * wildcards work too.
@@ -135,7 +135,7 @@ stream.decode()
 <details><summary>Base64</summary>
 
 * __cli__
-```js
+```rexx
 threefive '/DAsAAAAAyiYAP/wCgUAAAABf1+ZmQEBABECD0NVRUkAAAAAf4ABADUAAC2XQZU='
 ```
 * __lib__
@@ -171,7 +171,7 @@ cue.show()
 * Can be a hex literal or hex string or bytes.
 
 * __cli__
-```js
+```rexx
 threefive  0xfc301600000000000000fff00506fed605225b0000b0b65f3b
 ```
 * __lib__
@@ -191,7 +191,7 @@ cue.show()
 * Can be a literal integer or string or bytes.
 
 * __cli__
-```js
+```rexx
 threefive  1583008701074197245727019716796221243043855984942057168199483
 ```
 * __lib__
@@ -214,7 +214,7 @@ cue.show()
     *   cat files to threefive works too.
     *   echo JSON or type JSON on the command line.
    
-```js
+```rexx
 threefive  < json.json
 ```
 * __lib__
@@ -265,7 +265,7 @@ cue.show()
     * cat files to threefive works too.
     * echo xml or type xml on the command line.
      
-	```js
+	```rexx
 	threefive < xml.xml
 	```
 * __lib__
@@ -295,7 +295,7 @@ cue.show()
 	* write xml+binary to a [file](xmlbin.xml) and redirect it to threefive
     * cat files to threefive works too.
     * echo xml+binary or type xml+binary on the command line.
-```js
+```rexx
 threefive < xmlbin.xml
 ```
 * __lib__
