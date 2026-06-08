@@ -4,10 +4,10 @@
 ___
 
 ## [ News ]
-* threefive now has support for SCTE-35-2. __Event Descriptors__ and __Property__ types from __the recently published 2026 SCTE-35 Specification can be decoded, modified, and encoded with threefive.   
+* __threefive__ now has support for __SCTE-35-2. Event Descriptors__ and __Property types__ from the recently published __2026 SCTE-35-2 Specification__.   
 ___
 
-## [ Latest version is  v3.0.91 ]
+## [ Latest threefive version is  v3.0.91 ]
 ___
 ##  [[ Examples ]](https://github.com/superkabuki/threefive_is_scte35/blob/main/examples)
 ___
