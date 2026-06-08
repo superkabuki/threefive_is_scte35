@@ -144,4 +144,4 @@ def _open_mcast(uri):
         socket.IP_ADD_MEMBERSHIP,
         socket.inet_aton(multicast_group) + socket.inet_aton(interface_ip),
     )
-    return socked
+    return socked.makefile("rb")
