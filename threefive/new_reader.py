@@ -121,7 +121,7 @@ def _open_udp(uri):
     print2("\n")
     udp_sock = udp_receiver()
     udp_sock.bind((udp_ip, udp_port))
-    return udp_sock
+    return udp_sock.makefile("rb")
 
 
 def _open_mcast(uri):
