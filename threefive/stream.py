@@ -229,6 +229,15 @@ class Stream(Based):
         except ERR:
             return False
 
+    def rai(pkt):
+        """
+        rai random access indicator
+        (keyframes)
+        """
+        if pkt[3] & 0x20: 
+            return pkt[5] & 0x40
+        return False
+
     def _find_start(self):
         while self._tsdata:
             one = self._tsdata.read(1)
@@ -455,16 +464,6 @@ class Stream(Based):
         pdata.mk_pts(self.maps.prgm_pts)
         return pdata
 
-    def _parse_cc(self, pkt, pid):
-        last_cc = None
-        c_c = pkt[3] & 0xF
-        if pid in self.maps.pid_cc:
-            last_cc = self.maps.pid_cc[pid]
-            good = (last_cc, ((last_cc + 1) % 16))
-            if c_c not in good:
-                print2(f" # BAD --> pid:\t{hex(pid)}\tlast cc:\t{last_cc}\tcc:\t{c_c}")
-        self.maps.pid_cc[pid] = c_c
-
     @staticmethod
     def mk_pts(payload):
         """
@@ -590,7 +589,7 @@ class Stream(Based):
         packet_data = None
         packet_data = self._mk_packet_data(pid)
         cue = Cue(pay, packet_data)
-        if cue.decode():
+        if cue:
             return cue
         return False
 
