@@ -275,15 +275,17 @@ class Stream(Based):
         for i in range(0, len(chunk), self.PACKET_SIZE):
             yield chunk[i : i + self.PACKET_SIZE]
 
-    def iter_pkts(self, num_pkts=3300):
+    def iter_pkts(self, num_pkts=1400):
         """
         iter_pkts - iterate packets from stream
         """
         if self._find_start():
-            for chunk in iter(
-                partial(self._tsdata.read, num_pkts * self.PACKET_SIZE), b""
-            ):
-                yield from self.packetize(chunk)
+##            yield from iter(
+##                partial(self._tsdata.read,  self.PACKET_SIZE), b""
+##            )
+            while pkt:=self._tsdata.read(self.PACKET_SIZE):
+                yield pkt
+          #      yield from self.packetize(chunk)
 
     def speed(self):
         """
