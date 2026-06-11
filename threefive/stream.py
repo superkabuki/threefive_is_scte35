@@ -1,5 +1,6 @@
 """
-Mpeg-TS Stream parsing class Stream
+stream.py
+Mpeg-TS Stream parsing class
 """
 
 import io
@@ -324,7 +325,7 @@ class Stream(Based):
         SCTE35 cue as a threefive.Cue instance.
         """
         for pkt in self.iter_pkts():
-            cue = self.pkt2cue(pkt)
+            cue = self.parse(pkt)
             if cue:
                 yield cue
         return False
