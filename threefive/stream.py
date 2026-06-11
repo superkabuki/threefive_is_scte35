@@ -292,7 +292,9 @@ class Stream(Based):
         """
         speedo = Speedo()
         num_pkts = 700
-        for chunk in self.chunked(num_pkts=num_pkts):
+        for chunk in iter(
+                partial(self._tsdata.read, num_pkts * self.PACKET_SIZE), b""
+            ):
             speedo.plus(len(chunk))
         speedo.end()
         return False
@@ -393,28 +395,17 @@ class Stream(Based):
         """
         show_pts displays current pts by pid.
         """
-
-        def short_bus(short_list, limit=None):
-            short_list = deque(sorted(short_list))
-            if not limit:
-                limit = len(short_list)
-            for i in range(limit):
-                pts = short_list.popleft()
-                print(f"\t{self.pid2prgm(pid)}\t{pts}")
-
         print("\tPrgm\tPTS")
-        short_list = deque()
         for pkt in self.iter_pkts():
             pid = self._parse_info(pkt)
+            prgm=self.pid2prgm(pid)
             if self._pusi_flag(pkt):
                 if pid in self.pids.pcr:
                     self._parse_pts(pkt, pid)
                     pts = self.pid2pts(pid)
                     if pts:
-                        short_list.append(pts)
-                        if len(short_list) == 20:
-                            short_bus(short_list, 10)
-        short_bus(short_list)
+                        print(prgm,' \t ',pts)
+ 
 
     def pts(self):
         """
