@@ -5,10 +5,10 @@ ___
 
 ## [ News ]
 * __threefive__ now has support for __SCTE-35-2. Event Descriptors__ and __Property types__ from the recently published __2026 SCTE-35-2 Specification__.
-* __threefive v3.0.93__ will support HLS autodetection in the cli.
+* __threefive v3.0.93__ now supports HLS autodetection in the cli.
 ___
 
-## [ Latest threefive version is  v3.0.91 ]
+## [ Latest threefive version is  v3.0.93 ] _Released 06/11/2026_
 ___
 ##  [[ Examples ]](https://github.com/superkabuki/threefive_is_scte35/blob/main/examples)
 ___
@@ -18,7 +18,7 @@ ___
 #### Need to inject SCTE-35 into HLS?  [X9k3.](https://github.com/superkabuki/x9k3)
 * [__web based SCTE-35 tools__](#web) - threefive and friends over http. 
 * [__install__](#install)
-* [__quick start__](https://github.com/superkabuki/threefive_is_scte35/blob/main/quickstart.md)
+* [__quick start__](quickstart.md)
 * __command line tools__
 	* [ __threefive__](#cli) _decode SCTE-35 on the command line_
   	* [__scte35bump__](#scte35bump) _adjust SCTE-35 PTS in MPEGTS streams_ 
@@ -26,7 +26,7 @@ ___
 	* [__scte35inject__](scte35inject.md) _scte35inject inject scte-35 into mpegts._
   	* [__gums__](#gums) _gums is a  multicast sender(server) for video_ 
 * __library__
- 	* [__Using the threefive.Cue class__](https://github.com/superkabuki/threefive/blob/main/lib.md) 
+ 	* [__Using the threefive.Cue class__](lib.md) 
 	* [__Using the threefive library__](#using-the-library) _decode SCTE-35 with less than ten lines of code_
  	* * [threefive __Classes__](#classes) _threefive is OO, made to subclass_
 		* [__Cue__ Class](https://github.com/superkabuki/threefive/blob/main/cue.md) _this class you'll use often_ 
