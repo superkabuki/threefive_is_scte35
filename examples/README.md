@@ -216,6 +216,7 @@ cue.show()
 * [edit_break_duration.py](edit_break_duration.py) - change the __SCTE-35__ __break duration__ and __re-encode__ __SCTE-35__.
 * [event_descriptors.py](event_descriptors.py) - The __Event Descriptor__ examples from the __2026 SCTE-35 part 2 specification__. _(__New!__ 05/10/2026)_
 * [encode_time_signal.py](encode_time_signal.py) - __encode__ a __SCTE-35__ __Cue__ with a __TimeSignal__ from scratch.
+* [mps.py](mps.py) parse __SCTE-35 from MPEGTS with multiprocessing__.
 * [parsehlstags.py](parsehlstags.py) - use the __TagParser__ class to parse __HLS tags__ from a __m3u8__ file and group the tags by segment.
 * [proxy.py](proxy.py) - how to use the __Stream.proxy()__ method for parsing __SCTE-35__ and __piping__ video.
 * [quickstream.py](quickstream.py) - how to __add SCTE-35 parsing__ for __MPEGTS__ streams to __your application__.
