@@ -484,14 +484,15 @@ class HlsParser:
         """
         _print_time prints wall clock and pts.
         """
+        gonzo=''
         if self.break_timer:
-            gonzo = f"{REV} Break\033[;107m\033[44m {round(self.break_timer,3)}"
+            gonzo = f"{REV} Break{NORM} {round(self.break_timer,3)}"
             if self.break_duration:
                 gonzo = f"{gonzo}/{round(self.break_duration,3)}"
         ##                if self.break_timer > self.break_duration:
         ##                    print("AUTO IN HERE")
         ##                    self._auto_cuein("## AUTO IN")
-        ##   \033[;107m\033[44m
+#        ##   \033[;107m\033[44m
         else:
             first = f"{REV}Media {NORM}"
             second = f'{self.media[-1].rsplit("/", 1)[1].split("?", 1)[0].strip()}'
@@ -699,6 +700,7 @@ class HlsParser:
             except ERR:
                 red(f"Skipping {media}\n")
                 return
+        self._print_time()
         pane = Pane(media, lines)
         self.sliding_window.slide_panes(pane)
         self.first_segment = False
