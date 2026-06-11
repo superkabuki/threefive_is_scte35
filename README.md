@@ -4,7 +4,8 @@
 ___
 
 ## [ News ]
-* __threefive__ now has support for __SCTE-35-2. Event Descriptors__ and __Property types__ from the recently published __2026 SCTE-35-2 Specification__.   
+* __threefive__ now has support for __SCTE-35-2. Event Descriptors__ and __Property types__ from the recently published __2026 SCTE-35-2 Specification__.
+* __threefive v3.0.93__ will support HLS autodetection in the cli.
 ___
 
 ## [ Latest threefive version is  v3.0.91 ]
