@@ -1,7 +1,7 @@
 
 [project]
 name = "threefive"
-version = "3.0.91"
+version = "3.0.93"
 authors = [
   { name="AdrianofDoom", email="spam@iodisco.com" },
 ]
@@ -31,7 +31,6 @@ Issues = "https://github.com/superkabuki/threefive/issues"
 [project.scripts]
 scte35bump = "threefive.bump:cli"
 gums = "threefive.gums:cli"
-scte35hls = "threefive.hls:cli"
 scte35fix = "threefive.sixfix:cli"
 scte35inject = "threefive.superkabuki:cli"
 threefive = "threefive.cli:threefivecli"
