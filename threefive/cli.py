@@ -82,7 +82,7 @@ def done():
     done prints the threefive version, interpreter version,
     and calls sys.exit()
     """
-    # print2(f"# threefive: {version} on python: {sys.version}")
+    print2(f"# threefive: {version} on python: {sys.version}")
     sys.exit()
 
 
@@ -441,6 +441,22 @@ def dashdashhelp():
         sys.argv[idx] = "--help"
 
 
+def chk_hls():
+    """
+    chk_hls  check if an  m3u8 has
+    been passed on the command line
+    and call the hlscli if it is an m3u8
+    """
+    this = sys.argv[1]
+    try:
+        packet = reader(this).read(188)
+        if b"#EXTM3U"  in packet :
+            hlscli()
+            done()           
+    except:
+        pass
+
+
 def threefivecli():
     """
     threefivecli check all the maps
@@ -453,6 +469,7 @@ def threefivecli():
 
     """
     dashdashhelp()
+    chk_hls()
     chk_print_map()
     chk_mpegts_map()
     chk_funk_map()
