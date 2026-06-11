@@ -6,7 +6,6 @@ threefive.cli.py
 scte35 command line SCTE35 decoder.
 
 threefivecli() is the call for the threefive cli.
-
 """
 
 
@@ -448,8 +447,8 @@ def chk_hls():
     been passed on the command line
     and call the hlscli if it is an m3u8
     """
-    this = sys.argv[1]
     try:
+        this = sys.argv[1]
         packet = reader(this).read(188)
         if b"#EXTM3U"  in packet :
             hlscli()
