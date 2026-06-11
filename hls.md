@@ -172,5 +172,5 @@ with or without any HLS tags.
 ```
 * parse an m3u8:
 ```rebol
-        threefive hls  https://example.com/out/master.m3u8
+        threefive  https://example.com/out/master.m3u8
 ```
