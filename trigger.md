@@ -3,17 +3,6 @@
 By default, threefive.Stream prints the SCTE-35 data to stderr. The reason it prints the stream is so you can see threefive working right out of the box. 
 How threefive.Stream prints the message is by passing it a function as an arg.
 
-The function is called show_cue
-```py3
-
-def show_cue(cue):
-    """
-    default function call for Stream.decode
-    when a SCTE-35 packet is found.
-    """
-    cue.show()
-```
-
 * These threefive.Stream methods all accept an optional func arg.
 ```py3
 def decode(self, func=show_cue):
@@ -34,8 +23,8 @@ ___
 
 # A better Way
 
-> I used a function arg like that for years, but then a guy sent me a pull request for a new method.
-> decode_next() is a python generator taat yields a threefive.Cue instance when  SCTE-35 is found in an mpegts Stream. 
+> I used a function arg like that for years, but then a guy sent me a pull request with a decode_next() method.
+> decode_next() is a python generator that yields a threefive.Cue instance when SCTE-35 is found in an mpegts Stream. 
 
 * Stream.decode_next() works great in a for loop 
 * You can do anything you want with the SCTE-35 Cue.
