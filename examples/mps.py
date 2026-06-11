@@ -67,3 +67,6 @@ class MPStream:
             results = pool.imap(pfunc, self.chunker(), chunksize=3)
             _ = [func(cue) for cues in results for cue in cues]
 
+if  __name__ == '__main__':
+        mps = MPStream(tsstream)
+        mps.decode()
