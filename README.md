@@ -23,7 +23,6 @@ ___
 	* [ __threefive__](#cli) _decode SCTE-35 on the command line_
   	* [__scte35bump__](#scte35bump) _adjust SCTE-35 PTS in MPEGTS streams_ 
     * [__scte35fix__](#scte35fix)  _ffmpeg changes scte-35 streams into bin data, scte35fix changes them back._
-  	* [__scte35hls__](#scte35hls) _scte35hls parses hls and ABR hls for scte-35. All hls scte-35 tags are supported__ 
 	* [__scte35inject__](scte35inject.md) _scte35inject inject scte-35 into mpegts._
   	* [__gums__](#gums) _gums is a  multicast sender(server) for video_ 
 * __library__
@@ -86,6 +85,11 @@ The threefive cli tool is able to parse SCTE-35 from MPEGTS Streams,Base64,Hex,I
 The format is auto-detected.
 
 # [⇧](#-documentation-)
+
+#### [ Parse SCTE-35 from HLS with threefive ]
+```js
+threefive https://example.com/master.m3u8
+```
 
 #### [ Parse SCTE-35 from MPEGTS ]
 SCTE-35 can be parsed from MPEGTS over a variety of protocols.
@@ -209,19 +213,13 @@ gums is part of threefive.
 
 # [⇧](#-documentation-)
 
-#### scte35hls
+#### HLS
 
 * parse HLS for SCTE-35. Supports all HLS SCTE-35 tags.
 
 ```js
-$ scte35hls -h
-
-[ threefive hls ]
-
-[ Help ]
-
-    To display this help:
-	scte35hls help
+$ threefive hls help
+```
 
 [ Input ]
     threefive hls takes an m3u8 URI as input.
