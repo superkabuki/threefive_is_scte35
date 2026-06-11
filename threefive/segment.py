@@ -118,18 +118,11 @@ class Segment(Stream):
         """
         decode a mpegts segment.
         """
-        func =self.show_cue
-        num_pkts = 1400
-        for pkt in self.iter_pkts(num_pkts=num_pkts):
-            if not pkt:
-                break
-            cue = self._parse(pkt)
-            if cue:
-                func(cue)
+        for pkt in self.iter_pkts():
+            self.pkt2cue(pkt, func)
         if self.start:
             self.pts_start = self.as_90k(self.start.popitem()[1])
             self.pts_last = self.as_90k(list(self.maps.prgm_pts.items())[0][1])
-            self.duration = round(self.pts_last - self.pts_start, 6)
-
+            self.duration = self.as_hms(round(self.pts_last - self.pts_start, 6))
         if self.tmp:
             os.unlink(self.tmp)
