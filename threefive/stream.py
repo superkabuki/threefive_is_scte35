@@ -532,13 +532,15 @@ class Stream(Based):
 
     def _parse(self, pkt):
         pid = self._parse_pid(pkt[1], pkt[2])
+        if self._pusi_flag(pkt):
+            if pid in self.pids.pcr:
+                self._parse_pts(pkt, pid)
+                return False
         if pid in self.pids.tables:
             return self._parse_tables(pkt, pid)
         if pid in (self.pids.scte35 or self.pids.maybe_scte35):
             return self._parse_scte35(pkt, pid)
-        if self._pusi_flag(pkt):
-            if pid in self.pids.pcr:
-                self._parse_pts(pkt, pid)
+
         return False
 
     def parse(self, pkt):
