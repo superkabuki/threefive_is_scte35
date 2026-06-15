@@ -28,7 +28,7 @@ def _setSO_RCVBUF(socked):
     """
     _setSO_RCVBUF  left shift socket.SO_RCVBUF
     """
-    shift = 3
+    shift = 7
     rcvbuf_size = socked.getsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF)
     blue(f"SO_RCVBUF Was { rcvbuf_size}")
     try_rcvbuf = rcvbuf_size << shift
@@ -41,7 +41,7 @@ def _setSO_SNDBUF(socked):
     """
     _setSO_SNDBUF  left shift socket.SO_SNDBUF
     """
-    shift = 2
+    shift = 7
     sndbuf_size = socked.getsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF)
     blue(f"SO_SNDBUF Was { sndbuf_size}")
     try_sndbuf = sndbuf_size << shift
