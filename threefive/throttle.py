@@ -17,7 +17,7 @@ class Throttle:
     the Throttle class works at the MPEGTS packet level.
     """
 
-    def __init__(self, shush=False):
+    def __init__(self, shush=True):
         self.first = None
         self.second = None
         self.actualstart = None
@@ -75,8 +75,9 @@ class Throttle:
             self._print_throttle(diffed)
             self._reset_end()
         else:
-            print(f"Slow: {diffed}", file=sys.stderr, end="\r")
-            self._reset()
+            if not self.shush:
+                print(f"Slow: {diffed}", file=sys.stderr, end="\r")
+                self._reset()
 
     def _diff(self, pts):
         """
