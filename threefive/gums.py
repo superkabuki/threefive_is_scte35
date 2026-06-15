@@ -55,23 +55,21 @@ class GumS:
         _iter_dgrams iterates over the video and sends
         self.dgram_size chunks of video to the socket.
         """
-        time.sleep(0.0001)
-        throttle = Throttle(shush=True)
-        speedo = Speedo()
         with reader(vid) as video:
-            for dgram in iter(partial(video.read, DGRAM), b""):
-                packets = []
-                while dgram:
-                    packet = dgram[:188]
-                    packets.append(packet)
-                    dgram = dgram[188:]
-                dgram = b"".join(packets)
-                self.socked.sendto(dgram, self.dest_grp)
-                throttle.throttle(packets[-1])
-                speedo.plus(len(dgram))
-            flush = b"\xff" * 1316
-            self.socked.sendto(flush, self.dest_grp)
+            time.sleep(0.0001)
+            throttle = Throttle(shush=True)
+            speedo = Speedo()
 
+            for dgram in iter(partial(video.read, DGRAM), b""):
+              #  throttle.throttle(dgram)
+                self.socked.sendto(dgram, self.dest_grp)
+                start=0
+                end=len(dgram)
+                for i in range(start,end,188):
+                    throttle.throttle(dgram[i:i+188])
+                speedo.plus(len(dgram))
+          #  flush = b"\xff" * 1316
+            #self.socked.sendto(flush, self.dest_grp)
         speedo.end()
 
     def send_stream(self, vid):
