@@ -5,21 +5,22 @@ ___
 *   __Encodes SCTE-35__ to `MPEGTS`✔ `Base64`✔ `Bytes`✔ `Hex`✔ `Integers`✔ `JSON`✔ `XML`✔ `XML+Binary`✔
 
 ___
-#  [[ Examples ]](https://github.com/superkabuki/threefive_is_scte35/blob/main/examples)  |  [ [ Tip of the Week ] ](totw.md)  |  [ [Cheap Tricks ] ](cheaptricks.md)
+#  [Examples ](https://github.com/superkabuki/threefive_is_scte35/blob/main/examples)  |  [  Tip of the Week  ](totw.md)  |   [ Cheap Tricks  ](cheaptricks.md)
 # [ Documentation ]
 #### Need to inject SCTE-35 into HLS?  [X9k3.](https://github.com/superkabuki/x9k3)
 * [__web based SCTE-35 tools__](#web) - threefive and friends over http. 
 * [__install__](#install)
 * [__quick start__](quickstart.md)
-* __command line tools__
-	* [ __threefive__](#cli) _decode SCTE-35 on the command line_
-  	* [__scte35bump__](#scte35bump) _adjust SCTE-35 PTS in MPEGTS streams_ 
+* ___SCTE-35 on the command line___   
+	* [ __the threefive cli tool__](#-cli-) _If you work with SCTE-35, this is as cool as it gets.  
+* __other included tools__
+    * [__scte35bump__](#scte35bump) _adjust SCTE-35 PTS in MPEGTS streams_ 
     * [__scte35fix__](#scte35fix)  _ffmpeg changes scte-35 streams into bin data, scte35fix changes them back._
 	* [__scte35inject__](scte35inject.md) _scte35inject inject scte-35 into mpegts._
   	* [__gums__](#gums) _gums is a  multicast sender(server) for video_ 
-* __library__
+* __the threefive library__ _cool code for the cool kids_.
  	* [__Using the threefive.Cue class__](lib.md) 
-	* [__Using the threefive library__](#using-the-library) _decode SCTE-35 with less than ten lines of code_
+	* [__Using the threefive library__](#-using-the-library-) _decode SCTE-35 with less than ten lines of code_
  	* * [threefive __Classes__](#classes) _threefive is OO, made to subclass_
 		* [__Cue__ Class](https://github.com/superkabuki/threefive/blob/main/cue.md) _this class you'll use often_ 
 		* [__Stream__ Class](https://github.com/superkabuki/threefive/blob/main/stream.md) _this is the class for parsing MPEGTS_
