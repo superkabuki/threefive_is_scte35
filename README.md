@@ -1,4 +1,4 @@
-# threefive is the highest rated SCTE-35 tool. Ever.
+# threefive is better than you.
 ___
 * __Latest__ version is  __v3.0.93__  _Released 06/11/2026_
 *   __Decodes SCTE-35__ from `MPEGTS`✔ `Base64`✔ `Bytes`✔ `DASH`✔ `Hex` ✔ `HLS`✔ `Integers`✔ `JSON`✔ `XML`✔ `XML+Binary`✔  
