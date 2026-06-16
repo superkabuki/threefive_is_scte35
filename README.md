@@ -103,34 +103,16 @@ make install py3=python3.14
 ___
 
 ## [ CLI ]
-The threefive cli tool is able to parse SCTE-35 from MPEGTS Streams,Base64,Hex,Integers,JSON XML,and XMLBinary.
-The format is auto-detected.
-
-#### [⇧](#-documentation-)
-
-* __Parse SCTE-35 from HLS__  
-```js
-threefive https://example.com/master.m3u8
-```
-
-* __Parse SCTE-35 from MPEGTS__
-* 
-SCTE-35 can be parsed from MPEGTS over a variety of protocols.
-* __SCTE-35 Input__: MPEGTS
-*  __Protocols__: pipes, files, stdin, http(s), multicast,SRT and UDP.
-* __SCTE-35 Output__: JSON _(default)_ base64, bytes, hex, int, xml, and xmlbin.
-
-|SCTE-35 Input  | Protocol   | SCTE-35 Output     | Command                                             |
-|-------|------------|-----------|---------------------------------------------------------|
-|__MPEGTS__|file|__JSON__   | __threefive__ video.ts										 |  
-|__.__|https|__base64__ | __threefive__ https://example.com/video.ts  __base64__      |
-|__.__|multicast|__bytes__ | __threefive__ udp://@235.3.5:3535  __bytes__      |
-|__.__|SRT|__hex__ | __threefive__ srt://1.2.3.4:4201  __hex__      |
-|__.__|UDP|__int__ | __threefive__ udp://10.10.10.10:1011  __int__      |
-|__.__|Pipe|__xml__| cat video.ts \| __threefive__  __xml__                           |
-|__.__|stdin|__xml+bin__| __threefive__  __xmlbin__ < video.ts|
-
-___
+*The threefive cli tool is able to parse SCTE-35 from 
+  * Base64
+  * Hex
+  * HLS
+  * Integers
+  * JSON
+  * MPEGTS
+  * XML
+  * XMLBinary.
+* Formats are auto-detected.
 
 * __Parse SCTE-35 Cues__ 
   *  __SCTE-35 Inputs:__  base64, hex, int, JSON,int,xml,and xmlbin.
@@ -160,6 +142,31 @@ ___
 |__xmlbin__|__int__    | __threefive__   < xmlbin.xml __int__                        |
 
 ___
+
+* __Parse SCTE-35 from HLS__  
+```js
+threefive https://example.com/master.m3u8
+```
+___
+
+* __Parse SCTE-35 from MPEGTS__
+* SCTE-35 can be parsed from MPEGTS over a variety of protocols.
+* __SCTE-35 Input__: MPEGTS
+*  __Protocols__: pipes, files, stdin, http(s), multicast,SRT and UDP.
+* __SCTE-35 Output__: JSON _(default)_ base64, bytes, hex, int, xml, and xmlbin.
+
+|SCTE-35 Input  | Protocol   | SCTE-35 Output     | Command                                             |
+|-------|------------|-----------|---------------------------------------------------------|
+|__MPEGTS__|file|__JSON__   | __threefive__ video.ts										 |  
+|__.__|https|__base64__ | __threefive__ https://example.com/video.ts  __base64__      |
+|__.__|multicast|__bytes__ | __threefive__ udp://@235.3.5:3535  __bytes__      |
+|__.__|SRT|__hex__ | __threefive__ srt://1.2.3.4:4201  __hex__      |
+|__.__|UDP|__int__ | __threefive__ udp://10.10.10.10:1011  __int__      |
+|__.__|Pipe|__xml__| cat video.ts \| __threefive__  __xml__                           |
+|__.__|stdin|__xml+bin__| __threefive__  __xmlbin__ < video.ts|
+
+___
+
 
 #### [⇧](#-documentation-)
 
