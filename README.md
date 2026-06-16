@@ -7,34 +7,6 @@ ___
 ___
 ####  [[ Examples ]](https://github.com/superkabuki/threefive_is_scte35/blob/main/examples)
 #### [ [ Tip of the Week ] ](totw.md)
-## [ Cool Tricks ]
-
-##### 1) __Parse SCTE-35 from [HLS](#hls)__ 
-* ABR HLS master.m3u8 manifests as well as single rendition manifests.
-* all HLS SCTE-35 tags are supported as well as embedded SCTE-35 in the segments
-
-```sed
-threefive https://demo.unified-streaming.com/k8s/live/scte35.isml/.m3u8
-```
-
-##### 2) Visually verify SCTE-35 splice points using `threefive` with the `proxy` keyword.
-* threefive with the proxy keyword copies all packets from a MPEGTS stream to stdout for piping.
-
-* Play the video while you parse SCTE-35 over Multicast:
-
-```sed
-threefive proxy udp://@235.35.3.5:3535  | ffplay -
-```
-
-##### 3) threefive incudes The Grand Unified Multicast Sender, [gums](#gums) for easy multicast.
-* gums has a default multicast address of udp://@235.35.3.5.3535, that can be changed.
-* gums is setup for mpegts streams. 1316 datagrams and video is throttled to playback speed _(fake live)_
-* `gums -h` for all the details.
-
-```smalltalk
-a@fu:~$ gums -i ~/mpegts/cnn.ts
-```
-____
 
 ## [ Documentation ]
 #### Need to inject SCTE-35 into HLS?  [X9k3.](https://github.com/superkabuki/x9k3)
@@ -109,7 +81,7 @@ make install py3=python3.14
 ___
 
 ## [ CLI ]
-*The threefive cli tool is able to parse SCTE-35 from 
+* The threefive cli tool parses these SCTE-35 formats.  
   * Base64
   * Hex
   * HLS
@@ -118,7 +90,9 @@ ___
   * MPEGTS
   * XML
   * XMLBinary.
+
 * Formats are auto-detected.
+___
 
 * __Parse SCTE-35 Cues__ 
   *  __SCTE-35 Inputs:__  base64, hex, int, JSON,int,xml,and xmlbin.
