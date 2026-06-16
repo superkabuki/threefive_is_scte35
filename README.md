@@ -7,9 +7,9 @@ ___
 ___
 ####  [[ Examples ]](https://github.com/superkabuki/threefive_is_scte35/blob/main/examples)
 #### [ [ Tip of the Week ] ](totw.md)
-#### [ Cool Tricks ]
+## [ Cool Tricks ]
 
-##### 1) __Parse SCTE-35 from HLS__ 
+##### 1) __Parse SCTE-35 from [HLS](#hls)__ 
 * ABR HLS master.m3u8 manifests as well as single rendition manifests.
 * all HLS SCTE-35 tags are supported as well as embedded SCTE-35 in the segments
 
