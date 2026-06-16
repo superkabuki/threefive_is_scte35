@@ -61,10 +61,16 @@ ____
 </samp>
 
 ####  [Install]
+* __threefive__ is curretnly tested on python-3.11, python-3.14, python-3.14t, pypy-7.3.11 and pypy-7.3.22
+
+* __threefive__ is some of the __fastest code__ you'll see on __python3__. 
 * __python3 via pip__
 ```rebol
 python3 -mpip install threefive
 ```
+
+* __threefive__ runs __five times faster on pypy3__,
+* __threefive on pypy3__ can parse __mpegts__ at __over 1.5 GigaBytes__ a second, __single-threaded__.
 * __pypy3 via pip__ 
 ```rebol
 pypy3 -mpip install threefive
@@ -144,16 +150,16 @@ ___
 ___
 
 * __Parse SCTE-35 from HLS__  
-```js
+```awk
 threefive https://example.com/master.m3u8
 ```
 ___
 
 * __Parse SCTE-35 from MPEGTS__
-* SCTE-35 can be parsed from MPEGTS over a variety of protocols.
-* __SCTE-35 Input__: MPEGTS
-*  __Protocols__: pipes, files, stdin, http(s), multicast,SRT and UDP.
-* __SCTE-35 Output__: JSON _(default)_ base64, bytes, hex, int, xml, and xmlbin.
+	* SCTE-35 can be parsed from MPEGTS over a variety of protocols.
+	* __SCTE-35 Input__: MPEGTS
+	*  __Protocols__: pipes, files, stdin, http(s), multicast,SRT and UDP.
+	* __SCTE-35 Output__: JSON _(default)_ base64, bytes, hex, int, xml, and xmlbin.
 
 |SCTE-35 Input  | Protocol   | SCTE-35 Output     | Command                                             |
 |-------|------------|-----------|---------------------------------------------------------|
@@ -170,10 +176,10 @@ ___
 
 #### [⇧](#-documentation-)
 
-#### [__Additional functionality__]
-* threefive has several additional features, mostly related to MPEGTS streams.
-* threefive has built in help, just type `threefive help`
-* This table shows how to use them.
+* [__Additional functionality__]
+	* threefive has several additional features, mostly related to MPEGTS streams.
+	* threefive has built in help, just type `threefive help`
+	* This table shows how to use them.
 
 | Description                              | How To Use                                       |
 |------------------------------------------|---------------------------------------------------------|
