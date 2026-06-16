@@ -102,18 +102,19 @@ make install py3=python3.14
 #### [⇧](#-documentation-)
 ___
 
-#### [CLI]
+## [ CLI ]
 The threefive cli tool is able to parse SCTE-35 from MPEGTS Streams,Base64,Hex,Integers,JSON XML,and XMLBinary.
 The format is auto-detected.
 
 #### [⇧](#-documentation-)
 
-#### [ Parse SCTE-35 from HLS with threefive ]
+* __Parse SCTE-35 from HLS__  
 ```js
 threefive https://example.com/master.m3u8
 ```
 
-#### [ Parse SCTE-35 from MPEGTS ]
+* __Parse SCTE-35 from MPEGTS__
+* 
 SCTE-35 can be parsed from MPEGTS over a variety of protocols.
 * __SCTE-35 Input__: MPEGTS
 *  __Protocols__: pipes, files, stdin, http(s), multicast,SRT and UDP.
@@ -131,14 +132,11 @@ SCTE-35 can be parsed from MPEGTS over a variety of protocols.
 
 ___
 
-# [⇧](#-documentation-)
-
-#### [ Parse SCTE-35 Cues ]
-
-  *  The __default output__ is JSON
+* __Parse SCTE-35 Cues__ 
   *  __SCTE-35 Inputs:__  base64, hex, int, JSON,int,xml,and xmlbin.
   *  __SCTE-35 Outputs:__ base64, bytes, hex, int,JSON, xml, and xmlbin.
   *  __Any Input can be used with Any Output__
+  *  The __default output__ is JSON
 
 > __Here are several examples.__
 
@@ -377,7 +375,7 @@ ___
 
 #### [⇧](#-documentation-)
 
-#### [Using the library]
+## [ Using the library ]
 * Let me show you how easy threefive is to use.
 
 * reading SCTE-35 xml from a file
