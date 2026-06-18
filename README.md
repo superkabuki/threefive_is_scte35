@@ -6,6 +6,12 @@ ___
 
 ___
 #  [A Lot of Examples ](https://github.com/superkabuki/threefive_is_scte35/blob/main/examples)  |  [  Tip of the Week  ](totw.md)  |   [  Cheap Tricks   ](cheaptricks.md)
+___
+# [ Issues ]
+> I maintain threefive by myself, so __mistakes are possible__.<br>
+> I know a lot of folks on github will punish you for opening an issue, but  __if you're cool, I'll be cool__.<br>
+> I won't answer general SCTE-35 questions, but I will answer threefive questions and __if you find a bug I'll fix it__. 
+___
 # [ Documentation ]
 #### Need to inject SCTE-35 into HLS?  [X9k3.](https://github.com/superkabuki/x9k3)
 * [__web based SCTE-35 tools__](#web) - threefive and friends over http. 
