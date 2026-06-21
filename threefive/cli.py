@@ -377,7 +377,7 @@ def not_pkt(args, rdr, one):
     args.append((one + two).decode())  # no rewind on stdin?
 
 
-def is_pkt(rdr, one):
+def is_pkt(args,rdr, one):
     """
     is_pkt,  runs when stdin is an mpegts stream
     """
