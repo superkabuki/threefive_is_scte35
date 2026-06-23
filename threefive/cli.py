@@ -85,6 +85,66 @@ def done():
     print2(f"# threefive: {version} on python: {sys.version}")
     sys.exit()
 
+###   stdin stuff
+
+
+def not_pkt(args, rdr, one):
+    """
+    not_pkt , runs when stdin is NOT an mpegts stream
+    """
+    two = rdr.read()
+    args.append((one + two).decode())  # no rewind on stdin?
+
+
+def is_pkt(args,rdr, one):
+    """
+    is_pkt,  runs when stdin is an mpegts stream
+    """
+    two = rdr.read(187)
+    strm = Stream(sys.stdin.buffer)
+    strm._parse(one + two)  # dont drop first packet
+    strm.decode(func=funk())
+    done()  # I keep forgetting why I do this
+
+
+def stdin_is_readable():
+    """
+    stdin_is readable,  detect data on stdin.
+    """
+    readable, _, _ = select.select([sys.stdin], [], [], 0)
+    return sys.stdin in readable  # check stdin for data
+
+
+def read_stdin(args):
+    """
+    read_stdin read from stdin
+    """
+    rdr = reader(sys.stdin.buffer)
+    one = rdr.read(1)
+    if one not in [b"G"]:  # is this a packet?
+        not_pkt(args, rdr, one)
+    else:
+        is_pkt(args, rdr, one)
+
+
+def chk_stdin(args):
+    """
+    chk_stdin autodetects input from stdin.
+    """
+    if stdin_is_readable():
+        read_stdin(args)
+    return args
+
+def chk_stdin2(args):
+    """
+    chk_stdin2 this is for the mpegts check
+    """
+    if stdin_is_readable():
+        args.append(sys.stdin.buffer)
+    return args
+
+###  end stdin
+
 
 def mk_sidecar(cue):
     """
@@ -253,6 +313,7 @@ def chk_mpegts_map():
     chk_mpegts_map check sys.argv for mpegts_map keys
     """
     m_keys = list(mpegts_map.keys())
+    args = chk_stdin2(sys.argv)
     args = mk_args(m_keys)
     for key in m_keys:
         mpegts_key_in_argv(args, key)
@@ -369,54 +430,6 @@ def to_funk(this):
         try_cue(this)
 
 
-def not_pkt(args, rdr, one):
-    """
-    not_pkt , runs when stdin is NOT an mpegts stream
-    """
-    two = rdr.read()
-    args.append((one + two).decode())  # no rewind on stdin?
-
-
-def is_pkt(args,rdr, one):
-    """
-    is_pkt,  runs when stdin is an mpegts stream
-    """
-    two = rdr.read(187)
-    strm = Stream(sys.stdin.buffer)
-    strm._parse(one + two)  # dont drop first packet
-    strm.decode(func=funk())
-    done()  # I keep forgetting why I do this
-
-
-def stdin_is_readable():
-    """
-    stdin_is readable,  detect data on stdin.
-    """
-    readable, _, _ = select.select([sys.stdin], [], [], 0)
-    return sys.stdin in readable  # check stdin for data
-
-
-def read_stdin(args):
-    """
-    read_stdin read from stdin
-    """
-    rdr = reader(sys.stdin.buffer)
-    one = rdr.read(1)
-    if one not in [b"G"]:  # is this a packet?
-        not_pkt(args, rdr, one)
-    else:
-        is_pkt(args, rdr, one)
-
-
-def chk_stdin(args):
-    """
-    chk_stdin autodetects input from stdin.
-    """
-    if stdin_is_readable():
-        read_stdin(args)
-    return args
-
-
 def chk_funk_map():
     """
     chk_func_map checks for func_map.keys() in sys.argv
@@ -452,7 +465,7 @@ def chk_hls():
         packet = reader(this).read(188)
         if b"#EXTM3U"  in packet :
             hlscli()
-            done()           
+            done()
     except:
         pass
 
