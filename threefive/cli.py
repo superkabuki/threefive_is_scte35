@@ -135,14 +135,6 @@ def chk_stdin(args):
         read_stdin(args)
     return args
 
-def chk_stdin2(args):
-    """
-    chk_stdin2 this is for the mpegts check
-    """
-    if stdin_is_readable():
-        args.append(sys.stdin.buffer)
-    return args
-
 ###  end stdin
 
 
@@ -302,6 +294,8 @@ def mpegts_key_in_argv(args, key):
     from mpegts_map is in sys.argv
     """
     if key in sys.argv:
+        if stdin_is_readable():
+            args.append(sys.stdin.buffer)
         for arg in args:
             print2(arg)
             mpegts_map[key](arg)
@@ -313,8 +307,7 @@ def chk_mpegts_map():
     chk_mpegts_map check sys.argv for mpegts_map keys
     """
     m_keys = list(mpegts_map.keys())
-    args = chk_stdin2(sys.argv)
-    args = mk_args(m_keys)
+    args = mk_args(m_keys) 
     for key in m_keys:
         mpegts_key_in_argv(args, key)
 
