@@ -235,7 +235,7 @@ class Stream(Based):
         rai random access indicator
         (keyframes)
         """
-        if pkt[3] & 0x20: 
+        if pkt[3] & 0x20:
             return pkt[5] & 0x40
         return False
 
@@ -268,24 +268,29 @@ class Stream(Based):
             sys.stdout.buffer.flush()
         return False
 
-    def packetize(self, chunk):
+   def packetize(self, chunk):
         """
         packetize - turn chunk into 188 byte packets
         """
         for i in range(0, len(chunk), self.PACKET_SIZE):
             yield chunk[i : i + self.PACKET_SIZE]
 
+    def chunked(self, num_pkts):
+        """
+        chunked - read chunks from stream
+        """
+        chunksize = self.PACKET_SIZE * num_pkts
+        if self._find_start():
+            while chunk := self._tsdata.read(chunksize):
+                yield chunk
+
     def iter_pkts(self, num_pkts=1400):
         """
         iter_pkts - iterate packets from stream
         """
-        if self._find_start():
-##            yield from iter(
-##                partial(self._tsdata.read,  self.PACKET_SIZE), b""
-##            )
-            while pkt:=self._tsdata.read(self.PACKET_SIZE):
-                yield pkt
-          #      yield from self.packetize(chunk)
+        for chunk in self.chunked(num_pkts):
+            yield from self.packetize(chunk)
+
 
     def speed(self):
         """
@@ -313,14 +318,17 @@ class Stream(Based):
             return cue
         return None
 
-    def decode(self, func=show_cue):
+     def decode(self, func=show_cue):
         """
         Stream.decode reads self.tsdata to find SCTE35 packets.
         func can be set to a custom function that accepts
         a threefive.Cue instance as it's only argument.
         """
-        for pkt in self.iter_pkts():
-            self.pkt2cue(pkt, func)
+        num_pkts = 2100
+        for pkt in self.iter_pkts(2100):
+            cue = self._parse(pkt)
+            if cue:
+                func(cue)
         return False
 
     def decode_next(self):
@@ -407,7 +415,7 @@ class Stream(Based):
                     pts = self.pid2pts(pid)
                     if pts:
                         print(prgm,' \t ',pts)
- 
+
 
     def pts(self):
         """
