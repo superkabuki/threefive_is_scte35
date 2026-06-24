@@ -268,7 +268,7 @@ class Stream(Based):
             sys.stdout.buffer.flush()
         return False
 
-   def packetize(self, chunk):
+    def packetize(self, chunk):
         """
         packetize - turn chunk into 188 byte packets
         """
@@ -312,13 +312,15 @@ class Stream(Based):
         if Cue : func(Cue)
         return a Cue instance or None
         """
+        if not func:
+            func=show_cue
         cue = self._parse(pkt)
         if cue:
             func(cue)
             return cue
         return None
 
-     def decode(self, func=show_cue):
+    def decode(self, func=show_cue):
         """
         Stream.decode reads self.tsdata to find SCTE35 packets.
         func can be set to a custom function that accepts
