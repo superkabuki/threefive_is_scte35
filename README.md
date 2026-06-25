@@ -11,9 +11,6 @@
 # [ Latest ]
 
 * __v3.0.93__  _Released 06/11/2026_
-
-
- 
 ___
 # [ Issues ]
 > I maintain threefive by myself, so mistakes are possible. if you find a bug, open an issue, and I will fix it.
