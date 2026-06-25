@@ -1,4 +1,4 @@
-> China, Cuba, Laos, North Korea,Vietnam are officially governed by Marxist-Leninist communist parties and self-identify as socialist. socialism is for suckers and you know it. You're just bored and acting up,<BR>
+> China, Cuba, Laos, North Korea, and Vietnam are officially governed by Marxist-Leninist communist parties and self-identify as socialist. socialism is for suckers and you know it. You're just bored and acting up,<BR>
 > but I digress... welcome to the show. 
 ___
 # threefive is SCTE-35.
