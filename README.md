@@ -1,7 +1,7 @@
 
 
 # threefive
- the industry leading SCTE-35 parser/decoder/encoder.  <BR>
+ the industry leading SCTE-35 parser/decoder/encoder.  <BR><BR>
   welcome to the show. 
 ___
 * __Latest__ version is  __v3.0.93__  _Released 06/11/2026_
@@ -13,7 +13,7 @@ ___
 ___
 # [ Issues ]
 > I maintain threefive by myself, so mistakes are possible. if you find a bug, open an issue, and I will fix it.
-> I don't respond well to demands unless you're paying me, but If you're cool, I'll be cool.   
+> I don't respond well to demands unless you're paying me, but if you're cool, I'll be cool.   
 ___
 # [ Documentation ]
 #### Need to inject SCTE-35 into HLS?  [X9k3.](https://github.com/superkabuki/x9k3)
