@@ -1,7 +1,8 @@
-> China, Cuba, Laos, North Korea, and Vietnam are officially governed by Marxist-Leninist communist parties and self-identify as socialist. socialism is for suckers and you know it. You're just bored and acting up,<BR>
-> but I digress... welcome to the show. 
-___
-# threefive is SCTE-35.
+
+
+# threefive
+ the industry leading SCTE-35 parser/decoder/encoder.  <BR>
+  welcome to the show. 
 ___
 * __Latest__ version is  __v3.0.93__  _Released 06/11/2026_
 *   __Decodes SCTE-35__ from `MPEGTS`✔ `Base64`✔ `Bytes`✔ `DASH`✔ `Hex` ✔ `HLS`✔ `Integers`✔ `JSON`✔ `XML`✔ `XML+Binary`✔  
@@ -11,9 +12,8 @@ ___
 #  [A Lot of Examples ](https://github.com/superkabuki/threefive_is_scte35/blob/main/examples)  |  [  Tip of the Week  ](totw.md)  |   [  Cheap Tricks   ](cheaptricks.md)
 ___
 # [ Issues ]
-> I maintain threefive by myself, so __mistakes are possible__.<br>
-> I know a lot of folks on github will punish you for opening an issue, but  __if you're cool, I'll be cool__.<br>
-> I won't answer general SCTE-35 questions, but I will answer threefive questions and __if you find a bug I'll fix it__. 
+> I maintain threefive by myself, so mistakes are possible. if you find a bug, open an issue, and I will fix it.
+> I don't respond well to demands unless you're paying me, but If you're cool, I'll be cool.   
 ___
 # [ Documentation ]
 #### Need to inject SCTE-35 into HLS?  [X9k3.](https://github.com/superkabuki/x9k3)
