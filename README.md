@@ -1,15 +1,19 @@
+ [A Lot of Examples ](https://github.com/superkabuki/threefive_is_scte35/blob/main/examples)  |  [  Tip of the Week  ](totw.md)  |   [  Cheap Tricks   ](cheaptricks.md)
 
-
-# threefive
- the industry leading SCTE-35 parser/decoder/encoder.  <BR><BR>
+# [ threefive ]
+ the industry leading SCTE-35 parser/decoder/encoder.  <BR>
   welcome to the show. 
-___
-* __Latest__ version is  __v3.0.93__  _Released 06/11/2026_
+
 *   __Decodes SCTE-35__ from `MPEGTS`✔ `Base64`✔ `Bytes`✔ `DASH`✔ `Hex` ✔ `HLS`✔ `Integers`✔ `JSON`✔ `XML`✔ `XML+Binary`✔  
 *   __Encodes SCTE-35__ to `MPEGTS`✔ `Base64`✔ `Bytes`✔ `Hex`✔ `Integers`✔ `JSON`✔ `XML`✔ `XML+Binary`✔
 
-___
-#  [A Lot of Examples ](https://github.com/superkabuki/threefive_is_scte35/blob/main/examples)  |  [  Tip of the Week  ](totw.md)  |   [  Cheap Tricks   ](cheaptricks.md)
+
+# [ Latest ]
+
+* __v3.0.93__  _Released 06/11/2026_
+
+
+ 
 ___
 # [ Issues ]
 > I maintain threefive by myself, so mistakes are possible. if you find a bug, open an issue, and I will fix it.
@@ -40,7 +44,7 @@ ___
 * [Make your __threefive__ script an executable with __cython__](cython.md) _threefive is compatible with all python tools_
 </samp>
 
-####  [Install]
+##  [Install]
 * __threefive__ is curretnly tested on python-3.11, python-3.14, python-3.14t, pypy-7.3.11 and pypy-7.3.22
 
 * __threefive__ is some of the __fastest code__ you'll see on __python3__. 
