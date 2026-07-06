@@ -85,6 +85,7 @@ def done():
     print2(f"# threefive: {version} on python: {sys.version}")
     sys.exit()
 
+
 ###   stdin stuff
 
 
@@ -96,7 +97,7 @@ def not_pkt(args, rdr, one):
     args.append((one + two).decode())  # no rewind on stdin?
 
 
-def is_pkt(args,rdr, one):
+def is_pkt(args, rdr, one):
     """
     is_pkt,  runs when stdin is an mpegts stream
     """
@@ -134,6 +135,7 @@ def chk_stdin(args):
     if stdin_is_readable():
         read_stdin(args)
     return args
+
 
 ###  end stdin
 
@@ -307,7 +309,7 @@ def chk_mpegts_map():
     chk_mpegts_map check sys.argv for mpegts_map keys
     """
     m_keys = list(mpegts_map.keys())
-    args = mk_args(m_keys) 
+    args = mk_args(m_keys)
     for key in m_keys:
         mpegts_key_in_argv(args, key)
 
@@ -456,7 +458,7 @@ def chk_hls():
     try:
         this = sys.argv[1]
         packet = reader(this).read(188)
-        if b"#EXTM3U"  in packet :
+        if b"#EXTM3U" in packet:
             hlscli()
             done()
     except:
