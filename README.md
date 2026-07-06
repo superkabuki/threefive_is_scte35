@@ -6,7 +6,7 @@
 
 *   __Decodes SCTE-35__ from `MPEGTS`✔ `Base64`✔ `Bytes`✔ `DASH`✔ `Hex` ✔ `HLS`✔ `Integers`✔ `JSON`✔ `XML`✔ `XML+Binary`✔  
 *   __Encodes SCTE-35__ to `MPEGTS`✔ `Base64`✔ `Bytes`✔ `Hex`✔ `Integers`✔ `JSON`✔ `XML`✔ `XML+Binary`✔
-<img width="594" height="198" alt="image" src="https://github.com/user-attachments/assets/b70b8d16-5bf7-45af-a349-3a24690a234b" />
+<img width="497" height="114" alt="image" src="https://github.com/user-attachments/assets/2f7552bf-3a2b-44ce-aaa4-495e64dd1e07" />
 
 
 # [ Latest ]
@@ -14,8 +14,7 @@
 * __v3.0.93__  _Released 06/11/2026_
 ___
 # [ Issues ]
-> I maintain threefive by myself, so mistakes are possible. if you find a bug, open an issue, and I will fix it.
-> I don't respond well to demands unless you're paying me, but if you're cool, I'll be cool.   
+>  If you're cool, I'll be cool. if you find a bug, open an issue, and I will fix it.   
 ___
 
 # [ Documentation ]
@@ -37,7 +36,7 @@ ___
 		* [__Cue__ Class](https://github.com/superkabuki/threefive/blob/main/cue.md) _this class you'll use often_ 
 		* [__Stream__ Class](https://github.com/superkabuki/threefive/blob/main/stream.md) _this is the class for parsing MPEGTS_
 * [SCTE-35 __Sidecar Files__](https://github.com/superkabuki/SCTE-35_Sidecar_Files) _threefive supports SCTE-35 sidecar files_
-* [SCTE-35 __HLS__](https://github.com/superkabuki/threefive/blob/main/hls.md) _parse SCTE-35 in HLS__
+* [SCTE-35 __HLS__](https://github.com/superkabuki/threefive/blob/main/hls.md) _parse SCTE-35 in HLS in MPEGTS,CMAF, or fmP4__
 * [SCTE-35 __XML__ ](https://github.com/superkabuki/SCTE-35/blob/main/xml.md) and [More __XML__](node.md) _threefive can parse and encode SCTE-35 xml_
 * [__Encode__ SCTE-35](https://github.com/superkabuki/threefive/blob/main/encode.md) _threefive can encode SCTE-35 in every SCTE-35 format_
 * [Make your __threefive__ script an executable with __cython__](cython.md) _threefive is compatible with all python tools_
@@ -185,29 +184,8 @@ ___
 
 
 ##### Other tools
+
 threefive also comes with: 
-##### scte35bump 
-
-* bump adjusts SCTE-35 PTS in an MPEGTS stream
-
-```js
-$ scte35bump -h
-usage: scte35bump [-h] [-i INFILE] [-o OUTFILE] [-s SECS]
-
-options:
-  -h, --help            show this help message and exit
-  -i INFILE, --infile INFILE
-                        Input source, stdin, file, http(s), udp, or multicast
-                        mpegts [default: sys.stdin.buffer]
-  -o OUTFILE, --outfile OUTFILE
-                        Output file [default: sys.stdout.buffer]
-  -s SECS, --secs SECS  Adjustment to apply to SCTE-35 Cues. [default: 0.0]
-
-scte35bump is part of threefive.
-```
-___
-
-##### [⇧](#-documentation-)
 
 ##### gums
 *  the Grande Udp Multicast Server
@@ -247,7 +225,7 @@ A m3u8 URI as input.
 [what is supported]
 
     M3U8 formats: master, rendition
-    Segment types: AAC, AC3, MPEGTS
+    Segment types: AAC, AC3, MPEGTS, CMAF,fMP4
     Video codecs: mpeg2, h.264, h.265
 	Audio codecs: mpeg2, aac, ac3, mp3
     Protocols: File, Http(s), Multicast, SRT, Stdin, UDP
@@ -287,7 +265,7 @@ A m3u8 URI as input.
     starts = 0x22,0x30,0x32,0x34,0x36,0x44,0x46
 
     ( Integers are show in hex (base 16),
-      base 10 unsigned integers can also be used in .35rc )
+      base 10 unsigned integers can also be used in hls.profile )
 
     * expand_cues:       set to True to show cues fully expanded as JSON
     * parse_segments:    set to true to enable parsing SCTE-35 from MPEGTS.
@@ -297,7 +275,7 @@ A m3u8 URI as input.
     * descriptor_tags:   set which Splice Descriptor Tags to parse.
     * starts:            set which Segmentation Type IDs to use to start breaks.
 
-    Edit the file as needed and then run threefive hls.
+    Edit the file as needed and then run threefive.
 
 [ Profile Formatting Rules ]
 
@@ -326,7 +304,7 @@ A m3u8 URI as input.
 
 [ Cool Features ]
 
-    * threefive hls can resume when started in the middle of an ad break.
+    * threefive can resume when started in the middle of an ad break.
 
             2023-10-13T05:59:50.24Z Resuming Ad Break
             2023-10-13T05:59:50.34Z Setting Break Timer to 17.733
@@ -334,9 +312,9 @@ A m3u8 URI as input.
 
 [ Example Usage ]
 
-	* Show this help:   scte35hls help
+	* Show this help:   threefive hls help
 
-	* Generate a new hls.profile:   scte35hls profile
+	* Generate a new hls.profile:   threefive hls profile
 
 	* parse an m3u8:    scte35hls  https://example.com/out/master.m3u8
 
