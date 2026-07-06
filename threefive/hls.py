@@ -833,7 +833,7 @@ def cli():
 
 HELPME = """
 
-[ scte35hls ]
+[ hls ]
 
 [ Input ]
 
@@ -842,7 +842,7 @@ HELPME = """
 [what is supported]
 
     M3U8 formats: master, rendition
-    Segment types: AAC, AC3, MPEGTS
+    Segment types: AAC, AC3, MPEGTS,CMAF,fMP4
     Video codecs: mpeg2, h.264, h.265
 	Audio codecs: mpeg2, aac, ac3, mp3
     Protocols: File, Http(s), Multicast, SRT, Stdin, UDP
@@ -850,7 +850,7 @@ HELPME = """
 
 [ SCTE-35 ]
 
-  scte35hls parses SCTE-35 Embedded Cues as well as SCTE-35 HLS Tags.
+  threefive parses SCTE-35 Embedded Cues as well as SCTE-35 HLS Tags.
 
   [ Supported HLS Tags ]
 
@@ -929,14 +929,12 @@ HELPME = """
 
 [ Example Usage ]
 
-	* Show this help:   scte35hls help
+	* Show this help:   threefive hls help
 
-	* Generate a new hls.profile:   scte35hls profile
+	* Generate a new hls.profile:   threefive hls profile
 
-	* parse an m3u8:    scte35hls  https://example.com/out/master.m3u8
+	* parse an m3u8:    threefive  https://example.com/out/master.m3u8
 
-
-scte35hls is part of threefive.
 
 """
 
