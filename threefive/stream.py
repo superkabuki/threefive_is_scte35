@@ -172,6 +172,7 @@ class Stream(Based):
         self.pmt_count = 0
         self.pmt_pkt = None
         self.pat_pkt = None
+        self._parse = self.parse
 
     @staticmethod
     def as_90k(ticks):
@@ -230,7 +231,7 @@ class Stream(Based):
         except ERR:
             return False
 
-    def rai(pkt):
+    def rai(self, pkt):
         """
         rai random access indicator
         (keyframes)
@@ -284,13 +285,15 @@ class Stream(Based):
             while chunk := self._tsdata.read(chunksize):
                 yield chunk
 
-    def iter_pkts(self, num_pkts=1400):
+    def iter_pkts(self, num_pkts=14000):
         """
         iter_pkts - iterate packets from stream
         """
-        for chunk in self.chunked(num_pkts):
-            yield from self.packetize(chunk)
-
+        chunksize = num_pkts * self.PACKET_SIZE
+        if self._find_start():
+            while chunk := self._tsdata.read(chunksize):
+                for i in range(0, len(chunk), self.PACKET_SIZE):
+                    yield chunk[i : i + self.PACKET_SIZE]
 
     def speed(self):
         """
@@ -299,26 +302,21 @@ class Stream(Based):
         """
         speedo = Speedo()
         num_pkts = 700
-        for chunk in iter(
-                partial(self._tsdata.read, num_pkts * self.PACKET_SIZE), b""
-            ):
+        for chunk in self.chunked(num_pkts):
             speedo.plus(len(chunk))
         speedo.end()
         return False
 
-    def pkt2cue(self, pkt, func):
+    def pkt2cue(self, pkt, func=no_op):
         """
         pkt2cue parse a packet,
         if Cue : func(Cue)
         return a Cue instance or None
         """
-        if not func:
-            func=show_cue
         cue = self._parse(pkt)
         if cue:
             func(cue)
-            return cue
-        return None
+        return cue
 
     def decode(self, func=show_cue):
         """
@@ -326,11 +324,17 @@ class Stream(Based):
         func can be set to a custom function that accepts
         a threefive.Cue instance as it's only argument.
         """
-        num_pkts = 2100
-        for pkt in self.iter_pkts(2100):
-            cue = self._parse(pkt)
-            if cue:
-                func(cue)
+        while pkt := self._tsdata.read(self.PACKET_SIZE):
+            pid = (pkt[1] & 0x1F) << 8 | pkt[2]
+            if pid in self.pids.tables:
+                self._parse_tables(pkt, pid)
+            elif pid in (self.pids.scte35 or self.pids.maybe_scte35):
+                cue = self._parse_scte35(pkt, pid)
+                if cue:
+                    func(cue)
+            elif pid not in self.pids.pcr:
+                if pkt[1] & 0x40:
+                    self._parse_pts(pkt, pid)
         return False
 
     def decode_next(self):
@@ -339,7 +343,7 @@ class Stream(Based):
         SCTE35 cue as a threefive.Cue instance.
         """
         for pkt in self.iter_pkts():
-            cue = self.parse(pkt)
+            cue = self.pkt2cue(pkt)
             if cue:
                 yield cue
         return False
@@ -410,14 +414,13 @@ class Stream(Based):
         print("\tPrgm\tPTS")
         for pkt in self.iter_pkts():
             pid = self._parse_info(pkt)
-            prgm=self.pid2prgm(pid)
+            prgm = self.pid2prgm(pid)
             if self._pusi_flag(pkt):
                 if pid in self.pids.pcr:
                     self._parse_pts(pkt, pid)
                     pts = self.pid2pts(pid)
                     if pts:
-                        print(prgm,' \t ',pts)
-
+                        print(prgm, " \t ", pts)
 
     def pts(self):
         """
@@ -535,29 +538,25 @@ class Stream(Based):
         return False
 
     def _parse_info(self, pkt):
-        pid = self._parse_pid(pkt[1], pkt[2])
+        pid = (pkt[1] & 0x1F) << 8 | pkt[2]
         if pid in self.pids.tables:
             self._parse_tables(pkt, pid)
         return pid
-
-    def _parse(self, pkt):
-        pid = self._parse_pid(pkt[1], pkt[2])
-        if self._pusi_flag(pkt):
-            if pid in self.pids.pcr:
-                self._parse_pts(pkt, pid)
-                return False
-        if pid in self.pids.tables:
-            return self._parse_tables(pkt, pid)
-        if pid in (self.pids.scte35 or self.pids.maybe_scte35):
-            return self._parse_scte35(pkt, pid)
-
-        return False
 
     def parse(self, pkt):
         """
         parse  parse pkt for tables and SCTE-35
         """
-        return self._parse(pkt)
+        pid = (pkt[1] & 0x1F) << 8 | pkt[2]
+        #   pid = self._parse_pid(pkt[1], pkt[2])
+        if pid in self.pids.tables:
+            return self._parse_tables(pkt, pid)
+        if pid in (self.pids.scte35 or self.pids.maybe_scte35):
+            return self._parse_scte35(pkt, pid)
+        if pid not in self.pids.pcr:
+            if pkt[1] & 0x40:
+                self._parse_pts(pkt, pid)
+        return False
 
     def _parse_with_pcr(self, pkt):
         """
