@@ -61,15 +61,15 @@ class GumS:
             speedo = Speedo()
 
             for dgram in iter(partial(video.read, DGRAM), b""):
-              #  throttle.throttle(dgram)
                 self.socked.sendto(dgram, self.dest_grp)
-                start=0
-                end=len(dgram)
-                for i in range(start,end,188):
-                    throttle.throttle(dgram[i:i+188])
+                #      throttle.throttle(dgram)
+                start = 0
+                end = len(dgram)
+                for i in range(start, end, 188):
+                    throttle.throttle(dgram[i : i + 188])
                 speedo.plus(len(dgram))
-          #  flush = b"\xff" * 1316
-            #self.socked.sendto(flush, self.dest_grp)
+        #  flush = b"\xff" * 1316
+        # self.socked.sendto(flush, self.dest_grp)
         speedo.end()
 
     def send_stream(self, vid):
