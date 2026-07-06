@@ -484,7 +484,7 @@ class HlsParser:
         """
         _print_time prints wall clock and pts.
         """
-        gonzo=''
+        gonzo = ""
         if self.break_timer:
             gonzo = f"{REV} Break{NORM} {round(self.break_timer,3)}"
             if self.break_duration:
@@ -492,7 +492,7 @@ class HlsParser:
         ##                if self.break_timer > self.break_duration:
         ##                    print("AUTO IN HERE")
         ##                    self._auto_cuein("## AUTO IN")
-#        ##   \033[;107m\033[44m
+        #        ##   \033[;107m\033[44m
         else:
             first = f"{REV}Media {NORM}"
             second = f'{self.media[-1].rsplit("/", 1)[1].split("?", 1)[0].strip()}'
