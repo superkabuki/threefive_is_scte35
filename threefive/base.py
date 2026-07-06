@@ -161,18 +161,24 @@ class SCTE35Base:
         """
         return json.dumps(self.get(), indent=4)
 
-    def _v2v(self,val) :
-        if isinstance(val,SCTE35Base):
+    def _v2v(self, val):
+        if isinstance(val, SCTE35Base):
             val.kv_clean()
             print(val)
-        if isinstance(val,list):
+        if isinstance(val, list):
             val = [self._v2v(v) for v in val]
-        if isinstance(val,dict):
+        if isinstance(val, dict):
             val = {k: self._v2v(v) for k, v in val.items()}
-        if isinstance(val,(bytes,bytearray,)):
-            val= val.decode()
+        if isinstance(
+            val,
+            (
+                bytes,
+                bytearray,
+            ),
+        ):
+            val = val.decode()
         return val
-    
+
     def kv_clean(self):
         """
         kv_clean recursively removes items
