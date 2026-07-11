@@ -7,7 +7,6 @@ import io
 import os
 import sys
 from collections import deque
-from functools import partial
 from .cue import Cue
 from .new_reader import reader
 from .packetdata import PacketData
@@ -324,24 +323,19 @@ class Stream(Based):
         func can be set to a custom function that accepts
         a threefive.Cue instance as it's only argument.
         """
-        num_pkts =1
-        chunksize = num_pkts * self.PACKET_SIZE
-        while pkt := self._tsdata.read(chunksize):
-##            for i in range(0, len(chunk), self.PACKET_SIZE):
-##                pkt=chunk[i : i + self.PACKET_SIZE]
+        while pkt := self._tsdata.read(self.PACKET_SIZE):
             pid = (pkt[1] & 0x1F) << 8 | pkt[2]
             if pid in self.pids.pcr:
                 if pkt[1] & 0x40:
                     self._parse_pts(pkt, pid)
-            if pid in self.pids.tables:
+            elif pid in self.pids.tables:
                 self._parse_tables(pkt, pid)
-            if pid in (self.pids.scte35 or self.pids.maybe_scte35):
+            elif pid in (self.pids.scte35 or self.pids.maybe_scte35):
                 cue = self._parse_scte35(pkt, pid)
                 if cue:
                     func(cue)
                     del cue
             del pkt
-           # del chunk
         return False
 
     def decode_next(self):
@@ -470,7 +464,7 @@ class Stream(Based):
 
     def _unpad(self, bites=b""):
         return bites.strip(b"\xff")
-    
+
 
     def _mk_packet_data(self, pid):
         prgm = self.maps.pid_prgm[pid]
@@ -497,13 +491,13 @@ class Stream(Based):
         in the dict Stream._pid_pts
         """
         payload = self._parse_payload(pkt)
-        if len(payload) > 13:
-            if payload[7] & 0x80: #pts flag
-                pts = self.mk_pts(payload)
-                prgm = self.pid2prgm(pid)
-                self.maps.prgm_pts[prgm] = pts
-                if prgm not in self.start:
-                    self.start[prgm] = pts
+       # if len(payload) > 13:
+        if payload[7] & 0x80: #pts flag
+            pts = self.mk_pts(payload)
+            prgm = self.pid2prgm(pid)
+            self.maps.prgm_pts[prgm] = pts
+      #          if prgm not in self.start:
+        #            self.start[prgm] = pts
         return False
 
     def _mk_pcr(self, pkt, pid):
@@ -523,7 +517,7 @@ class Stream(Based):
         """
         head_size = 4
         if pkt[3] & 0x20:
-            pkt = pkt[:4] + self._unpad(pkt[4:])
+        #    pkt = pkt[:4] + self._unpad(pkt[4:])
             afl = pkt[4]
             head_size += afl + 1  # +one for afl byte
         return pkt[head_size:]
