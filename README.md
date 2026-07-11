@@ -6,7 +6,13 @@
 
 *   __Decodes SCTE-35__ from `MPEGTS`✔ `Base64`✔ `Bytes`✔ `DASH`✔ `Hex` ✔ `HLS`✔ `Integers`✔ `JSON`✔ `XML`✔ `XML+Binary`✔  
 *   __Encodes SCTE-35__ to `MPEGTS`✔ `Base64`✔ `Bytes`✔ `Hex`✔ `Integers`✔ `JSON`✔ `XML`✔ `XML+Binary`✔
-<img width="497" height="114" alt="image" src="https://github.com/user-attachments/assets/2f7552bf-3a2b-44ce-aaa4-495e64dd1e07" />
+# [ py vs. py ]
+
+* __python3 vs pypy3__ parsing __SCTE-35__ from __3.3GB__ of __MPEGTS__ video with __threefive__.
+
+https://github.com/user-attachments/assets/3a9f13b2-755e-4a94-9ce0-3a378ae4ccab
+
+
 
 
 # [ Latest ]
