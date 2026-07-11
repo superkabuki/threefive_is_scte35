@@ -6,7 +6,7 @@
 
 # [ py vs. py ]
 * I've been __kicking it with some folks over at python.org__ for the last week or so to __improve python3.14 performance__ with threefive. A test that had been taking sixteen seconds to run is now down to just nine seconds , and __that is a big fat speed up__
-* I just added __mmap__ and __threefive with pypy3 is now stupid fast__. What does that mean? It means __threefive on pypy3 can parse 3.3GB of video in 1.6 seconds__ on my $200 chromebook laptop running Debian.  
+* I just added __mmap__ and __threefive with pypy3 is now stupid fast__. What does that mean? It means __threefive on pypy3 can parse SCTE-35 from 3.3GB of video in 1.6 seconds__ running on my __$200 chromebook__ running Debian __Sid__.  
 
 
 
