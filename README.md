@@ -1,17 +1,12 @@
  [A Lot of Examples ](https://github.com/superkabuki/threefive_is_scte35/blob/main/examples)  |  [  Tip of the Week  ](totw.md)  |   [  Cheap Tricks   ](cheaptricks.md)
 
-# [ threefive ]
-
-  welcome to the show. 
-
+# [ threefive ] 
 *   __Decodes SCTE-35__ from `MPEGTS`✔ `Base64`✔ `Bytes`✔ `DASH`✔ `Hex` ✔ `HLS`✔ `Integers`✔ `JSON`✔ `XML`✔ `XML+Binary`✔  
 *   __Encodes SCTE-35__ to `MPEGTS`✔ `Base64`✔ `Bytes`✔ `Hex`✔ `Integers`✔ `JSON`✔ `XML`✔ `XML+Binary`✔
+
 # [ py vs. py ]
-
-* __python3 vs pypy3__ parsing __SCTE-35__ from __3.3GB__ of __MPEGTS__ video with __threefive__.
-
-https://github.com/user-attachments/assets/3a9f13b2-755e-4a94-9ce0-3a378ae4ccab
-
+* I've been __kicking it with some folks over at python.org__ for the last week or so to __improve python3.14 performance__ with threefive. A test that had been taking sixteen seconds to run is now down to just nine seconds , and __that is a big fat speed up__
+* I just added __mmap__ and __threefive with pypy3 is now stupid fast__. What does that mean? It means __threefive on pypy3 can parse 3.3GB of video in 1.6 seconds__ on my $200 chromebook laptop running Debian.  
 
 
 
