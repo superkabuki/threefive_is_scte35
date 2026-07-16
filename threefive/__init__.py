@@ -7,6 +7,7 @@ from .version import version
 __version__ = version
 
 from .cue import Cue
+from .hlstags import TagParser
 from .iframes import IFramer
 from .new_reader import reader
 from .section import SpliceInfoSection
