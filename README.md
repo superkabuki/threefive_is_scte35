@@ -4,19 +4,36 @@
 *   __Decodes SCTE-35__ from `MPEGTS`✔ `Base64`✔ `Bytes`✔ `DASH`✔ `Hex` ✔ `HLS`✔ `Integers`✔ `JSON`✔ `XML`✔ `XML+Binary`✔  
 *   __Encodes SCTE-35__ to `MPEGTS`✔ `Base64`✔ `Bytes`✔ `Hex`✔ `Integers`✔ `JSON`✔ `XML`✔ `XML+Binary`✔
 
-# [ py vs. py ]
-* I've been __kicking it with some folks over at python.org__ for the last week or so to __improve python3.14 performance__ with threefive. A test that had been taking sixteen seconds to run is now down to just nine seconds , and __that is a big fat speed up__
-* I just added __mmap__ and __threefive with pypy3 is now stupid fast__. What does that mean? It means __threefive on pypy3 can parse SCTE-35 from 3.3GB of video in 1.6 seconds__ running on my __$200 chromebook__ running Debian __Sid__.  
 
+# [ really really quick start ]
 
+* __Install__
+```
+ python3 -m pip install threefive`
+```
+* decode SCTE-35 __base64__
+```sed
+threefive '/DAWAAAAAAAAAP/wBQb+AKmKxwAACzuu2Q=='
+```
+* decode SCTE-35 __hex__
+```sed
+threefive 0xfc301600000000000000fff00506fe00a98ac700000b3baed9
+```
+* decode  SCTE-35 from __MPEGTS__
+```sed
+threefive https;//iodisco.com/longb2.ts
+```
+* decode SCTE-35 from __HLS__ ( a rendition or a master.m3u8)
+```sed
+threefive https://demo.unified-streaming.com/k8s/live/scte35.isml/.m3u8
+```
 
-# [ Latest ]
-
-* __v3.0.93__  _Released 06/11/2026_
+* __threefive does a lot more__, that was just to get you started.
+* RTFM
 ___
-# [ Issues ]
->  If you're cool, I'll be cool. if you find a bug, open an issue, and I will fix it.   
-___
+
+
+
 
 # [ Documentation ]
 #### Need to inject SCTE-35 into HLS?  [X9k3.](https://github.com/superkabuki/x9k3)
