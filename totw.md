@@ -2,7 +2,8 @@
 
 > I used to work for a guy who came to programming from a literary background and he urged us to make the code read like natural language, to make it easier to follow. 
 > threefive __Cues, Commands, and Descriptors__ all have a method called __has__, it returns the value of the attribute if it exists, or None if it doesn't.
-> It's very natural to say `cue.command.has("pts_time")` whereas saying  `hasattr(cue.command,"pts_time")` is kind of clunky and awkward.
+> It's very natural to say `cue.command.has("pts_time")`
+
 
 * instead of doing something like this:
 ```py3
