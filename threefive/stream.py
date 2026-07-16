@@ -3,10 +3,8 @@ stream.py
 Mpeg-TS Stream parsing class
 """
 
-import io
-import os
+
 import sys
-from collections import deque
 from .cue import Cue
 from .new_reader import reader
 from .packetdata import PacketData
@@ -289,10 +287,10 @@ class Stream(Based):
         iter_pkts - iterate packets from stream
         """
         chunksize = num_pkts * self.PACKET_SIZE
-        if self._find_start():
-            while chunk := self._tsdata.read(chunksize):
-                for i in range(0, len(chunk), self.PACKET_SIZE):
-                    yield chunk[i : i + self.PACKET_SIZE]
+        #        if self._find_start():
+        while chunk := self._tsdata.read(chunksize):
+            for i in range(0, len(chunk), self.PACKET_SIZE):
+                yield chunk[i : i + self.PACKET_SIZE]
 
     def speed(self):
         """
@@ -323,7 +321,12 @@ class Stream(Based):
         func can be set to a custom function that accepts
         a threefive.Cue instance as it's only argument.
         """
+        ##        num_pkts=3584
+        ##        chunksize = num_pkts * self.PACKET_SIZE
         while pkt := self._tsdata.read(self.PACKET_SIZE):
+            ##        while prechunk := self._tsdata.read(self.PACKET_SIZE*num_pkts):
+            ##            for i in range(0, len(prechunk), self.PACKET_SIZE):
+            ##                pkt = prechunk[i : i + self.PACKET_SIZE]
             pid = (pkt[1] & 0x1F) << 8 | pkt[2]
             if pid in self.pids.pcr:
                 if pkt[1] & 0x40:
@@ -465,7 +468,6 @@ class Stream(Based):
     def _unpad(self, bites=b""):
         return bites.strip(b"\xff")
 
-
     def _mk_packet_data(self, pid):
         prgm = self.maps.pid_prgm[pid]
         pdata = PacketData(pid, prgm)
@@ -491,12 +493,12 @@ class Stream(Based):
         in the dict Stream._pid_pts
         """
         payload = self._parse_payload(pkt)
-       # if len(payload) > 13:
-        if payload[7] & 0x80: #pts flag
+        # if len(payload) > 13:
+        if payload[7] & 0x80:  # pts flag
             pts = self.mk_pts(payload)
             prgm = self.pid2prgm(pid)
             self.maps.prgm_pts[prgm] = pts
-      #          if prgm not in self.start:
+        #          if prgm not in self.start:
         #            self.start[prgm] = pts
         return False
 
@@ -517,7 +519,7 @@ class Stream(Based):
         """
         head_size = 4
         if pkt[3] & 0x20:
-        #    pkt = pkt[:4] + self._unpad(pkt[4:])
+            #    pkt = pkt[:4] + self._unpad(pkt[4:])
             afl = pkt[4]
             head_size += afl + 1  # +one for afl byte
         return pkt[head_size:]
@@ -573,8 +575,10 @@ class Stream(Based):
 
     def _chk_partial(self, pay, pid, sep):
         if pid in self.maps.partial:
-            pay = self.maps.partial.pop(pid) + pay
-        return self._split_by_idx(pay, sep)
+            pay2 = self.maps.partial.pop(pid) + pay
+        else:
+            pay2 = pay
+        return self._split_by_idx(pay2, sep)
 
     def _same_as_last(self, pay, pid):
         last = False
@@ -601,9 +605,12 @@ class Stream(Based):
         return False
 
     def _strip_scte35_pes(self, pkt):
+        """
+        ffmpeg was converting SCTE-35 packets into PES packets,
+        this removes the PES header.
+        """
         pay = self._parse_payload(pkt)
         if self.SCTE35_PES_START in pay:
-            # blue(f"# Stripping PES Header from SCTE35")
             pay = pay.split(self.SCTE35_PES_START, 1)[-1]
             peslen = pay[4] + 5  # PES header length
             pay = pay[peslen:]
@@ -615,6 +622,11 @@ class Stream(Based):
             self.pids.not_scte35.add(pid)
 
     def _chk_maybe_pid(self, pay, pid):
+        """
+        _chk_maybe_pid mayb scte35 pids are stream type 0x06,
+        they may have scte35 but if the stream doesn't have scte35
+        stop checking.
+        """
         pay = self._chk_partial(pay, pid, self.SCTE35_TID)
         if not pay:
             self._pop_maybe_pid(pid)
@@ -658,11 +670,12 @@ class Stream(Based):
         parse program association table
         for program to pmt_pid mappings.
         """
-        pay = self._chk_partial(pay, self.pids.PAT_PID, b"")
-        seclen = self._parse_length(pay[2], pay[3])
-        if self._section_incomplete(pay, self.pids.PAT_PID, seclen):
+        pay3 = self._chk_partial(pay, self.pids.PAT_PID, b"")
+        ##        if not pay3:
+        ##            return False
+        seclen = self._parse_length(pay3[2], pay3[3])
+        if self._section_incomplete(pay3, self.pids.PAT_PID, seclen):
             return False
-
         seclen -= 5  # pay bytes 4,5,6,7,8
         idx = 9
         chunk_size = 4
