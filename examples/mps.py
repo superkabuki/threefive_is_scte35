@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 mps.py - improve performance of threefive on python 3.11 and 3.14
 via multiprocessing.***
