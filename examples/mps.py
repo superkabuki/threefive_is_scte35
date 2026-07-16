@@ -5,6 +5,7 @@ via multiprocessing.***
 *** pypy3 is still faster with just a single process.
 
 """
+import sys
 from functools import partial
 from multiprocessing import Pool, set_start_method
 from threefive.stream import Stream, show_cue
@@ -12,7 +13,7 @@ from threefive import reader
 
 PKTSIZE = 188
 CHUNKSIZE = PKTSIZE * 7777
-POOLSIZE = 6
+POOLSIZE = 4
 
 
 class MPStream:
@@ -68,5 +69,6 @@ class MPStream:
             _ = [func(cue) for cues in results for cue in cues]
 
 if  __name__ == '__main__':
+        tsstream=sys.argv[1]
         mps = MPStream(tsstream)
         mps.decode()
