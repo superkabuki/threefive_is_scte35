@@ -498,8 +498,8 @@ class Stream(Based):
             pts = self.mk_pts(payload)
             prgm = self.pid2prgm(pid)
             self.maps.prgm_pts[prgm] = pts
-        #          if prgm not in self.start:
-        #            self.start[prgm] = pts
+            if prgm not in self.start:
+                self.start[prgm] = pts
         return False
 
     def _mk_pcr(self, pkt, pid):
