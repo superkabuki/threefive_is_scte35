@@ -31,13 +31,9 @@ threefive https://demo.unified-streaming.com/k8s/live/scte35.isml/.m3u8
 ```
 
 * __threefive does a lot more__, that was just to get you started.
-* RTFM
 ___
 
-
-
-
-# [ Documentation ]
+# [ Documentation ] 
 #### Need to inject SCTE-35 into HLS?  [X9k3.](https://github.com/superkabuki/x9k3)
 * [__web based SCTE-35 tools__](#web) - threefive and friends over http. 
 * [__install__](#install)
