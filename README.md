@@ -3,13 +3,19 @@
 
 *   __Decodes SCTE-35__ from `MPEGTS`✔ `Base64`✔ `Bytes`✔ `DASH`✔ `Hex` ✔ `HLS`✔ `Integers`✔ `JSON`✔ `XML`✔ `XML+Binary`✔  
 *   __Encodes SCTE-35__ to `MPEGTS`✔ `Base64`✔ `Bytes`✔ `Hex`✔ `Integers`✔ `JSON`✔ `XML`✔ `XML+Binary`✔
+
 # [ version ]
+
 ### __latest is v.3.0.95__
 
-## [ The Big Python 3.14 Speed Up. So desu ne! ]
+___
+
+# [ the big fat python 3.14 speed up.]
 
 I've been working with some of the python developers for the last few weeks to tune up threefive on python3.14. They have been super cool and even gave me a 3.14 backport of the new Tachyon profiler. __Tachyon__ is something serious. I'll put it this way, __threefive now runs more than twice as fast on python3.14 thanks to the python folks and Tachyon.__ I am a big fan.
+<img width="1000" height="525/2" alt="tachyon" src="https://github.com/user-attachments/assets/a009c59a-0ada-49e3-9e67-be6d4b3d3438" />
 
+___
 
 # [ really really quick start ]
 
