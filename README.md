@@ -6,6 +6,10 @@
 # [ version ]
 ### __latest is v.3.0.95__
 
+## [ The Big Python 3.14 Speed Up. So desu ne! ]
+
+I've been working with some of the python developers for the last few weeks to tune up threefive on python3.14. They have been super cool and even gave me a 3.14 backport of the new Tachyon profiler. __Tachyon__ is something serious. I'll put it this way, __threefive now runs more than twice as fast on python3.14 thanks to the python folks and Tachyon.__ I am a big fan.
+
 
 # [ really really quick start ]
 
