@@ -1,4 +1,4 @@
-# You are paying Claude, to teach it your job, so it can replace you.
+### You are paying Claude, to teach it your job, so it can replace you. How is that a good idea?
  
  [A Lot of Examples ](https://github.com/superkabuki/threefive_is_scte35/blob/main/examples)  |  [  Tip of the Week  ](totw.md)  |   [  Cheap Tricks   ](cheaptricks.md) 
 # [ threefive ] 
