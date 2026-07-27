@@ -128,9 +128,9 @@ class Stream(Based):
     Stream class for parsing MPEG-TS data.
     """
 
-    # the _CONST are deprecated
-    # please switch to CONST
-
+    # the _CONST vars are deprecated
+    # please switch to CONST vars
+    # ex. use PACKET_SIZE not _PACKET_SIZE
     PACKET_SIZE = 188
     SYNC_BYTE = 0x47
     MIN_PMT_COUNT = 16
@@ -179,8 +179,8 @@ class Stream(Based):
         return round((ticks / 90000.0), 6)
 
     @staticmethod
-    def _pusi_flag(pkt):
-        return pkt[1] & 0x40
+    def _pusi_flag(pkt1):
+        return pkt1 & 0x40
 
     @staticmethod
     def _afc_flag(pkt):
@@ -204,22 +204,25 @@ class Stream(Based):
         """
         parse a 12 bit length value
         """
-        return (byte1 & 0xF) << 8 | byte2
+        one = (byte1 & 0xF) << 8
+        return one +byte2
 
     @staticmethod
     def _parse_pid(byte1, byte2):
         """
         parse a 13 bit pid value
         """
-        pid = (byte1 & 0x1F) << 8 | byte2
-        return pid
+        one = (byte1 & 0x1F) << 8
+        return one + byte2
+    
 
     @staticmethod
     def _parse_program(byte1, byte2):
         """
         parse a 16 bit program number value
         """
-        return (byte1 << 8) | byte2
+        one = byte1 << 8
+        return one + byte2
 
     @staticmethod
     def _split_by_idx(pay, marker):
@@ -320,25 +323,23 @@ class Stream(Based):
         Stream.decode reads self.tsdata to find SCTE35 packets.
         func can be set to a custom function that accepts
         a threefive.Cue instance as it's only argument.
+        The method is written this way for speed.
         """
-        ##        num_pkts=3584
-        ##        chunksize = num_pkts * self.PACKET_SIZE
+        if not self._find_start():
+            return False
+        #for pkt in self.iter_pkts():
         while pkt := self._tsdata.read(self.PACKET_SIZE):
-            ##        while prechunk := self._tsdata.read(self.PACKET_SIZE*num_pkts):
-            ##            for i in range(0, len(prechunk), self.PACKET_SIZE):
-            ##                pkt = prechunk[i : i + self.PACKET_SIZE]
-            pid = (pkt[1] & 0x1F) << 8 | pkt[2]
+            pid = (pkt[1] & 0x1F) << 8
+            pid +=pkt[2]
             if pid in self.pids.pcr:
                 if pkt[1] & 0x40:
                     self._parse_pts(pkt, pid)
             elif pid in self.pids.tables:
                 self._parse_tables(pkt, pid)
             elif pid in (self.pids.scte35 or self.pids.maybe_scte35):
-                cue = self._parse_scte35(pkt, pid)
+                cue= self._parse_scte35(pkt, pid)
                 if cue:
                     func(cue)
-                    del cue
-            del pkt
         return False
 
     def decode_next(self):
@@ -419,7 +420,7 @@ class Stream(Based):
         for pkt in self.iter_pkts():
             pid = self._parse_info(pkt)
             prgm = self.pid2prgm(pid)
-            if self._pusi_flag(pkt):
+            if self._pusi_flag(pkt[1]):
                 if pid in self.pids.pcr:
                     self._parse_pts(pkt, pid)
                     pts = self.pid2pts(pid)
@@ -480,11 +481,12 @@ class Stream(Based):
         """
         mk_pts calculate pts from payload
         """
-        pts = (payload[9] & 14) << 29
-        pts |= payload[10] << 22
-        pts |= (payload[11] >> 1) << 15
-        pts |= payload[12] << 7
-        pts |= payload[13] >> 1
+        a = (payload[9] & 14) << 29
+        b = payload[10] << 22
+        c = (payload[11] >> 1) << 15
+        d = payload[12] << 7
+        e = payload[13] >> 1
+        pts=a+b+c+d+e
         return pts
 
     def _parse_pts(self, pkt, pid):
@@ -551,16 +553,16 @@ class Stream(Based):
         """
         parse  parse pkt for tables and SCTE-35
         """
-        pid = (pkt[1] & 0x1F) << 8 | pkt[2]
-        #   pid = self._parse_pid(pkt[1], pkt[2])
-        if pid in self.pids.tables:
-            return self._parse_tables(pkt, pid)
-        if pid in (self.pids.scte35 or self.pids.maybe_scte35):
-            return self._parse_scte35(pkt, pid)
+        cue=None
+        pid = self._parse_pid(pkt[1], pkt[2])
         if pid in self.pids.pcr:
-            if pkt[1] & 0x40:
+            if self._pusi_flag(pkt[1]):
                 self._parse_pts(pkt, pid)
-        return False
+        elif pid in self.pids.tables:
+            self._parse_tables(pkt, pid)
+        elif pid in (self.pids.scte35 or self.pids.maybe_scte35):
+            cue= self._parse_scte35(pkt, pid)
+        return cue
 
     def _parse_with_pcr(self, pkt):
         """
