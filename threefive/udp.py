@@ -9,21 +9,6 @@ from .stuff import blue
 TIMEOUT = 60
 
 
-class Socked(socket.socket):
-    """
-    Socked class subclasses socket.socket
-    and defines a read() method to maintain the interface.
-    """
-
-    def read(self, bites=1316):
-        """
-        read is just an alias for socket.socket.recv
-        so anything returned by reader can call a
-        read() method.
-        """
-        return self.recv(bites)
-
-
 def _setSO_RCVBUF(socked):
     """
     _setSO_RCVBUF  left shift socket.SO_RCVBUF
@@ -128,7 +113,7 @@ def udp_receiver():
     udp_receiver create
     a udp receiver socket from the Socked class
     """
-    socked = Socked(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
+    socked = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
     _setSO_RCVBUF(socked)
     _udp_flags(socked)
     return socked
