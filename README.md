@@ -1,4 +1,4 @@
-### You are teaching Claude how to do your job, so it can replace you..  
+### You are teaching Claude how to do your job, so it can replace you. Don't be a sucker.  
 
  [A Lot of Examples ](https://github.com/superkabuki/threefive_is_scte35/blob/main/examples)  |  [  Tip of the Week  ](totw.md)  |   [  Cheap Tricks   ](cheaptricks.md) 
 # [ threefive ] 
