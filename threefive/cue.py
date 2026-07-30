@@ -4,16 +4,16 @@ threefive.Cue Class
 
 from base64 import b64decode, b64encode
 import json
-from .stuff import clean, red, isjson, isxml, pif
-from .bitn import NBin
 from .base import SCTE35Base
-from .section import SpliceInfoSection
-from .commands import command_map
-from .descriptors import splice_descriptor, descriptor_map
+from .bitn import NBin
+from .commands import command_map,SpliceCommand
 from .crc import crc32
+from .descriptors import splice_descriptor, descriptor_map,SpliceDescriptor
+from .section import SpliceInfoSection
 from .segmentation import table22
-from .xml import Node
+from .stuff import clean, red, isjson, isxml, pif
 from .uxp import xml2cue
+from .xml import Node
 
 
 MINUSONE = -0x1
@@ -474,6 +474,20 @@ class Cue(SCTE35Base):
                          >>> cue.load(xml)
                          True
         """
+        if isinstance(data,Node): # threefive.xml.Node
+            data = data.mk()
+        if isinstance(data,SpliceCommand):
+            self.command=data
+            self.encode()
+            return True
+        if isinstance(data,SpliceInfoSection):
+            self.info_section=data
+            self.encode()
+            return True
+        if isinstance(data,SpliceDescriptor):
+            self.descriptors.append(data)
+            self.encode()
+            return True
         if isinstance(data, bytes):
             data = clean(data)
         if isinstance(data, str):
@@ -492,10 +506,16 @@ class Cue(SCTE35Base):
                 list,
             ),
         ):
-            self._load_descriptors(data["descriptors"])
-            self.encode()
-            self.decode()
-            return True
+            try:
+                self._load_descriptors(data["descriptors"])
+            except:
+                pass
+            try:
+                self.encode()
+                self.decode()
+                return True
+            except:
+                pass
         return False
 
     ## xml stuff
@@ -552,7 +572,7 @@ class Cue(SCTE35Base):
         sis.addchild(cmd)
         sis = self._xml_mk_descriptor(sis, ns)
         self.encode()
-        return sis  # xml retuns a Node instance.
+        return sis  # xml retuns a threefive.xml.Node instance.
 
     def xmlbin(self, ns="scte35"):
         """
@@ -562,4 +582,4 @@ class Cue(SCTE35Base):
         xb = Node("Signal", attrs={"xmlns": "https://scte.org/schemas/35"}, ns=ns)
         xbb = Node("Binary", value=self.base64())
         xb.addchild(xbb)
-        return xb
+        return xb # xmlbin returns threefive.xml.Node instance
