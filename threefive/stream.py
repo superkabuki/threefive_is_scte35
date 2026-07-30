@@ -8,9 +8,9 @@ import sys
 from .cue import Cue
 from .new_reader import reader
 from .packetdata import PacketData
+from .speedo import Speedo
 from .streamtypes import streamtype_map
 from .stuff import blue, ERR, print2
-from .speedo import Speedo
 from .throttle import Throttle
 
 
@@ -281,19 +281,25 @@ class Stream(Based):
         chunked - read chunks from stream
         """
         chunksize = self.PACKET_SIZE * num_pkts
-        if self._find_start():
-            while chunk := self._tsdata.read(chunksize):
-                yield chunk
+      #  if self._find_start():
+        while chunk := self._tsdata.read(chunksize):
+            yield chunk
 
-    def iter_pkts(self, num_pkts=1400):
+    def iter_pkts(self, num_pkts=3500):
         """
         iter_pkts - iterate packets from stream
         """
         chunksize = num_pkts * self.PACKET_SIZE
-        #        if self._find_start():
-        while chunk := self._tsdata.read(chunksize):
-            for i in range(0, len(chunk), self.PACKET_SIZE):
-                yield chunk[i : i + self.PACKET_SIZE]
+        if self._find_start():
+            while chunk := self._tsdata.read(chunksize):
+                lc = len(chunk)
+                i=0
+                while i < lc:
+                #for i in range(0, len(chunk), self.PACKET_SIZE):
+                    start = i
+                    i+=self.PACKET_SIZE
+                    end = i
+                    yield chunk[start:end]
 
     def speed(self):
         """
@@ -507,11 +513,11 @@ class Stream(Based):
     def _mk_pcr(self, pkt, pid):
 
         if self._afc_flag(pkt):
-            pcr = pkt[6] << 25
-            pcr |= pkt[7] << 17
-            pcr |= pkt[8] << 9
-            pcr |= pkt[9] << 1
-            pcr |= pkt[10] >> 7
+            pcr =   pkt[6] << 25
+            pcr += pkt[7] << 17
+            pcr += pkt[8] << 9
+            pcr += pkt[9] << 1
+            pcr += pkt[10] >> 7
             prgm = self.pid2prgm(pid)
             self.maps.prgm_pcr[prgm] = pcr
 
