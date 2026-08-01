@@ -11,10 +11,8 @@
 
 ___
 
-# [ the big fat python 3.14 speed up.]
-
-I've been working with some of the python developers for the last few weeks to tune up threefive on python3.14. They have been super cool and even gave me a 3.14 backport of the new Tachyon profiler. __Tachyon__ is something serious. I'll put it this way, __threefive now runs more than twice as fast on python3.14 thanks to the python folks and Tachyon.__ I am a big fan.
-<img width="1000" height="525/2" alt="tachyon" src="https://github.com/user-attachments/assets/a009c59a-0ada-49e3-9e67-be6d4b3d3438" />
+# [ News of The World]
+  I started using mmap in v3.0.95 because it gave a speed up with python3.14 on local files. One thing I've tried to do with threefive is to make handling a stream over a network or handling it locally work the same way. threefive uses __new_reader.reader__ to handle opening and reading __stdin, local files , http(s),Multicast, SRT, and UDP unicast__ all the same way and using mmap breaks a few things like readlines() for example. I will be removing mmap in threefive v3.0.97.
 
 ___
 
