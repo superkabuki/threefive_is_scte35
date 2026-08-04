@@ -6,9 +6,9 @@ from base64 import b64decode, b64encode
 import json
 from .base import SCTE35Base
 from .bitn import NBin
-from .commands import command_map,SpliceCommand
+from .commands import command_map, SpliceCommand
 from .crc import crc32
-from .descriptors import splice_descriptor, descriptor_map,SpliceDescriptor
+from .descriptors import splice_descriptor, descriptor_map, SpliceDescriptor
 from .section import SpliceInfoSection
 from .segmentation import table22
 from .stuff import clean, red, isjson, isxml, pif
@@ -448,23 +448,34 @@ class Cue(SCTE35Base):
             return
         self._load_dlist(dlist)
 
-
-    def _load_base(self,data):
-        if isinstance(data,SCTE35Base):
-            if isinstance(data,SpliceCommand): self.command=data
-            if isinstance(data,SpliceInfoSection): self.info_section=data
-            if isinstance(data,SpliceDescriptor): self.descriptors.append(data)
+    def _load_base(self, data):
+        if isinstance(data, SCTE35Base):
+            if isinstance(data, SpliceCommand):
+                self.command = data
+            if isinstance(data, SpliceInfoSection):
+                self.info_section = data
+            if isinstance(data, SpliceDescriptor):
+                self.descriptors.append(data)
             return self.encode()
         return False
 
-    def _load_dict(self,data):
+    def _load_dict(self, data):
         if isinstance(data, (dict,)):
             self._load_info_section(data)
             self._load_command(data)
-        if isinstance(data,(dict,list,),): self._load_descriptors(data)
-        try: return self.encode()
-        except: return False
-        
+        if isinstance(
+            data,
+            (
+                dict,
+                list,
+            ),
+        ):
+            self._load_descriptors(data)
+        try:
+            return self.encode()
+        except:
+            return False
+
     def load(self, data):
         """
          Cue.load loads SCTE35 data into the Cue instance.
@@ -491,9 +502,12 @@ class Cue(SCTE35Base):
                          >>> cue.load(xml)
                          True
         """
-        if isinstance(data,Node): data = data.mk() # threefive.xml.Node
-        if self._load_base(data): return True
-        if isinstance(data, bytes): data = clean(data)
+        if isinstance(data, Node):
+            data = data.mk()  # threefive.xml.Node
+        if self._load_base(data):
+            return True
+        if isinstance(data, bytes):
+            data = clean(data)
         if isinstance(data, str):
             data = data.strip()
             if isxml(data):
@@ -566,4 +580,4 @@ class Cue(SCTE35Base):
         xb = Node("Signal", attrs={"xmlns": "https://scte.org/schemas/35"}, ns=ns)
         xbb = Node("Binary", value=self.base64())
         xb.addchild(xbb)
-        return xb # xmlbin returns threefive.xml.Node instance
+        return xb  # xmlbin returns threefive.xml.Node instance
