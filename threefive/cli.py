@@ -61,8 +61,6 @@ HELP = f"""
     threefive proxy video.ts
  {B} pts         {U}{NORM}{BLUE} Print PTS from MPEGTS video{NORM}
     threefive pts video.ts
- {B} rt          {U}{NORM}{BLUE} Parse a MPEGTS stream, copy to stdout at realtime.{NORM}
-    threefive rt video.ts
  {B} sidecar     {U}{NORM}{BLUE} Create a SCTE-35 sidecar file{NORM}
     threefive sidecar video.ts
  {B} show        {U}{NORM}{BLUE} Probe MPEGTS video{NORM}
@@ -91,7 +89,7 @@ class PrintMapper:
     def hls(self):
         sys.argv.remove("hls")
         hlscli()
-        
+
     def print_help(self):
         """
         print_help checks sys.argv for the word help
@@ -112,13 +110,13 @@ class PrintMapper:
         chk_print_map checks for print_map.keys() in sys.argv
         """
         self.print_map = {
-        "hls": self.hls,
-        "-h": self.print_help,
-        "--help": self.print_help,
-        "help": self.print_help,
-        "-v": self.print_version,
-        "--version": self.print_version,
-        "version": self.print_version,
+            "hls": self.hls,
+            "-h": self.print_help,
+            "--help": self.print_help,
+            "help": self.print_help,
+            "-v": self.print_version,
+            "--version": self.print_version,
+            "version": self.print_version,
         }
 
         _ = [v() for k, v in self.print_map.items() if k in sys.argv]
@@ -202,7 +200,6 @@ def mk_args(keys):
     return [arg for arg in sys.argv[1:] if arg not in keys]
 
 
-
 class MPEGTSMapper:
 
     @staticmethod
@@ -236,17 +233,6 @@ class MPEGTSMapper:
         del strm
 
     @staticmethod
-    def rt_chk(this):
-        """
-        rt_chk checks for the rt keyword
-        and proxies the stream to stdout at realtime speed.
-        rt_chk also creates a sidecar file.
-        """
-        strm = Stream(this)
-        strm.rt(func=mk_sidecar)
-        del strm
-
-    @staticmethod
     def show_chk(this):
         """
         show_chk checks for the show keyword
@@ -265,7 +251,7 @@ class MPEGTSMapper:
         strm = Stream(this)
         strm.decode(func=mk_sidecar)
         del strm
-        
+
     @staticmethod
     def speedo_chk(this):
         """
@@ -275,7 +261,7 @@ class MPEGTSMapper:
         strm.speed()
         del strm
 
-    def mpegts_key_in_argv(self,args, key):
+    def mpegts_key_in_argv(self, args, key):
         """
         key_in_argv check if a key
         from mpegts_map is in sys.argv
@@ -299,14 +285,14 @@ class MPEGTSMapper:
 
     def __init__(self):
         self.mpegts_map = {
-        "proxy": self.proxy_chk,
-        "pts": self.pts_chk,
-        "rt": self.rt_chk,
-        "show": self.show_chk,
-        "sidecar": self.sidecar_chk,
-        "speedo": self.speedo_chk,
-        "iframes": self.iframe_chk,}
-        
+            "proxy": self.proxy_chk,
+            "pts": self.pts_chk,
+            "show": self.show_chk,
+            "sidecar": self.sidecar_chk,
+            "speedo": self.speedo_chk,
+            "iframes": self.iframe_chk,
+        }
+
         self.chk_mpegts_map()
 
 
