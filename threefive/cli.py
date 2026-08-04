@@ -86,6 +86,44 @@ def done():
     sys.exit()
 
 
+class PrintMapper:
+
+    def hls(self):
+        sys.argv.remove("hls")
+        hlscli()
+        
+    def print_help(self):
+        """
+        print_help checks sys.argv for the word help
+        and displays the help if found
+        """
+        print2(HELP)
+        done()
+
+    def print_version(self):
+        """
+        print_version print the threefive version
+        """
+        print2(version)
+        done()
+
+    def __init__(self):
+        """
+        chk_print_map checks for print_map.keys() in sys.argv
+        """
+        self.print_map = {
+        "hls": self.hls,
+        "-h": self.print_help,
+        "--help": self.print_help,
+        "help": self.print_help,
+        "-v": self.print_version,
+        "--version": self.print_version,
+        "version": self.print_version,
+        }
+
+        _ = [v() for k, v in self.print_map.items() if k in sys.argv]
+
+
 ###   stdin stuff
 
 
@@ -164,154 +202,112 @@ def mk_args(keys):
     return [arg for arg in sys.argv[1:] if arg not in keys]
 
 
-# print_map functions
-def hls():
-    sys.argv.remove("hls")
-    hlscli()
 
+class MPEGTSMapper:
 
-def print_help():
-    """
-    print_help checks sys.argv for the word help
-    and displays the help if found
-    """
-    print2(HELP)
-    done()
+    @staticmethod
+    def iframe_chk(this):
+        """
+        iframe_chk show iframes pts
+        for a mpegts video.
+        """
+        iframer = IFramer()
+        iframer.do(this)
+        del iframer
 
+    @staticmethod
+    def proxy_chk(this):
+        """
+        proxy_chk checks for the proxy keyword
+        and proxies the stream to stdout if present.
+        proxy_chk also writes pts,cue pairs to sidecar.txt
+        """
+        strm = Stream(this)
+        strm.proxy(func=mk_sidecar)
+        del strm
 
-def print_version():
-    """
-    print_version print the threefive version
-    """
-    print2(version)
-    done()
+    @staticmethod
+    def pts_chk(this):
+        """
+        pts_chk is used to display PTS.
+        """
+        strm = Stream(this)
+        strm.show_pts()
+        del strm
 
+    @staticmethod
+    def rt_chk(this):
+        """
+        rt_chk checks for the rt keyword
+        and proxies the stream to stdout at realtime speed.
+        rt_chk also creates a sidecar file.
+        """
+        strm = Stream(this)
+        strm.rt(func=mk_sidecar)
+        del strm
 
-print_map = {
-    "hls": hls,
-    "-h": print_help,
-    "--help": print_help,
-    "help": print_help,
-    "-v": print_version,
-    "--version": print_version,
-    "version": print_version,
-}
+    @staticmethod
+    def show_chk(this):
+        """
+        show_chk checks for the show keyword
+        and displays the streams if present.
+        """
+        strm = Stream(this)
+        strm.show()
+        del strm
 
+    @staticmethod
+    def sidecar_chk(this):
+        """
+        sidecar_chk checks for the sidecar keyword and
+        generates a sidecar file if present.
+        """
+        strm = Stream(this)
+        strm.decode(func=mk_sidecar)
+        del strm
+        
+    @staticmethod
+    def speedo_chk(this):
+        """
+        speedo_chk displays parse speed for mpegts streams
+        """
+        strm = Stream(this)
+        strm.speed()
+        del strm
 
-def print_key_in_argv(key, val):
-    """
-    print_key_in_argv  if the key in sys.argv call val()
-    """
-    if key in sys.argv:
-        val()
-        done()
+    def mpegts_key_in_argv(self,args, key):
+        """
+        key_in_argv check if a key
+        from mpegts_map is in sys.argv
+        """
+        if key in sys.argv:
+            if stdin_is_readable():
+                args.append(sys.stdin.buffer)
+            for arg in args:
+                print2(arg)
+                self.mpegts_map[key](arg)
+            done()
 
+    def chk_mpegts_map(self):
+        """
+        chk_mpegts_map check sys.argv for mpegts_map keys
+        """
+        m_keys = list(self.mpegts_map.keys())
+        args = mk_args(m_keys)
+        for key in m_keys:
+            self.mpegts_key_in_argv(args, key)
 
-def chk_print_map():
-    """
-    chk_print_map checks for print_map.keys() in sys.argv
-    """
-    _ = [v() for k, v in print_map.items() if k in sys.argv]
-    #   print_key_in_argv(k, v)
-
-
-# functions for mpegts_map
-def iframe_chk(this):
-    """
-    iframe_chk show iframes pts
-    for a mpegts video.
-    """
-    iframer = IFramer()
-    iframer.do(this)
-
-
-def proxy_chk(this):
-    """
-    proxy_chk checks for the proxy keyword
-    and proxies the stream to stdout if present.
-    proxy_chk also writes pts,cue pairs to sidecar.txt
-    """
-    strm = Stream(this)
-    strm.proxy(func=mk_sidecar)
-
-
-def pts_chk(this):
-    """
-    pts_chk is used to display PTS.
-    """
-    strm = Stream(this)
-    strm.show_pts()
-
-
-def rt_chk(this):
-    """
-    rt_chk checks for the rt keyword
-    and proxies the stream to stdout at realtime speed.
-    rt_chk also creates a sidecar file.
-    """
-    strm = Stream(this)
-    strm.rt(func=mk_sidecar)
-
-
-def show_chk(this):
-    """
-    show_chk checks for the show keyword
-    and displays the streams if present.
-    """
-    strm = Stream(this)
-    strm.show()
-
-
-def sidecar_chk(this):
-    """
-    sidecar_chk checks for the sidecar keyword and
-    generates a sidecar file if present.
-    """
-    strm = Stream(this)
-    strm.decode(func=mk_sidecar)
-
-
-def speedo_chk(this):
-    """
-    speedo_chk displays parse speed for mpegts streams
-    """
-    strm = Stream(this)
-    strm.speed()
-
-
-mpegts_map = {
-    "proxy": proxy_chk,
-    "pts": pts_chk,
-    "rt": rt_chk,
-    "show": show_chk,
-    "sidecar": sidecar_chk,
-    "speedo": speedo_chk,
-    "iframes": iframe_chk,
-}
-
-
-def mpegts_key_in_argv(args, key):
-    """
-    key_in_argv check if a key
-    from mpegts_map is in sys.argv
-    """
-    if key in sys.argv:
-        if stdin_is_readable():
-            args.append(sys.stdin.buffer)
-        for arg in args:
-            print2(arg)
-            mpegts_map[key](arg)
-        done()
-
-
-def chk_mpegts_map():
-    """
-    chk_mpegts_map check sys.argv for mpegts_map keys
-    """
-    m_keys = list(mpegts_map.keys())
-    args = mk_args(m_keys)
-    for key in m_keys:
-        mpegts_key_in_argv(args, key)
+    def __init__(self):
+        self.mpegts_map = {
+        "proxy": self.proxy_chk,
+        "pts": self.pts_chk,
+        "rt": self.rt_chk,
+        "show": self.show_chk,
+        "sidecar": self.sidecar_chk,
+        "speedo": self.speedo_chk,
+        "iframes": self.iframe_chk,}
+        
+        self.chk_mpegts_map()
 
 
 # func_map is used to generate  SCTE-35 output formats
@@ -397,6 +393,7 @@ def try_stream(this):
     """
     strm = Stream(this)
     strm.decode(func=funk())  # funk() works here
+    del strm
 
 
 def try_cue(this):
@@ -409,8 +406,8 @@ def try_cue(this):
         cue = Cue(this)
         if cue:
             funk()(cue)  #   funk works here too.
-    finally:
-        return
+    except ERR:
+        pass
 
 
 def to_funk(this):
@@ -478,6 +475,6 @@ def threefivecli():
     """
     dashdashhelp()
     chk_hls()
-    chk_print_map()
-    chk_mpegts_map()
+    PrintMapper()
+    MPEGTSMapper()
     chk_funk_map()
