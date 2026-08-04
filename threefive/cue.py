@@ -420,7 +420,7 @@ class Cue(SCTE35Base):
         cmd = self._load_cmd(data)
         if "command_type" in cmd:
             self.command = command_map[cmd["command_type"]]()
-            self.command.load(cmd)
+        self.command.load(cmd)
         return "command_type" in cmd
 
     def _load_dstuff(self, dstuff):
@@ -448,6 +448,23 @@ class Cue(SCTE35Base):
             return
         self._load_dlist(dlist)
 
+
+    def _load_base(self,data):
+        if isinstance(data,SCTE35Base):
+            if isinstance(data,SpliceCommand): self.command=data
+            if isinstance(data,SpliceInfoSection): self.info_section=data
+            if isinstance(data,SpliceDescriptor): self.descriptors.append(data)
+            return self.encode()
+        return False
+
+    def _load_dict(self,data):
+        if isinstance(data, (dict,)):
+            self._load_info_section(data)
+            self._load_command(data)
+        if isinstance(data,(dict,list,),): self._load_descriptors(data)
+        try: return self.encode()
+        except: return False
+        
     def load(self, data):
         """
          Cue.load loads SCTE35 data into the Cue instance.
@@ -474,49 +491,16 @@ class Cue(SCTE35Base):
                          >>> cue.load(xml)
                          True
         """
-        if isinstance(data,Node): # threefive.xml.Node
-            data = data.mk()
-        if isinstance(data,SpliceCommand):
-            self.command=data
-            self.encode()
-            return True
-        if isinstance(data,SpliceInfoSection):
-            self.info_section=data
-            self.encode()
-            return True
-        if isinstance(data,SpliceDescriptor):
-            self.descriptors.append(data)
-            self.encode()
-            return True
-        if isinstance(data, bytes):
-            data = clean(data)
+        if isinstance(data,Node): data = data.mk() # threefive.xml.Node
+        if self._load_base(data): return True
+        if isinstance(data, bytes): data = clean(data)
         if isinstance(data, str):
             data = data.strip()
             if isxml(data):
                 self._from_xml(data)
                 return True
             data = json.loads(data)
-        if isinstance(data, (dict,)):
-            self._load_info_section(data)
-            self._load_command(data)
-        if isinstance(
-            data,
-            (
-                dict,
-                list,
-            ),
-        ):
-            try:
-                self._load_descriptors(data["descriptors"])
-            except:
-                pass
-            try:
-                self.encode()
-                self.decode()
-                return True
-            except:
-                pass
-        return False
+        return self._load_dict(data)
 
     ## xml stuff
     def _from_xml(self, data):
