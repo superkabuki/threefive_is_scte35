@@ -3,6 +3,7 @@ threefive.new_reader
 
 Home of the reader function
 """
+
 import mmap
 import socket
 import sys
@@ -89,8 +90,9 @@ def reader(uri, headers={}):
     if uri.startswith("srt://"):
         return try_srt(uri, headers=headers)
     # File
-    with open(uri, "r+b") as f:
-        return mmap.mmap(f.fileno(),0)
+    ##    with open(uri, "r+b") as f:
+    ##        return mmap.mmap(f.fileno(),0)
+    return open(uri, "rb")
 
 
 def _do_srt(srt_url, headers={}):
