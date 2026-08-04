@@ -53,7 +53,8 @@ class SCTE35Base:
                         >>> ts.as_90k(123456789)
                         1371.7421
         """
-        return round((int_time / 90000.0), 6)
+        ninetyk = float(int_time) / 90000.0
+        return round(ninetyk, 6)
 
     @staticmethod
     def as_ticks(float_time):
