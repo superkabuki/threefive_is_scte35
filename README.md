@@ -36,31 +36,44 @@ threefive https://demo.unified-streaming.com/k8s/live/scte35.isml/.m3u8
 ___
 
 # [ Documentation ] 
+
 #### Need to inject SCTE-35 into HLS?  [X9k3.](https://github.com/superkabuki/x9k3)
+
 * [__web based SCTE-35 tools__](#web) - threefive and friends over http. 
+
 * [__install__](#install)
+
 * [__quick start__](quickstart.md)
+
 * ___SCTE-35 on the command line___   
-	* [ __the threefive cli tool__](#-cli-) _If you work with SCTE-35, this is as cool as it gets.  
+	* [ __the threefive cli tool__](#-cli-) _If you work with SCTE-35, this is as cool as it gets._  
+
 * __other included tools__
-    * [__scte35bump__](#scte35bump) _adjust SCTE-35 PTS in MPEGTS streams_ 
     * [__scte35fix__](#scte35fix)  _ffmpeg changes scte-35 streams into bin data, scte35fix changes them back._
 	* [__scte35inject__](scte35inject.md) _scte35inject inject scte-35 into mpegts._
   	* [__gums__](#gums) _gums is a  multicast sender(server) for video_ 
+
+
 * __the threefive library__ _cool code for the cool kids_.
  	* [__Using the threefive.Cue class__](lib.md) 
 	* [__Using the threefive library__](#-using-the-library-) _decode SCTE-35 with less than ten lines of code_
  	* * [threefive __Classes__](#classes) _threefive is OO, made to subclass_
 		* [__Cue__ Class](https://github.com/superkabuki/threefive/blob/main/cue.md) _this class you'll use often_ 
 		* [__Stream__ Class](https://github.com/superkabuki/threefive/blob/main/stream.md) _this is the class for parsing MPEGTS_
+
 * [SCTE-35 __Sidecar Files__](https://github.com/superkabuki/SCTE-35_Sidecar_Files) _threefive supports SCTE-35 sidecar files_
+
 * [SCTE-35 __HLS__](https://github.com/superkabuki/threefive/blob/main/hls.md) _parse SCTE-35 in HLS in MPEGTS,CMAF, or fmP4__
+
 * [SCTE-35 __XML__ ](https://github.com/superkabuki/SCTE-35/blob/main/xml.md) and [More __XML__](node.md) _threefive can parse and encode SCTE-35 xml_
+
 * [__Encode__ SCTE-35](https://github.com/superkabuki/threefive/blob/main/encode.md) _threefive can encode SCTE-35 in every SCTE-35 format_
+
 * [Make your __threefive__ script an executable with __cython__](cython.md) _threefive is compatible with all python tools_
 </samp>
 
 ##  [Install]
+
 * __threefive__ is curretnly tested on python-3.11, python-3.14, python-3.14t, pypy-7.3.11 and pypy-7.3.22
 
 * __threefive__ is some of the __fastest code__ you'll see on __python3__. 
@@ -68,9 +81,6 @@ ___
 ```rebol
 python3 -mpip install threefive
 ```
-
-* __threefive__ runs __five times faster on pypy3__,
-* __threefive on pypy3__ can parse __mpegts__ at __over 1.5 GigaBytes__ a second, __single-threaded__.
 * __pypy3 via pip__ 
 ```rebol
 pypy3 -mpip install threefive
