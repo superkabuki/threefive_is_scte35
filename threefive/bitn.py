@@ -5,8 +5,6 @@ The bitn.Bitn and bitn.NBin classes
 from .stuff import red, pif
 
 
-
-
 class Bitn:
     """
         bitn.Bitbin takes a byte string and
@@ -37,10 +35,12 @@ class Bitn:
 
 
     """
+
     class NegShiftError(Exception):
         """
         NegShiftError inner Exception subclass
         """
+
         pass
 
     def __init__(self, bites):
@@ -56,7 +56,7 @@ class Bitn:
         of bits as 90k time
         """
         inted = self.as_int(num_bits)
-        ninetyk= round((inted/ 90000.0),6)
+        ninetyk = round((inted / 90000.0), 6)
         return ninetyk
 
     def as_int(self, num_bits):
@@ -75,9 +75,9 @@ class Bitn:
         Returns the hex value
         of num_bits of bits
         """
-        inted =self.as_int(num_bits)
-        hexed =hex(inted)
-        hexed= (hexed.replace("0x", "0x0", 1), hexed)[len(hexed) % 2 == 0]
+        inted = self.as_int(num_bits)
+        hexed = hex(inted)
+        hexed = (hexed.replace("0x", "0x0", 1), hexed)[len(hexed) % 2 == 0]
         return hexed
 
     def as_charset(self, num_bits, charset="ascii"):
@@ -87,13 +87,14 @@ class Bitn:
         default charset is ascii.
         """
         # print(charset)
-        inted= self.as_int(num_bits)
+        inted = self.as_int(num_bits)
         wide = num_bits >> 3
         if charset is None:
-            chared= int.to_bytes(inted, wide, byteorder="big")
+            chared = int.to_bytes(inted, wide, byteorder="big")
         else:
-            chared= int.to_bytes(inted, wide, byteorder="big").decode(
-        charset, errors="replace")
+            chared = int.to_bytes(inted, wide, byteorder="big").decode(
+                charset, errors="replace"
+            )
         return chared
 
     def as_bytes(self, num_bits):
@@ -101,16 +102,16 @@ class Bitn:
         Returns num_bits of bits
         as bytes
         """
-        inted= self.as_int(num_bits)
+        inted = self.as_int(num_bits)
         wide = num_bits >> 3
-        byted=int.to_bytes(inted, wide, byteorder="big")
+        byted = int.to_bytes(inted, wide, byteorder="big")
         return byted
 
     def as_flag(self, num_bits=1):
         """
         Returns one bit as True or False
         """
-        inted= self.as_int(num_bits)
+        inted = self.as_int(num_bits)
         flag = inted & 1 == 1
         return flag
 
@@ -122,14 +123,16 @@ class Bitn:
         if self.chkidx(num_bits):
             self.idx -= num_bits
 
-    def chkidx(self,num_bits):
+    def chkidx(self, num_bits):
         """
         chkidx check if we have enough
         idx left to cover num_bits.
         You can't shift what you don't have.
         """
         if self.idx < num_bits:
-            mesg=f"\n\n\t\t{num_bits} bits requested, but only {self.idx} bits remain.\n"
+            mesg = (
+                f"\n\n\t\t{num_bits} bits requested, but only {self.idx} bits remain.\n"
+            )
             raise self.NegShiftError(mesg)
             return False
         return True
