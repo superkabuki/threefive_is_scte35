@@ -119,92 +119,105 @@ make install py3=python3.14
 ___
 
 ## [ CLI ]
-* The threefive cli tool parses these SCTE-35 formats.  
-  * Base64
-  * Hex
-  * HLS
-  * Integers
-  * JSON
-  * MPEGTS
-  * XML
-  * XMLBinary.
+threefive is designed to be easy to use. I'm not sure that it's served well by a long explaination, so I'm going to try and keep this brief. 
 
-* Formats are auto-detected.
-___
+### The threefive cli tool.
 
-* __Parse SCTE-35 Cues__ 
-  *  __SCTE-35 Inputs:__  base64, hex, int, JSON,int,xml,and xmlbin.
-  *  __SCTE-35 Outputs:__ base64, bytes, hex, int,JSON, xml, and xmlbin.
-  *  __Any Input can be used with Any Output__
-  *  The __default output__ is JSON
+ the threefive cli tool decodes SCTE-35, formats are autodetected, and they all work the same way. 
 
-> __Here are several examples.__
+threefive [media to parse for SCTE-35]
 
-|SCTE-35 Input  |  SCTE-35 Output     | Command                                             |
-|-------|-----------|---------------------------------------------------------|
-|__base64__|__JSON__    | __threefive__ '/DAWAAAAAAAAAP/wBQb+AKmKxwAACzuu2Q==' |
-|__.__|__bytes__    | __threefive__ '/DAWAAAAAAAAAP/wBQb+AKmKxwAACzuu2Q==' __bytes__|
-|__.__|__hex__    | __threefive__ '/DAWAAAAAAAAAP/wBQb+AKmKxwAACzuu2Q==' __hex__|
-|__.__|__xml__    | __threefive__ '/DAWAAAAAAAAAP/wBQb+AKmKxwAACzuu2Q==' __xml__|
-|__hex__  | __JSON__  | __threefive__ 0xfc301600000000000000fff00506fe00a98ac700000b3baed9|
-|__.__  | __base64__  | __threefive__ 0xfc301600000000000000fff00506fe00a98ac700000b3baed9 __base64__ |
-|__.__  | __int__  | __threefive__ 0xfc301600000000000000fff00506fe00a98ac700000b3baed9 __int__ |
-|__.__  | __xmlbin__  | __threefive__ 0xfc301600000000000000fff00506fe00a98ac700000b3baed9 __xmlbin__ |
-| __int__ | __JSON__    | __threefive__ 1583008701074197245727019716796221242036302348025116111908569  |  
-|__.__ | __hex__    | __threefive__ 1583008701074197245727019716796221242036302348025116111908569 __hex__ |  
-|__.__ | __xml__    | __threefive__ 1583008701074197245727019716796221242036302348025116111908569 __xml__ |
-|__JSON__ |__base64__    | __threefive__  < json.json  __base64__                         |
-|__.__  |__bytes__    | __threefive__  < json.json  __bytes__                         |
-|__.__  |__xml__    | __threefive__  < json.json  __xml__                         |
-|__xml__   |__JSON__   | __threefive__   < xml.xml                                   |
-|__xmlbin__|__int__    | __threefive__   < xmlbin.xml __int__                        |
+examples:
 
-___
-
-* __Parse SCTE-35 from HLS__  
-```awk
-threefive https://example.com/master.m3u8
+*
+```sed
+threefive '/DAWAAAAAAAAAP/wBQb+AKmKxwAACzuu2Q=='
 ```
-___
+*
+```sed
+threefive 0xfc301600000000000000fff00506fe00a98ac700000b3baed9
+```
+*
+```sed
+threefive 1583008701074197245727019716796221242036302348025116111908569
+```
+*
+```sed
+threefive video.ts
+```
+*
+```sed
+threefive https://demo.unified-streaming.com/k8s/live/scte35.isml/scte35-audio_eng=64000-video=500000.m3u8
+```
 
-* __Parse SCTE-35 from MPEGTS__
-	* SCTE-35 can be parsed from MPEGTS over a variety of protocols.
-	* __SCTE-35 Input__: MPEGTS
-	*  __Protocols__: pipes, files, stdin, http(s), multicast,SRT and UDP.
-	* __SCTE-35 Output__: JSON _(default)_ base64, bytes, hex, int, xml, and xmlbin.
+* Formats like XML and JSON that may be to large to type on the command line,they can be redirected or piped in to threefive.
 
-|SCTE-35 Input  | Protocol   | SCTE-35 Output     | Command                                             |
-|-------|------------|-----------|---------------------------------------------------------|
-|__MPEGTS__|file|__JSON__   | __threefive__ video.ts										 |  
-|__.__|https|__base64__ | __threefive__ https://example.com/video.ts  __base64__      |
-|__.__|multicast|__bytes__ | __threefive__ udp://@235.3.5:3535  __bytes__      |
-|__.__|SRT|__hex__ | __threefive__ srt://1.2.3.4:4201  __hex__      |
-|__.__|UDP|__int__ | __threefive__ udp://10.10.10.10:1011  __int__      |
-|__.__|Pipe|__xml__| cat video.ts \| __threefive__  __xml__                           |
-|__.__|stdin|__xml+bin__| __threefive__  __xmlbin__ < video.ts|
+* redirect
+```sed
+threefive < xml.xml
+```
+* pipe
+```sed
+cat json.json | threefive
 
-___
+```
+### cli outputs and converting SCTE-35 Formats
+
+* the __default output format for threefive is json__
+
+* The cli tool can convert from one SCTE-35 format to another using keywords.
+    * The keywords are __base64,bytes,hex, int,json,xml, and xmlbin__ 
+
+* some conversion examples
 
 
-#### [⇧](#-documentation-)
+* SCTE-35 Base64 to SCTE-35 Hex
+```sed
+threefive '/DAWAAAAAAAAAP/wBQb+AKmKxwAACzuu2Q==' hex
+```
+* SCTE-35 Int to SCTE-35 Xml
+```sed
+threefive 1583008701074197245727019716796221242036302348025116111908569 xml
+```
+* SCTE-35 Hex to SCTE-35 xml+binary
+```sed
+threefive 0xfc301600000000000000fff00506fe00a98ac700000b3baed9 xmlbin
+```
 
-* [__Additional functionality__]
-	* threefive has several additional features, mostly related to MPEGTS streams.
-	* threefive has built in help, just type `threefive help`
-	* This table shows how to use them.
+### threefive cli and MPEGTS
+* threefive can parse MPEGTS from stdin, local files, HTTP(s), Multicast, SRT, and unicast UDP. 
 
-| Description                              | How To Use                                       |
-|------------------------------------------|---------------------------------------------------------|
-| Inject __SCTE35__ packets                |threefive __inject__ -i in.video -s sidecar.txt -o out.ts|
-| Show raw __SCTE35__ packets              |threefive __packets__ udp://@235.35.3.5:3535             |
-| Copy MPEGTS stream to stdout at realtime speed| threefive __rt__ input.ts | mplayer -				|
-| Create __SCTE35__ sidecar file           |threefive __sidecar__ video.ts                           |
-| Show streams in mpegts stream            | threefive __show__ https://example.com/video.ts         |
-| Show __iframes__ in mpegts stream        |threefive __iframes__ srt://10.10.1.3:9000               |
-| Show __PTS__ values from mpegts stream   | threefive __pts__ udp://192.168.1.10:9000               |
-|__Proxy__ the __mpegts__ stream to stdout |threefive __proxy__ https://wexample.com/video.ts        |
-|                                          |                                                         |
-|                                          |                                                         |
+* some mpegts examples
+
+* local
+```sed
+threefive video.ts
+```
+* stdin
+```sed
+cat video.ts | threefive 
+```
+* https
+```sed
+threefive https://iodisco.com/longb2.ts
+```
+* multicast
+```sed
+threefive udp://@235.35.3.5:3535 
+```
+
+### threefive cli MPEGTS outputs
+
+* the __default output for MPEGTS is json__
+
+* keywords can be used to specify other output formats
+   * The keywords are __base64,bytes,hex, int,json,xml, and xmlbin__ 
+
+* An example of mpegts with a keyword
+```
+threefive https://iodisco.com/longb2.ts xml
+```
+
 
 ___
 
