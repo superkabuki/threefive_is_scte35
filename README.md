@@ -9,13 +9,6 @@
 
 ### __latest is v.3.0.95__
 
-___
-
-# [ News of The World]
-  I started using mmap in v3.0.95 because it gave a speed up with python3.14 on local files. One thing I've tried to do with threefive is to make handling a stream over a network or handling it locally work the same way. threefive uses __new_reader.reader__ to handle opening and reading __stdin, local files , http(s),Multicast, SRT, and UDP unicast__ all the same way and using mmap breaks a few things like readlines() for example. I will be removing mmap in threefive v3.0.97.
-
-___
-
 # [ really really quick start ]
 
 * __Install__
