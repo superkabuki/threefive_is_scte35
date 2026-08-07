@@ -19,6 +19,3 @@ strm =Stream('srt://206.125.170.41:9000')
 strm.decode()
 ```
 
-* etc ...
-* __Two things that aren`t working are printing PTS and Iframes in MPEGTS for SRT urls.__
-  * I think it's because of how they sometimes return None. Not a big deal, I'll have it working soon.
