@@ -96,6 +96,8 @@ class Pids(Based):
         self.pcr = set()
         self.pmt = set()
         self.scte35 = set()
+        self.maybe_scte35 = set()
+        self.not_scte35 = set()
         self.tables = set([self.PAT_PID, self.SDT_PID])
 
 
@@ -145,7 +147,7 @@ class Stream(Based):
 
         Use like...
 
-        from threefive import Stream
+        from scte35 import Stream
         strm = Stream("vid.ts",show_null=False)
         strm.decode()
 
@@ -305,7 +307,7 @@ class Stream(Based):
         """
         Stream.decode reads self.tsdata to find SCTE35 packets.
         func can be set to a custom function that accepts
-        a threefive.Cue instance as it's only argument.
+        a scte35.Cue instance as it's only argument.
         The method is written this way for speed.
         """
         if not self._find_start():
@@ -328,7 +330,7 @@ class Stream(Based):
     def decode_next(self):
         """
         Stream.decode_next returns the next
-        SCTE35 cue as a threefive.Cue instance.
+        SCTE35 cue as a scte35.Cue instance.
         """
         for pkt in self.iter_pkts():
             cue = self.pkt2cue(pkt)
@@ -340,7 +342,7 @@ class Stream(Based):
         """
         Stream.decode_pids takes a list of SCTE-35 Pids parse
         and an optional call back function to run when a Cue is found.
-        if scte35_pids is not set, all threefive pids will be parsed.
+        if scte35_pids is not set, all scte35 pids will be parsed.
         """
         if scte35_pids:
             self.the_scte35_pids = scte35_pids
@@ -581,14 +583,30 @@ class Stream(Based):
             pay = pay[peslen:]
         return pay
 
-    def _mk_scte35_payload(self, pkt, pid):
-        pay = self._strip_scte35_pes(pkt)
+    def _pop_maybe_pid(self, pid):
+        if pid in self.pids.maybe_scte35:
+            self.pids.maybe_scte35.remove(pid)
+            self.pids.not_scte35.add(pid)
+
+    def _chk_maybe_pid(self, pay, pid):
+        """
+        _chk_maybe_pid mayb scte35 pids are stream type 0x06,
+        they may have scte35 but if the stream doesn't have scte35
+        stop checking.
+        """
         pay = self._chk_partial(pay, pid, self.SCTE35_TID)
         if not pay:
+            self._pop_maybe_pid(pid)
             return False
         if pay[13] == self.show_null:
             return False
         return pay
+
+    def _mk_scte35_payload(self, pkt, pid):
+        pay = self._strip_scte35_pes(pkt)
+        if not pay:
+            return False
+        return self._chk_maybe_pid(pay, pid)
 
     def _parse_scte35(self, pkt, pid):
         """
@@ -695,5 +713,8 @@ class Stream(Based):
         if stream_type is 0x06 or 0x86
         add it to self._scte35_pids.
         """
-        if stream_type in ["0x86", "0x06", "0x6", "0x05", "0x5"]:
+        if stream_type in ["0x86"]:
             self.pids.scte35.add(pid)
+        if stream_type in ["0x06", "0x6", "0x05", "0x5"]:
+            if pid not in self.pids.not_scte35:
+                self.pids.maybe_scte35.add(pid)
