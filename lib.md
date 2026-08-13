@@ -113,7 +113,7 @@ ___
 
 * __Cue.base64()__ _returns SCTE-35 as bytes_
  
-* __Cue.bytes()__  _returns SCTE-35 darta as bytes_
+* __Cue.bytes()__  _returns SCTE-35 data as bytes_
 
 * __Cue.hex()__ _returns SCTE-35 data as a hex string_
 
