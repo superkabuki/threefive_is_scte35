@@ -15,23 +15,45 @@
 ```
  python3 -m pip install threefive`
 ```
-* decode SCTE-35 __base64__
-```sed
-threefive '/DAWAAAAAAAAAP/wBQb+AKmKxwAACzuu2Q=='
-```
-* decode SCTE-35 __hex__
-```sed
-threefive 0xfc301600000000000000fff00506fe00a98ac700000b3baed9
-```
-* decode  SCTE-35 from __MPEGTS__
-```sed
-threefive https;//iodisco.com/longb2.ts
-```
-* decode SCTE-35 from __HLS__ ( a rendition or a master.m3u8)
-```sed
-threefive https://demo.unified-streaming.com/k8s/live/scte35.isml/.m3u8
-```
-
+* __decoding SCTE-35__
+	* __base64__ 
+		* decode __SCTE-35__ as __base64__
+		```cobol
+		threefive '/DAWAAAAAAAAAP/wBQb+AKmKxwAACzuu2Q=='
+		```
+		* decode __SCTE-35__ as __base64__ and __convert SCTE-35 to hex__
+		```cobol
+		threefive '/DAWAAAAAAAAAP/wBQb+AKmKxwAACzuu2Q==' hex
+		```
+ 	* __Hex__
+		* decode __SCTE-35__ as __hex__
+		```cobol
+		threefive '0xfc301600000000000000fff00506fe00a98ac700000b3baed9'
+		```
+		* decode __SCTE-35__ as __hex__ and __convert__ __SCTE-35__ to __xml__
+		```cobol
+		threefive '0xfc301600000000000000fff00506fe00a98ac700000b3baed9' xml
+		```
+	* __HLS__
+		* decode __SCTE-35__ from __HLS__ ( a rendition or a master.m3u8)
+		```cobol
+		threefive 'https://demo.unified-streaming.com/k8s/live/scte35.isml/.m3u8'
+		```
+ 	* __MPEGTS__
+		* decode  __SCTE-35__ from __MPEGTS__
+		```cobol
+		threefive 'https;//iodisco.com/longb2.ts'
+		```
+		* decode  __SCTE-35__ from __MPEGTS__ and __convert__ __SCTE-35__ to __bytes__
+		```cobol
+		threefive 'https;//iodisco.com/longb2.ts' bytes
+		```
+ 	* __Multicast__
+		* decode __SCTE-35__ from __MPEGTS__ over __Multicast__ 
+		```cobol
+		threefive udp://@235.3.5.35:3535
+		```
+ 
 * __threefive does a lot more__, that was just to get you started.
 ___
 
