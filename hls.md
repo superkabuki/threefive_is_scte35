@@ -1,23 +1,15 @@
 # [ The problem with SCTE-35 and HLS ]
-<pre> 
-	The SCTE-35 spec uses the SCTE35 HLS tags. 
-	
-	The HLS spec uses the DateRange HLS tags for SCTE-35. 
+ 
+*	The SCTE-35 specification specifies SCTE35 HLS tags for SCTE-35 in HLS. 
+*	The HLS specification specifies DateRange HLS tags for SCTE-35 in HLS. 
+*	The most commonly used HLS tags for SCTE-35 in HLS are from an old Adobe specification, and completely ignored in both the SCTE-35 and HLS specifications.
+* SCTE-35 can be also be embedded in the video segments, with or without any HLS tags.
 
-	The mosty commonly used SCTE-35 HLS tags are actually from an old Adobe specification, 
-and not officially acknowledged by the SCTE-35 or HLS spec. 
-	
-	To make it just a little bit more confusing, SCTE-35 can be also be embedded in the video segments, 
-with or without any HLS tags.
 
-</pre>
-# Don't worry man, threefive supports HLS SCTE-35 in every way possible. 
-<pre>
-	Most of the options presented here are for filtering the SCTE-35 data to what you need,
-	
+## threefive supports HLS SCTE-35 in every way possible. 
+	Most of the options presented here are for filtering the SCTE-35 data to what you need,	
 	By default, threefive parses everything. 
-	
-</pre>
+
 
 # [ threefive hls ]
 
@@ -47,16 +39,16 @@ with or without any HLS tags.
     * AAC
     * AC3
     * MPEGTS
-    *codecs:
-      * video
-         * mpeg2, h.264, h.265
-        * audio
-          * mpeg2, aac, ac3, mp3
+    * MP4
+    * fMP4
+    
 * Protocols supported:
+  * stdin
   * file
-  * http(s)
-  * UDP
+  * HTTP(S)
   * Multicast
+  * Secure Reliable Transport
+  * UDP Unicast
 
 * Encryption supported:
     * AES-128 (segments are automatically decrypted)
@@ -125,18 +117,12 @@ with or without any HLS tags.
 
 * Created in the current working directory
 * Clobbered on start of showcues
-* Profile rules applied to the output:
-* hls.m3u8  - live playable rewrite of the m3u8 with the profile SCTE-35 rules.
-* hls.sidecar - list of ( pts, HLS SCTE-35 tag ) pairs
-
-### Profile rules not applied to the output:
-
-* hlsflat.m3u8  - hls live streams are flattened out into a vod playlist.
-  When the live m3u8  first loads, every line is written to hlsflat.m3u8
-  Wnen a live m3u8 is reloaded, everything except the headers
-  is appended to hlsflat.m3u8. This give you a VOD style m3u8
-  so you can fast forward or rewind while playing.
-   GREAT for debugging SCTE-35 live hls.
+* __hls.m3u8__  - live playable rewrite of the m3u8 with the profile SCTE-35 rules.
+* __hls.sidecar__ - list of ( pts, HLS SCTE-35 tag ) pair
+* __hlsflat.m3u8__  - hls live streams are flattened out into a vod playlist.
+  * When the live m3u8  first loads, every line is written to __hlsflat.m3u8__
+  * Wnen a live m3u8 is reloaded, everything except the headers is appended to __hlsflat.m3u8__.
+  	* __This give you a local playable VOD style m3u8, even from live sources__. 
 
 # [ Cool Features ]
 
@@ -146,20 +132,7 @@ with or without any HLS tags.
             2023-10-13T05:59:50.34Z Setting Break Timer to 17.733
             2023-10-13T05:59:50.44Z Setting Break Duration to 60.067
 ```
-* mpegts streams are listed on start ( like ffprobe )
-```rebol
-        Program: 1
-            Service:
-            Provider:
-            Pid:	480
-            Pcr Pid:	481
-            Streams:
-                Pid: 481[0x1e1]	Type: 0x1b AVC Video
-                Pid: 482[0x1e2]	Type: 0xf AAC Audio
-                Pid: 483[0x1e3]	Type: 0x86 SCTE35 Data
-                Pid: 484[0x1e4]	Type: 252 Unknown
-                Pid: 485[0x1e5]	Type: 0x15 ID3 Timed Meta Data
-```
+
 # [ Example Usage ]
 
 * Show this help:
