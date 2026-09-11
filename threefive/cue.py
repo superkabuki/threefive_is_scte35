@@ -354,12 +354,15 @@ class Cue(SCTE35Base):
         """
         encode_as_hex  alias for Cue.hex()
         """
+        blue("Cue.encode_as_hex() has been deprecated use Cue.hex() instead") 
         return self.hex()
 
     def encode_as_int(self):
         """
         encode_as_int alias for Cue.int()
         """
+        blue("Cue.encode_as_int() has been deprecated use Cue.int() instead") 
+
         return self.int()
 
     def _encode_crc(self):
