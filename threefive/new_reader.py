@@ -9,12 +9,7 @@ import socket
 import sys
 import urllib.request
 
-try:
-    from srtfu import SRTfu, SRTO_TRANSTYPE, SRT_LIVE, SRTO_RCVSYN, SRTO_RCVBUF
 
-    HAS_SRT = True
-except ImportError:
-    HAS_SRT = False
 from .udp import udp_receiver, mcast_ttl
 from .stuff import blue, pif, print2
 
@@ -39,11 +34,12 @@ def corsreader(uri, headers={}):
 
 
 def try_srt(uri, headers={}):
-    if HAS_SRT:
+    try:
+        from srtfu import SRTfu, SRTO_TRANSTYPE, SRT_LIVE, SRTO_RCVSYN, SRTO_RCVBUF
         return _do_srt(uri, headers=headers)
-
-    print2("pip install srtfu to add SRT support")
-    return False
+    except ImportError:
+        print2("pip install srtfu to add SRT support")
+        return False
 
 
 def reader(uri, headers={}):
