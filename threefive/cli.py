@@ -35,7 +35,7 @@ U = "\033[m"
 HELP = f"""
  {B}threefive{U}{BLUE} cli tool{U}
 
- {B} Default      {U} {BLUE}The default action is to read a input and write a SCTE-35 output.{U}
+ {B} Default      {U} {BLUE}The default action is to read an input and write a SCTE-35 output.{U}
 
     {BLUE}Inputs {U} mpegts, base64, hex, json,and xml, and xmlbin{U}.
 
