@@ -33,9 +33,9 @@ U = "\033[m"
 
 
 HELP = f"""
- {B}threefive{U}{BLUE} cli tool{U}
+ {BLUE}threefive{U} cli tool{U}
 
- {B} Default      {U} {BLUE}The default action is to read an input and write a SCTE-35 output.{U}
+ {BLUE} Default{U} The default action is to read a input and write a SCTE-35 output.{U}
 
     {BLUE}Inputs {U} mpegts, base64, hex, json,and xml, and xmlbin{U}.
 
@@ -44,33 +44,32 @@ HELP = f"""
     {BLUE}SCTE-35 can be read from {U} strings, files, stdin, DASH, HLS,
                 http(s), multicast, SRT, and UDP.
 
- {U}{B}Input {U}    {B}Output{U}  {B}Example Command{U}
+     {U}{BLUE}Input     Output  Example Command{U}
 
- {U}mpegts {U}   base64 {U}{BLUE} threefive https://example.com/video.ts base64{NORM}
- {U}base64 {U}   hex    {U}{BLUE} threefive '/DAWAAAAAAAAAP/wBQb+AKmKxwAACzuu2Q==' hex{NORM}
- {U}xmlbin {U}   int    {U}{BLUE} threefive < xmlbin.xml int{NORM}
- {U}xml    {U}   json   {U}{BLUE} threefive < xml.xml{NORM}
- {U}mpegts {U}   json   {U}{BLUE} threefive video.ts{NORM}
- {U}json{U}      xml    {U}{BLUE} threefive < json.json  xml{NORM}
+     {BLUE}mpegts    base64 {U} threefive https://example.com/video.ts base64{NORM}
+     {BLUE}base64    hex    {U} threefive '/DAWAAAAAAAAAP/wBQb+AKmKxwAACzuu2Q==' hex{NORM}
+     {BLUE}xmlbin    int    {U} threefive < xmlbin.xml int{NORM}
+     {BLUE}xml       json   {U} threefive < xml.xml{NORM}
+     {BLUE}mpegts    json   {U} threefive video.ts{NORM}
+     {BLUE}json      xml    {U} threefive < json.json  xml{NORM}
 
 {BLUE} Additional Commands{U}
 
- {B} iframes     {U}{BLUE} Show MPEGTS iframes{NORM}
-    threefive iframes video.ts
- {B} proxy       {U}{NORM}{BLUE} Parse a MPEGTS stream, copy it to stdout{NORM}
-    threefive proxy video.ts
- {B} pts         {U}{NORM}{BLUE} Print PTS from MPEGTS video{NORM}
-    threefive pts video.ts
- {B} sidecar     {U}{NORM}{BLUE} Create a SCTE-35 sidecar file{NORM}
-    threefive sidecar video.ts
- {B} show        {U}{NORM}{BLUE} Probe MPEGTS video{NORM}
-    threefive show video.ts
- {B} speedo      {U}{NORM}{BLUE} Show MPEGTS video parse speed{NORM}
-    threefive speedo video.ts
- {B} version     {U}{NORM}{BLUE} Show version{NORM}
-    threefive version
- {B} help        {U}{NORM} {BLUE}Help{NORM}
-    threefive help
+    {U}{BLUE} Show MPEGTS iframes{NORM}  threefive iframes video.ts
+
+    {U}{NORM}{BLUE} Parse a MPEGTS stream, copy it to stdout{NORM} threefive proxy video.ts
+
+    {U}{NORM}{BLUE} Print PTS from MPEGTS video{NORM} threefive pts video.ts
+
+    {U}{NORM}{BLUE} Create a SCTE-35 sidecar file{NORM} threefive sidecar video.ts
+
+    {U}{NORM}{BLUE} Probe MPEGTS video{NORM} threefive show video.ts
+
+    {U}{NORM}{BLUE} Show MPEGTS video parse speed{NORM} threefive speedo video.ts
+
+    {U}{NORM}{BLUE} Show version{NORM} threefive version
+
+    {U}{NORM} {BLUE}Help{NORM} threefive help
 
 """
 
