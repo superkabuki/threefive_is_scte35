@@ -4,13 +4,7 @@ threefive.new_reader
 Home of the reader function
 """
 
-import mmap
-import socket
-import sys
-import urllib.request
-
-
-from .udp import udp_receiver, mcast_ttl
+from sys import stdin
 from .stuff import blue, pif, print2
 
 
@@ -70,8 +64,8 @@ def reader(uri, headers={}):
 
     """
     # read from stdin
-    if uri in [None, sys.stdin.buffer]:
-        return sys.stdin.buffer
+    if uri in [None, stdin.buffer]:
+        return stdin.buffer
     # Multicast
     if uri.startswith("udp://@"):
         return _open_mcast(uri)
@@ -80,14 +74,16 @@ def reader(uri, headers={}):
         return _open_udp(uri)
     # HTTP(S)
     if uri.startswith("http"):
+        import urllib.request
         req = urllib.request.Request(uri, headers=headers)
         return urllib.request.urlopen(req)
     # SRT
     if uri.startswith("srt://"):
         return try_srt(uri, headers=headers)
     # File
+    from mmap import mmap
     with open(uri, "r+b") as f:
-        return mmap.mmap(f.fileno(),0)
+        return mmap(f.fileno(),0)
     ## return open(uri, "rb")
 
 
@@ -114,6 +110,7 @@ def _open_udp(uri):
     """
     udp://1.2.3.4:5555
     """
+    from .udp import udp_receiver
     udp_ip, udp_port = (uri.split("udp://")[1]).rsplit(":", 1)
     udp_port = pif(udp_port)
     blue("Opening UDP  Unicast socket")
@@ -127,6 +124,8 @@ def _open_mcast(uri):
     """
     udp://@227.1.3.10:4310
     """
+    import socket
+    from .udp import udp_receiver,mcast_ttl
     ttl = 32
     interface_ip = "0.0.0.0"
     multicast_group, port = (uri.split("udp://@")[1]).rsplit(":", 1)
