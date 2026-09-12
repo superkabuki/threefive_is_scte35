@@ -5,14 +5,7 @@ The threefive.Segment class
 import os
 from .new_reader import reader
 from .stream import Stream
-from .stuff import print2
-
-AES = True
-try:
-    import pyaes
-except ImportError:
-    print2("pip install pyaes for AES support")
-    AES = False
+from .stuff import print2,blue
 
 
 class Segment(Stream):
@@ -51,7 +44,6 @@ class Segment(Stream):
                  89730.281789: '/DAvAAAAAAAAAP/wFAUAAAKWf+//4WoauH4BTFYgAAEAAAAKAAhDVUVJAAAAAOv1oqc='}
 
     """
-
     def __init__(self, seg_uri, key_uri=None, iv=None):
         self.seg_uri = seg_uri
         self.key_uri = key_uri
@@ -63,14 +55,21 @@ class Segment(Stream):
         self.shush = False
         self.tmp = None
         self.duration = None
-        if AES:
-            if iv:
+        if iv:
+            if self._import_aes():
                 iv = iv.replace("\n", "")
                 self.iv = int.to_bytes(int(iv, base=16), 16, byteorder="big")
-                #  if self.key_uri:
                 self._aes_get_key()
                 self._aes_decrypt()
         super().__init__(self.seg_uri)
+
+    def _import_aes():
+        try:
+            import pyaes
+            return True
+        except ImportError:
+            blue("pip install pyaes for AES support")
+            return False  
 
     def __repr__(self):
         return str(self.__dict__)
