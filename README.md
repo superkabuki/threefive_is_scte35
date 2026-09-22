@@ -1,10 +1,9 @@
 
- [A Lot of Examples ](https://github.com/superkabuki/threefive_is_scte35/blob/main/examples)  |  [  Tip of the Week  ](totw.md)  |   [  Cheap Tricks   ](cheaptricks.md) | 
+# [ threefive ] 
+
+# Over 1.2 Million Installs.
 
 _A lot of people consider me to be a subject matter expert on SCTE-35,<BR> I see myself more as the undisputed heavy weight champion of SCTE-35._ ~Adrian
-
-  
-# [ threefive ] 
 
 *   __Decodes SCTE-35__ from `MPEGTS`✔ `Base64`✔ `Bytes`✔ `DASH`✔ `Hex` ✔ `HLS`✔ `Integers`✔ `JSON`✔ `XML`✔ `XML+Binary`✔  
 *   __Encodes SCTE-35__ to `MPEGTS`✔ `Base64`✔ `Bytes`✔ `Hex`✔ `Integers`✔ `JSON`✔ `XML`✔ `XML+Binary`✔
@@ -12,6 +11,7 @@ _A lot of people consider me to be a subject matter expert on SCTE-35,<BR> I see
 # [ version ]
 
 ### __latest is v.3.0.95__
+
 
 # [ really really quick start ]
 
@@ -62,6 +62,9 @@ _A lot of people consider me to be a subject matter expert on SCTE-35,<BR> I see
 ___
 
 # [ Documentation ] 
+
+ [A Lot of Examples ](https://github.com/superkabuki/threefive_is_scte35/blob/main/examples)  |  [  Tip of the Week  ](totw.md)  |   [  Cheap Tricks   ](cheaptricks.md) | 
+
 
 #### Need to inject SCTE-35 into HLS?  [X9k3.](https://github.com/superkabuki/x9k3)
 
