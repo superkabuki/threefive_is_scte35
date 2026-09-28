@@ -243,7 +243,7 @@ class Stream(Based):
             if one:
                 if one[0] == self.SYNC_BYTE:
                     tail = self._tsdata.read(self.PACKET_SIZE - 1)
-                    self._parse(one + tail)
+                    self.parse(one + tail)
                     return True
         print2("No Stream Found\n")
         return False
@@ -540,6 +540,9 @@ class Stream(Based):
             cue = self._parse_scte35(pkt, pid)
         return cue
 
+    def _parse(self,pkt):
+        return self.parse(pkt)
+    
     def _chk_partial(self, pay, pid, sep):
         if pid in self.maps.partial:
             pay2 = self.maps.partial.pop(pid) + pay
