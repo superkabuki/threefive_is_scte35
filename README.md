@@ -1,6 +1,6 @@
-_A lot of people consider me to be a subject matter expert on SCTE-35,<BR> I see myself more as the undisputed heavy weight champion of SCTE-35._ ~Adrian
-
 # [ threefive ] 
+
+_"this code is cleaner than your dishes"_ ~Adrian
 
 # Over 1.2 Million Installs.
 
@@ -11,7 +11,7 @@ _A lot of people consider me to be a subject matter expert on SCTE-35,<BR> I see
 
 # [ version ]
 
-### __latest is v.3.0.97__
+### __latest is v.3.0.99__
 
 
 # [ really really quick start ]
