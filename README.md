@@ -11,7 +11,9 @@ _"this code is cleaner than your dishes"_ ~Adrian
 
 # [ version ]
 
-### __latest is v.3.0.99__
+### __latest is v.3.1.1__
+#### Wait, let me explain.....
+> I have been trying to resolve some mmap issues, they are now resolved.
 
 
 # [ really really quick start ]
