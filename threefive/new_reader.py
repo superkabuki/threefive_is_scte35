@@ -6,6 +6,20 @@ Home of the reader function
 
 from sys import stdin
 from .stuff import blue, pif, print2
+from mmap import mmap
+
+class fumap(mmap):
+    """
+    fumap
+    for new reader to work, I need everything
+    to behave the same way.
+    fumap give mmap a readlines method
+    """
+    def readlines(self):
+        """
+        readlines readlines for mmap as fumap
+        """
+        return list(iter(self.readline, b""))
 
 
 CORS = {
@@ -30,6 +44,7 @@ def corsreader(uri, headers={}):
 def try_srt(uri, headers={}):
     try:
         from srtfu import SRTfu, SRTO_TRANSTYPE, SRT_LIVE, SRTO_RCVSYN, SRTO_RCVBUF
+
         return _do_srt(uri, headers=headers)
     except ImportError:
         blue("pip install srtfu to add SRT support")
@@ -81,10 +96,11 @@ def reader(uri, headers={}):
     if uri.startswith("srt://"):
         return try_srt(uri, headers=headers)
     # File
-    from mmap import mmap
     with open(uri, "r+b") as f:
-        return mmap(f.fileno(),0)
-    ## return open(uri, "rb")
+        return fumap(f.fileno(), 0)
+
+
+#    return open(uri, "rb")
 
 
 def _do_srt(srt_url, headers={}):
@@ -111,6 +127,7 @@ def _open_udp(uri):
     udp://1.2.3.4:5555
     """
     from .udp import udp_receiver
+
     udp_ip, udp_port = (uri.split("udp://")[1]).rsplit(":", 1)
     udp_port = pif(udp_port)
     blue("Opening UDP  Unicast socket")
@@ -125,7 +142,8 @@ def _open_mcast(uri):
     udp://@227.1.3.10:4310
     """
     import socket
-    from .udp import udp_receiver,mcast_ttl
+    from .udp import udp_receiver, mcast_ttl
+
     ttl = 32
     interface_ip = "0.0.0.0"
     multicast_group, port = (uri.split("udp://@")[1]).rsplit(":", 1)
