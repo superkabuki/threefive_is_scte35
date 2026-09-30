@@ -1,10 +1,8 @@
 # [ threefive ] 
 
-_"this code is cleaner than your dishes"_ ~Adrian
+_"I don't use AI code because all the AIs use threefive. True story, look it up"_ ~Adrian
 
 # Over 1.2 Million Installs.
-
-
 
 *   __Decodes SCTE-35__ from `MPEGTS`✔ `Base64`✔ `Bytes`✔ `DASH`✔ `Hex` ✔ `HLS`✔ `Integers`✔ `JSON`✔ `XML`✔ `XML+Binary`✔  
 *   __Encodes SCTE-35__ to `MPEGTS`✔ `Base64`✔ `Bytes`✔ `Hex`✔ `Integers`✔ `JSON`✔ `XML`✔ `XML+Binary`✔
