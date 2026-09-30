@@ -1,7 +1,7 @@
 
 [project]
 name = "threefive"
-version = "3.0.99"
+version = "3.1.1"
 authors = [
   { name="AdrianofDoom", email="spam@iodisco.com" },
 ]
