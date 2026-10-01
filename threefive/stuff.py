@@ -210,16 +210,16 @@ def print2(gonzo=b""):
                     >>> from threefive.stuff import print2
                     >>> print2('hello')
                     hello
-
-
     """
-    if "HTTP_USER_AGENT" in environ:
-        print(f'<script>alert("{gonzo}");</script>')
-        return
     if stderr.isatty():
         print(gonzo, file=stderr, flush=True)
         return
     no_color = no_ESC(gonzo)
+    if "HTTP_USER_AGENT" in environ:
+        no_color = no_color.lstrip("#")
+        print(f'<script>alert("{no_color}");window.location.href="https://iodisco.com/scte35";</script>')
+        return
+
     print(no_color, file=stderr, flush=True)
     return
 
