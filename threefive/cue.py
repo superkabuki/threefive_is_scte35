@@ -315,6 +315,7 @@ class Cue(SCTE35Base):
             >>> cue=Cue('0xfc301600000000000000fff00506feceda3b7700000d10b0ea')
             >>> cue.bytes()
         """
+        self.encode()
         return self.bites
 
     def hex(self):
@@ -354,14 +355,14 @@ class Cue(SCTE35Base):
         """
         encode_as_hex  alias for Cue.hex()
         """
-        blue("Cue.encode_as_hex() has been deprecated use Cue.hex() instead") 
+        blue("Cue.encode_as_hex() has been deprecated use Cue.hex() instead")
         return self.hex()
 
     def encode_as_int(self):
         """
         encode_as_int alias for Cue.int()
         """
-        blue("Cue.encode_as_int() has been deprecated use Cue.int() instead") 
+        blue("Cue.encode_as_int() has been deprecated use Cue.int() instead")
 
         return self.int()
 
@@ -558,8 +559,7 @@ class Cue(SCTE35Base):
 
     def xml(self, ns="scte35"):
         """
-                xml returns SCTE-35
-                as xml
+        xml return SCTE-35 as xml
 
         example:
                         >>> import threefive
