@@ -143,17 +143,73 @@ cue=Cue(data)
 
 ```
 
-### Editing SCTE-35 is easy, just use dot naotation to access all SCTE-35 data.
+### Editing SCTE-35 is easy, just use dot notation to access all SCTE-35 data.
 
 * Everything is directly editable.
+* After you edit the Cue instance vars, call Cue.encode() to update the Cue and recalculate length vars.
+* Cue.encode() will also check type and value of many Cue vars and notify you if there's a problem.
 
+<img width="1004" height="874" alt="image" src="https://github.com/user-attachments/assets/68cf8133-f3d5-4d27-a60f-c7cfa48d03f8" />
+
+### Assembling a Cue.
+* Individual components such as Splice Commands, Splice Descriptors, and Upids can be made individually and then added to a Cue instance. __All of the SCTE-35 components have decode(), encode(), json(), and show() methods__
+* threefive.Cue will generate the Splice Info Section for you if you don't specify one.
 ```py3
->>>> cue.command.break_duration
-60.0
->>>> cue.command.break_duration=73
->>>> cue.command.break_duration
-73
+>>>> from threefive import TimeSignal, Cue
+>>>> cue=Cue()      # make an empty Cue instance
+
+>>>> ts=TimeSignal()  # Make an empty TimeSignal splice command
+
+>>>> ts.encode()         # Call encode on the TimeSignal to check the values.
+
+# time_specified_flag is None, it should be type bool, 1 bit(s) long. 
+b''
+  
+>>>> ts.time_specified_flag=False   # fix the error
+>>>> ts.encode()                   # call enoode() on the TimeSignal
+b'\x7f'
+>>>> ts.show()                     # call show on the TimeSignal
+{
+    "command_length": 1,
+    "command_type": 6,
+    "name": "Time Signal",
+    "time_specified_flag": false
+}
+>>>> cue.command=ts               # Set the Cue Splice Command to the TimeSignal
+>>>> cue.encode()                 # call cue.encode() to generate a SpliceInfoSection
+'/DASAAAAAAAAAP/wAQZ/AAAxyFO8'
+>>>> cue.show()                   # Call cue.show() to print the SCTE-35 data
+{
+    "info_section": {
+        "table_id": "0xfc",
+        "section_syntax_indicator": false,
+        "private": false,
+        "sap_type": "0x03",
+        "sap_details": "No Sap Type",
+        "section_length": 18,
+        "protocol_version": 0,
+        "encrypted_packet": false,
+        "encryption_algorithm": 0,
+        "pts_adjustment": 0.0,
+        "cw_index": "0x00",
+        "tier": "0x0fff",
+        "splice_command_length": 1,
+        "splice_command_type": 6,
+        "descriptor_loop_length": 0,
+        "crc": "0x31c853bc"
+    },
+    "command": {
+        "command_length": 1,
+        "command_type": 6,
+        "name": "Time Signal",
+        "time_specified_flag": false
+    },
+    "descriptors": []
+}
+>>>> 
 ```
+
+
 
 # Output
 
