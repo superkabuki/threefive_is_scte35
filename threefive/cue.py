@@ -274,6 +274,8 @@ class Cue(SCTE35Base):
         dll = len(dscptr_bites)
         self.info_section.descriptor_loop_length = dll
         cmd_bites = self.command.encode()
+        if not cmd_bites and self.command.command_type !=0:
+            return False
         cmdl = self.command.command_length = len(cmd_bites)
         self.info_section.splice_command_length = cmdl
         self.info_section.splice_command_type = self.command.command_type
@@ -286,6 +288,7 @@ class Cue(SCTE35Base):
             self.info_section.descriptor_loop_length, TWO, byteorder="big"
         )
         self.bites += dscptr_bites
+        return True
 
     def base64(self):
         """
@@ -299,7 +302,8 @@ class Cue(SCTE35Base):
                 '/DAWAAAAAAAAAP/wBQb+zto7dwAADRCw6g=='
         """
         if self.command:
-            self._assemble()
+            if not self._assemble():
+                return False
             self._encode_crc()
             self.decode()
             return b64encode(self.bites).decode()
@@ -383,6 +387,8 @@ class Cue(SCTE35Base):
         """
         nbin = NBin()
         dbite_chunks = [dsptr.encode() for dsptr in self.descriptors]
+        if False in dbite_chunks:
+            return False
         for chunk, dsptr in zip(dbite_chunks, self.descriptors):
             dsptr.descriptor_length = len(chunk)
             nbin.add_int(dsptr.tag, EIGHT)
