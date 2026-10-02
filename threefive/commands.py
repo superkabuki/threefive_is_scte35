@@ -83,7 +83,8 @@ class PrivateCommand(SpliceCommand):
         encode private command
         """
         nbin = self._chk_nbin(nbin)
-        self._chk_var(int, nbin.add_int, "identifier", 32)  # 4 bytes = 32 bits
+        if not self._chk_var(int, nbin.add_int, "identifier", 32):
+            return False
         nbin.add_bites(self.private_bytes)
         self.command_length = len(nbin.bites)
         return nbin.bites
@@ -144,7 +145,8 @@ class TimeSignal(SpliceCommand):
         to bytes
         """
         nbin = self._chk_nbin(nbin)
-        self._encode_splice_time(nbin)
+        if not self._encode_splice_time(nbin):
+            return False
         self.command_length = len(nbin.bites)
         return nbin.bites
 
@@ -164,7 +166,8 @@ class TimeSignal(SpliceCommand):
         """
         _encode_splice_time Table 14 - splice_time()
         """
-        self._chk_var(bool, nbin.add_flag, "time_specified_flag", 1)
+        if not self._chk_var(bool, nbin.add_flag, "time_specified_flag", 1):
+            return False
         if self.time_specified_flag:
             nbin.reserve(6)
             if not self.pts_time:
@@ -173,6 +176,7 @@ class TimeSignal(SpliceCommand):
         else:
             self.pts_time = None
             nbin.reserve(7)
+        return True
 
     def xml(self, ns="scte35"):
         """
@@ -253,40 +257,51 @@ class SpliceInsert(TimeSignal):
         """
         SpliceInsert.encode
         """
+        no_errors=0
         nbin = self._chk_nbin(nbin)
-        self._chk_var(int, nbin.add_int, "splice_event_id", 32)
-        self._chk_var(bool, nbin.add_flag, "splice_event_cancel_indicator", 1)
+        if False in [
+            self._chk_var(int, nbin.add_int, "splice_event_id", 32),
+            self._chk_var(bool, nbin.add_flag, "splice_event_cancel_indicator", 1)]:
+            return False
         nbin.forward(7)
         if not self.splice_event_cancel_indicator:
-            self._chk_var(bool, nbin.add_flag, "out_of_network_indicator", 1)
-            self._chk_var(bool, nbin.add_flag, "program_splice_flag", 1)
-            self._chk_var(bool, nbin.add_flag, "duration_flag", 1)
-            self._chk_var(bool, nbin.add_flag, "splice_immediate_flag", 1)
-            self._chk_var(bool, nbin.add_flag, "event_id_compliance_flag", 1)
+            if False in [ 
+            self._chk_var(bool, nbin.add_flag, "out_of_network_indicator", 1),
+            self._chk_var(bool, nbin.add_flag, "program_splice_flag", 1),
+            self._chk_var(bool, nbin.add_flag, "duration_flag", 1),
+            self._chk_var(bool, nbin.add_flag, "splice_immediate_flag", 1),
+            self._chk_var(bool, nbin.add_flag, "event_id_compliance_flag", 1)]:
+                return False
             nbin.forward(3)
             if self.program_splice_flag:
                 if not self.splice_immediate_flag:
-                    self._encode_splice_time(nbin)
-            if self.duration_flag:
-                self._encode_break_duration(nbin)
-            self._chk_var(int, nbin.add_int, "unique_program_id", 16)
-            self._chk_var(int, nbin.add_int, "avail_num", 8)
-            self._chk_var(int, nbin.add_int, "avails_expected", 8)
+                    if not self._encode_splice_time(nbin):
+                        return False
+            if self.duration_flag:                    
+                if not self._encode_break_duration(nbin):
+                    return False
+            if False in [
+            self._chk_var(int, nbin.add_int, "unique_program_id", 16),
+            self._chk_var(int, nbin.add_int, "avail_num", 8),
+            self._chk_var(int, nbin.add_int, "avails_expected", 8)]:
+                return False
         self.command_length = len(nbin.bites)
         return nbin.bites
-
+    
+    
     def _encode_break_duration(self, nbin):
         """
         SpliceInsert._encode_break(nbin) is called
         if SpliceInsert.duration_flag is set
         """
-        self._chk_var(bool, nbin.add_flag, "break_auto_return", 1)
+        if not self._chk_var(bool, nbin.add_flag, "break_auto_return", 1):
+            return False
         nbin.forward(6)
         if not self.break_duration:
             red("break_duration is not set")
-        else:
-            ##            self.break_duration = self.as_90k(self.break_duration_ticks)
-            nbin.add_int(self.as_ticks(self.break_duration), 33)
+            return False
+        nbin.add_int(self.as_ticks(self.break_duration), 33)
+        return True
 
     def xml(self, ns="scte35"):
         """
