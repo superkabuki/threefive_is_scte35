@@ -117,9 +117,9 @@ class SCTE35Base:
         var_value = self.__dict__[var_name]
         if self._bool_int(var_value, var_type) or self._wrong_type(var_value, var_type):
             self._err2(var_name, var_value, bit_count, var_type)
-            return -1
+            return False
         nbin_method(var_value, bit_count)
-        return 0
+        return True
 
     def get(self):
         """
