@@ -127,8 +127,7 @@ class TimeSignal(SpliceCommand):
         self.name = "Time Signal"
         self.time_specified_flag = None
         self.pts_time = None
-
-    #  self.pts_ticks = None
+        self.pts_ticks = None
 
     def decode(self):
         """
@@ -170,11 +169,14 @@ class TimeSignal(SpliceCommand):
             return False
         if self.time_specified_flag:
             nbin.reserve(6)
+            if self.pts_ticks and not self.pts_time:
+                self.pts_time= round(self.pts_ticks/90000.0,6)
             if not self.pts_time:
                 return red("pts_time is not set")
-            nbin.add_int(self.as_ticks(self.pts_time), 33)
+            self.pts_ticks =self.as_ticks(self.pts_time)
+            nbin.add_int(self.pts_ticks, 33)
         else:
-            self.pts_time = None
+            self.pts_time= self.pts_ticks = None
             nbin.reserve(7)
         return True
 
