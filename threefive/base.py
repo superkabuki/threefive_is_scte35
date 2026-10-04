@@ -163,37 +163,19 @@ class SCTE35Base:
         return json.dumps(self.get(), indent=4)
 
     def _v2v(self, val):
-        if isinstance(val, SCTE35Base):
-            val.kv_clean()
-            print(val)
-        if isinstance(val, list):
-            val = [self._v2v(v) for v in val]
-        if isinstance(val, dict):
-            val = {k: self._v2v(v) for k, v in val.items()}
-        if isinstance(
-            val,
-            (
-                bytes,
-                bytearray,
-            ),
-        ):
-            val = val.decode()
+        if isinstance(val, SCTE35Base): val.kv_clean()
+        if isinstance(val, list): val = [self._v2v(v) for v in val]
+        if isinstance(val, dict): val = {k: self._v2v(v) for k, v in val.items()}
+        if isinstance(val,(bytes,bytearray,),):val = val.decode()
         return val
 
-    def kv_clean(self):
+    def kv_clean(self, obj=None):
         """
         kv_clean recursively removes items
         from a dict if the value is None.
         """
-        return {
-            k: self._v2v(v)
-            for k, v in vars(self).items()
-            if v
-            not in [
-                None,
-                [],
-            ]
-        }  # added empty list []
+        if not obj: obj=vars(self)
+        return {k: self._v2v(v) for k, v in obj.items() if v not in [None,[],{}]}
 
     def _chk_vars(self, k, v):
         if k in vars(self):
