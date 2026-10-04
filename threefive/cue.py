@@ -274,7 +274,8 @@ class Cue(SCTE35Base):
         dll = len(dscptr_bites)
         self.info_section.descriptor_loop_length = dll
         cmd_bites = self.command.encode()
-        if not cmd_bites and self.command.command_type !=0:
+        if not cmd_bites and self.command.command_type != 0:
+            print(self.command)
             return False
         cmdl = self.command.command_length = len(cmd_bites)
         self.info_section.splice_command_length = cmdl
