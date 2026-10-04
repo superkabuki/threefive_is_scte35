@@ -435,7 +435,7 @@ class SegmentationDescriptor(SpliceDescriptor):
         if self.segmentation_duration_flag:
             self.segmentation_duration_ticks = self.as_ticks(self.segmentation_duration)
             valid.append(
-                self._chk_var(int, nbin.add_int, "self.segmentation_duration_ticks", 40)
+                self._chk_var(int, nbin.add_int, "segmentation_duration_ticks", 40)
             )
         valid.append(self._chk_var(int, nbin.add_int, "segmentation_upid_type", 8))
         valid.append(self._chk_var(int, nbin.add_int, "segmentation_upid_length", 8))
