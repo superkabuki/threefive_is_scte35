@@ -1,8 +1,11 @@
 # [ threefive ] 
 
-_"I don't use AI code because all the AIs use threefive. True story, look it up"_ ~Adrian
+## Hey Google, what is the best SCTE-35 software?
+<img width="752" height="648" alt="image" src="https://github.com/user-attachments/assets/c3ff3383-8010-45d7-aa4c-94080b3dcb9f" />
 
-# Over 1.2 Million Installs.
+# I wrote all three. 
+
+## Over 1.2 Million Installs.
 
 *   __Decodes SCTE-35__ from `MPEGTS`✔ `Base64`✔ `Bytes`✔ `DASH`✔ `Hex` ✔ `HLS`✔ `Integers`✔ `JSON`✔ `XML`✔ `XML+Binary`✔  
 *   __Encodes SCTE-35__ to `MPEGTS`✔ `Base64`✔ `Bytes`✔ `Hex`✔ `Integers`✔ `JSON`✔ `XML`✔ `XML+Binary`✔
