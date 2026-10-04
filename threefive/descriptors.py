@@ -167,10 +167,10 @@ class AvailDescriptor(SpliceDescriptor):
         """
         encode SCTE35 Avail Descriptor
         """
+        valid = []
         nbin = super().encode(nbin)
-        if not self._chk_var(int, nbin.add_int, "provider_avail_id", 32):
-            return False
-        return nbin.bites
+        valid.append(self._chk_var(int, nbin.add_int, "provider_avail_id", 32))
+        return (nbin.bites, False)[False in valid]
 
     def xml(self, ns="scte35"):
         """
@@ -209,16 +209,15 @@ class DtmfDescriptor(SpliceDescriptor):
         encode SCTE35 Dtmf Descriptor
         """
         nbin = super().encode(nbin)
-        if not self._chk_var(int, nbin.add_int, "preroll", 8):
-            return False
+        valid = []
+        valid.append(self._chk_var(int, nbin.add_int, "preroll", 8))
         d_c = 0
-        if not self._chk_var(int, nbin.add_int, "dtmf_count", 3):
-            return False
+        valid.append(self._chk_var(int, nbin.add_int, "dtmf_count", 3))
         nbin.forward(5)
         while d_c < self.dtmf_count:
             nbin.add_int(ord(self.dtmf_chars[d_c]), 8)
             d_c += 1
-        return nbin.bites
+        return (nbin.bites, False)[False in valid]
 
     def xml(self, ns="scte35"):
         """
@@ -262,12 +261,11 @@ class TimeDescriptor(SpliceDescriptor):
         encode SCTE35 Time Descriptor
         """
         nbin = super().encode(nbin)
-        if False in [
-        self._chk_var(int, nbin.add_int, "tai_seconds", 48),
-        self._chk_var(int, nbin.add_int, "tai_ns", 32),
-        self._chk_var(int, nbin.add_int, "utc_offset", 16)]:
-            return False
-        return nbin.bites
+        valid = []
+        valid.append(self._chk_var(int, nbin.add_int, "tai_seconds", 48))
+        valid.append(self._chk_var(int, nbin.add_int, "tai_ns", 32))
+        valid.append(self._chk_var(int, nbin.add_int, "utc_offset", 16))
+        return (nbin.bites, False)[False in valid]
 
     def xml(self, ns="scte35"):
         """
@@ -378,40 +376,44 @@ class SegmentationDescriptor(SpliceDescriptor):
         encode a segmentation descriptor
         """
         nbin = super().encode(nbin)
-        if False in [
-        self._chk_var(str, nbin.add_hex, "segmentation_event_id", 32),
-        self._chk_var(bool, nbin.add_flag, "segmentation_event_cancel_indicator", 1),
-        self._chk_var(
-            bool, nbin.add_flag, "segmentation_event_id_compliance_indicator", 1
-        )]:
-            return False
+        valid = []
+        valid.append(self._chk_var(str, nbin.add_hex, "segmentation_event_id", 32))
+        valid.append(
+            self._chk_var(bool, nbin.add_flag, "segmentation_event_cancel_indicator", 1)
+        )
+        valid.append(
+            self._chk_var(
+                bool, nbin.add_flag, "segmentation_event_id_compliance_indicator", 1
+            )
+        )
         nbin.forward(6)
         if not self.segmentation_event_cancel_indicator:
-            if False in [        
-            self._encode_flags(nbin),
-            self._encode_segmentation(nbin)]:
-                return False
-        return nbin.bites
+            valid.append(self._encode_flags(nbin))
+            valid.append(self._encode_segmentation(nbin))
+        return (nbin.bites, False)[False in valid]
 
     def _encode_flags(self, nbin):
-        if False in [
-        self._chk_var(bool, nbin.add_flag, "program_segmentation_flag", 1),
-        self._chk_var(bool, nbin.add_flag, "segmentation_duration_flag", 1),
-        self._chk_var(bool, nbin.add_flag, "delivery_not_restricted_flag", 1)
-        ]:
-            return False
+        valid = []
+        valid.append(self._chk_var(bool, nbin.add_flag, "program_segmentation_flag", 1))
+        valid.append(
+            self._chk_var(bool, nbin.add_flag, "segmentation_duration_flag", 1)
+        )
+        valid.append(
+            self._chk_var(bool, nbin.add_flag, "delivery_not_restricted_flag", 1)
+        )
         if not self.delivery_not_restricted_flag:
-            if False in [
-            self._chk_var(bool, nbin.add_flag, "web_delivery_allowed_flag", 1),
-            self._chk_var(bool, nbin.add_flag, "no_regional_blackout_flag", 1),
-            self._chk_var(bool, nbin.add_flag, "archive_allowed_flag", 1)
-            ]:
-                return False
+            valid.append(
+                self._chk_var(bool, nbin.add_flag, "web_delivery_allowed_flag", 1)
+            )
+            valid.append(
+                self._chk_var(bool, nbin.add_flag, "no_regional_blackout_flag", 1)
+            )
+            valid.append(self._chk_var(bool, nbin.add_flag, "archive_allowed_flag", 1))
             a_key = k_by_v(table20, self.device_restrictions)
             nbin.add_int(a_key, 2)
         else:
             nbin.reserve(5)
-        return True
+        return (True, False)[False in valid]
 
     def _mk_the_upid(self, bitbin=None):
         """
@@ -429,12 +431,14 @@ class SegmentationDescriptor(SpliceDescriptor):
         return the_upid
 
     def _encode_segmentation(self, nbin):
+        valid = []
         if self.segmentation_duration_flag:
-            nbin.add_int(self.as_ticks(self.segmentation_duration), 40)
-        if False in [
-        self._chk_var(int, nbin.add_int, "segmentation_upid_type", 8),
-        self._chk_var(int, nbin.add_int, "segmentation_upid_length", 8)]:
-            return False
+            self.segmentation_duration_ticks = self.as_ticks(self.segmentation_duration)
+            valid.append(
+                self._chk_var(int, nbin.add_int, "self.segmentation_duration_ticks", 40)
+            )
+        valid.append(self._chk_var(int, nbin.add_int, "segmentation_upid_type", 8))
+        valid.append(self._chk_var(int, nbin.add_int, "segmentation_upid_length", 8))
         upid_type = self.segmentation_upid_type
         if upid_type not in upid_map:
             upid_type = 0xFD
@@ -443,26 +447,23 @@ class SegmentationDescriptor(SpliceDescriptor):
             None, upid_type, self.segmentation_upid_length
         )
         the_upid.encode(nbin, self.segmentation_upid)
-        if not self._chk_var(int, nbin.add_int, "segmentation_type_id", 8):
-            return False
-        self._encode_segments(nbin)
-        return True
+        valid.append(self._chk_var(int, nbin.add_int, "segmentation_type_id", 8))
+        valid.append(self._encode_segments(nbin))
+        return (True, False)[False in valid]
 
     def _encode_segments(self, nbin):
-        if False in [
-        self._chk_var(int, nbin.add_int, "segment_num", 8),
-        self._chk_var(int, nbin.add_int, "segments_expected", 8)]:
-            return False
+        valid = []
+        valid.append(self._chk_var(int, nbin.add_int, "segment_num", 8))
+        valid.append(self._chk_var(int, nbin.add_int, "segments_expected", 8))
         if self.segmentation_type_id in self.SUB_SEG_TYPES:
             if self.sub_segment_num and self.sub_segments_expected:
                 # Both are required, encode if they exist.
-                if False in [
-                self._chk_var(int, nbin.add_int, "sub_segment_num", 8),
-                self._chk_var(int, nbin.add_int, "sub_segments_expected", 8)
-                ]:
-                    return False
-        return True
-    
+                valid.append(self._chk_var(int, nbin.add_int, "sub_segment_num", 8))
+                valid.append(
+                    self._chk_var(int, nbin.add_int, "sub_segments_expected", 8)
+                )
+        return (True, False)[False in valid]
+
     def _xml_sub_segs(self, sd_attrs):
         #        if self.segmentation_type_id in self.SUB_SEG_TYPES:
         if self.sub_segment_num:
@@ -582,27 +583,27 @@ class Property(SCTE35Base):
             self.property_value = bitbin.as_bytes(self.property_value_length << 3)
 
     def encode(self, nbin=None):
+        valid = []
         nbin = self._chk_nbin(nbin)
-        if False in [
-        self._chk_var(int, nbin.add_int, "property_name_length", 8),
+        valid.append(self._chk_var(int, nbin.add_int, "property_name_length", 8))
         nbin.add_bites(self.property_name),
-        self._chk_var(str, nbin.add_hex, "property_data_type", 8),
-        self._chk_var(int, nbin.add_int, "property_value_length", 8)
-        ]:
-            return False
+        valid.append(self._chk_var(str, nbin.add_hex, "property_data_type", 8))
+        valid.append(self._chk_var(int, nbin.add_int, "property_value_length", 8))
         if self.property_data_type == "0x00":
-            if not self._chk_var(
-                str, nbin.add_hex, "property_value", self.property_value_length << 3
-            ):
-                return False
+            valid.append(
+                self._chk_var(
+                    str, nbin.add_hex, "property_value", self.property_value_length << 3
+                )
+            )
         elif self.property_data_type == "0x01":
-            if not self._chk_var(
-                int, nbin.add_int, "property_value", self.property_value_length << 3
-            ):
-                return False
+            valid.append(
+                self._chk_var(
+                    int, nbin.add_int, "property_value", self.property_value_length << 3
+                )
+            )
         else:
             nbin.add_bites(self.property_value)
-        return True
+        return (True, False)[False in valid]
 
     def xml(self, ns="scte35"):
         """
@@ -685,14 +686,13 @@ class EventDescriptor(SpliceDescriptor):
         """
         encode for Event Descriptors
         """
+        valid = []
         self.bites = None
         nbin = super().encode(nbin)
         ei = self.event_identifier
         nbin.add_int(ei, 32)
-        if False in [
-        self._chk_var(str, nbin.add_hex, "event_state", 8),
-        self._chk_var(str, nbin.add_hex, "event_type", 8)]:
-            return False
+        valid.append(self._chk_var(str, nbin.add_hex, "event_state", 8))
+        valid.append(self._chk_var(str, nbin.add_hex, "event_type", 8))
         elapsed = int(self.elapsed * 10000.0)
         remain = int(self.remain * 10000.0) + elapsed
         nbin.add_int(elapsed, 40)
@@ -700,7 +700,7 @@ class EventDescriptor(SpliceDescriptor):
         nbin.add_int(len(self.properties), 8)
         for prop in self.properties:
             prop.encode(nbin)
-        return nbin.bites
+        return (nbin.bites, False)[False in valid]
 
     def xml(self, ns="scte35"):
         """
