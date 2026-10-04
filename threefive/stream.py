@@ -456,12 +456,11 @@ class Stream(Based):
         """
         mk_pts calculate pts from payload
         """
-        a = (payload[9] & 14) << 29
-        b = payload[10] << 22
-        c = (payload[11] >> 1) << 15
-        d = payload[12] << 7
-        e = payload[13] >> 1
-        pts = a + b + c + d + e
+        pts = (payload[9] & 14) << 29
+        pts |= payload[10] << 22
+        pts |= (payload[11] >> 1) << 15
+        pts |= payload[12] << 7
+        pts |= payload[13] >> 1
         return pts
 
     def _parse_pts(self, pkt, pid):
@@ -540,9 +539,9 @@ class Stream(Based):
             cue = self._parse_scte35(pkt, pid)
         return cue
 
-    def _parse(self,pkt):
+    def _parse(self, pkt):
         return self.parse(pkt)
-    
+
     def _chk_partial(self, pay, pid, sep):
         if pid in self.maps.partial:
             pay2 = self.maps.partial.pop(pid) + pay
@@ -716,7 +715,7 @@ class Stream(Based):
         if stream_type is 0x06 or 0x86
         add it to self._scte35_pids.
         """
-        if stream_type in ["0x86"]:
+        if stream_type in ["0x86","0x06", "0x6", "0x05", "0x5"]:
             self.pids.scte35.add(pid)
         if stream_type in ["0x06", "0x6", "0x05", "0x5"]:
             if pid not in self.pids.not_scte35:
