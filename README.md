@@ -13,23 +13,19 @@ ___
 # [ version ]
 
 ### __latest is v.3.1.1__
-#### Wait, let me explain....I
-> I was unaware that mmap does not have a readlines() method, I understand why it does not implement readlines() in the usual way, however, I believe it should have a fake iterator style readlines() method, so I subclassed mmap and gave it one..***  
+#### Wait, let me explain... 
+> I was unaware that mmap does not have a readlines() method, I swear. I understand why it does not implement readlines() in the usual way, however, I believe it should have a fake iterator style readlines() method, so I subclassed mmap and gave it one..***
+
+> *** You can cuss me as needed.
+
 ```py3
 class fumap(mmap):
-    """
-    fumap
-    for new reader to work, I need everything
-    to behave the same way.
-    fumap give mmap a readlines method
-    """
     def readlines(self):
         """
         readlines readlines for mmap as fumap
         """
         return [iter(self.readline, b"")]
 ```
-*** You can cuss me as needed.
 
 ___
 
