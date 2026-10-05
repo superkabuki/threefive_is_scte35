@@ -13,8 +13,23 @@
 # [ version ]
 
 ### __latest is v.3.1.1__
-#### Wait, let me explain.....
-> I have been trying to resolve some mmap issues, they are now resolved.
+#### Wait, let me explain....I
+#### I was unaware that mmap does not have a readlines() method, I understand why it does not implement readlines() in the usual way, however, I believe it should have a fake iterator style readlines() method, so I subclassed mmap and gave it one.. ***  
+```py3
+class fumap(mmap):
+    """
+    fumap
+    for new reader to work, I need everything
+    to behave the same way.
+    fumap give mmap a readlines method
+    """
+    def readlines(self):
+        """
+        readlines readlines for mmap as fumap
+        """
+        return list(iter(self.readline, b""))
+```
+*** You can cuss me as needed.
 
 
 # [ really really quick start ]
