@@ -1,20 +1,20 @@
 # [ threefive ] 
 
-## Hey Google, what is the best SCTE-35 software?
+## Hey Google, what is the best SCTE-35 software?****
 <img width="752" height="648" alt="image" src="https://github.com/user-attachments/assets/c3ff3383-8010-45d7-aa4c-94080b3dcb9f" />
 
-# I wrote all three. 
-
-## Over 1.2 Million Installs.
+### ****I wrote all three. 
+___
 
 *   __Decodes SCTE-35__ from `MPEGTS`✔ `Base64`✔ `Bytes`✔ `DASH`✔ `Hex` ✔ `HLS`✔ `Integers`✔ `JSON`✔ `XML`✔ `XML+Binary`✔  
 *   __Encodes SCTE-35__ to `MPEGTS`✔ `Base64`✔ `Bytes`✔ `Hex`✔ `Integers`✔ `JSON`✔ `XML`✔ `XML+Binary`✔
+___
 
 # [ version ]
 
 ### __latest is v.3.1.1__
 #### Wait, let me explain....I
-#### I was unaware that mmap does not have a readlines() method, I understand why it does not implement readlines() in the usual way, however, I believe it should have a fake iterator style readlines() method, so I subclassed mmap and gave it one.. ***  
+> I was unaware that mmap does not have a readlines() method, I understand why it does not implement readlines() in the usual way, however, I believe it should have a fake iterator style readlines() method, so I subclassed mmap and gave it one..***  
 ```py3
 class fumap(mmap):
     """
@@ -27,47 +27,36 @@ class fumap(mmap):
         """
         readlines readlines for mmap as fumap
         """
-        return list(iter(self.readline, b""))
+        return [iter(self.readline, b"")]
 ```
 *** You can cuss me as needed.
 
+___
 
-# [ really really quick start ]
+# [ a really really quick start ]
 
 * __Install__
 ```
  python3 -m pip install threefive`
 ```
 * __decoding SCTE-35__
-	* __base64__ 
-		* decode __SCTE-35__ as __base64__
+
 		```cobol
 		threefive '/DAWAAAAAAAAAP/wBQb+AKmKxwAACzuu2Q=='
 		```
-		* decode __SCTE-35__ as __base64__ and __convert SCTE-35 to hex__
+	* decode __SCTE-35__ as __base64__ and __convert SCTE-35 to hex__
 		```cobol
 		threefive '/DAWAAAAAAAAAP/wBQb+AKmKxwAACzuu2Q==' hex
-		```
- 	* __Hex__
-		* decode __SCTE-35__ as __hex__
-		```cobol
-		threefive '0xfc301600000000000000fff00506fe00a98ac700000b3baed9'
-		```
-		* decode __SCTE-35__ as __hex__ and __convert__ __SCTE-35__ to __xml__
-		```cobol
-		threefive '0xfc301600000000000000fff00506fe00a98ac700000b3baed9' xml
-		```
-	* __HLS__
-		* decode __SCTE-35__ from __HLS__ ( a rendition or a master.m3u8)
+	
+	* decode __SCTE-35__ from __HLS__ ( a rendition or a master.m3u8)
 		```cobol
 		threefive 'https://demo.unified-streaming.com/k8s/live/scte35.isml/.m3u8'
 		```
- 	* __MPEGTS__
-		* decode  __SCTE-35__ from __MPEGTS__
+	* decode  __SCTE-35__ from __MPEGTS__
 		```cobol
 		threefive 'https;//iodisco.com/longb2.ts'
 		```
-		* decode  __SCTE-35__ from __MPEGTS__ and __convert__ __SCTE-35__ to __bytes__
+	* decode  __SCTE-35__ from __MPEGTS__ and __convert__ __SCTE-35__ to __bytes__
 		```cobol
 		threefive 'https;//iodisco.com/longb2.ts' bytes
 		```
@@ -122,9 +111,8 @@ ___
 
 ##  [Install]
 
-* __threefive__ is curretnly tested on python-3.11, python-3.14, python-3.14t, pypy-7.3.11 and pypy-7.3.22
+* Requires python3 v3.9 or higher.
 
-* __threefive__ is some of the __fastest code__ you'll see on __python3__. 
 * __python3 via pip__
 ```rebol
 python3 -mpip install threefive
@@ -133,11 +121,11 @@ python3 -mpip install threefive
 ```rebol
 pypy3 -mpip install threefive
 ```
-* __To add SRT support__
+* __To add SRT support to threefive install srtfu__
 ```py3
 python3 -m pip install srtfu
 ```
-* __To add Automatic AES decryption__
+* __To add Automatic AES decryption (used to decrypted HLS to threefive install pyaes__
 ```py3
 python3 -mpip install pyaes
 ```
@@ -149,16 +137,29 @@ git clone https://github.com/superkabuki/scte35.git
 cd threefive
 make install
 ```
-* I've jazzed up the makefile to make it easier to install for different python  versions and pypy3
+* I've jazzed up the makefile to make it easier to install for different python  versions and pypy3,
+
 ```rebol
-git clone https://github.com/superkabuki/scte35.git
+git clone https://github.com/superkabuki/threefive.git
 cd threefive
+``
+* `python3` is the default for `make install` 
 
+```
+make install
+```
+
+* setting py3 allows you to install for any type of python interpreter.
+
+```
 make install py3=pypy3
+```
+* absolute paths can also be used.
 
-# OR
+```
+make install py3=/home/a/pypy3/bin/pypy3
+```
 
-make install py3=python3.14
 
 # works for any python in your path or use a full path if needed.
 
@@ -171,9 +172,9 @@ threefive is designed to be easy to use. I'm not sure that it's served well by a
 
 ### The threefive cli tool.
 
- the threefive cli tool decodes SCTE-35, formats are autodetected, and they all work the same way. 
+ the threefive cli tool decodes SCTE-35, formats are auto-detected, and they all work the same way. 
 
-threefive [media to parse for SCTE-35]
+__threefive__ __[media to parse for SCTE-35]__
 
 examples:
 
@@ -198,7 +199,7 @@ threefive video.ts
 threefive https://demo.unified-streaming.com/k8s/live/scte35.isml/scte35-audio_eng=64000-video=500000.m3u8
 ```
 
-* Formats like XML and JSON that may be to large to type on the command line,they can be redirected or piped in to threefive.
+* Formats like ___XML and JSON__ that may be to large to type on the command line,they can be __redirected or piped__ in to threefive.
 
 * redirect
 ```sed
@@ -209,14 +210,14 @@ threefive < xml.xml
 cat json.json | threefive
 
 ```
-### cli outputs and converting SCTE-35 Formats
+### cli outputs and encoding SCTE-35 Formats
 
 * the __default output format for threefive is json__
 
 * The cli tool can convert from one SCTE-35 format to another using keywords.
     * The keywords are __base64,bytes,hex, int,json,xml, and xmlbin__ 
 
-* some conversion examples
+* some converting and encoding examples
 
 
 * SCTE-35 Base64 to SCTE-35 Hex
