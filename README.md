@@ -24,7 +24,7 @@ class fumap(mmap):
         """
         readlines readlines for mmap as fumap
         """
-        return [iter(self.readline, b"")]
+        return list(iter(self.readline, b""))
 ```
 
 ___
