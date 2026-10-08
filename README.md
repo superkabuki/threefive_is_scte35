@@ -14,18 +14,7 @@ ___
 
 ### __latest is v.3.1.1__
 #### Wait, let me explain... 
-> I was unaware that mmap does not have a readlines() method, I swear. I understand why it does not implement readlines() in the usual way, however, I believe it should have a fake iterator style readlines() method, so I subclassed mmap and gave it one.
-> mmap is used by threefive.new_reader.reader to speed up reading packets, not lines, from binary files. I did this just to maintain compatibility.  
-
-```py3
-class fumap(mmap):
-    def readlines(self):
-        """
-        readlines readlines for mmap as fumap
-        """
-        return list(iter(self.readline, b""))
-```
-
+> None of y'all told me that mmap doesn't have a readlines() method, so really, it's your fault. .
 ___
 
 # [ a really really quick start ]
