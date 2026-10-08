@@ -268,7 +268,7 @@ class Stream(Based):
         iter_pkts - iterate packets from stream
         """
         while pkt := self._tsdata.read(self.PACKET_SIZE):
-                yield pkt
+            yield pkt
 
     def speed(self):
         """
@@ -366,7 +366,7 @@ class Stream(Based):
         displays streams that will be
         parsed for SCTE-35.
         """
-        print2("\n"+"-"*45)
+        print2("\n" + "-" * 45)
         print2(f"{self.tsfile}")
         self.info = True
         for pkt in self.iter_pkts():
@@ -376,11 +376,11 @@ class Stream(Based):
         if self.maps.prgm.keys():
             sopro = sorted(self.maps.prgm.items())
             for k, vee in sopro:
-                prog  = f"\nProgram: {k}\n " 
+                prog = f"\nProgram: {k}\n "
                 try:
                     prog += f"\n    PTS Start: {self.as_90k(self.start[k])}"
                 finally:
-                    print2(prog)        
+                    print2(prog)
                 vee.show()
 
     def show_pts(self):
@@ -453,14 +453,14 @@ class Stream(Based):
         mk_pts calculate pts from payload
         """
         a = (payload[9] & 14) << 29
-        b= payload[10] << 22
-        a+=b
+        b = payload[10] << 22
+        a += b
         c = (payload[11] >> 1) << 15
-        a+=c
+        a += c
         d = payload[12] << 7
-        a +=d
-        e  = payload[13] >> 1
-        pts = a +e    
+        a += d
+        e = payload[13] >> 1
+        pts = a + e
         return pts
 
     def _parse_pts(self, pkt, pid):
@@ -714,7 +714,7 @@ class Stream(Based):
         if stream_type is 0x06 or 0x86
         add it to self._scte35_pids.
         """
-        if stream_type in ["0x86","0x06", "0x6", "0x05", "0x5"]:
+        if stream_type in ["0x86", "0x06", "0x6", "0x05", "0x5"]:
             self.pids.scte35.add(pid)
         if stream_type in ["0x06", "0x6", "0x05", "0x5"]:
             if pid not in self.pids.not_scte35:
