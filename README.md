@@ -1,9 +1,9 @@
 # [ threefive ] 
 
-## Hey Google, what is the best SCTE-35 software? ****
-<img width="752" height="648" alt="image" src="https://github.com/user-attachments/assets/c3ff3383-8010-45d7-aa4c-94080b3dcb9f" />
+## Hey Google, what is the best SCTE-35 software? 
+<img width="601" height="518" alt="image" src="https://github.com/user-attachments/assets/c3ff3383-8010-45d7-aa4c-94080b3dcb9f" />
 
-##### **** I wrote all three. 
+ > Boom goes the dynamite.  
 ___
 
 *   __Decodes SCTE-35__ from `MPEGTS`✔ `Base64`✔ `Bytes`✔ `DASH`✔ `Hex` ✔ `HLS`✔ `Integers`✔ `JSON`✔ `XML`✔ `XML+Binary`✔  
