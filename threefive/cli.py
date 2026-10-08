@@ -185,7 +185,7 @@ def mk_sidecar(cue):
         cue.show()
         if cue.packet_data.pts:
             pts = cue.packet_data.pts
-        if cue.command.pts_time:
+        if cue.command.has('pts_time'):
             pts = (cue.command.pts_time + cue.info_section.pts_adjustment) % rollover
         data = f"{pts},{cue.encode()}\n"
         sidecar.write(data)
@@ -207,6 +207,7 @@ class MPEGTSMapper:
         iframe_chk show iframes pts
         for a mpegts video.
         """
+        print2(this)
         iframer = IFramer()
         iframer.do(this)
         del iframer
@@ -227,6 +228,7 @@ class MPEGTSMapper:
         """
         pts_chk is used to display PTS.
         """
+        print2(this)
         strm = Stream(this)
         strm.show_pts()
         del strm
@@ -247,6 +249,7 @@ class MPEGTSMapper:
         sidecar_chk checks for the sidecar keyword and
         generates a sidecar file if present.
         """
+        print2(this)
         strm = Stream(this)
         strm.decode(func=mk_sidecar)
         del strm
@@ -256,6 +259,7 @@ class MPEGTSMapper:
         """
         speedo_chk displays parse speed for mpegts streams
         """
+        print2(this)
         strm = Stream(this)
         strm.speed()
         del strm
@@ -269,7 +273,6 @@ class MPEGTSMapper:
             if stdin_is_readable():
                 args.append(sys.stdin.buffer)
             for arg in args:
-                print2(arg)
                 self.mpegts_map[key](arg)
             done()
 
