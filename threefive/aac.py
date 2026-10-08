@@ -34,7 +34,7 @@ class AacParser:
         return id3len
 
     @staticmethod
-    def _syncsafe5(somebytes):
+    def not_syncsafe(somebytes):
         """
         _syncsafe5 parses PTS from ID3 tags.
         """
@@ -72,7 +72,7 @@ class AacParser:
         try:
             pts = float(data.split(self.applehead)[1].split(b"\x00", 2)[1])
         except ERR:
-            pts = self._syncsafe5(data.split(self.applehead)[1][:9])
+            pts = self._not_syncsafe(data.split(self.applehead)[1][:9])
         return round((pts % ROLLOVER), 6)
 
     def parse(self, media):
