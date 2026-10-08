@@ -66,20 +66,19 @@ class ProgramInfo(Based):
             vee = f"{hex(vee)}\t{streamtype_map[vee]}"
         else:
             vee = f"{vee} Unknown"
-        print2(f"#\t  {k} [{hex(k)}]\t{vee}")
+        print2(f"\t  {k} [{hex(k)}]\t{vee}")
 
     def show(self):
         """
         show print2 the Program Infomation
         in a familiar format.
         """
-        print2("")
-        print2(f"#   Program Pid: {self.pid}")
-        print2(f"#   Pcr Pid:     {self.pcr_pid}")
-        print2("#   Streams:")
+        print2(f"    Program Pid: {self.pid}")
+        print2(f"    Pcr Pid:     {self.pcr_pid}")
+        print2("    Streams:")
         # sorted_dict = {k:my_dict[k] for k in sorted(my_dict)})
         keys = sorted(self.streams)
-        print2("#\t  Pid\t\tType")
+        print2("\t  Pid\t\tType")
         for k in keys:
             self._mk_vee(k)
 
@@ -268,17 +267,8 @@ class Stream(Based):
         """
         iter_pkts - iterate packets from stream
         """
-        chunksize = num_pkts * self.PACKET_SIZE
-        if self._find_start():
-            while chunk := self._tsdata.read(chunksize):
-                lc = len(chunk)
-                i = 0
-                while i < lc:
-                    # for i in range(0, len(chunk), self.PACKET_SIZE):
-                    start = i
-                    i += self.PACKET_SIZE
-                    end = i
-                    yield chunk[start:end]
+        while pkt := self._tsdata.read(self.PACKET_SIZE):
+                yield pkt
 
     def speed(self):
         """
@@ -332,8 +322,10 @@ class Stream(Based):
         Stream.decode_next returns the next
         SCTE35 cue as a scte35.Cue instance.
         """
+        if not self._find_start():
+            return False
         for pkt in self.iter_pkts():
-            cue = self.pkt2cue(pkt)
+            cue = self.parse(pkt)
             if cue:
                 yield cue
         return False
@@ -374,17 +366,21 @@ class Stream(Based):
         displays streams that will be
         parsed for SCTE-35.
         """
-        print2(f"\n# {self.tsfile}\n")
+        print2("\n"+"-"*45)
+        print2(f"{self.tsfile}")
         self.info = True
         for pkt in self.iter_pkts():
             self._parse(pkt)
             if self.pmt_count > self.MIN_PMT_COUNT:
-                blue(f"PMT Count: {self.pmt_count}")
                 break
         if self.maps.prgm.keys():
             sopro = sorted(self.maps.prgm.items())
             for k, vee in sopro:
-                print2(f"\n# Program: {k}")
+                prog  = f"\nProgram: {k}\n " 
+                try:
+                    prog += f"\n    PTS Start: {self.as_90k(self.start[k])}"
+                finally:
+                    print2(prog)        
                 vee.show()
 
     def show_pts(self):
@@ -456,11 +452,15 @@ class Stream(Based):
         """
         mk_pts calculate pts from payload
         """
-        pts = (payload[9] & 14) << 29
-        pts |= payload[10] << 22
-        pts |= (payload[11] >> 1) << 15
-        pts |= payload[12] << 7
-        pts |= payload[13] >> 1
+        a = (payload[9] & 14) << 29
+        b= payload[10] << 22
+        a+=b
+        c = (payload[11] >> 1) << 15
+        a+=c
+        d = payload[12] << 7
+        a +=d
+        e  = payload[13] >> 1
+        pts = a +e    
         return pts
 
     def _parse_pts(self, pkt, pid):
@@ -479,7 +479,6 @@ class Stream(Based):
         return False
 
     def _mk_pcr(self, pkt, pid):
-
         if self._afc_flag(pkt):
             a = pkt[6] << 25
             b = pkt[7] << 17
