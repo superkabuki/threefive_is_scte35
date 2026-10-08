@@ -185,7 +185,7 @@ def mk_sidecar(cue):
         cue.show()
         if cue.packet_data.pts:
             pts = cue.packet_data.pts
-        if cue.command.has('pts_time'):
+        if cue.command.has("pts_time"):
             pts = (cue.command.pts_time + cue.info_section.pts_adjustment) % rollover
         data = f"{pts},{cue.encode()}\n"
         sidecar.write(data)
