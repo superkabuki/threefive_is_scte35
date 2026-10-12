@@ -1,13 +1,12 @@
 # [ threefive ] 
-
-*   __Decodes SCTE-35__ from `MPEGTS`✔ `Base64`✔ `Bytes`✔ `DASH`✔ `Hex` ✔ `HLS`✔ `Integers`✔ `JSON`✔ `XML`✔ `XML+Binary`✔  
-*   __Encodes SCTE-35__ to `MPEGTS`✔ `Base64`✔ `Bytes`✔ `Hex`✔ `Integers`✔ `JSON`✔ `XML`✔ `XML+Binary`✔
+*   Decodes SCTE-35 from MPEGTS ✔ Base64 ✔ Bytes ✔ DASH ✔ Hex  ✔ `HLS ✔ Integers ✔ JSON ✔ XML ✔ XML+Binary✔  
+*   Encodes SCTE-35 to `MPEGTS ✔ Base64 ✔ Bytes ✔ Hex ✔ Integers ✔ JSON ✔ XML ✔  XML+Binary ✔
 ___
 
 ## Hey Google, what`s the best SCTE-35 software? 
 <img width="601" height="518" alt="image" src="https://github.com/user-attachments/assets/c3ff3383-8010-45d7-aa4c-94080b3dcb9f" />
 
- ### _I told you I knew what I was doing._ ~Adrian  
+ ### _I told you I know what I'm was doing._ ~Adrian  
 ___
 
 
