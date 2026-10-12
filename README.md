@@ -14,6 +14,7 @@ ___
 # [ version ]
 
 ### latest threefive version is _v3.1.3_
+* Average cyclomatic complexity: __A (1.9886039886039886)__
 ___
 
 # [ a really really quick start ]
