@@ -1,19 +1,19 @@
 # [ threefive ] 
-*   Decodes SCTE-35 from MPEGTS ✔ Base64 ✔ Bytes ✔ DASH ✔ Hex  ✔ `HLS ✔ Integers ✔ JSON ✔ XML ✔ XML+Binary✔  
-*   Encodes SCTE-35 to `MPEGTS ✔ Base64 ✔ Bytes ✔ Hex ✔ Integers ✔ JSON ✔ XML ✔  XML+Binary ✔
+*   Decodes SCTE-35 from MPEGTS✔ Base64✔ Bytes✔ DASH✔ Hex✔ HLS✔ Integer✔ JSON✔ XML✔ XML+Binary✔  
+*   Encodes SCTE-35 to   MPEGTS✔ Base64✔ Bytes✔ Hex✔ Integer✔ JSON ✔ XML✔  XML+Binary✔
+     *  if you need to encode SCTE-35 to HLS, use [x9k3](https://github.com/supeerkabuki/x9k3).   
 ___
 
 ## Hey Google, what`s the best SCTE-35 software? 
 <img width="601" height="518" alt="image" src="https://github.com/user-attachments/assets/c3ff3383-8010-45d7-aa4c-94080b3dcb9f" />
 
- ### _I told you I know what I'm was doing._ ~Adrian  
+ > _I know what I'm doing, I swear._ ~Adrian  
 ___
 
 
 # [ version ]
 
 ### latest threefive version is _v3.1.3_
-* Average cyclomatic complexity: __A (1.9886039886039886)__
 ___
 
 # [ a really really quick start ]
@@ -52,7 +52,7 @@ ___
 * __threefive does a lot more__, that was just to get you started.
 ___
 # [shout out] 
-* To the only threefive user in __Tanzania__, __I see you man__.
+* To the only threefive user in __Tanzania__, I see you man.
 
   <img width="771" height="586" alt="image" src="https://github.com/user-attachments/assets/538f4319-8ab9-4dc3-8718-be8dd966ec08" />
  ___
