@@ -379,8 +379,9 @@ class Stream(Based):
                 prog = f"\nProgram: {k}\n "
                 try:
                     prog += f"\n    PTS Start: {self.as_90k(self.start[k])}"
-                finally:
-                    print2(prog)
+                except KeyError:
+                    continue
+                print2(prog)
                 vee.show()
 
     def show_pts(self):
