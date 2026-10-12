@@ -309,9 +309,9 @@ class Stream(Based):
             if pid in self.pids.pcr:
                 if pkt[1] & 0x40:
                     self._parse_pts(pkt, pid)
-            elif pid in self.pids.tables:
+            if pid in self.pids.tables:
                 self._parse_tables(pkt, pid)
-            elif pid in self.pids.scte35:
+            if pid in (self.pids.scte35 or self.pids.maybe_scte35) :
                 cue = self._parse_scte35(pkt, pid)
                 if cue:
                     func(cue)
@@ -494,8 +494,8 @@ class Stream(Based):
         _parse_payload returns the packet payload
         """
         head_size = 4
-        if pkt[3] & 0x20:
-            #    pkt = pkt[:4] + self._unpad(pkt[4:])
+        if self._afc_flag(pkt):
+            #pkt = pkt[:4] + self._unpad(pkt[4:])
             afl = pkt[4]
             head_size += afl + 1  # +one for afl byte
         return pkt[head_size:]
@@ -587,7 +587,7 @@ class Stream(Based):
     def _pop_maybe_pid(self, pid):
         if pid in self.pids.maybe_scte35:
             self.pids.maybe_scte35.remove(pid)
-            self.pids.not_scte35.add(pid)
+            #self.pids.not_scte35.add(pid)
 
     def _chk_maybe_pid(self, pay, pid):
         """
@@ -714,8 +714,7 @@ class Stream(Based):
         if stream_type is 0x06 or 0x86
         add it to self._scte35_pids.
         """
-        if stream_type in ["0x86", "0x06", "0x6", "0x05", "0x5"]:
+        if stream_type in ["0x86"]:
             self.pids.scte35.add(pid)
-        if stream_type in ["0x06", "0x6", "0x05", "0x5"]:
-            if pid not in self.pids.not_scte35:
-                self.pids.maybe_scte35.add(pid)
+        if stream_type in ["0x06", "0x6"]:
+            self.pids.maybe_scte35.add(pid)
