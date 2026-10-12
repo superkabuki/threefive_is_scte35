@@ -11,7 +11,7 @@ from .crc import crc32
 from .descriptors import splice_descriptor, descriptor_map, SpliceDescriptor
 from .section import SpliceInfoSection
 from .segmentation import table22
-from .stuff import clean, red, isjson, isxml, pif
+from .stuff import clean, red, isjson, isxml, pif,blue
 from .uxp import xml2cue
 from .xml import Node
 
@@ -274,9 +274,6 @@ class Cue(SCTE35Base):
         dll = len(dscptr_bites)
         self.info_section.descriptor_loop_length = dll
         cmd_bites = self.command.encode()
-        if not cmd_bites and self.command.command_type != 0:
-            print(self.command)
-            return False
         cmdl = self.command.command_length = len(cmd_bites)
         self.info_section.splice_command_length = cmdl
         self.info_section.splice_command_type = self.command.command_type
@@ -289,7 +286,7 @@ class Cue(SCTE35Base):
             self.info_section.descriptor_loop_length, TWO, byteorder="big"
         )
         self.bites += dscptr_bites
-        return True
+
 
     def base64(self):
         """
@@ -303,8 +300,7 @@ class Cue(SCTE35Base):
                 '/DAWAAAAAAAAAP/wBQb+zto7dwAADRCw6g=='
         """
         if self.command:
-            if not self._assemble():
-                return False
+            self._assemble()
             self._encode_crc()
             self.decode()
             return b64encode(self.bites).decode()
@@ -320,7 +316,6 @@ class Cue(SCTE35Base):
             >>> cue=Cue('0xfc301600000000000000fff00506feceda3b7700000d10b0ea')
             >>> cue.bytes()
         """
-        self.encode()
         return self.bites
 
     def hex(self):
@@ -388,8 +383,8 @@ class Cue(SCTE35Base):
         """
         nbin = NBin()
         dbite_chunks = [dsptr.encode() for dsptr in self.descriptors]
-        if False in dbite_chunks:
-            return False
+##        if False in dbite_chunks:
+##            return False
         for chunk, dsptr in zip(dbite_chunks, self.descriptors):
             dsptr.descriptor_length = len(chunk)
             nbin.add_int(dsptr.tag, EIGHT)
