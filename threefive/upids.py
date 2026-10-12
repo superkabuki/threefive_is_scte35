@@ -128,7 +128,7 @@ class NoUpid(Upid):
         """
         decode for no upid
         """
-        return self.upid_name, "No UPID"
+        return self.upid_name, b""
 
     def encode(self, nbin, seg_upid):
         """
