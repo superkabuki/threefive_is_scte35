@@ -51,11 +51,6 @@ ___
  
 * __threefive does a lot more__, that was just to get you started.
 ___
-# [shout out] 
-* To the only threefive user in __Tanzania__, I see you man.
-
-  <img width="771" height="586" alt="image" src="https://github.com/user-attachments/assets/538f4319-8ab9-4dc3-8718-be8dd966ec08" />
- ___
 
 # [ Documentation ] 
 
