@@ -1,9 +1,104 @@
+### If you just want to parse SCTE-35 from Xml, you can just pass Xml directly to a Cue instance
+```py3
+from threefive import Cue
+event=""" <Event presentationTime="1725946427520" duration="38400" id="14268737">
+....          <Signal>
+....             <Binary>/DAgAAAAAAAAAP/wDwUA2blBf//+ADS8AMAAAAAAAORhJCQ=</Binary>
+....          </Signal>
+....       </Event>
+.... """
+>>>> cue=Cue(event)
+>>>> cue.show()
+{
+    "info_section": {
+        "table_id": "0xfc",
+        "section_syntax_indicator": false,
+        "private": false,
+        "sap_type": "0x03",
+        "sap_details": "No Sap Type",
+        "section_length": 32,
+        "protocol_version": 0,
+        "encrypted_packet": false,
+        "encryption_algorithm": 0,
+        "pts_adjustment": 0.0,
+        "cw_index": "0x00",
+        "tier": "0x0fff",
+        "splice_command_length": 15,
+        "splice_command_type": 5,
+        "descriptor_loop_length": 0,
+        "crc": "0xe4612424"
+    },
+    "command": {
+        "command_length": 15,
+        "command_type": 5,
+        "name": "Splice Insert",
+        "break_auto_return": true,
+        "break_duration": 38.4,
+        "splice_event_id": 14268737,
+        "splice_event_cancel_indicator": false,
+        "out_of_network_indicator": true,
+        "program_splice_flag": true,
+        "duration_flag": true,
+        "splice_immediate_flag": true,
+        "event_id_compliance_flag": true,
+        "unique_program_id": 49152,
+        "avail_num": 0,
+        "avails_expected": 0
+    },
+    "descriptors": []
+}
+```
+
+
+
 # The Node Class 
 #### _requires threefive v3.0.45_
+The Node class for creating and modifying xml Nodes, it is not SCTE-35 specific so it can be used for anything.
 
-## Here's what you can do with a Node instance.
+### make a Node instance
+```py3
+>>>> from threefive.xml import Node
+>>>> mynode=Node("MyNode")
+>>>> mynode
+<MyNode  />
+```
+### add a comment
+```py3
+>>>> mynode.addcomment("Hi Mom")
+>>>> mynode
+<MyNode >
+   <!-- Hi Mom -->
+</MyNode>
+```
+### make a Node instance with attributes
+```py3
+>>>> achild=Node("Child", attrs={"favColor":"green", "favNumber":13})
+>>>> achild
+   <Child favcolor="green" favnumber="13"/>
+```
+
+### add a child Node 
+```py3
+>>>> mynode.addchild(achild)
+>>>> mynode
+<MyNode >
+   <!-- Hi Mom -->
+   <Child favcolor="green" favnumber="13"/>
+</MyNode>
+
+```
+### get a list of child nodes
+```py3
+>>>> mynode.children
+[   <!-- Hi Mom -->
+,    <Child favcolor="green" favnumber="13"/>
+]
+>>>> 
+```
+
 #### __Parse a DASH mpd__
 * use __Ultra Xml Parser__ (_Supreme_)
+    * Ultra Xml Parser parses SCTE-35
 ```py3
 
 a@fu:~/threefive$ pypy3
@@ -16,9 +111,11 @@ Type "help", "copyright", "credits" or "license" for more information.
 
 >>>> data = reader('/home/a/fu.mpd').read()
 
->>>> u = UltraXmlParser()  # <---   use Ultra Xml Parser (Supreme)
+>>>> u = UltraXmlParser()  # <---   use Ultra Xml Parser 
 >>>> n =u.parse(data)     # <--- UltraXmlParser.parse(data) returns a Node instance
 ```
+### Parse SCTE-35 from Xml and convert to JSON
+
 
 #### __search recursively for Event tags in the MPD xml__
 * __Node.findtag(tag)__ returns a NodeList instance, so you can modify the Xml if needed.
