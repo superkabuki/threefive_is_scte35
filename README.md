@@ -665,8 +665,8 @@ ___
 
 #### [web]
 * [threefive SCTE-35 __Online Parser__](https://iodisco.com/scte35) __hosted on my server iodisco.com__
-* Parse SCTE-35 in MPEGTS over HTTP, in your browser with[ Go, Wasm and Super Karate Death Car](https://bigcorp.ltd/gowasm) __hosted om my server bigcorp.ltd__
-*  Parse SCTE-35 in MPEGTS over HTTP, in your browser with[ threefive.js,javascript, and a little sed](https://bigcorp.ltd/bread) just to keep things interesting. __hosted om my server bigcorp.ltd__
+* Parse SCTE-35 in MPEGTS over HTTP, in your browser with[ Go, Wasm and Super Karate Death Car](https://iodisco.com/gowasm) __hosted om my server iodisco.com__
+*  Parse SCTE-35 in MPEGTS over HTTP, in your browser with[ threefive.js,javascript, and a little sed](https://iodisco.com/bread) just to keep things interesting. __hosted om my server iodisco.com__
 * [ SCTE-35 __Online Parser__ powered by threefive](http://www.domus1938.com/scte35parser) _another online parser powered by threefive_ not hosted on my servers.
 * [SCTE-35 __As a Service__](sassy.md) _if you can make an http request, you can parse SCTE-35, no install needed._
 __hosted on my server iodisco.com__
