@@ -494,9 +494,9 @@ class SegmentationDescriptor(SpliceDescriptor):
         return sd
 
 
-class Property(SCTE35Base):
+class EventProperty(SCTE35Base):
     """
-    Property class for EventDescriptors
+    EventProperty class for EventDescriptors
     """
 
     data_type_map = {
@@ -562,7 +562,7 @@ class Property(SCTE35Base):
     def encode(self, nbin=None):
         nbin = self._chk_nbin(nbin)
         self._chk_var(int, nbin.add_int, "property_name_length", 8)
-        nbin.add_bites(self.property_name)
+        nbin.add_bites(self.property_name.encode())
         self._chk_var(str, nbin.add_hex, "property_data_type", 8)
         self._chk_var(int, nbin.add_int, "property_value_length", 8)
         if self.property_data_type == "0x00":
@@ -574,7 +574,8 @@ class Property(SCTE35Base):
                 int, nbin.add_int, "property_value", self.property_value_length << 3
             )
         else:
-            nbin.add_bites(self.property_value)
+            nbin.add_bites(self.property_value.encode())
+        return nbin.bites
 
     def xml(self, ns="scte35"):
         """
@@ -648,7 +649,7 @@ class EventDescriptor(SpliceDescriptor):
         self.property_count = bitbin.as_int(8)
         pc = self.property_count
         while pc:
-            prop = Property()
+            prop = EventProperty()
             prop.decode(bitbin)
             self.properties.append(prop)
             pc -= 1
