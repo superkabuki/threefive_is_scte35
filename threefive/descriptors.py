@@ -494,9 +494,9 @@ class SegmentationDescriptor(SpliceDescriptor):
         return sd
 
 
-class EventProperty(SCTE35Base):
+class Property(SCTE35Base):
     """
-    EventProperty class for EventDescriptors
+    Property class for EventDescriptors
     """
 
     data_type_map = {
@@ -548,7 +548,7 @@ class EventProperty(SCTE35Base):
         if bitbin is None:
             bitbin = Bitn(self.bites)
         self.property_name_length = bitbin.as_int(8)
-        self.property_name = bitbin.as_bytes(self.property_name_length << 3)
+        self.property_name = bitbin.as_bytes(self.property_name_length << 3).decode()
         self.property_data_type = bitbin.as_hex(8)
         self.property_data_type_name = self.data_type_map[self.property_data_type]
         self.property_value_length = bitbin.as_int(8)
@@ -557,7 +557,7 @@ class EventProperty(SCTE35Base):
         elif self.property_data_type == "0x01":
             self.property_value = bitbin.as_int(self.property_value_length << 3)
         else:
-            self.property_value = bitbin.as_bytes(self.property_value_length << 3)
+            self.property_value = bitbin.as_bytes(self.property_value_length << 3).decode()
 
     def encode(self, nbin=None):
         nbin = self._chk_nbin(nbin)
@@ -649,9 +649,9 @@ class EventDescriptor(SpliceDescriptor):
         self.property_count = bitbin.as_int(8)
         pc = self.property_count
         while pc:
-            prop = EventProperty()
+            prop = Property()
             prop.decode(bitbin)
-            self.properties.append(prop)
+            self.properties.append(prop.get())
             pc -= 1
 
     def encode(self, nbin=None):
@@ -670,7 +670,9 @@ class EventDescriptor(SpliceDescriptor):
         nbin.add_int(remain, 40)
         nbin.add_int(len(self.properties), 8)
         for prop in self.properties:
-            prop.encode(nbin)
+            p=Property()
+            p.load(prop)
+            p.encode(nbin)
         return nbin.bites
 
     def xml(self, ns="scte35"):
@@ -689,7 +691,9 @@ class EventDescriptor(SpliceDescriptor):
         }
         ed = Node("EventDescriptor", attrs=attrs, ns=ns)
         for prop in self.properties:
-            ed.addchild(prop.xml())
+            p=Property()
+            p.load(prop)
+            ed.addchild(p.xml())
         return ed
 
 
