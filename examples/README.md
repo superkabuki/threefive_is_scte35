@@ -220,6 +220,7 @@ cue.show()
 * [parsehlstags.py](parsehlstags.py) - use the __TagParser__ class to parse __HLS tags__ from a __m3u8__ file and group the tags by segment.
 * [proxy.py](proxy.py) - how to use the __Stream.proxy()__ method for parsing __SCTE-35__ and __piping__ video.
 * [quickstream.py](quickstream.py) - how to __add SCTE-35 parsing__ for __MPEGTS__ streams to __your application__.
+* [scte35packets.py](scte35packets.py) - print __raw SCTE-35 packets__.
 * [spliceinsert.py](spliceinsert.py) - a __SCTE-35__ __Splice Insert__ example.  
 * [upid_custom_output.py](upid_custom_output.py) - __customizing Upid data output__ for a variety of __Upids__. _(__New!__ 01/11/2026)_
 * [custom_upid_handling.py](custom_upid_handling.py) -  Custom __user defined UPID__ handling example. _(__New!__ 01/11/2026)_
