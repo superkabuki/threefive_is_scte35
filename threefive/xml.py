@@ -223,10 +223,15 @@ class Node:
         while len(self.children) > MAXCHILDREN:
             red(f"{len(self.children)} is too many children")
             return False
-        if not slot:
+        if slot is None:
             slot = len(self.children)
-        self.children = self.children[:slot] + [child] + self.children[slot:]
+        if slot==0:
+            self.children=[child]+self.children
+            self.mk()
+        else:
+            self.children = self.children[:slot] + [child] + self.children[slot:]
         self.set_parent()
+        self.mk()
 
     def addcomment(self, comment, slot=None):
         """
@@ -296,11 +301,30 @@ class Node:
         """
         a2c convert attrs to child nodes
         """
+        for child in self.children:
+            child.a2c()
+            self.mk()
         for k, v in self.attrs.items():
             self.addchild(Node(key2xml(k), v))
         self.attrs = {}
+        self.mk()
+
+    def c2a(self):
+        """
+        c2a convert children to attributes
+        if the child has no attributes or children
+        """
         for child in self.children:
-            child.a2c()
+            child.c2a()
+        for child in self.children:
+            if len(child.children) == 0:
+                if child.attrs == {}:
+                    if child.value:
+                        self.attrs[child.tag] = child.value
+                        self.dropchild(child)
+                        self.mk()
+                        self.c2a()
+        self.mk()
 
     def mk(self, obj=None):
         """
@@ -351,7 +375,13 @@ class Node:
     def _rendrd_children(self, rendrd, ndent, tag):
         for child in self.children:
             rendrd += self.mk(child)
-        return f"{rendrd}{ndent}</{tag}>\n".replace(" >", ">")
+        return self._replaced(f"{rendrd}{ndent}</{tag}>\n")
+
+    def _replaced(self, rendrd):
+        """
+        _replaced clean up spaces
+        """
+        return rendrd.replace(" >", ">").replace("  ", " ").replace("\t", "    ")
 
     def rendr_all(self, ndent, tag):
         """
@@ -361,10 +391,11 @@ class Node:
         if self.value:
             return f"{rendrd}{self.value}</{tag}>\n"
         rendrd = f"{rendrd}\n"
-        rendrd.replace(" >", ">")
+        rendrd = self._replaced(rendrd)
         if self.children:
             return self._rendrd_children(rendrd, ndent, tag)
-        return rendrd.replace(">", "/>")
+        rendrd = rendrd.replace(">", "/>")
+        return rendrd
 
     def set_depth(self):
         """
@@ -406,7 +437,7 @@ class Node:
         """
         get_indent returns a string of spaces the required depth for a node
         """
-        tab = "   "
+        tab = "\t"
         return tab * self.depth
 
 
