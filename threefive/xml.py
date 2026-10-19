@@ -6,8 +6,8 @@ xml.py  The Node class for converting to xml,
 
 from .stuff import red, pif
 
-MAXCHILDREN = 128
-MAXDEPTH = 64
+MAXCHILDREN = 1024
+MAXDEPTH = 128
 
 
 def t2s(v):
@@ -133,7 +133,7 @@ class NameSpace:
 
     def prefix_all(self, abool=True):
         """
-        prefix_all takes a boolean
+        prefix_all apply namespace to tags and attributes.
         True turns it on, False turns it off.
         """
         self.all = abool
