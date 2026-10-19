@@ -6,20 +6,6 @@ Home of the reader function
 
 from sys import stdin
 from .stuff import blue, pif, print2
-from mmap import mmap
-
-class fumap(mmap):
-    """
-    fumap
-    for new reader to work, I need everything
-    to behave the same way.
-    fumap give mmap a readlines method
-    """
-    def readlines(self):
-        """
-        readlines readlines for mmap as fumap
-        """
-        return list(iter(self.readline, b""))
 
 
 CORS = {
@@ -90,17 +76,15 @@ def reader(uri, headers={}):
     # HTTP(S)
     if uri.startswith("http"):
         import urllib.request
+
         req = urllib.request.Request(uri, headers=headers)
         return urllib.request.urlopen(req)
     # SRT
     if uri.startswith("srt://"):
         return try_srt(uri, headers=headers)
     # File
-    try:
-        with open(uri, "r+b") as f:
-            return fumap(f.fileno(), 0)
-    except:
-        return open(uri, "rb")
+
+    return open(uri, "rb")
 
 
 def _do_srt(srt_url, headers={}):
