@@ -36,12 +36,6 @@ class Bitn:
 
     """
 
-    class NegShiftError(Exception):
-        """
-        NegShiftError inner Exception subclass
-        """
-
-        pass
 
     def __init__(self, bites):
         self.idx = len(bites) << 3  # This is correct, int.bit_length() is Not.
@@ -133,7 +127,7 @@ class Bitn:
             mesg = (
                 f"\n\n\t\t{num_bits} bits requested, but only {self.idx} bits remain.\n"
             )
-            raise self.NegShiftError(mesg)
+            red(mesg)
             return False
         return True
 
