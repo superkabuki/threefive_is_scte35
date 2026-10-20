@@ -263,7 +263,7 @@ class Stream(Based):
         while chunk := self._tsdata.read(chunksize):
             yield chunk
 
-    def iter_pkts(self, num_pkts=3500):
+    def iter_pkts(self, num_pkts=1):
         """
         iter_pkts - iterate packets from stream
         """
@@ -302,19 +302,10 @@ class Stream(Based):
         """
         if not self._find_start():
             return False
-        # for pkt in self.iter_pkts():
         while pkt := self._tsdata.read(self.PACKET_SIZE):
-            pid = (pkt[1] & 0x1F) << 8
-            pid += pkt[2]
-            if pid in self.pids.pcr:
-                if pkt[1] & 0x40:
-                    self._parse_pts(pkt, pid)
-            if pid in self.pids.tables:
-                self._parse_tables(pkt, pid)
-            if pid in (self.pids.scte35 or self.pids.maybe_scte35) :
-                cue = self._parse_scte35(pkt, pid)
-                if cue:
-                    func(cue)
+            cue = self.parse(pkt)
+            if cue:
+                func(cue)
         return False
 
     def decode_next(self):
@@ -496,7 +487,7 @@ class Stream(Based):
         """
         head_size = 4
         if self._afc_flag(pkt):
-            #pkt = pkt[:4] + self._unpad(pkt[4:])
+            # pkt = pkt[:4] + self._unpad(pkt[4:])
             afl = pkt[4]
             head_size += afl + 1  # +one for afl byte
         return pkt[head_size:]
@@ -588,7 +579,7 @@ class Stream(Based):
     def _pop_maybe_pid(self, pid):
         if pid in self.pids.maybe_scte35:
             self.pids.maybe_scte35.remove(pid)
-            #self.pids.not_scte35.add(pid)
+            # self.pids.not_scte35.add(pid)
 
     def _chk_maybe_pid(self, pay, pid):
         """
