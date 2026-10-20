@@ -223,6 +223,9 @@ class Node:
         while len(self.children) > MAXCHILDREN:
             red(f"{len(self.children)} is too many children")
             return False
+        if self.value:
+            red("Node.value is set, cannot add child")
+            return False
         if slot is None:
             slot = len(self.children)
         if slot==0:
@@ -309,6 +312,17 @@ class Node:
         self.attrs = {}
         self.mk()
 
+    def _valid4attr(self,child):
+        """
+        _valid4attr checks if a child Node
+        can be converted to an attr.
+        """
+        if len(child.children) == 0:
+            if child.attrs == {}:
+                if child.value:
+                    return True
+        return False
+
     def c2a(self):
         """
         c2a convert children to attributes
@@ -317,20 +331,17 @@ class Node:
         for child in self.children:
             child.c2a()
         for child in self.children:
-            if len(child.children) == 0:
-                if child.attrs == {}:
-                    if child.value:
-                        self.attrs[child.tag] = child.value
-                        self.dropchild(child)
-                        self.mk()
-                        self.c2a()
+            if self._valid4attr(child):
+                self.attrs[child.tag] = child.value
+                self.dropchild(child)
+                self.mk()
+                self.c2a()
         self.mk()
 
     def mk(self, obj=None):
         """
         mk make the Node as xml.
         """
-        #     self.a2c()
         obj = self.chk_obj(obj)
         obj.set_depth()
         obj.set_parent()
@@ -343,7 +354,8 @@ class Node:
 
     def mk_tag(self):
         """
-        mk_tag add namespace to node name
+        mk_tag add namespace to node tag
+        if present.
         """
         tag = self.tag
         if self.namespace.ns:
@@ -369,7 +381,8 @@ class Node:
             attrs = self.mk_ans(self.attrs)
         new_attrs = mk_xml_attrs(attrs)
         if self.depth == 0:
-            return f"{ndent}<{tag} {self.namespace.xmlns()} {new_attrs}>"
+            if self.namespace.uri:
+                return f"{ndent}<{tag}{self.namespace.xmlns()} {new_attrs}>"
         return f"{ndent}<{tag}{new_attrs}>"
 
     def _rendrd_children(self, rendrd, ndent, tag):
