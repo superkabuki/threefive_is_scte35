@@ -381,7 +381,7 @@ class Node:
         """
         _replaced clean up spaces
         """
-        return rendrd.replace(" >", ">").replace("  ", " ").replace("\t", "    ")
+        return rendrd.replace(" >", ">").replace("\t", "    ")
 
     def rendr_all(self, ndent, tag):
         """
