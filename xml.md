@@ -483,9 +483,10 @@ class NameSpace(builtins.object)
 
 
 ## threefive vs. Quadradic Blowup
-* Spoiler alert, threefive wins. 
+
+* threefive detects the hack and stops it from being parsed. 
  
 * [Code stolen from here](https://gist.github.com/jordanpotti/04c54f7de46f2f0f0b4e6b8e5f5b01b0)
  
-![image](https://github.com/user-attachments/assets/121edabe-947f-47b9-a5ad-ed7b0b393474)
+<img width="1015" height="651" alt="image" src="https://github.com/user-attachments/assets/cbac313f-bf93-431d-9244-22bf9cff3d97" />
 
