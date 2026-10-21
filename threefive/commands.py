@@ -168,11 +168,12 @@ class TimeSignal(SpliceCommand):
         if self.time_specified_flag:
             nbin.reserve(6)
             if not self.pts_time:
-                return red("pts_time is not set")
+                red("pts_time is not set")
             nbin.add_int(self.as_ticks(self.pts_time), 33)
         else:
             self.pts_time = None
             nbin.reserve(7)
+
 
     def xml(self, ns="scte35"):
         """
