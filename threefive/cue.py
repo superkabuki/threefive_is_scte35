@@ -11,7 +11,7 @@ from .crc import crc32
 from .descriptors import splice_descriptor, descriptor_map, SpliceDescriptor
 from .section import SpliceInfoSection
 from .segmentation import table22
-from .stuff import clean, red, isjson, isxml, pif, blue
+from .stuff import clean, red, isjson, isxml, pif, blue,ERR
 from .xml2scte35 import xml2cue
 from .xml import Node
 
@@ -478,7 +478,7 @@ class Cue(SCTE35Base):
             self._load_descriptors(data)
         try:
             return self.encode()
-        except:
+        except ERR:
             return False
 
     def load(self, data):
