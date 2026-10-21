@@ -8,7 +8,7 @@
 
 ### [threefive.xml.Node class](node.md)
 
-# How does Xml work with threefive?
+# How does SCTE-35 Xml work with threefive?
 
 # Decoding 
 ### Cli
