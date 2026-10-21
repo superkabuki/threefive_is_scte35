@@ -404,10 +404,12 @@ class SegmentationDescriptor(SpliceDescriptor):
         used in decode()
         """
         upid_type = self.segmentation_upid_type
-        if self.segmentation_upid_length==0:
+        if self.segmentation_upid_length == 0:
             if self.segmentation_upid_type != 0:
-                red("set segmentation_upid_type and self.segmentation_upid_length to zero for no upid value")
-                upid_type=self.segmentation_upid_type=0
+                red(
+                    "set segmentation_upid_type and self.segmentation_upid_length to zero for no upid value"
+                )
+                upid_type = self.segmentation_upid_type = 0
         if upid_type not in upid_map:
             red("Unknown upid type , setting to 0xFD")
             upid_type = 0xFD
@@ -557,9 +559,14 @@ class Property(SCTE35Base):
         elif self.property_data_type == "0x01":
             self.property_value = bitbin.as_int(self.property_value_length << 3)
         else:
-            self.property_value = bitbin.as_bytes(self.property_value_length << 3).decode()
+            self.property_value = bitbin.as_bytes(
+                self.property_value_length << 3
+            ).decode()
 
     def encode(self, nbin=None):
+        """
+        encode encode for Property class
+        """
         nbin = self._chk_nbin(nbin)
         self._chk_var(int, nbin.add_int, "property_name_length", 8)
         nbin.add_bites(self.property_name.encode())
@@ -670,7 +677,7 @@ class EventDescriptor(SpliceDescriptor):
         nbin.add_int(remain, 40)
         nbin.add_int(len(self.properties), 8)
         for prop in self.properties:
-            p=Property()
+            p = Property()
             p.load(prop)
             p.encode(nbin)
         return nbin.bites
@@ -691,7 +698,7 @@ class EventDescriptor(SpliceDescriptor):
         }
         ed = Node("EventDescriptor", attrs=attrs, ns=ns)
         for prop in self.properties:
-            p=Property()
+            p = Property()
             p.load(prop)
             ed.addchild(p.xml())
         return ed
