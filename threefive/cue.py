@@ -11,8 +11,8 @@ from .crc import crc32
 from .descriptors import splice_descriptor, descriptor_map, SpliceDescriptor
 from .section import SpliceInfoSection
 from .segmentation import table22
-from .stuff import clean, red, isjson, isxml, pif,blue
-from .uxp import xml2cue
+from .stuff import clean, red, isjson, isxml, pif, blue
+from .xml2scte35 import xml2cue
 from .xml import Node
 
 
@@ -287,7 +287,6 @@ class Cue(SCTE35Base):
         )
         self.bites += dscptr_bites
 
-
     def base64(self):
         """
         base64 returns SCTE35
@@ -383,8 +382,8 @@ class Cue(SCTE35Base):
         """
         nbin = NBin()
         dbite_chunks = [dsptr.encode() for dsptr in self.descriptors]
-##        if False in dbite_chunks:
-##            return False
+        ##        if False in dbite_chunks:
+        ##            return False
         for chunk, dsptr in zip(dbite_chunks, self.descriptors):
             dsptr.descriptor_length = len(chunk)
             nbin.add_int(dsptr.tag, EIGHT)
