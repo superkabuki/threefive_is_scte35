@@ -5,6 +5,7 @@ xml.py  The Node class for converting to xml,
 """
 
 from .stuff import red, pif
+from .stuff import clean, rmap, ERR
 
 MAXCHILDREN = 1024
 MAXDEPTH = 128
@@ -198,9 +199,9 @@ class Node:
     def __repr__(self):
         return self.mk()
 
-    def chk_obj(self, obj):
+    def _chk_obj(self, obj):
         """
-        chk_obj determines if
+        _chk_obj determines if
         obj is self, or another obj
         for self.set_ns and self.mk
         """
@@ -228,12 +229,12 @@ class Node:
             return False
         if slot is None:
             slot = len(self.children)
-        if slot==0:
-            self.children=[child]+self.children
+        if slot == 0:
+            self.children = [child] + self.children
             self.mk()
         else:
             self.children = self.children[:slot] + [child] + self.children[slot:]
-        self.set_parent()
+        self._set_parent()
         self.mk()
 
     def addcomment(self, comment, slot=None):
@@ -241,7 +242,7 @@ class Node:
         addcomment add a Comment node
         """
         self.addchild(Comment(comment), slot)
-        self.set_parent()
+        self._set_parent()
 
     def addattr(self, attr, value):
         """
@@ -269,7 +270,7 @@ class Node:
         drop delete self
 
         """
-        obj = self.chk_obj(obj)
+        obj = self._chk_obj(obj)
         obj.parent.dropchild(obj)
 
     def findattr(self, attr, obj=None):
@@ -278,7 +279,7 @@ class Node:
         have an attribute that matches attr. findattr returns a NodeList.
         """
         results = NodeList()
-        obj = self.chk_obj(obj)
+        obj = self._chk_obj(obj)
         for child in obj.children:
             if attr in mk_xml_attrs(child.attrs):
                 results.append(child)
@@ -292,7 +293,7 @@ class Node:
         findtag returns a NodeList.
         """
         results = NodeList()
-        obj = self.chk_obj(obj)
+        obj = self._chk_obj(obj)
         obj.mk()
         for child in obj.children:
             if tag == child.tag:
@@ -312,7 +313,7 @@ class Node:
         self.attrs = {}
         self.mk()
 
-    def _valid4attr(self,child):
+    def _valid4attr(self, child):
         """
         _valid4attr checks if a child Node
         can be converted to an attr.
@@ -342,19 +343,19 @@ class Node:
         """
         mk make the Node as xml.
         """
-        obj = self.chk_obj(obj)
-        obj.set_depth()
-        obj.set_parent()
+        obj = self._chk_obj(obj)
+        obj._set_depth()
+        obj._set_parent()
         obj.children_namespaces()
-        tag = obj.mk_tag()
-        ndent = obj.get_indent()
+        tag = obj._mk_tag()
+        ndent = obj._get_indent()
         if isinstance(obj, Comment):
             return obj.mk(obj)
-        return obj.rendr_all(ndent, tag)
+        return obj._rendr_all(ndent, tag)
 
-    def mk_tag(self):
+    def _mk_tag(self):
         """
-        mk_tag add namespace to node tag
+        _mk_tag add namespace to node tag
         if present.
         """
         tag = self.tag
@@ -362,9 +363,9 @@ class Node:
             tag = f"{self.namespace.ns}:{tag}"
         return tag
 
-    def mk_ans(self, attrs):
+    def _mk_ans(self, attrs):
         """
-        mk_ans set namespace on attributes
+        _mk_ans set namespace on attributes
         """
         new_attrs = {}
         if self.namespace.all:
@@ -372,13 +373,13 @@ class Node:
                 new_attrs[f"{self.namespace.ns}:{k}"] = v
         return new_attrs
 
-    def rendr_attrs(self, ndent, tag):
+    def _rendr_attrs(self, ndent, tag):
         """
         rendrd_attrs renders xml attributes
         """
         attrs = self.attrs
         if self.namespace.all:
-            attrs = self.mk_ans(self.attrs)
+            attrs = self._mk_ans(self.attrs)
         new_attrs = mk_xml_attrs(attrs)
         if self.depth == 0:
             if self.namespace.uri:
@@ -396,11 +397,11 @@ class Node:
         """
         return rendrd.replace(" >", ">").replace("\t", "    ")
 
-    def rendr_all(self, ndent, tag):
+    def _rendr_all(self, ndent, tag):
         """
-        rendr_all renders the Node instance and it's children in xml.
+        _rendr_all renders the Node instance and it's children in xml.
         """
-        rendrd = self.rendr_attrs(ndent, tag)
+        rendrd = self._rendr_attrs(ndent, tag)
         if self.value:
             return f"{rendrd}{self.value}</{tag}>\n"
         rendrd = f"{rendrd}\n"
@@ -410,9 +411,9 @@ class Node:
         rendrd = rendrd.replace(">", "/>")
         return rendrd
 
-    def set_depth(self):
+    def _set_depth(self):
         """
-        set_depth is used to format
+        _set_depth is used to format
         tabs in output
         """
         for child in self.children:
@@ -427,15 +428,15 @@ class Node:
         """
         self.namespace.ns = ns
 
-    def set_parent(self, obj=None):
+    def _set_parent(self, obj=None):
         """
-        set_parent set the parent node of this node.
+        _set_parent set the parent node of this node.
         a top level node's parent will be None.
         """
-        obj = self.chk_obj(obj)
+        obj = self._chk_obj(obj)
         for child in obj.children:
             child.parent = obj
-            child.set_parent(child)
+            child._set_parent(child)
 
     def children_namespaces(self):
         """
@@ -446,9 +447,9 @@ class Node:
             child.namespace.all = self.namespace.all
             child.namespace.uri = ""
 
-    def get_indent(self):
+    def _get_indent(self):
         """
-        get_indent returns a string of spaces the required depth for a node
+        _get_indent returns a string of spaces the required depth for a node
         """
         tab = "\t"
         return tab * self.depth
@@ -479,6 +480,137 @@ class Comment(Node):
     """
 
     def mk(self, obj=None):
-        obj = self.chk_obj(obj)
-        obj.set_depth()
-        return f"{obj.get_indent()}<!-- {obj.tag} -->\n"
+        obj = self._chk_obj(obj)
+        obj._set_depth()
+        return f"{obj._get_indent()}<!-- {obj.tag} -->\n"
+
+
+class XmlP:
+    """
+    XmlP Xml Parser
+    """
+
+    def __init__(self):
+        self.openlist = []
+
+    @staticmethod
+    def _mk_attrs(line):
+        """
+        mk_attrs parses the current line for attributes
+        """
+        replace_map = {
+            '"': "",
+            "<": "",
+            "/>": "",
+            ">": "",
+        }
+        line = rmap(line, replace_map)
+        attrs = {
+            y[0]: y[1] for y in [x.split("=") for x in line.split(" ") if "=" in x]
+        }
+        return iter_attrs(attrs)
+
+    @staticmethod
+    def _mk_tag(data):
+        """
+        _mk_tag parse out the
+        next available xml tag from data
+        """
+        return data[1:].split(" ", 1)[0].split(">")[0].strip()
+
+    @staticmethod
+    def _mk_line(exemel):
+        """
+        _mk_line grabs the next '<' to '>' section of xml
+        """
+        line = exemel.split(">", 1)[0] + ">"
+        exemel = exemel.replace(line, "", 1).strip()
+        return line, exemel
+
+    def _mk_node(self, tag, line, exemel):
+        """
+        _mk_node marshal xml data
+        into a  threefive.xml.Node instance.
+
+        """
+        ns = None
+        attrs = self._mk_attrs(line)
+        if ":" in tag:
+            ns, tag = tag.split(":", 1)
+        tag = tag.strip(">")
+        node = Node(tag, attrs=attrs, ns=ns)
+        if not exemel.startswith("<"):
+            node.value = exemel.split("<", 1)[0]
+            exemel = exemel.replace(node.value, "", 1).strip()
+        return node, exemel
+
+    def _starttag(self, line, node):
+        """
+        _starttag self-terminating nodes
+        are added as children to the last
+        node in openlist.
+        open nodes (nodes that aren't self-terminating)
+        are appended to openlist
+        """
+        if line.endswith("/>"):
+            self.openlist[-1].addchild(node)
+        else:
+            self.openlist.append(node)
+
+    def _endtag(self):
+        """
+        endtag when a node is closed
+        pop it off openlist and then
+        add it as a child to the last node
+        in openlist, if any nodes are still in
+        openlist
+        """
+        closed = False
+        if self.openlist:
+            closed = self.openlist.pop()
+            if self.openlist:
+                self.openlist[-1].addchild(closed)
+        return closed
+
+    @staticmethod
+    def _ultraclean(exemel):
+        """
+        ultraclean unescapes and sanitizes exemel
+
+        """
+        exemel = clean(exemel)
+        if isinstance(exemel, str):
+            replace_map = {
+                "\n": "",
+                "&lt;": "<",
+                "&gt;": ">",
+                "&amp": "&",
+            }
+            return rmap(exemel, replace_map)
+        return False
+
+    @staticmethod
+    def _nocomment(line):
+        return (not line.startswith("<!")) and (not line.startswith("<?xml"))
+
+    def parse(self, exemel):
+        """
+        parse xml into a node instance and
+        children.
+        """
+        final = False
+        self.openlist = []
+        exemel = self._ultraclean(exemel)
+        while exemel:
+            line, exemel = self._mk_line(exemel)
+            if self._nocomment(line):
+                tag = self._mk_tag(line)
+                if "/" not in tag:
+                    node, exemel = self._mk_node(tag, line, exemel)
+                    self._starttag(line, node)
+                else:
+                    final = self._endtag()
+        return final
+
+
+UltraXmlParser = XmlP
