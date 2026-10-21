@@ -14,6 +14,28 @@ ___
 # [ version ]
 
 ### latest threefive version is _v3.1.3_
+
+
+*  __threefive v3.1.5 is about to be released__.
+
+* __There are no known issues with threefive v3.1.5__
+
+* Average __cyclomatic__ complexity: __A (1.9900568181818181)__
+
+* Pylint: __9.69/10.0__
+
+* Here's a list of __what's been fixed.__
+
+	* __AacParser__ The typo on the call to __AacParser.not_syncsafe()__ has been fixed.
+   
+	* __Property class__ for __SCTE-35-2 Event Descriptors__ now render __JSON__ correctly.  
+
+	* __threefive is dumping mmap__. The way threefive parses packets seems to make mmap consume a lot of memory _( 3GB with mmap and 170MB without mmap )_. Removing mmap slows pypy3 down a little parsing mpegts _(with mmap 1.9 seconds for 3.3GB of mpegts without 2.5 seconds)_, but actually speeds up python v3.14.2 _(with mmap 11.24 seconds for 3.3GB of mpegts, without 8.9 seconds)_
+
+	* __Segmentation Descriptors without UPIDS__ threefive will no longer throw an exception on SegmentationDescriptors without a UPID if the UPID type is not set to zero, instead threefive will print a warning message and set the type to zero for you.
+
+	* __threefive.xml.Node__ The Node class has been cleaned up, slots now work correctly when calling __Node.addchild(obj,slot=0)__ _(slots allow you to set the index of a child in Node.children when adding a child). New mthod __Node.a2c()__ converts attributes to children. New method __Node.c2a()__ converts children to attributes.__UltraXmlParser__ has been renamed __XmlP__ and moved from threefive/uxp.py to threefive.xml.py. Update your code.
+
 ___
 
 # [ a really really quick start ]
