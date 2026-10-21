@@ -9,7 +9,7 @@ from .new_reader import reader
 from .packetdata import PacketData
 from .speedo import Speedo
 from .streamtypes import streamtype_map
-from .stuff import blue, ERR, print2
+from .stuff import  ERR, print2
 
 
 def show_cue(cue):
@@ -21,7 +21,10 @@ def show_cue(cue):
 
 
 def no_op():
-    pass
+    """
+    no_op do nothing
+    """
+    return
 
 
 class Based:
@@ -166,7 +169,6 @@ class Stream(Based):
         self.pmt_count = 0
         self.pmt_pkt = None
         self.pat_pkt = None
-        self._parse = self.parse
 
     @staticmethod
     def as_90k(ticks):
@@ -254,7 +256,7 @@ class Stream(Based):
         for i in range(0, len(chunk), self.PACKET_SIZE):
             yield chunk[i : i + self.PACKET_SIZE]
 
-    def chunked(self, num_pkts):
+    def chunked(self, num_pkts=1024):
         """
         chunked - read chunks from stream
         """
@@ -267,7 +269,7 @@ class Stream(Based):
         """
         iter_pkts - iterate packets from stream
         """
-        while pkt := self._tsdata.read(self.PACKET_SIZE):
+        while pkt := self._tsdata.read(self.PACKET_SIZE*num_pkts):
             yield pkt
 
     def speed(self):
