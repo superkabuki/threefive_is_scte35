@@ -138,7 +138,7 @@ def is_pkt(args, rdr, one):
     """
     two = rdr.read(187)
     strm = Stream(sys.stdin.buffer)
-    strm._parse(one + two)  # dont drop first packet
+    strm.parse(one + two)  # dont drop first packet
     strm.decode(func=funk())
     done()  # I keep forgetting why I do this
 
@@ -446,7 +446,7 @@ def chk_hls():
         if b"#EXTM3U" in packet:
             hlscli()
             done()
-    except:
+    except ERR:
         pass
 
 
