@@ -8,38 +8,6 @@
 
 ### [threefive.xml.Node class](node.md)
 
-
-<pre>
-    I pulled xml support a few months ago, I wasn't happy with the implementation. 
-One out of every seven lines of code was xml specific, there was xml code everywhere.
-It was all way too clunky. Everytime I touched one part of the code, something else would break.
- 
- The xml parser worked completely different from the xml generator.
- Now, generating and parsing xml both use the Node class, it's much cleaner.
-</pre>
-
-
-# `Q.`Why would you write a xml parser for threefive? 
- 
-# `A.` quadratic blowup and billion laughs for starters. 
-
-*  These are very old attacks, __over ten years old__,  and the [__python xml parsers are all vunerable__](https://docs.python.org/3/library/xml.html#xml-vulnerabilities) to both attacks.
-
-*  __If you know it's broke, don't document that it's broke, fix it__.
-
-* __I'd fix the parsers__  but __I've been banned from python__ for __criticizing PEP 668__ , and trying to __start a mutiny__.
-
-# Meet the new xml parser, Ultra Xml Parser Supreme.
-
-This is the fourth xml parser I've written for threeefive3, and the first one I actually like. 
-The big difference is that when the xml data is parsed, it's marshaled into a threefive.xml.Node instance.
-My previous parsers took a lot of code in comparison to the size of threefive. Parsing into a Node instance, 
-allowed me to work in more general terms, each SCTE-35 object required a lot less specific code. Upids are good example. 
-There used to be twenty Xml specific methods, about 120 lines, now there's four methods in 33 lines.
-
-### Why do you care about any of this?
-My point is that you shouldn't have to care, and you should expect code to not be vunerable to silly ass ten year old attacks. 
-
 # How does Xml work with threefive?
 
 # Decoding 
@@ -134,7 +102,6 @@ a@fu:~/threefive$ cat ~/xml3.xml
     ]
 }
 ```
-* This is why I love the new xml parser,that's everything you need to know to parse SCTE-35 xml with threefive.
 
 
 # Encoding 
@@ -346,23 +313,13 @@ threefive video.ts xml
 ### Q. What if I'm special and need to change the namespace uri?
 
 ### A.Then you can change it. I'll explain.
-* I saw this in the mpd_inspector code
-```py3
-       
-        # force the namespace to be the standard one (required by `threefive`)
-        namespace = "https://scte.org/schemas/35"
-        change_namespace(element, namespace)
-```
-* That is not needed, let me show you how things work.
 
 ```py3
 >>>> x = cue.xml()
 
 >>>> x.namespace.uri
 'https://scte.org/schemas/35'
-
 >>>> x.namespace.uri="https://iodisco.com/boom"
-
 >>>> x
 <scte35:SpliceInfoSection xmlns:scte35="https://iodisco.com/boom"  ptsAdjustment="0" protocolVersion="0" sapType="3" tier="4095">
    <scte35:TimeSignal>
@@ -408,93 +365,86 @@ threefive video.ts xml
 # RTFM
 ### help(threefive.xml.Node)
 ```py3
-Help on class Node in module threefive.xml:
-
 class Node(builtins.object)
- |  Node(name, value=None, attrs=None, ns=None)
+ |  Node(tag, value='', attrs=None, ns=None)
  |  
- |  The Node class is to create an xml node.
+ |      The Node class is to create an xml node.
  |  
- |  An instance of Node has:
+ |      An instance of Node has:
  |  
- |      name :      <name> </name>
- |      value  :    <name>value</name>
- |      attrs :     <name attrs[k]="attrs[v]">
- |      children :  <name><children[0]></children[0]</name>
- |      depth:      tab depth for printing (automatically set)
- |      namespace:  a NameSpace instance
-
- |  Use like this:
+ |          tag :      <tag> </tag>
  |  
- |      from threefive.xml import Node
+ |          value  :    <tag>value</tag>
  |  
- |      ts = Node('TimeSignal')
- |      st = Node('SpliceTime',attrs={'pts_time':3442857000})
- |      ts.add_child(st)
- |      print(ts)
+ |          attrs :     <tag attrs[k]="attrs[v]">
+ |  
+ |          children :  <tag><children[0]></children[0]</tag>
+ |  
+ |          depth:      tab depth for printing (automatically set)
+ |  
+ |          namespace:    a NameSpace instance for the Node
+ |  
+ |  example:
+ |  
+ |          >>> from threefive.xml import Node
+ |          >>> ts = Node('TimeSignal')
+ |          >>> st = Node('SpliceTime',attrs={'pts_time':3442857000})
+ |          >>> ts.addchild(st)
+ |          >>> print(ts)
  |  
  |  Methods defined here:
  |  
- |  __init__(self, name, value=None, attrs=None, ns=None)
+ |  __init__(self, tag, value='', attrs=None, ns=None)
  |  
- |  __repr__(self)
+  __repr__(self)
  |  
- |  add_attr(self, attr, value)
- |      add_attr add an attribute
+ |  a2c(self)
+ |      a2c convert attrs to child nodes
  |  
- |  add_child(self, child, slot=None)
- |      add_child adds a child node
+ |  addattr(self, attr, value)
+ |      addattr add an attribute
+ |  
+ |  addchild(self, child, slot=None)
+ |      addchild adds a child node
  |      set slot to insert at index slot.
  |  
- |  add_comment(self, comment, slot=None)
- |      add_comment add a Comment node
+ |  addcomment(self, comment, slot=None)
+ |      addcomment add a Comment node
  |  
- |  attrs2nodes(self)
- |      attrs2nodes attributes to elements
+ |  c2a(self)
+ |      c2a convert children to attributes
+ |      if the child has no attributes or children
  |  
  |  children_namespaces(self)
  |      children_namespaces give children your namespace
  |  
- |  chk_obj(self, obj)
- |      chk_obj determines if
- |      obj is self, or another obj
- |      for self.set_ns and self.mk
+ |  drop(self, obj=None)
+ |      drop delete self
  |  
- |  get_indent(self)
- |      get_indent returns a string of spaces the required depth for a node
+ |  dropattr(self, attr)
+ |      dropattr remove an attribute
+ |  
+ |  dropchild(self, child)
+ |      dropchild remove a child
+ |      
+ |      example:
+ |      a_node.dropchild(a_node.children[3])
+ |  
+ |  findattr(self, attr, obj=None)
+ |      findattr  recursively searches children for all nodes that
+ |      have an attribute that matches attr. findattr returns a NodeList.
+ |  
+ |  findtag(self, tag, obj=None)
+ |      findtag  recursively searches children for
+ |      all nodes with a tag that matches tag.
+ |      findtag returns a NodeList.
  |  
  |  mk(self, obj=None)
  |      mk make the Node as xml.
  |  
- |  mk_ans(self, attrs)
- |      mk_ans set namespace on attributes
- |  
- |  mk_name(self)
- |      mk_name add namespace to node name
- |  
- |  rendr_all(self, ndent, name)
- |      rendr_all renders the Node instance and it's children in xml.
- |  
- |  rendr_attrs(self, ndent, name)
- |      rendrd_attrs renders xml attributes
- |  
- |  rm_attr(self, attr)
- |      rm_attr remove an attribute
- |  
- |  rm_child(self, child)
- |      rm_child remove a child
- |            
- |      example:
- |      a_node.rm_child(a_node.children[3])
- |  
- |  set_depth(self)
- |      set_depth is used to format
- |      tabs in output
- |  
  |  set_ns(self, ns=None)
  |      set_ns set namespace on the Node
  |  
- |  ----------------------------------------------------------------------
 
 ```
 ### help(threefive.xml.Namespace)
