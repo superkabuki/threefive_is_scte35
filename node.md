@@ -261,8 +261,44 @@ Type "help", "copyright", "credits" or "license" for more information.
 , <hottamale:Representation   hottamale:id="video" hottamale:bandwidth="1000000" hottamale:ScanType="progressive"/>
 ]
 ```
-### Turn attribbutes into child nodes, recursively.
+### Turn attributes into child nodes, recursively.
+```py3
+>>>> from threefive.xml import Node
+>>>> n=Node("root", attrs={"one":1,"two":2,"three":3,})
+>>>> n
+<root one="1" two="2" three="3"/>
 
+>>>> n2=Node("next",attrs={"four":4,"five":5,})
+>>>> n.addchild(n2)
+>>>> n
+<root one="1" two="2" three="3">
+    <next four="4" five="5"/>
+</root>
+
+>>>> n.a2c()
+>>>> n
+<root>
+    <next>
+        <four>4</four>
+        <five>5</five>
+    </next>
+    <one>1</one>
+    <two>2</two>
+    <three>3</three>
+</root>
+
+
+```
+
+*  __threefive v3.1.5__ can make children into attributes with __Node.c2a()__
+```py3
+>>>> n.c2a()
+>>>> n
+<root one="1" two="2" three="3">
+    <next four="4" five="5"/>
+</root>
+
+```
 ### Help is built-in
 
 ```py3
@@ -297,6 +333,9 @@ class Node(builtins.object)
  |  
  |  __repr__(self)
  |  
+ |  a2c(self)
+ |      a2c convert attrs to child nodes
+ |  
  |  addattr(self, attr, value)
  |      addattr add an attribute
  |  
@@ -307,13 +346,12 @@ class Node(builtins.object)
  |  addcomment(self, comment, slot=None)
  |      addcomment add a Comment node
  |  
+ |  c2a(self)
+ |      c2a convert children to attributes
+ |      if the child has no attributes or children
+ |  
  |  children_namespaces(self)
  |      children_namespaces give children your namespace
- |  
- |  chk_obj(self, obj)
- |      chk_obj determines if
- |      obj is self, or another obj
- |      for self.set_ns and self.mk
  |  
  |  drop(self, obj=None)
  |      drop delete self
@@ -336,35 +374,13 @@ class Node(builtins.object)
  |      all nodes with a tag that matches tag.
  |      findtag returns a NodeList.
  |  
- |  get_indent(self)
- |      get_indent returns a string of spaces the required depth for a node
- |  
  |  mk(self, obj=None)
  |      mk make the Node as xml.
- |  
- |  mk_ans(self, attrs)
- |      mk_ans set namespace on attributes
- |  
- |  mk_tag(self)
- |      mk_tag add namespace to node name
- |  
- |  rendr_all(self, ndent, tag)
- |      rendr_all renders the Node instance and it's children in xml.
- |  
- |  rendr_attrs(self, ndent, tag)
- |      rendrd_attrs renders xml attributes
- |  
- |  set_depth(self)
- |      set_depth is used to format
- |      tabs in output
  |  
  |  set_ns(self, ns=None)
  |      set_ns set namespace on the Node
  |  
- |  set_parent(self, obj=None)
- |      set_parent set the parent node of this node.
- |      a top level node's parent will be None.
- |  
+
 ```
 
 #### Namespaces
