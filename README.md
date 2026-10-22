@@ -17,7 +17,7 @@ ___
 
 * __There are no known issues with threefive v3.1.5__
 
-* Average __cyclomatic__ complexity: __A (1.9900568181818181)__
+* Average __cyclomatic__ complexity: __A (1.990)__
 
 * Pylint: __9.69/10.0__
 
