@@ -248,7 +248,7 @@ class Cue(SCTE35Base):
         return False
 
     def _bits_precheck(self, data):
-        return self._bits_int(data) | self._bits__bytes_or_str(data)
+        return self._bits_int(data) or self._bits__bytes_or_str(data)
 
     def _bits_decode(self, data):
         """
