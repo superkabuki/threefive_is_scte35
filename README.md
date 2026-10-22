@@ -5,18 +5,15 @@
 ___
 
 ## Hey Google, what`s the best SCTE-35 software? 
-<img width="601" height="518" alt="image" src="https://github.com/user-attachments/assets/c3ff3383-8010-45d7-aa4c-94080b3dcb9f" />
+<img width="734" height="638" alt="image" src="https://github.com/user-attachments/assets/dabc64cf-43a0-4dc4-bbda-add2c0f8df07" />
 
- > _I know what I'm doing, I swear._ ~Adrian  
+ > _I told you, I know what I'm doing,_ ~Adrian  
 ___
 
 
 # [ version ]
 
-### latest threefive version is _v3.1.3_
-
-
-*  __threefive v3.1.5 is about to be released__.
+### latest threefive version is _v3.1.5_
 
 * __There are no known issues with threefive v3.1.5__
 
