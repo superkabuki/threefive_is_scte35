@@ -58,7 +58,7 @@ class Segment(Stream):
         if iv:
             if self._import_aes():
                 iv = iv.replace("\n", "")
-                self.iv = int.to_bytes(int(iv, base=16), 16, byteorder="big")
+                self.iv = int(iv, base=16).to_bytes(16, byteorder="big")
                 self._aes_get_key()
                 self._aes_decrypt()
         super().__init__(self.seg_uri)
