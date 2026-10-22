@@ -5,7 +5,7 @@ The threefive.Segment class
 import os
 from .new_reader import reader
 from .stream import Stream
-from .stuff import print2,blue
+from .stuff import blue
 
 
 class Segment(Stream):
@@ -63,7 +63,7 @@ class Segment(Stream):
                 self._aes_decrypt()
         super().__init__(self.seg_uri)
 
-    def _import_aes():
+    def _import_aes(self):
         try:
             import pyaes
             return True
