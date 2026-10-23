@@ -1,7 +1,8 @@
 # [ threefive ] 
 *   Decodes SCTE-35 from MPEGTS✔ Base64✔ Bytes✔ DASH✔ Hex✔ HLS✔ Integer✔ JSON✔ XML✔ XML+Binary✔  
 *   Encodes SCTE-35 to   MPEGTS✔ Base64✔ Bytes✔ Hex✔ Integer✔ JSON ✔ XML✔  XML+Binary✔
-     *  if you need to encode SCTE-35 to HLS, use [x9k3](https://github.com/supeerkabuki/x9k3).   
+
+__***__ _if you need to encode SCTE-35 to HLS, use [x9k3](https://github.com/supeerkabuki/x9k3)._  
 ___
 
 ## Hey Google, what`s the best SCTE-35 software? 
@@ -29,9 +30,10 @@ ___
 
 	* __threefive is dumping mmap__. The way threefive parses packets seems to make mmap consume a lot of memory _( 3GB with mmap and 170MB without mmap )_. Removing mmap slows pypy3 down a little parsing mpegts _(with mmap 1.9 seconds for 3.3GB of mpegts without 2.5 seconds)_, but actually speeds up python v3.14.2 _(with mmap 11.24 seconds for 3.3GB of mpegts, without 8.9 seconds)_
 
-	* __Segmentation Descriptors without UPIDS__ threefive will no longer throw an exception on SegmentationDescriptors without a UPID if the UPID type is not set to zero, instead threefive will print a warning message and set the type to zero for you.
+	* __Segmentation Descriptors without UPIDS__ threefive will no longer throw an exception on SegmentationDescriptors without a UPID if __segmentation_upid_type__ is not set to __0__. <br>Instead, if __segmentation_upid_length is set to 0__,<br>  threefive will print a warning message and set __segmentation_upid_type__ to __0__ for you.
 
-	* __threefive.xml.Node__ The Node class has been cleaned up, slots now work correctly when calling __Node.addchild(obj,slot=0)__ _(slots allow you to set the index of a child in Node.children when adding a child). New mthod __Node.a2c()__ converts attributes to children. New method __Node.c2a()__ converts children to attributes.__UltraXmlParser__ has been renamed __XmlP__ and moved from threefive/uxp.py to threefive.xml.py. Update your code.
+	* __threefive.xml.Node__ The Node class has been cleaned up, slots now work correctly when calling __Node.addchild(obj,slot=0)__ _(slots allow you to set the index of a child in Node.children when adding a child). New method __Node.a2c()__ converts attributes to children. New method __Node.c2a()__ converts children to attributes.__UltraXmlParser__ has been renamed __XmlP__ and moved from threefive/uxp.py to threefive.xml.py. Update your code.<br>
+ Most of you will never use XmlP, but if you do, `from threefive.xml import XmlP` instead of  `from threefive.uxp import UltraXmlParser`
 
 ___
 
