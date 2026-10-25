@@ -29,11 +29,12 @@ ___
 	* __Property class__ for __SCTE-35-2 Event Descriptors__ now render __JSON__ correctly.  
 
 	* __threefive is dumping mmap__. The way threefive parses packets seems to make mmap consume a lot of memory 
-
-	* __Segmentation Descriptors without UPIDS__ threefive will no longer throw an exception on SegmentationDescriptors without a UPID if __segmentation_upid_type__ is not set to __0__. <br>Instead, if __segmentation_upid_length is set to 0__,<br>  threefive will print a warning message and set __segmentation_upid_type__ to __0__ for you.
+	* __Segmentation Descriptors without UPIDS__
+ 		* threefive will no longer throw an exception on SegmentationDescriptors without a UPID if __segmentation_upid_type__ is not set to __0__. 
+		* if __segmentation_upid_length is set to 0__, threefive will print a warning message and set __segmentation_upid_type__ to __0__ for you.
 
 	* __threefive.xml.Node__
-        * __Node.addchild(obj,slot=0)__ _(slots allow you to set the index of a child in Node.children when adding a child).
+        * __Node.addchild(obj,slot=0)__ _(slots allow you to set the index of a child in Node.children when adding a child)._
         * New method __Node.a2c()__ converts attributes to children.
         * New method __Node.c2a()__ converts children to attributes.
         * __UltraXmlParser__ has been renamed __XmlP__ and moved from threefive/uxp.py to threefive.xml.py. 
