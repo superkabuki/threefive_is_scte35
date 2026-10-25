@@ -28,13 +28,15 @@ ___
    
 	* __Property class__ for __SCTE-35-2 Event Descriptors__ now render __JSON__ correctly.  
 
-	* __threefive is dumping mmap__. The way threefive parses packets seems to make mmap consume a lot of memory _( 3GB with mmap and 170MB without mmap )_. Removing mmap slows pypy3 down a little parsing mpegts _(with mmap 1.9 seconds for 3.3GB of mpegts without 2.5 seconds)_, but actually speeds up python v3.14.2 _(with mmap 11.24 seconds for 3.3GB of mpegts, without 8.9 seconds)_
+	* __threefive is dumping mmap__. The way threefive parses packets seems to make mmap consume a lot of memory 
 
 	* __Segmentation Descriptors without UPIDS__ threefive will no longer throw an exception on SegmentationDescriptors without a UPID if __segmentation_upid_type__ is not set to __0__. <br>Instead, if __segmentation_upid_length is set to 0__,<br>  threefive will print a warning message and set __segmentation_upid_type__ to __0__ for you.
 
-	* __threefive.xml.Node__ The Node class has been cleaned up, slots now work correctly when calling __Node.addchild(obj,slot=0)__ _(slots allow you to set the index of a child in Node.children when adding a child). New method __Node.a2c()__ converts attributes to children. New method __Node.c2a()__ converts children to attributes.__UltraXmlParser__ has been renamed __XmlP__ and moved from threefive/uxp.py to threefive.xml.py. Update your code.<br>
- Most of you will never use XmlP, but if you do, `from threefive.xml import XmlP` instead of  `from threefive.uxp import UltraXmlParser`
-
+	* __threefive.xml.Node__
+          * __Node.addchild(obj,slot=0)__ _(slots allow you to set the index of a child in Node.children when adding a child).
+          * New method __Node.a2c()__ converts attributes to children.
+          * New method __Node.c2a()__ converts children to attributes.
+          * __UltraXmlParser__ has been renamed __XmlP__ and moved from threefive/uxp.py to threefive.xml.py. 
 ___
 
 # [ a really really quick start ]
@@ -80,8 +82,6 @@ ___
 
 #### Need to inject SCTE-35 into HLS?  [X9k3.](https://github.com/superkabuki/x9k3)
 
-* [__web based SCTE-35 tools__](#web) - threefive and friends over http. 
-
 * [__install__](#install)
 
 * [__quick start__](quickstart.md)
@@ -89,18 +89,15 @@ ___
 * ___SCTE-35 on the command line___   
 	* [ __the threefive cli tool__](#-cli-) _If you work with SCTE-35, this is as cool as it gets._  
 
+* __the threefive library__ _cool code for the cool kids_.
+	* [__Using the threefive library with SCTE-35__](#-using-the-library-) _decode SCTE-35 with less than ten lines of code_
+ 
 * __other included tools__
     * [__scte35fix__](#scte35fix)  _ffmpeg changes scte-35 streams into bin data, scte35fix changes them back._
 	* [__scte35inject__](scte35inject.md) _scte35inject inject scte-35 into mpegts._
   	* [__gums__](#gums) _gums is a  multicast sender(server) for video_ 
 
-
-* __the threefive library__ _cool code for the cool kids_.
- 	* [__Using the threefive.Cue class__](lib.md) 
-	* [__Using the threefive library__](#-using-the-library-) _decode SCTE-35 with less than ten lines of code_
- 	* * [threefive __Classes__](#classes) _threefive is OO, made to subclass_
-		* [__Cue__ Class](https://github.com/superkabuki/threefive/blob/main/cue.md) _this class you'll use often_ 
-		* [__Stream__ Class](https://github.com/superkabuki/threefive/blob/main/stream.md) _this is the class for parsing MPEGTS_
+* [__web based SCTE-35 tools__](#web) - threefive and friends over http. 
 
 * [SCTE-35 __Sidecar Files__](https://github.com/superkabuki/SCTE-35_Sidecar_Files) _threefive supports SCTE-35 sidecar files_
 
@@ -446,23 +443,92 @@ ___
 #### [⇧](#-documentation-)
 
 ## [ Using the library ]
-* Let me show you how easy threefive is to use.
+# Writing Code with threefive.
 
-* reading SCTE-35 xml from a file
+* threefive is designed so that you don't have to write a lot of code to parse SCTE-35
+threefive is OO, everything in threefive, except a dozen or so functions, is a class.
+
+* The Cue class and the Stream class are the two classes most often used. 
+
+
+### Cue class
+
+
+* The Cue class represents a single SCTE-35 Cue. 
+* Use the Cue class when you have one SCTE-35 Cue or Message to parse.
+* The Cue class autodetects the format of the SCTE-35.
+* When you create a Cue instance, pass in the SCTE-35 data.
+
 ```py3
-a@fu:~/threefive$ pypy3
-Python 3.9.16 (7.3.11+dfsg-2+deb12u3, Dec 30 2024, 22:36:23)
-[PyPy 7.3.11 with GCC 12.2.0] on linux
-Type "help", "copyright", "credits" or "license" for more information.
->>>> from threefive import reader
 >>>> from threefive import Cue
->>>> data =reader('/home/a/xml.xml').read()
+>>>> cue=Cue('/DBAAAGRZOeYAAAABQb/mSvFcAAqAihDVUVJ/////3//AAFyyeABFG1zbmJjX0VQMDQ0MDc4NzUwMjY4IwEESCpzpg==')
 ```
-* load it into a threefive.Cue instance
+* The SCTE-35 Format can be __Base64, Bytes,  Hex, Integer, JSON, Raw MPEGTS Packet, XML or XML+Binary.__
+
+* Cue will decode the SCTE-35 into __a Splice Info Section__, __a Splice Command__, and __zero or More Splice Descriptors.__
+
 ```py3
->>>> cue = Cue(data)
+>>>> cue.info_section
+{'table_id': '0xfc', 'section_syntax_indicator': False, 'private': False, 'sap_type': '0x03', 'sap_details': 'No Sap Type', 'section_length': 64, 'protocol_version': 0, 'encrypted_packet': False, 'encryption_algorithm': 0, 'pts_adjustment': 74825.294489, 'cw_index': '0x00', 'tier': '0x00', 'splice_command_length': 5, 'splice_command_type': 6, 'descriptor_loop_length': 42, 'crc': '0x482a73a6'}
+
+>>>> cue.command
+{'command_length': 5, 'command_type': 6, 'name': 'Time Signal', 'time_specified_flag': True, 'pts_time': 76274.999289}
+
+
+>>>> cue.descriptors
+[{'tag': 2, 'identifier': 'CUEI', 'name': 'Segmentation Descriptor', 'descriptor_length': 40, 'private_data': None, 'segmentation_event_cancel_indicator': False, 'segmentation_event_id': '0xffffffff', 'segmentation_event_id_compliance_indicator': True, 'program_segmentation_flag': True, 'segmentation_duration_flag': True, 'delivery_not_restricted_flag': True, 'web_delivery_allowed_flag': None, 'no_regional_blackout_flag': None, 'archive_allowed_flag': None, 'device_restrictions': None, 'segmentation_duration': 270.0, 'segmentation_message': 'Break End', 'segmentation_type_id': 35, 'segmentation_upid_length': 20, 'segmentation_upid_type': 1, 'segmentation_upid_type_name': 'Type 0x01 is deprecated, use MPU type 0x0C', 'segmentation_upid': 'msnbc_EP044078750268', 'segment_num': 1, 'segments_expected': 4, 'sub_segment_num': None, 'sub_segments_expected': None}]
 ```
-* Show the data as JSON
+
+* individual __variables can be accessed via dot notation__
+```py3
+>>>> cue.command.pts_time
+76274.999289
+```
+
+* __variables can be changed__ the same way
+
+```py3
+>>>> cue.command.pts_time= 1.23456
+>>>> cue.command
+{'command_length': 5, 'command_type': 6, 'name': 'Time Signal', 'time_specified_flag': True, 'pts_time': 1.23456}
+```
+
+* __cue.descriptors is a list__, and descriptors can be acessed by index, like cue.descriptors[0]
+
+* since cue.descriptors is a list, so you can append or pop() descriptors 
+
+```py3
+>>>> cue.descriptors.pop()
+>>>> cue.descriptors
+[]
+```
+
+* after editing, __you can re-encode__
+
+* the default is __base64__
+
+```py3
+>>>> cue.encode()
+'/DAWAAGRZOeYAAAABQb+AAGyBgAANqe8lw=='
+```
+* or you can __encode in a different SCTE-35 format__
+
+
+* __bytes__
+
+```py3
+>>>> cue.bytes()
+b'\xfc0\x16\x00\x01\x91d\xe7\x98\x00\x00\x00\x05\x06\xfe\x00\x01\xb2\x06\x00\x006\xa7\xbc\x97'
+```
+
+* __hex__
+
+```py3
+>>>> cue.hex()
+'0xfc301600019164e7980000000506fe0001b206000036a7bc97'
+```
+* __json__
+
 ```py3
 >>>> cue.show()
 {
@@ -472,214 +538,186 @@ Type "help", "copyright", "credits" or "license" for more information.
         "private": false,
         "sap_type": "0x03",
         "sap_details": "No Sap Type",
-        "section_length": 92,
+        "section_length": 22,
         "protocol_version": 0,
         "encrypted_packet": false,
         "encryption_algorithm": 0,
-        "pts_adjustment": 0.0,
+        "pts_adjustment": 74825.294489,
         "cw_index": "0x00",
-        "tier": "0x0fff",
-        "splice_command_length": 15,
-        "splice_command_type": 5,
-        "descriptor_loop_length": 60,
-        "crc": "0x7632935"
+        "tier": "0x00",
+        "splice_command_length": 5,
+        "splice_command_type": 6,
+        "descriptor_loop_length": 0,
+        "crc": "0x36a7bc97"
     },
     "command": {
-        "command_length": 15,
-        "command_type": 5,
-        "name": "Splice Insert",
-        "break_auto_return": false,
-        "break_duration": 180.0,
-        "splice_event_id": 1073743095,
-        "splice_event_cancel_indicator": false,
-        "out_of_network_indicator": true,
-        "program_splice_flag": false,
-        "duration_flag": true,
-        "splice_immediate_flag": false,
-        "event_id_compliance_flag": true,
-        "unique_program_id": 1,
-        "avail_num": 12,
-        "avails_expected": 5
+        "command_length": 5,
+        "command_type": 6,
+        "name": "Time Signal",
+        "time_specified_flag": true,
+        "pts_time": 1.234556
     },
-    "descriptors": [
-        {
-            "tag": 0,
-            "identifier": "CUEI",
-            "name": "Avail Descriptor",
-            "provider_avail_id": 12,
-            "descriptor_length": 8
-        },
-        {
-            "tag": 0,
-            "identifier": "CUEI",
-            "name": "Avail Descriptor",
-            "provider_avail_id": 13,
-            "descriptor_length": 8
-        },
-      
-
-    ]
+    "descriptors": []
 }
+
 ```
-* convert the data back to xml
+* __integer__
+
 ```py3
->>>> print(cue.xml())
-<scte35:SpliceInfoSection xmlns:scte35="https://scte.org/schemas/35"  ptsAdjustment="0" protocolVersion="0" sapType="3" tier="4095">
-   <scte35:SpliceInsert spliceEventId="1073743095" spliceEventCancelIndicator="false" spliceImmediateFlag="false" eventIdComplianceFlag="true" availNum="12" availsExpected="5" outOfNetworkIndicator="true" uniqueProgramId="1">
-      <scte35:BreakDuration autoReturn="false" duration="16200000"/>
-   </scte35:SpliceInsert>
-   <scte35:AvailDescriptor providerAvailId="12"/>
-   <scte35:AvailDescriptor providerAvailId="13"/>
-   <scte35:AvailDescriptor providerAvailId="14"/>
-   <scte35:AvailDescriptor providerAvailId="15"/>
-   <scte35:AvailDescriptor providerAvailId="16"/>
-   <scte35:AvailDescriptor providerAvailId="17"/>
+>>>> cue.int()
+1583008701076488801275299570612875276859137926425502632361111
+```
+
+* __xml__
+
+```py3
+>>>> cue.xml()
+<scte35:SpliceInfoSectionxmlns:scte35="https://scte.org/schemas/35"  ptsAdjustment="6734276504" protocolVersion="0" sapType="3" tier="0">
+    <scte35:TimeSignal>
+        <scte35:SpliceTime ptsTime="111110"/>
+    </scte35:TimeSignal>
 </scte35:SpliceInfoSection>
 ```
-* convert to xml+binary
+
+* __xml+bin__
+
 ```py3
->>>> print(cue.xmlbin())
-<scte35:Signal xmlns:scte35="https://scte.org/schemas/35">
-    <scte35:Binary>/DBcAAAAAAAAAP/wDwVAAAT3f69+APcxQAABDAUAPAAIQ1VFSQAAAAwACENVRUkAAAANAAhDVUVJAAAADgAIQ1VFSQAAAA8ACENVRUkAAAAQAAhDVUVJAAAAEQdjKTU=</scte35:Binary>
+>>>> cue.xmlbin()
+<scte35:Signalxmlns:scte35="https://scte.org/schemas/35">
+    <scte35:Binary>/DAWAAGRZOeYAAAABQb+AAGyBgAANqe8lw==</scte35:Binary>
 </scte35:Signal>
 ```
-* convert to base64
-```py3
->>>> print(cue.base64())
-/DBcAAAAAAAAAP/wDwVAAAT3f69+APcxQAABDAUAPAAIQ1VFSQAAAAwACENVRUkAAAANAAhDVUVJAAAADgAIQ1VFSQAAAA8ACENVRUkAAAAQAAhDVUVJAAAAEQdjKTU=
-```
-* convert to hex
-```py3
->>>> print(cue.hex())
-0xfc305c00000000000000fff00f05400004f77faf7e00f7314000010c05003c0008435545490000000c0008435545490000000d0008435545490000000e0008435545490000000f000843554549000000100008435545490000001107632935
-```
-* show just the splice command
-```py3
->>>> cue.command.show()
-{
-    "command_length": 15,
-    "command_type": 5,
-    "name": "Splice Insert",
-    "break_auto_return": false,
-    "break_duration": 180.0,
-    "splice_event_id": 1073743095,
-    "splice_event_cancel_indicator": false,
-    "out_of_network_indicator": true,
-    "program_splice_flag": false,
-    "duration_flag": true,
-    "splice_immediate_flag": false,
-    "event_id_compliance_flag": true,
-    "unique_program_id": 1,
-    "avail_num": 12,
-    "avails_expected": 5
-}
-```
-* edit the break duration
-```py3
->>>> cue.command.break_duration=30
->>>> cue.command.show()
-{
-    "command_length": 15,
-    "command_type": 5,
-    "name": "Splice Insert",
-    "break_auto_return": false,
-    "break_duration": 30,
-    "splice_event_id": 1073743095,
-    "splice_event_cancel_indicator": false,
-    "out_of_network_indicator": true,
-    "program_splice_flag": false,
-    "duration_flag": true,
-    "splice_immediate_flag": false,
-    "event_id_compliance_flag": true,
-    "unique_program_id": 1,
-    "avail_num": 12,
-    "avails_expected": 5
-}
-```
 
-* re-encode to base64 with the new duration
-```py3
->>>> cue.base64()
-'/DBcAAAAAAAAAP/wDwVAAAT3f69+ACky4AABDAUAPAAIQ1VFSQAAAAwACENVRUkAAAANAAhDVUVJAAAADgAIQ1VFSQAAAA8ACENVRUkAAAAQAAhDVUVJAAAAEe1FB6g='
-```
-* re-encode to xml with the new duration
-```py3
->>>> print(cue.xml())
-<scte35:SpliceInfoSection xmlns:scte35="https://scte.org/schemas/35"  ptsAdjustment="0" protocolVersion="0" sapType="3" tier="4095">
-   <scte35:SpliceInsert spliceEventId="1073743095" spliceEventCancelIndicator="false" spliceImmediateFlag="false" eventIdComplianceFlag="true" availNum="12" availsExpected="5" outOfNetworkIndicator="true" uniqueProgramId="1">
-      <scte35:BreakDuration autoReturn="false" duration="2700000"/>
-   </scte35:SpliceInsert>
-   <scte35:AvailDescriptor providerAvailId="12"/>
-   <scte35:AvailDescriptor providerAvailId="13"/>
-   <scte35:AvailDescriptor providerAvailId="14"/>
-   <scte35:AvailDescriptor providerAvailId="15"/>
-   <scte35:AvailDescriptor providerAvailId="16"/>
-   <scte35:AvailDescriptor providerAvailId="17"/>
-</scte35:SpliceInfoSection>
-```
-* show just the descriptors
-```py3
->>>> _ = [d.show() for d in cue.descriptors]
-{
-    "tag": 0,
-    "identifier": "CUEI",
-    "name": "Avail Descriptor",
-    "provider_avail_id": 12,
-    "descriptor_length": 8
-}
-{
-    "tag": 0,
-    "identifier": "CUEI",
-    "name": "Avail Descriptor",
-    "provider_avail_id": 13,
-    "descriptor_length": 8
-}
-{
-    "tag": 0,
-    "identifier": "CUEI",
-    "name": "Avail Descriptor",
-    "provider_avail_id": 14,
-    "descriptor_length": 8
-}
-{
-    "tag": 0,
-    "identifier": "CUEI",
-    "name": "Avail Descriptor",
-    "provider_avail_id": 15,
-    "descriptor_length": 8
-}
-{
-    "tag": 0,
-    "identifier": "CUEI",
-    "name": "Avail Descriptor",
-    "provider_avail_id": 16,
-    "descriptor_length": 8
-}
-{
-    "tag": 0,
-    "identifier": "CUEI",
-    "name": "Avail Descriptor",
-    "provider_avail_id": 17,
-    "descriptor_length": 8
-}
-```
-* pop off the last descriptor and re-encode to xml
+* for more specifics help is built-in
+
 ```py3
 
->>>> cue.descriptors.pop()
-{'tag': 0, 'identifier': 'CUEI', 'name': 'Avail Descriptor', 'private_data': None, 'provider_avail_id': 17, 'descriptor_length': 8}
->>>> print(cue.xml())
-<scte35:SpliceInfoSection xmlns:scte35="https://scte.org/schemas/35"  ptsAdjustment="0" protocolVersion="0" sapType="3" tier="4095">
-   <scte35:SpliceInsert spliceEventId="1073743095" spliceEventCancelIndicator="false" spliceImmediateFlag="false" eventIdComplianceFlag="true" availNum="12" availsExpected="5" outOfNetworkIndicator="true" uniqueProgramId="1">
-      <scte35:BreakDuration autoReturn="false" duration="2700000"/>
-   </scte35:SpliceInsert>
-   <scte35:AvailDescriptor providerAvailId="12"/>
-   <scte35:AvailDescriptor providerAvailId="13"/>
-   <scte35:AvailDescriptor providerAvailId="14"/>
-   <scte35:AvailDescriptor providerAvailId="15"/>
-   <scte35:AvailDescriptor providerAvailId="16"/>
-</scte35:SpliceInfoSection>
+help(Cue)
 ```
+
+
+### Stream class
+
+* The __Stream class__ is used for __Parsing SCTE-35 from MPEGTS streams.__
+
+* The Stream class can open streams from __stdout, files, HTTP(S), Multicast, SRT, and UDP.__  
+
+ *  __Stream.__init____(self, tsdata, show_null=True, headers={})
+
+* __tsdata__ is the only required arg, it is the stream 
+* __show_null__ is a boolean to show Splice Nulls or not.
+* __headers__ is a dict for HTTP or SRT headers If needed.
+
+```py3
+>>>> from threefive import Stream
+
+>>>> st =Stream('https://iodisco.com/longb2.ts')
+```
+
+* __Stream.decode()__ prints SCTE-35 as JSON
+
+```py3
+>>>> st.decode()
+```
+
+### Triggering on SCTE-35 
+
+* __Stream.decode_next()__ is a __python generator__ that __yields a Cue instance__ when SCTE-35 is found in an MPEGTS stream
+
+```py3
+from threefive import Stream
+
+>>>> st =Stream('https://iodisco.com/longb2.ts')
+>>>> for cue in st.decode_next():
+....     cmd = f"Command: {cue.command.name}"
+....     if cue.command.has("pts_time"):
+....         cmd += f"\t pts: {cue.command.pts_time}"
+....     print(cmd)
+....     
+Command: Time Signal	 pts: 1.433
+Command: Time Signal	 pts: 6.772
+Command: Time Signal	 pts: 9.141
+Command: Time Signal	 pts: 12.11
+Command: Time Signal	 pts: 17.449
+Command: Time Signal	 pts: 22.788
+Command: Time Signal	 pts: 28.126
+Command: Time Signal	 pts: 33.465
+Command: Time Signal	 pts: 38.804
+Command: Time Signal	 pts: 44.142
+Command: Time Signal	 pts: 49.481
+Command: Time Signal	 pts: 54.82
+Command: Time Signal	 pts: 60.158
+Command: Time Signal	 pts: 65.497
+Command: Time Signal	 pts: 70.836
+Command: Time Signal	 pts: 76.174
+Command: Time Signal	 pts: 81.513
+Command: Time Signal	 pts: 86.852
+```
+
+### Other Stream methods
+
+* __Stream.show()__ shows details of the MPEGTS stream 
+
+```py3
+>>>> st =Stream('https://iodisco.com/longb2.ts')
+>>>> st.show()
+
+---------------------------------------------
+https://iodisco.com/longb2.ts
+
+Program: 1
+ 
+    PTS Start: 1.433
+    Program Pid: 4096
+    Pcr Pid:     256
+    Streams:
+	  Pid		Type
+	  256 [0x100]	0x1b	H.264
+	  257 [0x101]	0xf	ADTS AAC 
+	  258 [0x102]	0x86	SCTE-35
+```
+
+* __Stream.Proxy()__ parses SCTE-35 and __copies the stream to stdout__ for piping the stream to another program.
+
+```py3
+>>>> st =Stream('https://iodisco.com/longb2.ts')
+>>>> st.proxy()
+```
+
+* __Stream.show_pts()__
+
+```py3
+>>>> st =Stream('https://iodisco.com/longb2.ts')
+
+>>>> st.show_pts()
+
+Prgm	PTS
+1  	  1.433
+1  	  1.466
+1  	  1.533
+1  	  1.5
+1  	  1.566
+1  	  1.633
+1  	  1.6
+1  	  1.667
+1  	  1.7
+1  	  1.733
+1  	  1.767
+1  	  1.8
+1  	  1.833
+1  	  1.867
+1  	  1.9
+1  	  1.967
+```
+
+* for more Stream specifics, see the built in docs
+
+```py3
+>>>> from threefive import Stream
+>>>> help(Stream)
+```
+
+
 ___
 
 #### [⇧](#-documentation-)
