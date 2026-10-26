@@ -94,6 +94,7 @@ ___
 
 * __the threefive library__ _cool code for the cool kids_.
 	* [__Using the threefive library with SCTE-35__](#-using-the-library-) _decode SCTE-35 with less than ten lines of code_
+    * [__triggering on SCTE-36 data in MPEGTS streams__](#triggering-on-scte-35)
  
 * __other included tools__
     * [__scte35fix__](#scte35fix)  _ffmpeg changes scte-35 streams into bin data, scte35fix changes them back._
