@@ -22,13 +22,15 @@ ___
 
 * Pylint: __9.69/10.0__
 
+* __threefive is dumping mmap.__. The way threefive parses packets seems to make mmap use fifteen times as much memory as without mmap. 
+ 
+
 * Here's a list of __what's been fixed.__
 
 	* __AacParser__ The typo on the call to __AacParser.not_syncsafe()__ has been fixed.
    
 	* __Property class__ for __SCTE-35-2 Event Descriptors__ now render __JSON__ correctly.  
 
-	* __threefive is dumping mmap__. The way threefive parses packets seems to make mmap consume a lot of memory 
 	* __Segmentation Descriptors without UPIDS__
  		* threefive will no longer throw an exception on SegmentationDescriptors without a UPID if __segmentation_upid_type__ is not set to __0__. 
 		* if __segmentation_upid_length is set to 0__, threefive will print a warning message and set __segmentation_upid_type__ to __0__ for you.
@@ -37,7 +39,7 @@ ___
         * __Node.addchild(obj,slot=0)__ _(slots allow you to set the index of a child in Node.children when adding a child)._
         * New method __Node.a2c()__ converts attributes to children.
         * New method __Node.c2a()__ converts children to attributes.
-        * __UltraXmlParser__ has been renamed __XmlP__ and moved from threefive/uxp.py to threefive.xml.py. 
+   * __UltraXmlParser__ has been renamed __XmlP__ and moved from threefive/uxp.py to threefive.xml.py. 
 ___
 
 # [ a really really quick start ]
