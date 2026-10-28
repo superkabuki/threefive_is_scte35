@@ -11,7 +11,7 @@ from .crc import crc32
 from .descriptors import splice_descriptor, descriptor_map, SpliceDescriptor
 from .section import SpliceInfoSection
 from .segmentation import table22
-from .stuff import clean, red, isjson, isxml, pif, blue,ERR
+from .stuff import clean, red, isjson, isxml, pif, blue, ERR
 from .xml2scte35 import xml2cue
 from .xml import Node
 
@@ -102,7 +102,8 @@ class Cue(SCTE35Base):
         """
         sct = self.info_section.splice_command_type
         if sct not in command_map:
-            return red(f"Splice Command type {sct} not recognized")
+            red(f"Splice Command type {sct} not recognized")
+            return False
         iscl = self.info_section.splice_command_length
         cmd_bites = bites[:iscl]
         self.command = command_map[sct](cmd_bites)
