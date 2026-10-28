@@ -403,13 +403,12 @@ class SegmentationDescriptor(SpliceDescriptor):
         and return it. the bitbin arg is only
         used in decode()
         """
+        if self.segmentation_upid_length == 0 or self.segmentation_upid_type == 0:
+            # No Upid if length or type is 0
+            self.segmentation_upid_length = self.segmentation_upid_type = 0
+
         upid_type = self.segmentation_upid_type
-        if self.segmentation_upid_length == 0:
-            if self.segmentation_upid_type != 0:
-                red(
-                    "set segmentation_upid_type and self.segmentation_upid_length to zero for no upid value"
-                )
-                upid_type = self.segmentation_upid_type = 0
+
         if upid_type not in upid_map:
             red("Unknown upid type , setting to 0xFD")
             upid_type = 0xFD
@@ -439,7 +438,7 @@ class SegmentationDescriptor(SpliceDescriptor):
         self._chk_var(int, nbin.add_int, "segments_expected", 8)
         if self.segmentation_type_id in self.SUB_SEG_TYPES:
             if self.sub_segment_num and self.sub_segments_expected:
-                # Both are required, encode if they exist.
+                # if both are present, encode.
                 self._chk_var(int, nbin.add_int, "sub_segment_num", 8)
                 self._chk_var(int, nbin.add_int, "sub_segments_expected", 8)
 
