@@ -163,16 +163,21 @@ class SCTE35Base:
         return json.dumps(self.get(), indent=4)
 
     def _v2v(self, val):
-        bites= (bytes,bytearray,)
-        if isinstance(val,bites):
+        bites = (
+            bytes,
+            bytearray,
+        )
+        if isinstance(val, bites):
             val = val.decode(errors="ignore")
-        if isinstance(val, list):
+        elif isinstance(val, list):
             val = [self._v2v(v) for v in val]
-        if isinstance(val, dict):
+        elif isinstance(val, dict):
             val = {k: self._v2v(v) for k, v in val.items()}
-        if isinstance(val, SCTE35Base):
+        elif isinstance(val, SCTE35Base):
             val.kv_clean()
             print(val)
+        elif hasattr(val, "__dict__"):
+            val = {k: self._v2v(v) for k, v in val.__dict__.items()}
         return val
 
     def chk_obj(self, obj):
@@ -193,7 +198,7 @@ class SCTE35Base:
         obj = self.chk_obj(obj)
         return {
             k: self._v2v(v)
-            for k, v in vars(obj).items()
+            for k, v in obj.__dict__.items()
             if v
             not in [
                 None,
