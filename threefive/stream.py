@@ -4,13 +4,12 @@ Mpeg-TS Stream parsing class
 """
 
 import sys
-import time
 from .cue import Cue
 from .new_reader import reader
 from .packetdata import PacketData
 from .speedo import Speedo
 from .streamtypes import streamtype_map
-from .stuff import ERR, print2,blue
+from .stuff import ERR, print2, blue
 
 
 def show_cue(cue):
@@ -98,7 +97,7 @@ class Pids(Based):
     def __init__(self):
         self.pcr = set()
         self.pmt = set()
-        self.id3 =set()
+        self.id3 = set()
         self.scte35 = set()
         self.maybe_scte35 = set()
         self.not_scte35 = set()
@@ -307,7 +306,17 @@ class Stream(Based):
         if not self._find_start():
             return False
         while pkt := self._tsdata.read(self.PACKET_SIZE):
-            cue = self.parse(pkt)
+            cue = None
+            one = (pkt[1] & 0x1F) << 8
+            pid = one + pkt[2]
+            if pid in self.pids.pcr:
+                self._parse_pts(pkt, pid)
+            if pid in self.pids.tables:
+                self._parse_tables(pkt, pid)
+            if pid in self.pids.scte35:
+                cue = self._parse_scte35(pkt, pid)
+            if pid in self.pids.id3:
+                cue = self._parse_id3_cue(pkt, pid)
             if cue:
                 func(cue)
         return False
@@ -372,10 +381,8 @@ class Stream(Based):
             sopro = sorted(self.maps.prgm.items())
             for k, vee in sopro:
                 prog = f"\nProgram: {k}\n "
-                try:
+                if k in self.start:
                     prog += f"\n    PTS Start: {self.as_90k(self.start[k])}"
-                except KeyError:
-                    continue
                 print2(prog)
                 vee.show()
 
@@ -392,7 +399,7 @@ class Stream(Based):
                     self._parse_pts(pkt, pid)
                     pts = self.pid2pts(pid)
                     if pts:
-                        print("\t",prgm, "\t", pts)
+                        print("\t", prgm, "\t", pts)
 
     def pts(self):
         """
@@ -430,12 +437,12 @@ class Stream(Based):
             return self.as_90k(self.maps.prgm_pcr[prgm])
         return False
 
-##    def _unpad_afc(self, pkt):
-##        return pkt[:4] + self._unpad(pkt[4:])
-##
-##    def _unpad(self, bites=b""):
-##        return bites.strip(b"\xff")
-##
+    ##    def _unpad_afc(self, pkt):
+    ##        return pkt[:4] + self._unpad(pkt[4:])
+    ##
+    ##    def _unpad(self, bites=b""):
+    ##        return bites.strip(b"\xff")
+    ##
     def _mk_packet_data(self, pid):
         prgm = self.maps.pid_prgm[pid]
         pdata = PacketData(pid, prgm)
@@ -464,14 +471,15 @@ class Stream(Based):
         parse pts and store by program key
         in the dict Stream._pid_pts
         """
-        payload = self._parse_payload(pkt)
-        # if len(payload) > 13:
-        if payload[7] & 0x80:  # pts flag
-            pts = self.mk_pts(payload)
-            prgm = self.pid2prgm(pid)
-            self.maps.prgm_pts[prgm] = pts
-            if prgm not in self.start:
-                self.start[prgm] = pts
+        if pkt[1] & 0x40:
+            payload = self._parse_payload(pkt)
+            # if len(payload) > 13:
+            if payload[7] & 0x80:  # pts flag
+                pts = self.mk_pts(payload)
+                prgm = self.pid2prgm(pid)
+                self.maps.prgm_pts[prgm] = pts
+                if prgm not in self.start:
+                    self.start[prgm] = pts
         return False
 
     def _mk_pcr(self, pkt, pid):
@@ -533,7 +541,7 @@ class Stream(Based):
         if pid in self.pids.scte35:
             cue = self._parse_scte35(pkt, pid)
         if pid in self.pids.id3:
-            cue= self._parse_id3_cue(pkt,pid)
+            cue = self._parse_id3_cue(pkt, pid)
         return cue
 
     def _parse(self, pkt):
@@ -562,19 +570,17 @@ class Stream(Based):
             return True
         return False
 
-    def _parse_id3_cue(self,pkt,pid):
+    def _parse_id3_cue(self, pkt, pid):
         pay = self._parse_payload(pkt)
         if b"ID3" in pay:
-            postpay=self._split_by_idx(pay, b"\xfc")
+            postpay = self._split_by_idx(pay, b"\xfc")
             if postpay:
                 blue("\n---> Experimental ID3 SCTE-35 Parser Start <---\n")
-                time.sleep(1)
-                cue= self._parse_cue(postpay,pid)
+                cue = self._parse_cue(postpay, pid)
                 blue("\n---> Experimental ID# SCTE-35 Parser Stop <---\n")
                 if cue:
                     return cue
         return False
-        
 
     def _parse_cue(self, pay, pid):
         packet_data = None
@@ -667,7 +673,7 @@ class Stream(Based):
             idx += chunk_size
         return True
 
-    def _precheck_pmt(self,pay,pid):
+    def _precheck_pmt(self, pay, pid):
         pay = self._chk_partial(pay, pid, self.PMT_TID)
         if pay:
             seclen = self._parse_length(pay[1], pay[2])
@@ -675,14 +681,14 @@ class Stream(Based):
                 if not self._same_as_last(pay, pid):
                     return pay
         return False
-    
+
     def _parse_pmt(self, pay, pid):
         """
         parse program maps for streams
         """
-        pay=self._precheck_pmt(pay,pid)
+        pay = self._precheck_pmt(pay, pid)
         if not pay:
-            return False 
+            return False
         program_number = self._parse_program(pay[3], pay[4])
         if not program_number:
             return False
