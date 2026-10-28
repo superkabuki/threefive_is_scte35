@@ -2,7 +2,7 @@
 The bitn.Bitn and bitn.NBin classes
 """
 
-from .stuff import red, pif
+from .stuff import blue, pif
 
 
 class Bitn:
@@ -35,7 +35,6 @@ class Bitn:
 
 
     """
-
 
     def __init__(self, bites):
         self.idx = len(bites) << 3  # This is correct, int.bit_length() is Not.
@@ -125,9 +124,9 @@ class Bitn:
         """
         if self.idx < num_bits:
             mesg = (
-                f"\n\n\t\t{num_bits} bits requested, but only {self.idx} bits remain.\n"
+                f"Negative Shift Error: {str(num_bits)} bits requested, but only {self.idx} bits remain.\n"
             )
-            red(mesg)
+            blue(mesg)
             return False
         return True
 
