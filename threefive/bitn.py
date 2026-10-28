@@ -123,9 +123,7 @@ class Bitn:
         You can't shift what you don't have.
         """
         if self.idx < num_bits:
-            mesg = (
-                f"Negative Shift Error: {str(num_bits)} bits requested, but only {self.idx} bits remain.\n"
-            )
+            mesg = f"Negative Shift Error: {str(num_bits)} bits requested, but only {self.idx} bits remain.\n"
             blue(mesg)
             return False
         return True
