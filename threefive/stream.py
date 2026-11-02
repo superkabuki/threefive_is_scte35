@@ -704,7 +704,6 @@ class Stream(Based):
         el_pid = self._parse_pid(pay[idx + 1], pay[idx + 2])
         ei_len = self._parse_length(pay[idx + 3], pay[idx + 4])
         self._set_scte35_pids(el_pid, stream_type)
-        self._set_id3_pids(el_pid, stream_type)
         return stream_type, el_pid, ei_len
 
     def _set_scte35_pids(self, pid, stream_type):
