@@ -97,7 +97,6 @@ class Pids(Based):
     def __init__(self):
         self.pcr = set()
         self.pmt = set()
-        self.id3 = set()
         self.scte35 = set()
         self.maybe_scte35 = set()
         self.not_scte35 = set()
@@ -306,17 +305,7 @@ class Stream(Based):
         if not self._find_start():
             return False
         while pkt := self._tsdata.read(self.PACKET_SIZE):
-            cue = None
-            one = (pkt[1] & 0x1F) << 8
-            pid = one + pkt[2]
-            if pid in self.pids.pcr:
-                self._parse_pts(pkt, pid)
-            if pid in self.pids.tables:
-                self._parse_tables(pkt, pid)
-            if pid in self.pids.scte35:
-                cue = self._parse_scte35(pkt, pid)
-            if pid in self.pids.id3:
-                cue = self._parse_id3_cue(pkt, pid)
+            cue = self.parse(pkt)
             if cue:
                 func(cue)
         return False
@@ -540,8 +529,6 @@ class Stream(Based):
             self._parse_tables(pkt, pid)
         if pid in self.pids.scte35:
             cue = self._parse_scte35(pkt, pid)
-        if pid in self.pids.id3:
-            cue = self._parse_id3_cue(pkt, pid)
         return cue
 
     def _parse(self, pkt):
@@ -568,18 +555,6 @@ class Stream(Based):
         if (seclen + 3) > len(pay):
             self.maps.partial[pid] = pay
             return True
-        return False
-
-    def _parse_id3_cue(self, pkt, pid):
-        pay = self._parse_payload(pkt)
-        if b"ID3" in pay:
-            postpay = self._split_by_idx(pay, b"\xfc")
-            if postpay:
-                blue("\n---> Experimental ID3 SCTE-35 Parser Start <---\n")
-                cue = self._parse_cue(postpay, pid)
-                blue("\n---> Experimental ID# SCTE-35 Parser Stop <---\n")
-                if cue:
-                    return cue
         return False
 
     def _parse_cue(self, pay, pid):
@@ -737,16 +712,8 @@ class Stream(Based):
         if stream_type is 0x06 or 0x86
         add it to self._scte35_pids.
         """
-        if stream_type in ["0x86"]:
+        if stream_type in ["0x86", "0x15"]: # scte-35 and id3 streams
             self.pids.scte35.add(pid)
         if stream_type in ["0x06", "0x6"]:
             self.pids.maybe_scte35.add(pid)
 
-    def _set_id3_pids(self, pid, stream_type):
-        """
-        0x15: ID3
-        if stream_type is 0x15
-        add it to self.pids.id3
-        """
-        if stream_type in ["0x15"]:
-            self.pids.id3.add(pid)
