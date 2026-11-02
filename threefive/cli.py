@@ -3,13 +3,11 @@
 """
 threefive.cli.py
 
-scte35 command line SCTE35 decoder.
+scte35 command line SCTE35 tool.
 
-threefivecli() is the call for the threefive cli.
 """
 
 
-import select
 import sys
 from .iframes import IFramer
 from .new_reader import reader
@@ -20,8 +18,6 @@ from .stuff import print2
 from .stuff import ERR
 from .version import version
 
-# import cProfile
-# from sideways import cli as sidecli
 
 REV = "\033[7;1m"
 NORM = "\033[27m\033[0m"
@@ -57,7 +53,7 @@ HELP = f"""
 
     {U}{BLUE} Show MPEGTS iframes{NORM}  threefive iframes video.ts
 
-    {U}{NORM}{BLUE} Parse a MPEGTS stream, copy it to stdout{NORM} threefive proxy video.ts
+    {U}{NORM}{BLUE} Parse SCTE-35 from MPEGTS, copy the MPEGTS to stdout{NORM} threefive proxy video.ts
 
     {U}{NORM}{BLUE} Print PTS from MPEGTS video{NORM} threefive pts video.ts
 
@@ -82,6 +78,114 @@ def done():
     print2(f"# threefive: {version} on python: {sys.version}")
     sys.exit()
 
+
+def mk_sidecar(cue):
+    """
+    mk_sidecar generates a sidecar file with the SCTE-35 Cues
+    """
+    rollover = 95443.717678
+    pts = 0.001
+    with open("sidecar.txt", "a") as sidecar:
+        cue.show()
+        if cue.packet_data.pts:
+            pts = cue.packet_data.pts
+        if cue.command.pts_time:
+            pts = (cue.command.pts_time + cue.info_section.pts_adjustment) % rollover
+        data = f"{pts},{cue.encode()}\n"
+        sidecar.write(data)
+
+
+def mk_args(keys):
+    """
+    mk_args generates a list of args for inputs
+    if no args are present,read from sys.stdin.buffer
+    """
+    return [arg for arg in sys.argv[1:] if arg not in keys]
+
+
+###   stdin stuff
+
+
+def not_pkt(args, rdr, one):
+    """
+    not_pkt , runs when stdin is NOT an mpegts stream
+    """
+    two = rdr.read()
+    args.append((one + two).decode())  # no rewind on stdin?
+
+
+def is_pkt(args, rdr, one):
+    """
+    is_pkt runs when stdin is an mpegts stream
+    """
+    two = rdr.read(187)
+    strm = Stream(sys.stdin.buffer)
+    strm.parse(one + two)  # dont drop first packet
+    strm.decode(func=funk())
+    done()  # I keep forgetting why I do this
+
+
+def stdin_is_readable():
+    """
+    stdin_is readable detect data on stdin.
+    """
+    return not sys.stdin.isatty()
+
+
+def read_stdin(args):
+    """
+    read_stdin read from stdin
+    """
+    rdr = reader(sys.stdin.buffer)
+    one = rdr.read(1)
+    if one not in [b"G"]:  # is this a packet?
+        not_pkt(args, rdr, one)
+    else:
+        is_pkt(args, rdr, one)
+
+
+def chk_stdin(args):
+    """
+    chk_stdin autodetects input from stdin.
+    """
+    if stdin_is_readable():
+        read_stdin(args)
+    return args
+
+
+# dashdashhelp()
+
+def dashdashhelp():
+    """
+    dashdashhelp swaps out "help" with "--help"
+    for keys in cli_map. Pure bureaucracy.
+    I still can't believe I can just edit sys.argv at will,
+    it kind of makes sense, since I wrote sys.argv in the first place,
+    but it just feels so wrong.
+    """
+    if "help" in sys.argv:
+        idx = sys.argv.index("help")
+        sys.argv[idx] = "--help"
+
+# chk_hls()
+
+def chk_hls():
+    """
+    chk_hls  check if an  m3u8 has
+    been passed on the command line
+    and call the hlscli if it is an m3u8
+    """
+    try:
+        this = sys.argv[1]
+        packet = reader(this).read(188)
+        if b"#EXTM3U" in packet:
+            hlscli()
+            done()
+    except ERR:
+        pass
+
+
+# PrintMapper()
 
 class PrintMapper:
 
@@ -121,86 +225,21 @@ class PrintMapper:
         _ = [v() for k, v in self.print_map.items() if k in sys.argv]
 
 
-###   stdin stuff
 
-
-def not_pkt(args, rdr, one):
-    """
-    not_pkt , runs when stdin is NOT an mpegts stream
-    """
-    two = rdr.read()
-    args.append((one + two).decode())  # no rewind on stdin?
-
-
-def is_pkt(args, rdr, one):
-    """
-    is_pkt,  runs when stdin is an mpegts stream
-    """
-    two = rdr.read(187)
-    strm = Stream(sys.stdin.buffer)
-    strm.parse(one + two)  # dont drop first packet
-    strm.decode(func=funk())
-    done()  # I keep forgetting why I do this
-
-
-def stdin_is_readable():
-    """
-    stdin_is readable,  detect data on stdin.
-    """
-    readable, _, _ = select.select([sys.stdin], [], [], 0)
-    return sys.stdin in readable  # check stdin for data
-
-
-def read_stdin(args):
-    """
-    read_stdin read from stdin
-    """
-    rdr = reader(sys.stdin.buffer)
-    one = rdr.read(1)
-    if one not in [b"G"]:  # is this a packet?
-        not_pkt(args, rdr, one)
-    else:
-        is_pkt(args, rdr, one)
-
-
-def chk_stdin(args):
-    """
-    chk_stdin autodetects input from stdin.
-    """
-    if stdin_is_readable():
-        read_stdin(args)
-    return args
-
-
-###  end stdin
-
-
-def mk_sidecar(cue):
-    """
-    mk_sidecar generates a sidecar file with the SCTE-35 Cues
-    """
-    rollover = 95443.717678
-    pts = 0.001
-    with open("sidecar.txt", "a") as sidecar:
-        cue.show()
-        if cue.packet_data.pts:
-            pts = cue.packet_data.pts
-        if cue.command.pts_time:
-            pts = (cue.command.pts_time + cue.info_section.pts_adjustment) % rollover
-        data = f"{pts},{cue.encode()}\n"
-        sidecar.write(data)
-
-
-def mk_args(keys):
-    """
-    mk_args generates a list of args for inputs
-    if no args are present,read from sys.stdin.buffer
-    """
-    return [arg for arg in sys.argv[1:] if arg not in keys]
-
+# MPEGTSMapper()
 
 class MPEGTSMapper:
+    """
+    MPEGTSMapper maps keywords to method calls for the cli.
 
+       keyword  method
+       "proxy"  self.proxy_chk,
+        "pts"  self.pts_chk,
+        "show"  self.show_chk,
+        "sidecar"  self.sidecar_chk,
+        "speedo"  self.speedo_chk,
+        "iframes" self.iframe_chk,
+    """
     @staticmethod
     def iframe_chk(this):
         """
@@ -298,9 +337,6 @@ class MPEGTSMapper:
         self.chk_mpegts_map()
 
 
-# func_map is used to generate  SCTE-35 output formats
-
-
 def base64_out(cue):
     """
     print SCTE-35 from mpegts as base64
@@ -342,7 +378,6 @@ def xmlbin_out(cue):
     """
     print2(cue.xmlbin())
 
-
 def xml_out(cue):
     """
     xml_out prints cue as xml
@@ -350,21 +385,10 @@ def xml_out(cue):
     print2(cue.xml())
 
 
-funk_map = {
-    "base64": base64_out,
-    "bytes": bytes_out,
-    "hex": hex_out,
-    "int": int_out,
-    "json": json_out,
-    "xml": xml_out,
-    "xmlbin": xmlbin_out,
-}
-
-
 def funk():
     """
-    return a func
-    if a key in out_map
+    return a function
+    if a key in funk_map
     is also in sys.argv
     """
     func = json_out
@@ -374,80 +398,76 @@ def funk():
     return func
 
 
-def try_stream(this):
-    """
-    try_stream attempts to decode `this`
-    with a Stream class instance.
-    """
-    strm = Stream(this)
-    strm.decode(func=funk())  # funk() works here
-    del strm
+
+# func_map is used for SCTE-35 output formats
+
+funk_map = {
+            "base64": base64_out,
+            "bytes": bytes_out,
+            "hex": hex_out,
+            "int": int_out,
+            "json": json_out,
+            "xml": xml_out,
+            "xmlbin": xmlbin_out,
+        }
 
 
-def try_cue(this):
+
+class FunkMapper:
     """
-    try_cue attempts to decode `this`
-    with a Cue class instance.
+    FunkMapper maps format related keywords to functions
+    for both Cue and Stream instances. FunkMapper
+    will format output for a single Cue instance or multiple Cues
+    in a Stream instance.
     """
-    cue = None
-    try:
-        cue = Cue(this)
-        if cue:
-            funk()(cue)  #   funk works here too.
-    except ERR:
-        pass
+    def try_stream(self,this):
+        """
+        try_stream attempts to decode `this`
+        with a Stream class instance.
+        """
+        strm = Stream(this)
+        strm.decode(func=funk())  # funk() works here
+        del strm
+
+    def try_cue(self,this):
+        """
+        try_cue attempts to decode `this`
+        with a Cue class instance.
+        """
+        cue = None
+        try:
+            cue = Cue(this)
+            if cue:
+                funk()(cue)  #   funk works here too.
+        except ERR:
+            pass
+
+    def to_funk(self,this):
+        """
+        to_funk prints a cue in a variety of formats.
+        """
+        if this in ["", b""]:
+            return
+        try:
+            self.try_stream(this)
+        except ERR:
+            self.try_cue(this)
+
+    def chk_funk_map(self):
+        """
+        chk_func_map checks for func_map.keys() in sys.argv
+        """
+
+        funk_keys = list(funk_map.keys())
+        args = mk_args(funk_keys)
+        args = chk_stdin(args)
+        _ = [self.to_funk(arg) for arg in args if args]  # multiple file input
+        done()
+
+    def __init__(self):
+        self.chk_funk_map()
 
 
-def to_funk(this):
-    """
-    to_funk prints a cue in a variety of formats.
-    """
-    if this in ["", b""]:
-        return
-    try:
-        try_stream(this)
-    except ERR:
-        try_cue(this)
-
-
-def chk_funk_map():
-    """
-    chk_func_map checks for func_map.keys() in sys.argv
-    """
-    funk_keys = list(funk_map.keys())
-    args = mk_args(funk_keys)
-    args = chk_stdin(args)
-    _ = [to_funk(arg) for arg in args if args]  # multiple file input
-    done()
-
-
-def dashdashhelp():
-    """
-    dashdashhelp swaps out "help" with "--help"
-    for keys in cli_map. Pure bureaucracy.
-    I still can't believe I can just edit sys.argv at will,
-    it kind of makes sense, since I wrote sys.argv in the first place,
-    but it just feels so wrong.
-    """
-    if "help" in sys.argv:
-        idx = sys.argv.index("help")
-        sys.argv[idx] = "--help"
-
-
-def chk_hls():
-    """
-    chk_hls  check if an  m3u8 has
-    been passed on the command line
-    and call the hlscli if it is an m3u8
-    """
-    try:
-        this = sys.argv[1]
-        packet = reader(this).read(188)
-        if b"#EXTM3U" in packet:
-            hlscli()
-            done()
-    except ERR:
-        pass
 
 
 def threefivecli():
@@ -465,4 +485,4 @@ def threefivecli():
     chk_hls()
     PrintMapper()
     MPEGTSMapper()
-    chk_funk_map()
+    FunkMapper()
