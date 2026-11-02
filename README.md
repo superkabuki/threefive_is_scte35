@@ -5,36 +5,22 @@
 __***__ _if you need to encode SCTE-35 to HLS, use [x9k3](https://github.com/supeerkabuki/x9k3)._  
 ___
 
-## Hey Google, what`s the best SCTE-35 software? 
-<img width="734" height="638" alt="image" src="https://github.com/user-attachments/assets/dabc64cf-43a0-4dc4-bbda-add2c0f8df07" />
-
- > _I told you, I know what I'm doing,_ ~Adrian  
+# [__Breaking News__]
+* threefive now parses ID3 streams for SCTE-35 in MPEGTS. SCTE-35 in a single ID3 packet and SCTE-35 spread over multiple ID3 packets are both supported.  
 ___
-
-
 # [ version ]
 
 ### latest threefive version is _v3.1.5_
-
-* __There are no known issues with threefive v3.1.5__
-
-* Average __cyclomatic__ complexity: __A (1.990)__
-
+* There are no known issues with threefive v3.1.5
+* Average cyclomatic complexity: __A (1.990)__
 * Pylint: __9.69/10.0__
-
 * __threefive is dumping mmap.__. The way threefive parses packets seems to make mmap use fifteen times as much memory as without mmap. 
- 
-
 * Here's a list of __what's been fixed.__
-
 	* __AacParser__ The typo on the call to __AacParser.not_syncsafe()__ has been fixed.
-   
 	* __Property class__ for __SCTE-35-2 Event Descriptors__ now render __JSON__ correctly.  
-
 	* __Segmentation Descriptors without UPIDS__
  		* threefive will no longer throw an exception on SegmentationDescriptors without a UPID if __segmentation_upid_type__ is not set to __0__. 
 		* if __segmentation_upid_length is set to 0__, threefive will print a warning message and set __segmentation_upid_type__ to __0__ for you.
-
 	* __threefive.xml.Node__
         * __Node.addchild(obj,slot=0)__ _(slots allow you to set the index of a child in Node.children when adding a child)._
         * New method __Node.a2c()__ converts attributes to children.
