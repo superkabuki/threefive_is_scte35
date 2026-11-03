@@ -95,6 +95,7 @@ class Pids(Based):
     PAT_PID = 0x00
 
     def __init__(self):
+        self.id3 = set()
         self.pcr = set()
         self.pmt = set()
         self.scte35 = set()
@@ -602,6 +603,15 @@ class Stream(Based):
             return False
         return self._chk_maybe_pid(pay, pid)
 
+    def _parse_id3_payload(self,pkt,pid):
+        pay = self._parse_payload(pkt)
+        whole=self._chk_partial(pay, pid,b'ID3')
+        if not whole:return False
+        privpay = self._split_by_idx(pay, b"PRIV")
+        if not privpay: return False
+        if b'scte' not in privpay: return False
+        return self._split_by_idx(privpay, self.SCTE35_TID)
+
     def _parse_scte35(self, pkt, pid):
         """
         parse a threefive cue from one or more packets
@@ -609,7 +619,10 @@ class Stream(Based):
         if self.the_scte35_pids:  # for parse by pid
             if pid not in self.the_scte35_pids:
                 return False
-        pay = self._mk_scte35_payload(pkt, pid)
+        if pid in self.pids.id3:
+            pay=self._parse_id3_payload(pkt,pid)
+        else: 
+            pay = self._mk_scte35_payload(pkt, pid)
         if not pay:
             return False
         seclen = self._parse_length(pay[1], pay[2])
@@ -708,11 +721,13 @@ class Stream(Based):
 
     def _set_scte35_pids(self, pid, stream_type):
         """
-        if stream_type is 0x06 or 0x86
-        add it to self._scte35_pids.
+        if stream_type is 0x06(bin data) or  0x15(ID3)
+        or 0x86(SCTE-35) add it to self._scte35_pids.
         """
-        if stream_type in ["0x86", "0x15"]: # scte-35 and id3 streams
+        if stream_type in ["0x15"]:
+            self.pids.scte35.add(pid)
+            self.pids.id3.add(pid)
+        if stream_type in ["0x86"]:
             self.pids.scte35.add(pid)
         if stream_type in ["0x06", "0x6"]:
             self.pids.maybe_scte35.add(pid)
-
