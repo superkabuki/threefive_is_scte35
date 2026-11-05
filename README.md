@@ -6,8 +6,10 @@ __***__ _if you need to encode SCTE-35 to HLS, use [x9k3](https://github.com/sup
 ___
 
 # [__Breaking News__]
-* threefive now parses ID3 streams for SCTE-35 in MPEGTS. SCTE-35 in a single ID3 packet and SCTE-35 spread over multiple ID3 packets are both supported.  
-___
+* threefive now parses ID3 streams for SCTE-35 in MPEGTS. SCTE-35 in a single ID3 packet and SCTE-35 spread over multiple ID3 packets are both supported.
+* The new ID3 SCTE-35 parsing code takes about 13 lines, it's highlighted in black.
+  <img width="731" height="821" alt="image" src="https://github.com/user-attachments/assets/7218efa9-90d8-4a89-9f64-9a527f899aed" />
+  
 # [ version ]
 
 ### latest threefive version is _v3.1.5_
