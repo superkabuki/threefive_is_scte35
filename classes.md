@@ -1,7 +1,7 @@
 # threefive commonly used classes. 
-#### threefive is Object Oriented. Almost all of threefive is contained in classes. Inheritance is intentionally shallow, subclassing is limit to a depth of two. These are the classes you are most likely to use. The Cue class and the Stream class will be used most often.
+#### threefive is Object Oriented. Almost all of threefive is contained in classes. Inheritance is intentionally shallow.  
+### The Cue class and the Stream class will be used most often.
 <br>
-All of the classes shown can be imported from directly threefive.
 
 # SCTE-35 Specific Stuff
 ### Most SCTE-35 objects are subclassed from SCTE35Base
@@ -17,7 +17,9 @@ All of the classes shown can be imported from directly threefive.
    * [SpliceDescriptor](threefive/descriptors.py)
         * AvailDescriptor
         * DtmfDescriptor
+        * EventDescriptor
         * DVBDASDescriptor
+        * Property
         * SegmentationDescriptor 
         * TimeDescriptor
 
@@ -47,19 +49,19 @@ All of the classes shown can be imported from directly threefive.
 ### Multicast Sender/Server
 * [GumS](threefive/gums.py)
 
-### HLS related classes
+### HLS related classes 
 * [AacParser](threefive/aac.py)
-* [HlsParser](threefive/hls.py)
-* [TagParser](threefive/hlstags.py)
+* [HlsParser Pretty slick HLS with a strong SCTE-35 focus](threefive/hls.py)
+* [TagParser parse all present and future HLS tags. (I read the whole spec)](threefive/hlstags.py)
 
-### Bitwise decoder and encoder classes
-* [Bitn](threefive/bitn.py)
-* [NBin](threefive/bitn.py)
+### Bitwise decoder and encoder classes, we don't need no stinking byte alignment, we slice by the bit.
+* [Bitn a better struct (bit slicing)](threefive/bitn.py)
+* [NBin struct in reverse](threefive/bitn.py)
 
 ### Xml
-* [UltraXmlParser](threefive/uxp.py)
+* [XmlP All purpose xml parser](threefive/xml.py)
 * [NameSpace](threefive/xml.py)
-* [Node](threefive/xml.py)
+* [Node an xml node, very complete.](threefive/xml.py)
     * [Comment](threefive/xml.py)
-* [NodeConverter](threefive/uxp.py)
-* [NodeList](threefive/xml.py)
+* [NodeConverter scte-35 specific xml parsing](threefive/xml2scte35.py)
+* [NodeList A list of Node instances](threefive/xml.py)
