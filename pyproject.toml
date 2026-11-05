@@ -29,7 +29,6 @@ Homepage = "https://github.com/superkabuki/threefive"
 Issues = "https://github.com/superkabuki/threefive/issues"
 
 [project.scripts]
-scte35bump = "threefive.bump:cli"
 gums = "threefive.gums:cli"
 scte35fix = "threefive.sixfix:cli"
 scte35inject = "threefive.superkabuki:cli"
