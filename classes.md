@@ -6,7 +6,7 @@
 # SCTE-35 Specific Stuff
 ### Most SCTE-35 objects are subclassed from SCTE35Base
 * SCTE35Base
-    * [__Cue__](threefive/cue.py)
+    * [__Cue__ Here's where all the scte-35 happens.](threefive/cue.py)
     * [SpliceInfoSection](threefive/section.py) 
     * [SpliceCommand](threefive/commands.py)
         * BandwidthReservation
@@ -17,32 +17,35 @@
    * [SpliceDescriptor](threefive/descriptors.py)
         * AvailDescriptor
         * DtmfDescriptor
-        * EventDescriptor
-        * DVBDASDescriptor
-        * Property
+        * EventDescriptor _(scte-35-2)_
+        * DVBDASDescriptor _(DVB)_
+        * Property _(scte-35-2)_
         * SegmentationDescriptor 
         * TimeDescriptor
 
 ## All upids are either Upid instances or a subclass of Upid.
 * [Upid](threefive/upids.py)
+    * Adid
     * AirId
     * Atsc
+    * Eidr
+    * Isan
     * Mid
     * Mpu
-    * Eidr
     * NoUpid
-    * Isan
+    * Scr
+    * Tid
     * Umid
 
 # SCTE-35 Related stuff
 ### Most MPEGTS parsers are either a Stream instance or subclass of Stream.
-* [__Stream__](threefive/stream.py)
+* [____Stream____ light and fast mpegts scte-35 parser](threefive/stream.py)
     * [Segment](threefive/segment.py)
     * [SixFix](threefive/sixfix.py)
        * [SuperKabuki](threefive/superkabuki.py)
 
 ### Other MPEGTS classes.
-* [IFramer](threefive/iframes.py)
+* [__IFramer__ where are the iframes? IFramer will show you.](threefive/iframes.py)
 * Socked(socket.socket)
 * PMT
 
@@ -51,17 +54,17 @@
 
 ### HLS related classes 
 * [AacParser](threefive/aac.py)
-* [HlsParser Pretty slick HLS with a strong SCTE-35 focus](threefive/hls.py)
-* [TagParser parse all present and future HLS tags. (I read the whole spec)](threefive/hlstags.py)
+* [__HlsParser__ Pretty slick HLS parser with a strong SCTE-35 focus](threefive/hls.py)
+* [__TagParser__ parse all present and future HLS tags. (I read the whole spec)](threefive/hlstags.py)
 
 ### Bitwise decoder and encoder classes, we don't need no stinking byte alignment, we slice by the bit.
-* [Bitn a better struct (bit slicing)](threefive/bitn.py)
+* [__Bitn__ a better struct (bit slicing)](threefive/bitn.py)
 * [NBin struct in reverse](threefive/bitn.py)
 
 ### Xml
-* [XmlP All purpose xml parser](threefive/xml.py)
+* [__XmlP__ All purpose xml parser](threefive/xml.py)
 * [NameSpace](threefive/xml.py)
-* [Node an xml node, very complete.](threefive/xml.py)
+* [__Node__ an xml node, very complete.](threefive/xml.py)
     * [Comment](threefive/xml.py)
 * [NodeConverter scte-35 specific xml parsing](threefive/xml2scte35.py)
 * [NodeList A list of Node instances](threefive/xml.py)
