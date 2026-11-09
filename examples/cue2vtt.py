@@ -12,13 +12,12 @@ pypy3 cue2vtt.py thevideo.ts | mplayer thevideo.ts -sub -
 import sys
 import time
 from threefive import Stream
-from threefive import IFramer
 
 
 def first():
     global start_pts
-    iframer = IFramer(shush=True)
-    start_pts = iframer.first(sys.argv[1])
+    st = Stream(sys.argv[1])
+    start_pts = st.next_iframe()
 
 
 def ts_to_vtt(timestamp):
@@ -38,7 +37,7 @@ def scte35_to_vtt(cue):
     """
     cue_start = 0
     cue_end = 0
-    duration = None
+    du
     pts_time = None
     upid = None
     seg_mesg = None
