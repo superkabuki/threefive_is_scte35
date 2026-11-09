@@ -18,9 +18,9 @@ class Dscptr:
         self.value = b""
         self.total_size = 0
         if bitn:
-            self.type = bitn.as_int(8)
-            self.length = bitn.as_int(8)
-            self.value = bitn.as_bytes(self.length << 3)
+            self.type = bitn.int(8)
+            self.length = bitn.int(8)
+            self.value = bitn.bytes(self.length << 3)
             self.total_size = 1 + 1 + self.length
 
     def __repr__(self):
@@ -56,11 +56,11 @@ class PmtStream:
         """
         parse parse  PMT stream data
         """
-        self.stream_type = bitn.as_int(8)
+        self.stream_type = bitn.int(8)
         bitn.forward(3)
-        self.elementary_pid = bitn.as_int(13)
+        self.elementary_pid = bitn.int(13)
         bitn.forward(4)
-        self.es_info_length = bitn.as_int(12)
+        self.es_info_length = bitn.int(12)
         eil = self.es_info_length << 3
         while eil > 0:
             dscptr = Dscptr(bitn)
@@ -108,25 +108,25 @@ class PMT:
     def __init__(self, payload, conv_pids=None):
         self.conv_pids = conv_pids
         bitn = Bitn(payload)
-        self.table_id = bitn.as_int(8)
-        self.section_syntax_indicator = bitn.as_int(1)
-        self.zero = bitn.as_int(1)
+        self.table_id = bitn.int(8)
+        self.section_syntax_indicator = bitn.int(1)
+        self.zero = bitn.int(1)
         bitn.forward(2)
-        self.section_length = bitn.as_int(12)
-        self.program_number = bitn.as_int(16)
+        self.section_length = bitn.int(12)
+        self.program_number = bitn.int(16)
         bitn.forward(2)
-        self.version_number = bitn.as_int(5)
-        self.current_next_indicator = bitn.as_int(1)
-        self.section_number = bitn.as_int(8)
-        self.last_section_number = bitn.as_int(8)
+        self.version_number = bitn.int(5)
+        self.current_next_indicator = bitn.int(1)
+        self.section_number = bitn.int(8)
+        self.last_section_number = bitn.int(8)
         bitn.forward(3)
-        self.pcr_pid = bitn.as_int(13)
+        self.pcr_pid = bitn.int(13)
         bitn.forward(4)
-        self.program_info_length = bitn.as_int(12)
+        self.program_info_length = bitn.int(12)
         self.bitn = bitn
         self.descriptors = self.parse_descriptors()
         self.streams = self.parse_streams()
-        self.crc32 = bitn.as_hex(32)
+        self.crc32 = bitn.hex(32)
 
     def __repr__(self):
         return str(vars(self))
@@ -137,7 +137,7 @@ class PMT:
         """
         descriptors = []
         bitlen = self.program_info_length << 3
-        data = self.bitn.as_bytes(bitlen)
+        data = self.bitn.bytes(bitlen)
         if not data:
             return descriptors
         bd = Bitn(data)
