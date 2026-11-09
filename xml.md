@@ -182,10 +182,10 @@ a@fu:~/threefive$ threefive < ~/json2.json xml
 ```xml
 <scte35:SpliceInfoSection xmlns:scte35="https://scte.org/schemas/35"  ptsAdjustment="207000" protocolVersion="0" sapType="3" tier="4095">
    <scte35:SpliceInsert spliceEventId="1" spliceEventCancelIndicator="false" spliceImmediateFlag="true" eventIdComplianceFlag="true" availNum="1" availsExpected="255" outOfNetworkIndicator="false" uniqueProgramId="39321"/>
-   <!-- Provider Placement Opportunity End -->    #<----- I add the segmentationType as a comment, because I'm old and lazy .
+   <!-- Provider Placement Opportunity End -->    
    <scte35:SegmentationDescriptor segmentationEventId="0" segmentationEventCancelIndicator="false" segmentationEventIdComplianceIndicator="true" segmentationTypeId="53" segmentNum="0" segmentsExpected="0">
       <scte35:DeliveryRestrictions webDeliveryAllowedFlag="false" noRegionalBlackoutFlag="false" archiveAllowedFlag="false" deviceRestrictions="0"/>
-      <!-- MPU -->   # <--------I add the Upid type as a comment, because I'm old and lazy.
+      <!-- MPU -->  
       <scte35:SegmentationUpid segmentationUpidType="12" segmentationUpidFormat="hexbinary" formatIdentifier="1146048333" privateData="1539542133359170776941">444f4f4d5375706572446f6f6d</scte35:SegmentationUpid>
    </scte35:SegmentationDescriptor>
 </scte35:SpliceInfoSection>
