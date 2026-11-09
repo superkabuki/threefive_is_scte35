@@ -18,18 +18,18 @@ class Bitn:
                     >>> somebites=b'Byte String'
                     >>> bn=Bitn(somebites)
                     >>> allthebits=bin(bn.bits) # this is Bitn.bits displayed as bits
-                    >>> elevenbits=bin(bn.as_int(11)) # this is the first eleven bits
+                    >>> elevenbits=bin(bn.int(11)) # this is the first eleven bits
                     >>> allthebits.startswith(elevenbits)
                     True
                     >>> allthebits
                     '0b100001001111001011101000110010100100000010100110111010001110010011010010110111001100111'
                     >>> elevenbits
                     '0b1000010011'
-                    >>> bn.as_hex(5)
+                    >>> bn.hex(5)
                     '0x19'
-                    >>> bn.as_int(32)
+                    >>> bn.int(32)
                     1952784467
-                    >>> next4bytes=bn.as_bytes(32)
+                    >>> next4bytes=bn.bytes(32)
                     >>> next4bytes
                     b'trin'
 
@@ -48,11 +48,11 @@ class Bitn:
         Returns num_bits
         of bits as 90k time
         """
-        inted = self.as_int(num_bits)
+        inted = self.int(num_bits)
         ninetyk = round((inted / 90000.0), 6)
         return ninetyk
 
-    def as_int(self, num_bits):
+    def int(self, num_bits):
         """
         Starting at self.idx of self.bits,
         slice off num_bits of bits.
@@ -63,24 +63,24 @@ class Bitn:
             return inted
         return None
 
-    def as_hex(self, num_bits):
+    def hex(self, num_bits):
         """
         Returns the hex value
         of num_bits of bits
         """
-        inted = self.as_int(num_bits)
+        inted = self.int(num_bits)
         hexed = hex(inted)
         hexed = (hexed.replace("0x", "0x0", 1), hexed)[len(hexed) % 2 == 0]
         return hexed
 
-    def as_charset(self, num_bits, charset="ascii"):
+    def charset(self, num_bits, charset="ascii"):
         """
         Returns num_bits of bits
         as bytes decoded as charset
         default charset is ascii.
         """
         # print(charset)
-        inted = self.as_int(num_bits)
+        inted = self.int(num_bits)
         wide = num_bits >> 3
         if charset is None:
             chared = int.to_bytes(inted, wide, byteorder="big")
@@ -90,21 +90,21 @@ class Bitn:
             )
         return chared
 
-    def as_bytes(self, num_bits):
+    def bytes(self, num_bits):
         """
         Returns num_bits of bits
         as bytes
         """
-        inted = self.as_int(num_bits)
+        inted = self.int(num_bits)
         wide = num_bits >> 3
         byted = int.to_bytes(inted, wide, byteorder="big")
         return byted
 
-    def as_flag(self, num_bits=1):
+    def flag(self, num_bits=1):
         """
         Returns one bit as True or False
         """
-        inted = self.as_int(num_bits)
+        inted = self.int(num_bits)
         flag = inted & 1 == 1
         return flag
 
