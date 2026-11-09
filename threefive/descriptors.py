@@ -119,10 +119,10 @@ class DVBDASDescriptor(SpliceDescriptor):
         Decode DVB DAS Descriptor
         """
         bitbin = Bitn(self.bites)
-        self.break_num = bitbin.as_int(8)
-        self.breaks_expected = bitbin.as_int(8)
+        self.break_num = bitbin.int(8)
+        self.breaks_expected = bitbin.int(8)
         bitbin.forward(4)
-        self.equivalent_segmentation_type = bitbin.as_int(4)
+        self.equivalent_segmentation_type = bitbin.int(4)
         if self.equivalent_segmentation_type in dvb_table2:
             self.equivalent_segmentation_message = dvb_table2[
                 self.equivalent_segmentation_type
@@ -161,7 +161,7 @@ class AvailDescriptor(SpliceDescriptor):
         decode SCTE35 Avail Descriptor
         """
         bitbin = Bitn(self.bites)
-        self.provider_avail_id = bitbin.as_int(32)
+        self.provider_avail_id = bitbin.int(32)
 
     def encode(self, nbin=None):
         """
@@ -250,9 +250,9 @@ class TimeDescriptor(SpliceDescriptor):
         decode SCTE35 Time Descriptor
         """
         bitbin = Bitn(self.bites)
-        self.tai_seconds = bitbin.as_int(48)
-        self.tai_ns = bitbin.as_int(32)
-        self.utc_offset = bitbin.as_int(16)
+        self.tai_seconds = bitbin.int(48)
+        self.tai_ns = bitbin.int(32)
+        self.utc_offset = bitbin.int(16)
 
     def encode(self, nbin=None):
         """
@@ -327,46 +327,46 @@ class SegmentationDescriptor(SpliceDescriptor):
         decode a segmentation descriptor
         """
         bitbin = Bitn(self.bites)
-        self.segmentation_event_id = bitbin.as_hex(32)
-        self.segmentation_event_cancel_indicator = bitbin.as_flag(1)
-        self.segmentation_event_id_compliance_indicator = bitbin.as_flag(1)
+        self.segmentation_event_id = bitbin.hex(32)
+        self.segmentation_event_cancel_indicator = bitbin.flag(1)
+        self.segmentation_event_id_compliance_indicator = bitbin.flag(1)
         bitbin.forward(6)
         if not self.segmentation_event_cancel_indicator:
             self._decode_flags(bitbin)
             self._decode_segmentation(bitbin)
 
     def _decode_flags(self, bitbin):
-        self.program_segmentation_flag = bitbin.as_flag(1)
-        self.segmentation_duration_flag = bitbin.as_flag(1)
-        self.delivery_not_restricted_flag = bitbin.as_flag(1)
+        self.program_segmentation_flag = bitbin.flag(1)
+        self.segmentation_duration_flag = bitbin.flag(1)
+        self.delivery_not_restricted_flag = bitbin.flag(1)
         if not self.delivery_not_restricted_flag:
-            self.web_delivery_allowed_flag = bitbin.as_flag(1)
-            self.no_regional_blackout_flag = bitbin.as_flag(1)
-            self.archive_allowed_flag = bitbin.as_flag(1)
-            self.device_restrictions = table20[bitbin.as_int(2)]
+            self.web_delivery_allowed_flag = bitbin.flag(1)
+            self.no_regional_blackout_flag = bitbin.flag(1)
+            self.archive_allowed_flag = bitbin.flag(1)
+            self.device_restrictions = table20[bitbin.int(2)]
         else:
             bitbin.forward(5)
 
     def _decode_segmentation(self, bitbin):
         if self.segmentation_duration_flag:
-            segmentation_duration_ticks = bitbin.as_int(40)
+            segmentation_duration_ticks = bitbin.int(40)
             self.segmentation_duration = self.as_90k(segmentation_duration_ticks)
-        self.segmentation_upid_type = bitbin.as_int(8)
-        self.segmentation_upid_length = bitbin.as_int(8)
+        self.segmentation_upid_type = bitbin.int(8)
+        self.segmentation_upid_length = bitbin.int(8)
         the_upid = self._mk_the_upid(bitbin)
         self.segmentation_upid_type_name, self.segmentation_upid = the_upid.decode()
-        self.segmentation_type_id = bitbin.as_int(8)
+        self.segmentation_type_id = bitbin.int(8)
         if self.segmentation_type_id in table22:
             self.segmentation_message = table22[self.segmentation_type_id]
         self._decode_segments(bitbin)
 
     def _decode_segments(self, bitbin):
-        self.segment_num = bitbin.as_int(8)
-        self.segments_expected = bitbin.as_int(8)
+        self.segment_num = bitbin.int(8)
+        self.segments_expected = bitbin.int(8)
         if self.segmentation_type_id in self.SUB_SEG_TYPES:
             if bitbin.idx > 15:  # need 16 bits
-                self.sub_segment_num = bitbin.as_int(8)
-                self.sub_segments_expected = bitbin.as_int(8)
+                self.sub_segment_num = bitbin.int(8)
+                self.sub_segments_expected = bitbin.int(8)
 
     def encode(self, nbin=None):
         """
@@ -548,17 +548,17 @@ class Property(SCTE35Base):
         """
         if bitbin is None:
             bitbin = Bitn(self.bites)
-        self.property_name_length = bitbin.as_int(8)
-        self.property_name = bitbin.as_bytes(self.property_name_length << 3).decode()
-        self.property_data_type = bitbin.as_hex(8)
+        self.property_name_length = bitbin.int(8)
+        self.property_name = bitbin.bytes(self.property_name_length << 3).decode()
+        self.property_data_type = bitbin.hex(8)
         self.property_data_type_name = self.data_type_map[self.property_data_type]
-        self.property_value_length = bitbin.as_int(8)
+        self.property_value_length = bitbin.int(8)
         if self.property_data_type == "0x00":
-            self.property_value = bitbin.as_hex(self.property_value_length << 3)
+            self.property_value = bitbin.hex(self.property_value_length << 3)
         elif self.property_data_type == "0x01":
-            self.property_value = bitbin.as_int(self.property_value_length << 3)
+            self.property_value = bitbin.int(self.property_value_length << 3)
         else:
-            self.property_value = bitbin.as_bytes(
+            self.property_value = bitbin.bytes(
                 self.property_value_length << 3
             ).decode()
 
@@ -645,14 +645,14 @@ class EventDescriptor(SpliceDescriptor):
         """
         if bitbin is None:
             bitbin = Bitn(self.bites)
-        self.event_identifier = bitbin.as_int(32)
-        self.event_state = bitbin.as_hex(8)
+        self.event_identifier = bitbin.int(32)
+        self.event_state = bitbin.hex(8)
         self.event_state_message = self.state_map[self.event_state]
-        self.event_type = bitbin.as_hex(8)
+        self.event_type = bitbin.hex(8)
         self.event_type_message = self.type_map[self.event_type]
-        self.elapsed = bitbin.as_int(40) / 10000.0
-        self.remain = bitbin.as_int(40) / 10000.0 - self.elapsed
-        self.property_count = bitbin.as_int(8)
+        self.elapsed = bitbin.int(40) / 10000.0
+        self.remain = bitbin.int(40) / 10000.0 - self.elapsed
+        self.property_count = bitbin.int(8)
         pc = self.property_count
         while pc:
             prop = Property()
