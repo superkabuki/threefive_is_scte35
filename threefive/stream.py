@@ -169,7 +169,7 @@ class Stream(Based):
         self.pmt_count = 0
         self.pmt_pkt = None
         self.pat_pkt = None
-        self.shush=False
+        self.shush = False
 
     @staticmethod
     def as_90k(ticks):
@@ -261,7 +261,7 @@ class Stream(Based):
                 if one[0] == self.SYNC_BYTE:
                     tail = self._tsdata.read(self.PACKET_SIZE - 1)
                     self.parse(one + tail)
-                    return one+tail
+                    return one + tail
         print2("No Stream Found\n")
         return False
 
@@ -285,7 +285,7 @@ class Stream(Based):
         """
         iter_pkts - iterate packets from stream
         """
-        while pkt :=self._tsdata.read(self.PACKET_SIZE):
+        while pkt := self._tsdata.read(self.PACKET_SIZE):
             yield pkt
 
     def _chk_rai(self, pkt):
@@ -309,7 +309,7 @@ class Stream(Based):
             return self._afc_approved(pkt)
         return False
 
-    def parse_iframe(self,pkt):
+    def parse_iframe(self, pkt):
         """
         parse_iframe, check if a pkt starts an iframe
         """
@@ -317,36 +317,36 @@ class Stream(Based):
             pts = None
             if self._is_key(pkt):
                 pid = self._parse_pid(pkt[1], pkt[2])
-                pts = self._parse_pts(pkt,pid)
+                pts = self._parse_pts(pkt, pid)
                 pts = self.as_90k(pts)
                 if not self.shush:
                     print(pts)
                 return pts
         return None
 
-    def iframes(self, shush=False):
+    def iframes(self, shush=True):
         """
         iframes find iframes in mpegts stream
         """
-        first= self._find_start()
-        if not first:    
+        first = self._find_start()
+        if not first:
             return False
-        iframes =[]
+        iframes = []
         for pkt in self.iter_pkts():
-            if iframe :=self._parse_iframe(pkt):
+            if iframe := self.parse_iframe(pkt):
                 iframes.append(iframe)
         return iframes
 
-    def next_iframe(self,shush=True):
+    def next_iframe(self, shush=True):
         """
         next_iframe find pts of the next iframe in
         a stream
         """
-        self.shush=shush
+        self.shush = shush
         for pkt in self.iter_pkts():
-            if iframe :=self._parse_iframe(pkt):
+            if iframe := self.parse_iframe(pkt):
                 return iframe
-            
+
     def pkt2cue(self, pkt, func=no_op):
         """
         pkt2cue parse a packet,
@@ -366,10 +366,11 @@ class Stream(Based):
         The method is written this way for speed.
         """
         if self._find_start():
-            
+
             for pkt in self.iter_pkts():
-                cue=self.parse(pkt)
-                if cue:func(cue)
+                cue = self.parse(pkt)
+                if cue:
+                    func(cue)
         return False
 
     def decode_next(self):
@@ -585,7 +586,7 @@ class Stream(Based):
         """
         cue = None
         pid = self._parse_pid(pkt[1], pkt[2])
-      #  if pid in self.pids.pcr:
+        #  if pid in self.pids.pcr:
         if self._pusi_flag(pkt[1]):
             self._parse_pts(pkt, pid)
         if pid in self.pids.tables:
@@ -665,14 +666,19 @@ class Stream(Based):
             return False
         return self._chk_maybe_pid(pay, pid)
 
-    def _parse_id3_payload(self,pkt,pid):
+    def _parse_id3_payload(self, pkt, pid):
         pay = self._parse_payload(pkt)  # strip off mpegts headers .
-        whole=self._chk_partial(pay, pid,b'ID3') # check for multi-packet payload
-        if not whole:return False                # also check that b'ID3' is in the payload
-        privpay = self._split_by_idx(pay, b"PRIV") # split just before b'PRIV'
-        if not privpay: return False
-        if b'scte' not in privpay: return False # check for b'scte' in PRIV tag header
-        return self._split_by_idx(privpay, self.SCTE35_TID) # split just before SCTE-35 TID
+        whole = self._chk_partial(pay, pid, b"ID3")  # check for multi-packet payload
+        if not whole:
+            return False  # also check that b'ID3' is in the payload
+        privpay = self._split_by_idx(pay, b"PRIV")  # split just before b'PRIV'
+        if not privpay:
+            return False
+        if b"scte" not in privpay:
+            return False  # check for b'scte' in PRIV tag header
+        return self._split_by_idx(
+            privpay, self.SCTE35_TID
+        )  # split just before SCTE-35 TID
 
     def _parse_scte35(self, pkt, pid):
         """
@@ -682,8 +688,8 @@ class Stream(Based):
             if pid not in self.the_scte35_pids:
                 return False
         if pid in self.pids.id3:
-            pay=self._parse_id3_payload(pkt,pid)
-        else: 
+            pay = self._parse_id3_payload(pkt, pid)
+        else:
             pay = self._mk_scte35_payload(pkt, pid)
         if not pay:
             return False
@@ -737,14 +743,19 @@ class Stream(Based):
         parse program maps for streams
         """
         pay = self._chk_partial(pay, pid, self.PMT_TID)
-        if not pay: return False
+        if not pay:
+            return False
         seclen = self._parse_length(pay[1], pay[2])
-        if self._section_incomplete(pay, pid, seclen): return False
-        if self._same_as_last(pay, pid): return False
+        if self._section_incomplete(pay, pid, seclen):
+            return False
+        if self._same_as_last(pay, pid):
+            return False
         program_number = self._parse_program(pay[3], pay[4])
-        if not program_number: return False
+        if not program_number:
+            return False
         pcr_pid = self._parse_pid(pay[8], pay[9])
-        if program_number not in self.maps.prgm: self.maps.prgm[program_number] = ProgramInfo()
+        if program_number not in self.maps.prgm:
+            self.maps.prgm[program_number] = ProgramInfo()
         pinfo = self.maps.prgm[program_number]
         pinfo.pid = pid
         pinfo.pcr_pid = pcr_pid
