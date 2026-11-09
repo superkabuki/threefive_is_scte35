@@ -5,6 +5,48 @@
 __***__ _if you need to encode SCTE-35 to HLS, use [x9k3](https://github.com/supeerkabuki/x9k3)._  
 ___
 
+# [ a really really quick start ]
+
+* __Install__
+```
+ python3 -m pip install threefive`
+```
+* __decoding SCTE-35__
+
+```cobol
+threefive '/DAWAAAAAAAAAP/wBQb+AKmKxwAACzuu2Q=='
+```
+
+* decode __SCTE-35__ as __base64__ and __convert SCTE-35 to hex__
+```cobol
+threefive '/DAWAAAAAAAAAP/wBQb+AKmKxwAACzuu2Q==' hex
+```
+	
+* decode __SCTE-35__ from __HLS__ ( a rendition or a master.m3u8)
+```cobol
+threefive 'https://demo.unified-streaming.com/k8s/live/scte35.isml/.m3u8'
+```
+
+* decode  __SCTE-35__ from __MPEGTS__
+```cobol
+threefive 'https;//iodisco.com/longb2.ts'
+```
+
+* decode  __SCTE-35__ from __MPEGTS__ and __convert__ __SCTE-35__ to __bytes__
+```cobol
+threefive 'https;//iodisco.com/longb2.ts' bytes
+```
+
+* decode __SCTE-35__ from __MPEGTS__ over __Multicast__ 
+```cobol
+threefive udp://@235.3.5.35:3535
+```
+ 
+* __threefive does a lot more__, that was just to get you started.
+___
+
+
+
 # [__Breaking News__]
 * New stuff coming in threefive v3.1.7
 
@@ -54,42 +96,6 @@ ___
         * New method __Node.a2c()__ converts attributes to children.
         * New method __Node.c2a()__ converts children to attributes.
    * __UltraXmlParser__ has been renamed __XmlP__ and moved from threefive/uxp.py to threefive.xml.py. 
-___
-
-# [ a really really quick start ]
-
-* __Install__
-```
- python3 -m pip install threefive`
-```
-* __decoding SCTE-35__
-
-		```cobol
-		threefive '/DAWAAAAAAAAAP/wBQb+AKmKxwAACzuu2Q=='
-		```
-	* decode __SCTE-35__ as __base64__ and __convert SCTE-35 to hex__
-		```cobol
-		threefive '/DAWAAAAAAAAAP/wBQb+AKmKxwAACzuu2Q==' hex
-	
-	* decode __SCTE-35__ from __HLS__ ( a rendition or a master.m3u8)
-		```cobol
-		threefive 'https://demo.unified-streaming.com/k8s/live/scte35.isml/.m3u8'
-		```
-	* decode  __SCTE-35__ from __MPEGTS__
-		```cobol
-		threefive 'https;//iodisco.com/longb2.ts'
-		```
-	* decode  __SCTE-35__ from __MPEGTS__ and __convert__ __SCTE-35__ to __bytes__
-		```cobol
-		threefive 'https;//iodisco.com/longb2.ts' bytes
-		```
- 	* __Multicast__
-		* decode __SCTE-35__ from __MPEGTS__ over __Multicast__ 
-		```cobol
-		threefive udp://@235.3.5.35:3535
-		```
- 
-* __threefive does a lot more__, that was just to get you started.
 ___
 
 # [ Documentation ] 
