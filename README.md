@@ -8,7 +8,7 @@ ___
 # [__Breaking News__]
 * New stuff coming in threefive v3.1.7
 
-* __threefive now parses ID3 streams for SCTE-35 in MPEGTS__. SCTE-35 in a single ID3 packet and SCTE-35 spread over multiple ID3 packets are both supported. 
+* __threefive now parses ID3 streams for SCTE-35 in MPEGTS__. it's automatically detected, you don't need to do anything. SCTE-35 in a single ID3 packet and SCTE-35 spread over multiple ID3 packets are both supported. You can filter which pids are parsed for SCTE-35 with __Stream.decode_pids(list_of_pids)__
 
 * __IFramer is being merged into the Stream class__.
 * to get a list of iframes in a stream call __Stream.iframes()__
