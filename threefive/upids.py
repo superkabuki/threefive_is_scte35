@@ -31,7 +31,7 @@ class Upid:
         """
         decode Upid
         """
-        self.upid_value = self.bitbin.as_charset(self.bit_length, charset)
+        self.upid_value = self.bitbin.charset(self.bit_length, charset)
         return self.upid_name, self.upid_value
 
     def encode(self, nbin, seg_upid):
@@ -151,7 +151,7 @@ class Airid(Upid):
         """
         decode AirId
         """
-        self.upid_value = self.bitbin.as_hex(self.bit_length)
+        self.upid_value = self.bitbin.hex(self.bit_length)
         return self.upid_name, self.upid_value
 
     def encode(self, nbin, seg_upid):
@@ -182,11 +182,11 @@ class Atsc(Upid):
         """
         cont_size = self.bit_length - 32
         self.upid_value = {
-            "TSID": self.bitbin.as_int(16),
-            "reserved": self.bitbin.as_int(2),
-            "end_of_day": self.bitbin.as_int(5),
-            "unique_for": self.bitbin.as_int(9),
-            "content_id": self.bitbin.as_charset(cont_size, charset),
+            "TSID": self.bitbin.int(16),
+            "reserved": self.bitbin.int(2),
+            "end_of_day": self.bitbin.int(5),
+            "unique_for": self.bitbin.int(9),
+            "content_id": self.bitbin.charset(cont_size, charset),
         }
         return self.upid_name, self.upid_value
 
@@ -216,12 +216,12 @@ class Eidr(Upid):
         """
         decode Eidr Upid
         """
-        pre = self.bitbin.as_hex(16)
+        pre = self.bitbin.hex(16)
         post = []
         # switch to compact binary format
         nibbles = 20
         while nibbles:
-            post.append(hex(self.bitbin.as_int(4))[2:])
+            post.append(hex(self.bitbin.int(4))[2:])
             nibbles -= 1
         self.upid_value = f"{pre}{''.join(post)}"
         return self.upid_name, self.upid_value
@@ -253,7 +253,7 @@ class Isan(Upid):
         """
         decode Isan Upid
         """
-        self.upid_value = self.bitbin.as_hex(self.bit_length)
+        self.upid_value = self.bitbin.hex(self.bit_length)
         return self.upid_name, self.upid_value
 
     def encode(self, nbin, seg_upid):
@@ -279,9 +279,9 @@ class Mid(Upid):
         self.upid_value = []
         ulb = self.bit_length
         while ulb:
-            upid_type = self.bitbin.as_int(8)  # 1 byte
+            upid_type = self.bitbin.int(8)  # 1 byte
             ulb -= 8
-            upid_length = self.bitbin.as_int(8)
+            upid_length = self.bitbin.int(8)
             ulb -= 8
             upid_type_name, segmentation_upid = upid_map[upid_type][1](
                 self.bitbin, upid_type, upid_length
@@ -355,8 +355,8 @@ class Mpu(Upid):
 
         """
         self.upid_value = {
-            "format_identifier": self.bitbin.as_charset(32),
-            "private_data": self.bitbin.as_hex(self.bit_length - 32),
+            "format_identifier": self.bitbin.charset(32),
+            "private_data": self.bitbin.hex(self.bit_length - 32),
         }
         if self.upid_value["format_identifier"] == "ADFR":
             self._decode_adfr()
@@ -399,7 +399,7 @@ class Umid(Upid):
         chunks = []
         ulb = self.bit_length
         while ulb > 32:
-            chunks.append(self.bitbin.as_hex(32)[2:])
+            chunks.append(self.bitbin.hex(32)[2:])
             ulb -= 32
         self.upid_value = ".".join(chunks)
         return self.upid_name, self.upid_value
