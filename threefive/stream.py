@@ -285,8 +285,9 @@ class Stream(Based):
         """
         iter_pkts - iterate packets from stream
         """
-        while pkt := self._tsdata.read(self.PACKET_SIZE):
-            yield pkt
+        if self._find_start():
+            while pkt := self._tsdata.read(self.PACKET_SIZE):
+                yield pkt
 
     def _chk_rai(self, pkt):
         """
@@ -328,9 +329,6 @@ class Stream(Based):
         """
         iframes find iframes in mpegts stream
         """
-        first = self._find_start()
-        if not first:
-            return False
         iframes = []
         for pkt in self.iter_pkts():
             if iframe := self.parse_iframe(pkt):
@@ -353,9 +351,8 @@ class Stream(Based):
         if Cue : func(Cue)
         return a Cue instance or None
         """
-        cue = self.parse(pkt)
-        if cue:
-            func(cue)
+        cue=None
+        if cue := self.parse(pkt):func(cue)
         return cue
 
     def decode(self, func=show_cue):
@@ -365,12 +362,9 @@ class Stream(Based):
         a scte35.Cue instance as it's only argument.
         The method is written this way for speed.
         """
-        if self._find_start():
-
-            for pkt in self.iter_pkts():
-                cue = self.parse(pkt)
-                if cue:
-                    func(cue)
+        
+        for pkt in self.iter_pkts():
+            if cue := self.parse(pkt): func(cue)
         return False
 
     def decode_next(self):
@@ -378,12 +372,9 @@ class Stream(Based):
         Stream.decode_next returns the next
         SCTE35 cue as a scte35.Cue instance.
         """
-        if not self._find_start():
-            return False
+        if self._find_start():
         for pkt in self.iter_pkts():
-            cue = self.parse(pkt)
-            if cue:
-                yield cue
+            if cue := self.parse(pkt): yield cue
         return False
 
     def decode_pids(self, scte35_pids=None, func=show_cue):
