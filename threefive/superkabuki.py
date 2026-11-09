@@ -9,7 +9,6 @@ import sys
 from collections import deque
 from operator import itemgetter
 from .new_reader import reader
-from .iframes import IFramer
 from .cue import Cue
 from .stuff import print2, ERR, pif
 from .bitn import NBin
@@ -42,7 +41,7 @@ class SuperKabuki(SixFix):
         super().__init__(tsdata)
         self.scte35_pid = None
         self.scte35_cc = 0
-        self.iframer = IFramer(shush=True)
+        self.iframer = Stream()
         self.sidecar = deque()
         self.sidecar_file = "sidecar.txt"
         self.time_signals = False
@@ -162,7 +161,7 @@ class SuperKabuki(SixFix):
         """
         iframe_action this is what we do when we find an iframe.
         """
-        pts = self.iframer.parse(pkt)  # insert on iframe
+        pts = self.iframer.parse_iframe(pkt)  # insert on iframe
         if pts:
             prgm = self.pid2prgm(pid)
             self.maps.prgm_pts[prgm] = pts
