@@ -2,7 +2,7 @@
 
 ### [decoding](#decoding)
 
-### [encoding](#encoding)
+### [encoding](#encoding-1)
 
 ### [namespaces](namespaces)
 
