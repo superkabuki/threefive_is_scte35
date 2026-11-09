@@ -382,8 +382,8 @@ class Stream(Based):
             cue.show()
 
         """
-        for pkt in self.iter_pkts():
-            if cue := self.parse(pkt): yield cue
+        while cue := self.decode_next():
+            if cue : yield cue
 
     def decode_pids(self, scte35_pids=None, func=show_cue):
         """
