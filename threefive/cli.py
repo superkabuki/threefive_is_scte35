@@ -250,7 +250,7 @@ class MPEGTSMapper:
         print2(this)
 
         strm = Stream(this)
-        strm.iframes()
+        strm.iframes(shush=False)
         del strm
 
     @staticmethod
