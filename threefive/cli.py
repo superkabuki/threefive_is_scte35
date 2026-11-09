@@ -9,7 +9,6 @@ scte35 command line SCTE35 tool.
 
 
 import sys
-from .iframes import IFramer
 from .new_reader import reader
 from .cue import Cue
 from .hls import cli as hlscli
@@ -60,8 +59,6 @@ HELP = f"""
     {U}{NORM}{BLUE} Create a SCTE-35 sidecar file{NORM} threefive sidecar video.ts
 
     {U}{NORM}{BLUE} Probe MPEGTS video{NORM} threefive show video.ts
-
-    {U}{NORM}{BLUE} Show MPEGTS video parse speed{NORM} threefive speedo video.ts
 
     {U}{NORM}{BLUE} Show version{NORM} threefive version
 
@@ -155,6 +152,7 @@ def chk_stdin(args):
 
 # dashdashhelp()
 
+
 def dashdashhelp():
     """
     dashdashhelp swaps out "help" with "--help"
@@ -167,7 +165,9 @@ def dashdashhelp():
         idx = sys.argv.index("help")
         sys.argv[idx] = "--help"
 
+
 # chk_hls()
+
 
 def chk_hls():
     """
@@ -186,6 +186,7 @@ def chk_hls():
 
 
 # PrintMapper()
+
 
 class PrintMapper:
 
@@ -225,8 +226,8 @@ class PrintMapper:
         _ = [v() for k, v in self.print_map.items() if k in sys.argv]
 
 
-
 # MPEGTSMapper()
+
 
 class MPEGTSMapper:
     """
@@ -237,9 +238,9 @@ class MPEGTSMapper:
         "pts"  self.pts_chk,
         "show"  self.show_chk,
         "sidecar"  self.sidecar_chk,
-        "speedo"  self.speedo_chk,
         "iframes" self.iframe_chk,
     """
+
     @staticmethod
     def iframe_chk(this):
         """
@@ -247,9 +248,10 @@ class MPEGTSMapper:
         for a mpegts video.
         """
         print2(this)
-        iframer = IFramer()
-        iframer.do(this)
-        del iframer
+
+        strm = Stream(this)
+        strm.iframes()
+        del strm
 
     @staticmethod
     def proxy_chk(this):
@@ -278,6 +280,7 @@ class MPEGTSMapper:
         show_chk checks for the show keyword
         and displays the streams if present.
         """
+        print2(this)
         strm = Stream(this)
         strm.show()
         del strm
@@ -291,16 +294,6 @@ class MPEGTSMapper:
         print2(this)
         strm = Stream(this)
         strm.decode(func=mk_sidecar)
-        del strm
-
-    @staticmethod
-    def speedo_chk(this):
-        """
-        speedo_chk displays parse speed for mpegts streams
-        """
-        print2(this)
-        strm = Stream(this)
-        strm.speed()
         del strm
 
     def mpegts_key_in_argv(self, args, key):
@@ -330,7 +323,6 @@ class MPEGTSMapper:
             "pts": self.pts_chk,
             "show": self.show_chk,
             "sidecar": self.sidecar_chk,
-            "speedo": self.speedo_chk,
             "iframes": self.iframe_chk,
         }
 
@@ -378,6 +370,7 @@ def xmlbin_out(cue):
     """
     print2(cue.xmlbin())
 
+
 def xml_out(cue):
     """
     xml_out prints cue as xml
@@ -398,19 +391,17 @@ def funk():
     return func
 
 
-
 # func_map is used for SCTE-35 output formats
 
 funk_map = {
-            "base64": base64_out,
-            "bytes": bytes_out,
-            "hex": hex_out,
-            "int": int_out,
-            "json": json_out,
-            "xml": xml_out,
-            "xmlbin": xmlbin_out,
-        }
-
+    "base64": base64_out,
+    "bytes": bytes_out,
+    "hex": hex_out,
+    "int": int_out,
+    "json": json_out,
+    "xml": xml_out,
+    "xmlbin": xmlbin_out,
+}
 
 
 class FunkMapper:
@@ -420,7 +411,8 @@ class FunkMapper:
     will format output for a single Cue instance or multiple Cues
     in a Stream instance.
     """
-    def try_stream(self,this):
+
+    def try_stream(self, this):
         """
         try_stream attempts to decode `this`
         with a Stream class instance.
@@ -429,7 +421,7 @@ class FunkMapper:
         strm.decode(func=funk())  # funk() works here
         del strm
 
-    def try_cue(self,this):
+    def try_cue(self, this):
         """
         try_cue attempts to decode `this`
         with a Cue class instance.
@@ -442,7 +434,7 @@ class FunkMapper:
         except ERR:
             pass
 
-    def to_funk(self,this):
+    def to_funk(self, this):
         """
         to_funk prints a cue in a variety of formats.
         """
@@ -466,8 +458,6 @@ class FunkMapper:
 
     def __init__(self):
         self.chk_funk_map()
-
-
 
 
 def threefivecli():
