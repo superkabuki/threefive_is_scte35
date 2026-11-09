@@ -6,10 +6,35 @@ __***__ _if you need to encode SCTE-35 to HLS, use [x9k3](https://github.com/sup
 ___
 
 # [__Breaking News__]
-* threefive now parses ID3 streams for SCTE-35 in MPEGTS. SCTE-35 in a single ID3 packet and SCTE-35 spread over multiple ID3 packets are both supported.
-* The new ID3 SCTE-35 parsing code takes about 13 lines, it's highlighted in black.
-  <img width="731" height="821" alt="image" src="https://github.com/user-attachments/assets/7218efa9-90d8-4a89-9f64-9a527f899aed" />
-  
+* New stuff coming in threefive v3.1.7
+
+* __threefive now parses ID3 streams for SCTE-35 in MPEGTS__. SCTE-35 in a single ID3 packet and SCTE-35 spread over multiple ID3 packets are both supported. 
+
+* __IFramer is being merged into the Stream class__.
+* to get a list of iframes in a stream call __Stream.iframes()__
+```py3
+>>>> from threefive import Stream
+>>>> strm = Stream('video.ts')
+>>>> strm.iframes()
+[69367.058844, 69368.978844, 69370.898844, 69372.818844, 69374.738844, 69376.658844, 69378.578844, 69380.498844, 69382.418844, 69384.338844, 69386.258844, 69388.178844, 69390.098844, 69392.018844, 69393.938844, 69395.858844, 69397.778844, 69399.698844, 69401.618844, 69403.538844, 69405.458844, 69407.378844, 69409.298844, 69411.218844, 69413.138844, 69415.058844, 69416.978844, 69418.898844, 69420.818844, 69422.738844, 69424.658844, 69426.578844, 69428.498844, 69430.418844, 69432.338844, 69434.258844,
+... ]
+```
+* __Stream.next_iframe()__ gives you the next iframe, works for the first iframe as well.
+```py3
+>>>> from threefive import Stream
+>>>> strm = Stream('video.ts')
+>>>> strm.next_iframe()
+69367.058844
+>>>> strm.next_iframe()
+69368.978844
+```
+* __To Not use a UPID__ in a __Segmentation Descriptor__, set __segmentation_upid_length__, OR  __segmentation_upid_type__  to __0__. 
+
+___
+
+
+
+
 # [ version ]
 
 ### latest threefive version is _v3.1.5_
