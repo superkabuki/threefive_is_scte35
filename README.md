@@ -4,6 +4,13 @@
 
 __***__ _if you need to encode SCTE-35 to HLS, use [x9k3](https://github.com/supeerkabuki/x9k3)._  
 ___
+# [ version ]
+
+### latest threefive version is _v3.1.5_
+* There are no known issues with threefive v3.1.5
+* Average cyclomatic complexity: __A (1.990)__
+* Pylint: __9.69/10.0__
+* check the [change log](#changes.md)
 
 # [ a really really quick start ]
 
