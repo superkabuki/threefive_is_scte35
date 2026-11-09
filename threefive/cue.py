@@ -351,21 +351,6 @@ class Cue(SCTE35Base):
         """
         return self.base64()
 
-    def encode_as_hex(self):
-        """
-        encode_as_hex  alias for Cue.hex()
-        """
-        blue("Cue.encode_as_hex() has been deprecated use Cue.hex() instead")
-        return self.hex()
-
-    def encode_as_int(self):
-        """
-        encode_as_int alias for Cue.int()
-        """
-        blue("Cue.encode_as_int() has been deprecated use Cue.int() instead")
-
-        return self.int()
-
     def _encode_crc(self):
         """
         _encode_crc encode crc32
@@ -383,8 +368,6 @@ class Cue(SCTE35Base):
         """
         nbin = NBin()
         dbite_chunks = [dsptr.encode() for dsptr in self.descriptors]
-        ##        if False in dbite_chunks:
-        ##            return False
         for chunk, dsptr in zip(dbite_chunks, self.descriptors):
             dsptr.descriptor_length = len(chunk)
             nbin.add_int(dsptr.tag, EIGHT)
