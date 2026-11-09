@@ -152,10 +152,10 @@ class TimeSignal(SpliceCommand):
         """
         _splice_time Table 14 - splice_time()
         """
-        self.time_specified_flag = bitbin.as_flag(1)
+        self.time_specified_flag = bitbin.flag(1)
         if self.time_specified_flag:
             bitbin.forward(6)
-            pts_ticks = bitbin.as_int(33)
+            pts_ticks = bitbin.int(33)
             self.pts_time = self.as_90k(pts_ticks)
         else:
             bitbin.forward(7)
@@ -173,7 +173,6 @@ class TimeSignal(SpliceCommand):
         else:
             self.pts_time = None
             nbin.reserve(7)
-
 
     def xml(self, ns="scte35"):
         """
@@ -219,9 +218,9 @@ class SpliceInsert(TimeSignal):
         """
         _decode_break_duration Table 15 - break_duration()
         """
-        self.break_auto_return = bitbin.as_flag(1)
+        self.break_auto_return = bitbin.flag(1)
         bitbin.forward(6)
-        break_duration_ticks = bitbin.as_int(33)
+        break_duration_ticks = bitbin.int(33)
         self.break_duration = self.as_90k(break_duration_ticks)
 
     def decode(self):
@@ -230,24 +229,24 @@ class SpliceInsert(TimeSignal):
         """
         bitbin = Bitn(self.bites)
         start = bitbin.idx
-        self.splice_event_id = bitbin.as_int(32)
-        self.splice_event_cancel_indicator = bitbin.as_flag(1)
+        self.splice_event_id = bitbin.int(32)
+        self.splice_event_cancel_indicator = bitbin.flag(1)
         bitbin.forward(7)
         if not self.splice_event_cancel_indicator:
-            self.out_of_network_indicator = bitbin.as_flag(1)
-            self.program_splice_flag = bitbin.as_flag(1)
-            self.duration_flag = bitbin.as_flag(1)
-            self.splice_immediate_flag = bitbin.as_flag(1)
-            self.event_id_compliance_flag = bitbin.as_flag(1)
+            self.out_of_network_indicator = bitbin.flag(1)
+            self.program_splice_flag = bitbin.flag(1)
+            self.duration_flag = bitbin.flag(1)
+            self.splice_immediate_flag = bitbin.flag(1)
+            self.event_id_compliance_flag = bitbin.flag(1)
             bitbin.forward(3)
             if self.program_splice_flag:
                 if not self.splice_immediate_flag:
                     self._splice_time(bitbin)
             if self.duration_flag:
                 self._decode_break_duration(bitbin)
-            self.unique_program_id = bitbin.as_int(16)
-            self.avail_num = bitbin.as_int(8)
-            self.avails_expected = bitbin.as_int(8)
+            self.unique_program_id = bitbin.int(16)
+            self.avail_num = bitbin.int(8)
+            self.avails_expected = bitbin.int(8)
         self._set_len(start, bitbin.idx)
 
     def encode(self, nbin=None):
