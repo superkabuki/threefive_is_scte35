@@ -76,11 +76,11 @@ ___
     * [__scte35fix__](#scte35fix)  _ffmpeg changes scte-35 streams into bin data, scte35fix changes them back._
 	* [__scte35inject__](#scte35inject) _scte35inject inject scte-35 into mpegts._
 
-* [__web based SCTE-35 tools__](#web) - threefive and friends over http. 
+* [__web based SCTE-35 tools__](#web) - _threefive and friends over HTTPS_ 
 
 * [SCTE-35 __Sidecar Files__](https://github.com/superkabuki/SCTE-35_Sidecar_Files) _threefive supports SCTE-35 sidecar files_
 
-* [SCTE-35 __HLS__](#-threefive-hls-) _parse SCTE-35 in HLS in MPEGTS,CMAF, or fmP4__
+* [SCTE-35 __HLS__](#-threefive-hls-) _parse SCTE-35 in HLS in MPEGTS,CMAF, or fmP4_
 
 * [SCTE-35 __XML__ ](https://github.com/superkabuki/SCTE-35/blob/main/xml.md) and [More __XML__](node.md) _threefive can parse and encode SCTE-35 xml_
 
