@@ -256,12 +256,12 @@ threefive https://iodisco.com/longb2.ts xml
 ```rebol
         threefive  https://demo.unified-streaming.com/k8s/live/stable/scte35.isml/.m3u8
 ```
-* The input m3u8 file can be a rendition or master m3u8. 
-* Automatic AES decryption for segments.
-* Automatic AAC and AC3 ID3 Tag timestamp header parsing for audio only renditions.
-* SCTE-35 Can be parsed from MPEGTS segments and from m3u8 files. 
-* All HLS SCTE-35 tags are supported. 
-* threefive hls also allows you to filter SCTE-35 Messages.
+* The input m3u8 file can be a __rendition or master m3u8.__ 
+* Automatic __AES decryption__ for segments.
+* Automatic __AAC and AC3 ID3 Tag timestamp header__ parsing for audio only renditions.
+* __SCTE-35__ Can be parsed from MPEGTS segments and from m3u8 files. 
+* __All HLS SCTE-35 tags__ are supported. 
+* threefive hls also allows you to __filter SCTE-35__ Messages.
 
 ##### [ Help ]
 
@@ -299,10 +299,10 @@ threefive https://iodisco.com/longb2.ts xml
 
 # [ SCTE-35 ]
 
-* threefive displays SCTE-35 from:
-    * Embedded MPEGTS SCTE-35
-    * ID3 PRIV tags in ID3 MPEGTS 
-    * All SCTE-35 HLS Tags.
+* threefive parses __SCTE-35__ from:
+    * Embedded __MPEGTS__ SCTE-35
+    * __ID3 PRIV tags__ in ID3 streams 
+    * __All SCTE-35 HLS Tags.__
 
 
 # [ Cool Features ]
