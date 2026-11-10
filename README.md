@@ -80,7 +80,7 @@ ___
 
 * [SCTE-35 __Sidecar Files__](https://github.com/superkabuki/SCTE-35_Sidecar_Files) _threefive supports SCTE-35 sidecar files_
 
-* [SCTE-35 __HLS__](https://github.com/superkabuki/threefive/blob/main/hls.md) _parse SCTE-35 in HLS in MPEGTS,CMAF, or fmP4__
+* [SCTE-35 __HLS__]([https://github.com/superkabuki/threefive/blob/main/hls.md](#-threefive-hls-)) _parse SCTE-35 in HLS in MPEGTS,CMAF, or fmP4__
 
 * [SCTE-35 __XML__ ](https://github.com/superkabuki/SCTE-35/blob/main/xml.md) and [More __XML__](node.md) _threefive can parse and encode SCTE-35 xml_
 
@@ -247,7 +247,85 @@ threefive udp://@235.35.3.5:3535
 threefive https://iodisco.com/longb2.ts xml
 ```
 
+## [ threefive hls ]
 
+* threefive is also an HLS SCTE-35 parser. 
+
+* HLS is automatically detected.
+
+```rebol
+        threefive  https://demo.unified-streaming.com/k8s/live/stable/scte35.isml/.m3u8
+```
+* The input m3u8 file can be a rendition or master m3u8. 
+* Automatic AES decryption for segments.
+* Automatic AAC and AC3 ID3 Tag timestamp header parsing for audio only renditions.
+* SCTE-35 Can be parsed from MPEGTS segments and from m3u8 files. 
+* All HLS SCTE-35 tags are supported. 
+* threefive hls also allows you to filter SCTE-35 Messages.
+
+##### [ Help ]
+
+  To display hls help
+  
+```rebol
+	threefive hls help
+```
+
+##### [ Input ]
+
+* threefive hls takes an m3u8 URI as input.
+
+* M3U8 formats supported:
+  * master  ( When a master.m3u8 used, threefive hls parses the first rendition it finds )
+  * rendition
+  
+* Segment types supported:
+    * AAC
+    * AC3
+    * MPEGTS
+    * MP4
+    * fMP4
+    
+* Protocols supported:
+  * stdin
+  * file
+  * HTTP(S)
+  * Multicast
+  * Secure Reliable Transport
+  * UDP Unicast
+
+* Encryption supported:
+    * AES-128 (segments are automatically decrypted)
+
+# [ SCTE-35 ]
+
+* threefive displays SCTE-35 from:
+    * Embedded MPEGTS SCTE-35
+    * ID3 PRIV tags in ID3 MPEGTS 
+    * All SCTE-35 HLS Tags.
+
+
+# [ Cool Features ]
+
+* threefive hls can resume when started in the middle of an ad break.
+```rebol
+            2023-10-13T05:59:50.24Z Resuming Ad Break
+            2023-10-13T05:59:50.34Z Setting Break Timer to 17.733
+            2023-10-13T05:59:50.44Z Setting Break Duration to 60.067
+```
+
+##### [ Example Usage ]
+
+* Show this help:
+```rebol
+         threefive hls help
+```
+
+* parse an m3u8:
+```rebol
+        threefive  https://demo.unified-streaming.com/k8s/live/stable/scte35.isml/.m3u8
+```
+___
 ___
 
 #### [⇧](#-documentation-)
