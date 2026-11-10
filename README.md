@@ -80,7 +80,7 @@ ___
 
 * [SCTE-35 __Sidecar Files__](https://github.com/superkabuki/SCTE-35_Sidecar_Files) _threefive supports SCTE-35 sidecar files_
 
-* [SCTE-35 __HLS__]([https://github.com/superkabuki/threefive/blob/main/hls.md](#-threefive-hls-)) _parse SCTE-35 in HLS in MPEGTS,CMAF, or fmP4__
+* [SCTE-35 __HLS__](#-threefive-hls-) _parse SCTE-35 in HLS in MPEGTS,CMAF, or fmP4__
 
 * [SCTE-35 __XML__ ](https://github.com/superkabuki/SCTE-35/blob/main/xml.md) and [More __XML__](node.md) _threefive can parse and encode SCTE-35 xml_
 
