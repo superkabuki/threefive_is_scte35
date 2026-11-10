@@ -74,7 +74,7 @@ ___
  
 * __other included tools__
     * [__scte35fix__](#scte35fix)  _ffmpeg changes scte-35 streams into bin data, scte35fix changes them back._
-	* [__scte35inject__](scte35inject.md) _scte35inject inject scte-35 into mpegts._
+	* [__scte35inject__](#scte35inject) _scte35inject inject scte-35 into mpegts._
 
 * [__web based SCTE-35 tools__](#web) - threefive and friends over http. 
 
