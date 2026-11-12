@@ -226,7 +226,7 @@ class Scte35Profile:
         return pts, line
 
     def _mk_cueout_line(self, duration):
-        return f"#EXT-X-CUE-OUT:{duration}\n"
+        return f"CUE OUT:{duration}\n"
 
     def _is_splice_insert_cueout(self, cue):
         line = None
@@ -240,7 +240,7 @@ class Scte35Profile:
         """
         line = self._is_splice_insert_cueout(cue)
         if not line:
-            line = "#EXT-X-CUE-IN\n"
+            line = "CUE IN\n"
         return line
 
     def _incr_seg_type(self, line, dscptr):
