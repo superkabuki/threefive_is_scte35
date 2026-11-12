@@ -204,17 +204,21 @@ class HlsParser:
         """
         return f"{NSUB}{self.hls_pts}: {self.pts}"
 
-    def _chk_cue_in(self, line, head):
+    def _chk_cue_in(self, line, head,mpegts=False):
         # print("\n",line,"\n")
-        if line.startswith("#EXT-X-CUE-IN"):  # and self.cue_state == "CONT":
-            self.cue_state = "IN"
-            self._to_sidecar(self.pts, line)
-            self._clear()
-            print(f"{head}{self._diff_stuff()}{NSUB}{self._media_stuff()}\n")
-            self._reset_break()
+        if line.startswith("#EXT-X-CUE-IN"):
+            if self.cue_state == "IN":
+                return self._invalid(line,mpegts)
+            else:      
+                self.cue_state = "IN"
+                self._to_sidecar(self.pts, line)
+                self._clear()
+                print(f"{head}{self._diff_stuff()}{NSUB}{self._media_stuff()}\n")
+                self._reset_break()
         return line
+        
 
-    def _chk_cue_out(self, line, head):
+    def _chk_cue_out(self, line, head, mpegts=False):
         one = False
         two = False
         if line.startswith("CUE OUT") or line.startswith("SCTE35-OUT"):
@@ -223,6 +227,8 @@ class HlsParser:
             one = True
         if self.cue_state in [None, "IN"]:
             two = True
+        if not two:
+            return self._invalid(line,mpegts)            
         if one and two:
             self._reset_break()
             self.cue_state = "OUT"
@@ -251,20 +257,24 @@ class HlsParser:
             splice="Splice Point"
             if mpegts: splice="MPEGTS "+splice
             head = f"{iso8601()}{REV} {splice} {NORM} {line.strip()}         {self._pts_stuff()} "
-            line = self._chk_cue_out(line, head)
-            line = self._chk_cue_in(line, head)
-
+            line = self._chk_cue_out(line, head,mpegts)
+            line = self._chk_cue_in(line, head,mpegts)
+            return line
         elif self.cue_state in ["OUT", "CONT"]:
             self._to_sidecar(self.pts, line)
             self.cue_state = "CONT"
-        return line
+            return line
+        return self._invalid(line)
 
-    def _invalid(self, line):
+    def _invalid(self, line, mpegts=False):
         """
         _invalid print invalid SCTE-35 HLS tags
         """
+        skipped ="Skipped"
+        if mpegts:
+            skipped =skipped + ' MPEGTS '
         self._clear()
-        print2(f"{iso8601()}{REV} Skipped {NORM} {line.strip()}         {self._pts_stuff()}\n")
+        print2(f"{iso8601()}{REV} {skipped} {NORM} {line.strip()}         {self._pts_stuff()}\n")
         return "## " + line
 
     def _show_tags(self, tags):
@@ -427,7 +437,7 @@ class HlsParser:
         """
         # if self.cue_state == "CONT":
         if self.break_timer and self.break_duration:
-            if self.break_timer >= self.break_duration:
+            if self.break_timer >self.break_duration:
                 self.cue_state = "IN"
                 self._clear()
                 first = f"{iso8601()}{REV} AUTO CUE-IN {NORM}{self._pts_stuff()}"
@@ -476,7 +486,7 @@ class HlsParser:
             gonzo = f"{REV}Break{NORM} {round(self.break_timer,3)}"
             if self.break_duration:
                 gonzo = f"{gonzo}/{round(self.break_duration,3)}"
-                if self.break_timer >= self.break_duration:
+                if self.break_timer > self.break_duration:
                     self._auto_cuein("## AUTO IN")
         else:
             first = f"{REV}Media{NORM} "
