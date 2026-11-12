@@ -28,6 +28,9 @@ def corsreader(uri, headers={}):
 
 
 def try_srt(uri, headers={}):
+    """
+    try_srt attempt to load an srt uri
+    """
     try:
         from srtfu import SRTfu, SRTO_TRANSTYPE, SRT_LIVE, SRTO_RCVSYN, SRTO_RCVBUF
 
@@ -38,7 +41,7 @@ def try_srt(uri, headers={}):
         }
 
         preflags.update(headers)
-        srtf = SRTfu(srt_url, preflags)
+        srtf = SRTfu(uri, preflags)
         srtf.conlive()
         srtf.connect()
         return srtf
