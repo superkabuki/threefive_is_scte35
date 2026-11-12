@@ -164,8 +164,11 @@ class SixFix(Stream):
         self.pmt_payloads[program_number] = b"".join(pmt_parts)
         return True
 
+   def _unpad(self, bites=b""):
+        return bites.strip(b"\xff")
+
     def _pmt_precheck(self, pay, pid):
-        pay = self._unpad(pay)
+        pay =self.-unpad(pay)
         pay = self._chk_payload(pay, pid)
         if not pay:
             return False
