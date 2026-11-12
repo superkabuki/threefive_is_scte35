@@ -44,6 +44,7 @@ class Segment(Stream):
                  89730.281789: '/DAvAAAAAAAAAP/wFAUAAAKWf+//4WoauH4BTFYgAAEAAAAKAAhDVUVJAAAAAOv1oqc='}
 
     """
+
     def __init__(self, seg_uri, key_uri=None, iv=None):
         self.seg_uri = seg_uri
         self.key_uri = key_uri
@@ -66,10 +67,11 @@ class Segment(Stream):
     def _import_aes(self):
         try:
             import pyaes
+
             return True
         except ImportError:
             blue("pip install pyaes for AES support")
-            return False  
+            return False
 
     def __repr__(self):
         return str(self.__dict__)
@@ -111,14 +113,16 @@ class Segment(Stream):
         """
         if not self.shush:
             cue.show()
-        self._add_cue(cue.encode())
+        self._add_cue(cue)
 
     def decode(self, func=None):
         """
         decode a mpegts segment.
         """
         for pkt in self.iter_pkts():
-            self.pkt2cue(pkt, func)
+            cue=self.parse(pkt)
+            if cue:
+                self.show_cue(cue)
         if self.start:
             self.pts_start = self.as_90k(self.start.popitem()[1])
             self.pts_last = self.as_90k(list(self.maps.prgm_pts.items())[0][1])
