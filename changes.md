@@ -24,7 +24,11 @@
 ```
 * __To Not use a UPID__ in a __Segmentation Descriptor__, set __segmentation_upid_length__, OR  __segmentation_upid_type__  to __0__. 
 
-* __On the Windows platform__, __piping__ data into the __threefive cli tool__ should now work. __The select call has been removed__. 
+* __On the Windows platform__, __piping__ data into the __threefive cli tool__ should now work. __The select call has been removed__.
+
+*__DATERANGE__ tags in HLS have been cleaned up(aka __fixed__).
+
+* __gums__ has been removed.
 ___
 
 
