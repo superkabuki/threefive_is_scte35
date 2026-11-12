@@ -31,10 +31,21 @@ def try_srt(uri, headers={}):
     try:
         from srtfu import SRTfu, SRTO_TRANSTYPE, SRT_LIVE, SRTO_RCVSYN, SRTO_RCVBUF
 
-        return _do_srt(uri, headers=headers)
+        preflags = {
+        SRTO_TRANSTYPE: SRT_LIVE,
+        SRTO_RCVSYN: 1,
+        SRTO_RCVBUF: 96768000,
+        }
+
+        preflags.update(headers)
+        srtf = SRTfu(srt_url, preflags)
+        srtf.conlive()
+        srtf.connect()
+        return srtf
     except ImportError:
         blue("pip install srtfu to add SRT support")
         return False
+
 
 
 def reader(uri, headers={}):
@@ -85,25 +96,6 @@ def reader(uri, headers={}):
     # File
 
     return open(uri, "rb")
-
-
-def _do_srt(srt_url, headers={}):
-    """
-    do_srt handle Secure Reliable Transport live streams
-    srt://5.6.7.8:1234
-    """
-
-    preflags = {
-        SRTO_TRANSTYPE: SRT_LIVE,
-        SRTO_RCVSYN: 1,
-        SRTO_RCVBUF: 96768000,
-    }
-
-    preflags.update(headers)
-    srtf = SRTfu(srt_url, preflags)
-    srtf.conlive()
-    srtf.connect()
-    return srtf
 
 
 def _open_udp(uri):
