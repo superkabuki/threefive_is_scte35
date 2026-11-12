@@ -14,6 +14,7 @@ from .stuff import print2, ERR, pif
 from .bitn import NBin
 from .commands import TimeSignal
 from .sixfix import SixFix
+from .stream import Stream
 from .pmt import PMT
 
 REV = "\033[7m"
@@ -41,7 +42,7 @@ class SuperKabuki(SixFix):
         super().__init__(tsdata)
         self.scte35_pid = None
         self.scte35_cc = 0
-        self.iframer = Stream()
+        self.iframer = Stream(tsdata=None)
         self.sidecar = deque()
         self.sidecar_file = "sidecar.txt"
         self.time_signals = False
