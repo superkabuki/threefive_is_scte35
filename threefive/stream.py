@@ -232,7 +232,7 @@ class Stream(Based):
         return one + byte2
 
     @staticmethod
-    def _parse_pid(byte1,byte2):
+    def _parse_pid(byte1, byte2):
         """
         parse a 13 bit pid value
         """
@@ -282,17 +282,18 @@ class Stream(Based):
         """
         iter_pkts - iterate packets from stream
         """
-        if pkt :=self._find_start():
+        if pkt := self._find_start():
             yield pkt
             while pkt := self._tsdata.read(self.PACKET_SIZE):
                 yield pkt
 
-# IFramer stuff
+    # IFramer stuff
     def _chk_rai(self, pkt):
         """
         _chk_rai check random access indicator
         """
-        if self._pcr_flag(pkt): return self._rai_flag(pkt)
+        if self._pcr_flag(pkt):
+            return self._rai_flag(pkt)
         return False
 
     def _afc_approved(self, pkt):
@@ -302,8 +303,10 @@ class Stream(Based):
         """
         _is_key is key frame detection.
         """
-        if self._nal(pkt): return True
-        if self._afc_flag(pkt): return self._afc_approved(pkt)
+        if self._nal(pkt):
+            return True
+        if self._afc_flag(pkt):
+            return self._afc_approved(pkt)
         return False
 
     def parse_iframe(self, pkt):
@@ -316,7 +319,8 @@ class Stream(Based):
                 pid = self._parse_pid(pkt[1], pkt[2])
                 pts = self._parse_pts(pkt, pid)
                 pts = self.as_90k(pts)
-                if not self.shush: print(pts)
+                if not self.shush:
+                    print(pts)
                 return pts
         return None
 
@@ -324,10 +328,10 @@ class Stream(Based):
         """
         iframes find iframes in mpegts stream
         """
-        self.shush=shush
+        self.shush = shush
         iframes = []
         while iframe := self.next_iframe(shush=shush):
-                iframes.append(iframe)
+            iframes.append(iframe)
         return iframes
 
     def next_iframe(self, shush=True):
@@ -337,18 +341,21 @@ class Stream(Based):
         """
         self.shush = shush
         for pkt in self.iter_pkts():
-            if iframe := self.parse_iframe(pkt): return iframe
+            if iframe := self.parse_iframe(pkt):
+                return iframe
         return False
-# done
 
-    def pkt2cue(self, pkt, func=no_op):
+    # done
+
+    def pkt2cue(self, pkt, func=show_cue):
         """
         pkt2cue parse a packet,
         if Cue : func(Cue)
         return a Cue instance or None
         """
-        cue=None
-        if cue := self.parse(pkt):func(cue)
+        if cue := self.parse(pkt):
+            if func:
+                func(cue)
         return cue
 
     def decode(self, func=show_cue):
@@ -359,7 +366,8 @@ class Stream(Based):
         The method is written this way for speed.
         """
         while cue := self.decode_next():
-            if cue : func(cue)
+            if cue:
+                func(cue)
         return False
 
     def decode_next(self):
@@ -368,7 +376,8 @@ class Stream(Based):
         SCTE35 cue as a scte35.Cue instance.
         """
         for pkt in self.iter_pkts():
-            if cue := self.parse(pkt): return cue
+            if cue := self.parse(pkt):
+                return cue
         return False
 
     def decoderator(self):
@@ -383,7 +392,8 @@ class Stream(Based):
 
         """
         while cue := self.decode_next():
-            if cue : yield cue
+            if cue:
+                yield cue
 
     def decode_pids(self, scte35_pids=None, func=show_cue):
         """
@@ -412,7 +422,7 @@ class Stream(Based):
         SCTE-35 cues are print2`ed to stderr.
         """
         for pkt in self.iter_pkts():
-            self.pkt2cue(pkt,func=func)
+            self.pkt2cue(pkt, func=func)
             sys.stdout.buffer.write(pkt)
         return False
 
@@ -569,7 +579,8 @@ class Stream(Based):
         if pid == self.pids.PAT_PID:
             if not self._same_as_last(pay, self.pids.PAT_PID):
                 self._parse_pat(pay)
-        if pid in self.pids.pmt: self._pmt_pid(pay, pid)
+        if pid in self.pids.pmt:
+            self._pmt_pid(pay, pid)
         return False
 
     def _parse_info(self, pkt):
@@ -585,9 +596,12 @@ class Stream(Based):
         cue = None
         pid = self._parse_pid(pkt[1], pkt[2])
         if pid in self.pids.pcr:
-            if self._pusi_flag(pkt[1]): self._parse_pts(pkt, pid)
-        if pid in self.pids.tables: self._parse_tables(pkt, pid)
-        if pid in self.pids.scte35: cue = self._parse_scte35(pkt, pid)
+            if self._pusi_flag(pkt[1]):
+                self._parse_pts(pkt, pid)
+        if pid in self.pids.tables:
+            self._parse_tables(pkt, pid)
+        if pid in self.pids.scte35:
+            cue = self._parse_scte35(pkt, pid)
         return cue
 
     def _parse(self, pkt):
