@@ -3,9 +3,9 @@ The threefive.Segment class
 """
 
 import os
+import pyaes
 from .new_reader import reader
 from .stream import Stream
-from .stuff import blue
 
 
 class Segment(Stream):
@@ -57,21 +57,11 @@ class Segment(Stream):
         self.tmp = None
         self.duration = None
         if iv:
-            if self._import_aes():
-                iv = iv.replace("\n", "")
-                self.iv = int(iv, base=16).to_bytes(16, byteorder="big")
-                self._aes_get_key()
-                self._aes_decrypt()
+            iv = iv.replace("\n", "")
+            self.iv = int(iv, base=16).to_bytes(16, byteorder="big")
+            self._aes_get_key()
+            self._aes_decrypt()
         super().__init__(self.seg_uri)
-
-    def _import_aes(self):
-        try:
-            import pyaes
-
-            return True
-        except ImportError:
-            blue("pip install pyaes for AES support")
-            return False
 
     def __repr__(self):
         return str(self.__dict__)
