@@ -11,7 +11,7 @@ from .crc import crc32
 from .descriptors import splice_descriptor, descriptor_map, SpliceDescriptor
 from .section import SpliceInfoSection
 from .segmentation import table22
-from .stuff import clean, red, isjson, isxml, pif, blue, ERR
+from .stuff import clean, red, isjson, isxml, pif,  ERR
 from .xml2scte35 import xml2cue
 from .xml import Node
 
