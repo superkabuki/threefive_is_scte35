@@ -1,9 +1,0 @@
-
-threefive documentation
-=======================
-
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents:
-
-   cue
