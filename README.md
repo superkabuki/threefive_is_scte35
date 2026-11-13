@@ -10,7 +10,7 @@ ___
 * __threefive now parses ID3 streams for SCTE-35 in MPEGTS__ stream parsing.
 * __HLS Parser__ has been tuned up. __DATERANGE__ tag fixed.
 * __Iframer__ has been merged into the __Stream__ class.
-* check the [__change log__](#changes.md)
+* check the [__change log__](changes.md)
 
 # [ a really really quick start ]
 
