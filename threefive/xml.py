@@ -5,7 +5,7 @@ xml.py  The Node class for converting to xml,
 """
 
 from .stuff import red, pif
-from .stuff import clean, rmap, ERR
+from .stuff import clean, rmap
 
 MAXCHILDREN = 1024
 MAXDEPTH = 128
