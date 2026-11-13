@@ -266,7 +266,7 @@ class HlsParser:
         """
         skipped = "Skipped"
         if mpegts:
-            skipped = skipped + " MPEGTS "
+            skipped = skipped + " MPEGTS"
         self._clear()
         print2(
             f"{iso8601()}{REV}{skipped}{NORM} {line.strip()}         {self._pts_stuff()}\n"
