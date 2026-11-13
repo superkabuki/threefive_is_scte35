@@ -1,16 +1,14 @@
 
 [project]
 name = "threefive"
-version = "3.1.5"
+version = "3.1.7"
 authors = [
   { name="AdrianofDoom", email="spam@iodisco.com" },
 ]
 description = "The Undisputed Heavyweight Champion of SCTE-35."
 readme = "README.md"
 requires-python = ">=3.9"
-dependencies=[
-
-    ]
+dependencies=["srtfu >=0.0.3",]
 
 classifiers = [
         "Environment :: Console",
@@ -29,7 +27,6 @@ Homepage = "https://github.com/superkabuki/threefive"
 Issues = "https://github.com/superkabuki/threefive/issues"
 
 [project.scripts]
-gums = "threefive.gums:cli"
 scte35fix = "threefive.sixfix:cli"
 scte35inject = "threefive.superkabuki:cli"
 threefive = "threefive.cli:threefivecli"
