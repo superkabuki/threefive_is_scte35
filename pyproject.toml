@@ -1,14 +1,14 @@
 
 [project]
 name = "threefive"
-version = "3.1.7"
+version = "3.1.9"
 authors = [
   { name="AdrianofDoom", email="spam@iodisco.com" },
 ]
-description = "The Undisputed Heavyweight Champion of SCTE-35."
+description = "threefive - SCTE-35 for the people."
 readme = "README.md"
 requires-python = ">=3.9"
-dependencies=["srtfu >=0.0.3",]
+dependencies=["srtfu >=0.0.3","pyaes",]
 
 classifiers = [
         "Environment :: Console",
