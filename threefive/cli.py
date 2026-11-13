@@ -6,8 +6,6 @@ threefive.cli.py
 scte35 command line SCTE35 tool.
 
 """
-
-
 import sys
 from .new_reader import reader
 from .cue import Cue
@@ -111,7 +109,7 @@ def not_pkt(args, rdr, one):
     args.append((one + two).decode())  # no rewind on stdin?
 
 
-def is_pkt(args, rdr, one):
+def is_pkt( rdr, one):
     """
     is_pkt runs when stdin is an mpegts stream
     """
@@ -138,7 +136,7 @@ def read_stdin(args):
     if one not in [b"G"]:  # is this a packet?
         not_pkt(args, rdr, one)
     else:
-        is_pkt(args, rdr, one)
+        is_pkt(rdr, one)
 
 
 def chk_stdin(args):
@@ -189,7 +187,9 @@ def chk_hls():
 
 
 class PrintMapper:
-
+    """
+    PrintMapper handles version and help related keywords
+    """
     def hls(self):
         sys.argv.remove("hls")
         hlscli()
