@@ -5,6 +5,7 @@ Home of the reader function
 """
 
 from sys import stdin
+from srtfu import SRTfu, SRTO_TRANSTYPE, SRT_LIVE, SRTO_RCVSYN, SRTO_RCVBUF
 from .stuff import blue, pif, print2
 
 
@@ -27,28 +28,20 @@ def corsreader(uri, headers={}):
     return reader(uri, headers=all_headers)
 
 
-def try_srt(uri, headers={}):
+def _open_srt(uri, headers={}):
     """
-    try_srt attempt to load an srt uri
+    open_srt load an srt uri
     """
-    try:
-        from srtfu import SRTfu, SRTO_TRANSTYPE, SRT_LIVE, SRTO_RCVSYN, SRTO_RCVBUF
-
-        preflags = {
-        SRTO_TRANSTYPE: SRT_LIVE,
-        SRTO_RCVSYN: 1,
-        SRTO_RCVBUF: 96768000,
-        }
-
-        preflags.update(headers)
-        srtf = SRTfu(uri, preflags)
-        srtf.conlive()
-        srtf.connect()
-        return srtf
-    except ImportError:
-        blue("pip install srtfu to add SRT support")
-        return False
-
+    preflags = {
+    SRTO_TRANSTYPE: SRT_LIVE,
+    SRTO_RCVSYN: 1,
+    SRTO_RCVBUF: 96768000,
+    }
+    preflags.update(headers)
+    srtf = SRTfu(uri, preflags)
+    srtf.conlive()
+    srtf.connect()
+    return srtf
 
 
 def reader(uri, headers={}):
@@ -95,9 +88,8 @@ def reader(uri, headers={}):
         return urllib.request.urlopen(req)
     # SRT
     if uri.startswith("srt://"):
-        return try_srt(uri, headers=headers)
+        return _open_srt(uri, headers=headers)
     # File
-
     return open(uri, "rb")
 
 
