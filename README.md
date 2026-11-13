@@ -6,11 +6,10 @@ __***__ _if you need to encode SCTE-35 to HLS, use [x9k3](https://github.com/sup
 ___
 # [ version ]
 
-### latest threefive version is _v3.1.5_
-* There are no known issues with threefive v3.1.5
-* Average cyclomatic complexity: __A (1.990)__
-* Pylint: __9.69/10.0__
-* check the [change log](#changes.md)
+### latest threefive version is _v3.1.7_
+* __ID3 SCTE-35__ stream parsing.
+* __HLS Parser__ has been tuned up. __DATERANGE__ tag fixed.
+* check the [__change log__](#changes.md)
 
 # [ a really really quick start ]
 
