@@ -19,12 +19,19 @@ def mcast_ttl(socked, ttl):
     )
 
 
+def set_timeout(socked, timeout):
+    """
+    set_timeout set timeout on socket
+    """
+    socked.settimeout(timeout)
+    blue(f"Socket Timeout {socked.gettimeout()}")
 
-def _setSO_RCVBUF(socked):
+
+def _set_so_rcvbuf(socked):
     """
-    _setSO_RCVBUF  left shift socket.SO_RCVBUF
+    _set_so_rcvbuf  left shift socket.SO_RCVBUF
     """
-    shift = 7
+    shift = 5
     rcvbuf_size = socked.getsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF)
     blue(f"SO_RCVBUF Was { rcvbuf_size}")
     try_rcvbuf = rcvbuf_size << shift
@@ -33,29 +40,26 @@ def _setSO_RCVBUF(socked):
     blue(f"SO_RCVBUF Now { new_rcvbuf}")
 
 
-def setTIMEOUT(socked, timeout):
+def _iter_flags(socked):
     """
-    setTIMEOUT set TIMEOUT to timeout
+    _iter_flags iterate and set socket flags
     """
-    socked.settimeout(timeout)
-    blue(f"Socket Timeout {socked.gettimeout()}")
+    for k,v in { socket.SO_REUSEADDR:socket.SOL_SOCKET,
+                    socket.SO_REUSEPORT:socket.SOL_SOCKET,
+                    socket.IP_MULTICAST_LOOP:socket.IPPROTO_IP ,}.items():
+        try:
+            socked.setsockopt(v,k,1)
+        except:
+            pass
 
 
 def _udp_flags(socked):
     """
     _udp_flags for udp and multicast sockets
     """
-    for k,v in {socket.SOL_SOCKET: socket.SO_REUSEADDR,
-                    socket.SOL_SOCKET: socket.SO_REUSEPORT,
-                    socket.IPPROTO_IP: socket.IP_MULTICAST_LOOP,}.items():
-        try:
-            socked.setsockopt(k,v,1)
-            blue(f'{v} {socked.getsockopt(k,v)}')
-        except:
-            pass
-    socked.settimeout(TIMEOUT)
-    blue(f"Socket Timeout {socked.gettimeout()}")
-
+    _set_so_rcvbuf(socked)
+    _iter_flags(socked)
+    set_timeout(socked,TIMEOUT)
 
 
 def udp_receiver():
@@ -64,6 +68,5 @@ def udp_receiver():
     a udp receiver socket from the Socked class
     """
     socked = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
-    _setSO_RCVBUF(socked)
     _udp_flags(socked)
     return socked
