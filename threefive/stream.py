@@ -8,7 +8,7 @@ from .cue import Cue
 from .new_reader import reader
 from .packetdata import PacketData
 from .streamtypes import streamtype_map
-from .stuff import ERR, print2, blue
+from .stuff import ERR, print2
 
 
 def show_cue(cue):
