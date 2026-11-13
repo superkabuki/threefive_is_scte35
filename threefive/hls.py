@@ -207,12 +207,11 @@ class HlsParser:
         if line.startswith("#EXT-X-CUE-IN") or line.startswith("CUE IN") or  "SCTE35-IN" in line:
             if self.cue_state not in ["CONT", "OUT"]:
                 return self._invalid(line, mpegts)
-            else:
-                self.cue_state = "IN"
-                self._to_sidecar(self.pts, line)
-                self._clear()
-                print(f"{head}{self._diff_stuff()}{NSUB}{self._media_stuff()}\n")
-                self._reset_break()
+            self.cue_state = "IN"
+            self._to_sidecar(self.pts, line)
+            self._clear()
+            print(f"{head}{self._diff_stuff()}{NSUB}{self._media_stuff()}\n")
+            self._reset_break()
         return line
 
     def _chk_cue_out(self, line, head, mpegts=False):
