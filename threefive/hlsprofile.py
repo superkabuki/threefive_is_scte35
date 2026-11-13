@@ -256,7 +256,7 @@ class Scte35Profile:
 
     def _is_dscptr_cuein(self, dscptr, line):
         if dscptr.segmentation_type_id == self.seg_type:
-            line = "#EXT-X-CUE-IN\n"
+            line = "CUE IN\n"
             self.seg_type = None
         return line
 
