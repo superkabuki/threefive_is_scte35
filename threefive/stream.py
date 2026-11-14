@@ -344,7 +344,6 @@ class Stream(Based):
             if iframe := self.parse_iframe(pkt):
                 return iframe
         return False
-
     # done
 
     def pkt2cue(self, pkt, func=show_cue):
@@ -365,9 +364,17 @@ class Stream(Based):
         a scte35.Cue instance as it's only argument.
         The method is written this way for speed.
         """
-        while cue := self.decode_next():
-            if cue:
-                func(cue)
+        while pkt := self._tsdata.read(self.PACKET_SIZE):
+            pid = self._parse_pid(pkt[1], pkt[2])
+            if pid in self.pids.pcr:
+                if pkt[1] & 0x40:
+                    self._parse_pts(pkt, pid)
+            if pid in self.pids.tables:
+                self._parse_tables(pkt, pid)
+            if pid in self.pids.scte35 or pid in self.pids.maybe_scte35:
+                cue = self._parse_scte35(pkt, pid)
+                if cue:
+                    func(cue)
         return False
 
     def decode_next(self):
@@ -498,12 +505,6 @@ class Stream(Based):
             return self.as_90k(self.maps.prgm_pcr[prgm])
         return False
 
-    ##    def _unpad_afc(self, pkt):
-    ##        return pkt[:4] + self._unpad(pkt[4:])
-    ##
-    ##    def _unpad(self, bites=b""):
-    ##        return bites.strip(b"\xff")
-    ##
     def _mk_packet_data(self, pid):
         prgm = self.maps.pid_prgm[pid]
         pdata = PacketData(pid, prgm)
@@ -656,7 +657,6 @@ class Stream(Based):
     def _pop_maybe_pid(self, pid):
         if pid in self.pids.maybe_scte35:
             self.pids.maybe_scte35.remove(pid)
-            # self.pids.not_scte35.add(pid)
 
     def _chk_maybe_pid(self, pay, pid):
         """
@@ -679,24 +679,24 @@ class Stream(Based):
         return self._chk_maybe_pid(pay, pid)
 
     def _parse_id3_payload(self, pkt, pid):
-        pay = self._parse_payload(pkt)  # strip off mpegts headers .
-        whole = self._chk_partial(pay, pid, b"ID3")  # check for multi-packet payload
+        pay = self._parse_payload(pkt)  
+        whole = self._chk_partial(pay, pid, b"ID3")  
         if not whole:
-            return False  # also check that b'ID3' is in the payload
-        privpay = self._split_by_idx(pay, b"PRIV")  # split just before b'PRIV'
+            return False  
+        privpay = self._split_by_idx(pay, b"PRIV")  
         if not privpay:
             return False
         if b"scte" not in privpay:
-            return False  # check for b'scte' in PRIV tag header
+            return False  
         return self._split_by_idx(
             privpay, self.SCTE35_TID
-        )  # split just before SCTE-35 TID
+        )  
 
     def _parse_scte35(self, pkt, pid):
         """
         parse a threefive cue from one or more packets
         """
-        if self.the_scte35_pids:  # for parse by pid
+        if self.the_scte35_pids:  
             if pid not in self.the_scte35_pids:
                 return False
         if pid in self.pids.id3:
@@ -705,7 +705,6 @@ class Stream(Based):
             pay = self._mk_scte35_payload(pkt, pid)
         if not pay:
             return False
-        
         seclen = self._parse_length(pay[1], pay[2])
         if self._section_incomplete(pay, pid, seclen):
             return False
