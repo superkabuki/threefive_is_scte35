@@ -8,7 +8,7 @@ authors = [
 description = "threefive - SCTE-35 for the people."
 readme = "README.md"
 requires-python = ">=3.9"
-dependencies=["srtfu >=0.0.3","pyaes",]
+dependencies=["srtfu >=0.0.11","pyaes",]
 
 classifiers = [
         "Environment :: Console",
