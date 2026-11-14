@@ -5,6 +5,6 @@ from the cli tool run: threefive version
 
 MAJOR = 3
 MINOR = 1
-MINI = 9
+MINI = 11
 
 version = f"{MAJOR}.{MINOR}.{MINI}"
