@@ -555,13 +555,16 @@ class Stream(Based):
             prgm = self.pid2prgm(pid)
             self.maps.prgm_pcr[prgm] = pcr
 
+    def _unpad(self, bites=b""):
+        return bites.strip(b"\xff")
+
     def _parse_payload(self, pkt):
         """
         _parse_payload returns the packet payload
         """
         head_size = 4
         if self._afc_flag(pkt):
-            # pkt = pkt[:4] + self._unpad(pkt[4:])
+            pkt = pkt[:4] + self._unpad(pkt[4:])
             afl = pkt[4]
             head_size += afl + 1  # +one for afl byte
         return pkt[head_size:]
@@ -600,7 +603,7 @@ class Stream(Based):
                 self._parse_pts(pkt, pid)
         if pid in self.pids.tables:
             self._parse_tables(pkt, pid)
-        if pid in self.pids.scte35:
+        if pid in self.pids.scte35 or pid in self.pids.maybe_scte35:
             cue = self._parse_scte35(pkt, pid)
         return cue
 
@@ -702,6 +705,7 @@ class Stream(Based):
             pay = self._mk_scte35_payload(pkt, pid)
         if not pay:
             return False
+        
         seclen = self._parse_length(pay[1], pay[2])
         if self._section_incomplete(pay, pid, seclen):
             return False
@@ -737,15 +741,6 @@ class Stream(Based):
             seclen -= chunk_size
             idx += chunk_size
         return True
-
-    def _precheck_pmt(self, pay, pid):
-        pay = self._chk_partial(pay, pid, self.PMT_TID)
-        if pay:
-            seclen = self._parse_length(pay[1], pay[2])
-            if not self._section_incomplete(pay, pid, seclen):
-                if not self._same_as_last(pay, pid):
-                    return pay
-        return False
 
     def _parse_pmt(self, pay, pid):
         """
@@ -809,7 +804,6 @@ class Stream(Based):
         if stream_type in ["0x15"]:
             self.pids.scte35.add(pid)
             self.pids.id3.add(pid)
-
         if stream_type in ["0x86"]:
             self.pids.scte35.add(pid)
         if stream_type in ["0x06", "0x6"]:
