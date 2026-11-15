@@ -1,19 +1,21 @@
-# [ threefive ] 
+# `[ threefive ]` 
 *   Decodes SCTE-35 from MPEGTS✔ Base64✔ Bytes✔ DASH✔ Hex✔ HLS✔ Integer✔ JSON✔ XML✔ XML+Binary✔  
 *   Encodes SCTE-35 to   MPEGTS✔ Base64✔ Bytes✔ Hex✔ Integer✔ JSON ✔ XML✔  XML+Binary✔
 
 __***__ _if you need to encode SCTE-35 to HLS, use [x9k3](https://github.com/supeerkabuki/x9k3)._  
 ___
-# [ version ]
+# `[ version ]`
 
-### latest threefive version is _v3.1.11_
-* __threefive now parses ID3 streams for SCTE-35 in MPEGTS__ streams
-* __HLS Parser__ has been tuned up. __DATERANGE__ tag fixed.
+## latest threefive version is _v3.1.11_
+* pylint:  __9.8__/10.0
+* cyclomatic complexity: __2.051__
+* __automatic__ parsing of __ID3__ streams for __SCTE-35__ in __MPEGTS__ streams 
+* __HLS Parser__ has been __tuned up__. __DATERANGE__ tag __fixed__.
 * __Iframer__ has been merged into the __Stream__ class.
+* __piping SCTE-35__ data into the __threefive cli__ tool __now works on Windows too__ the __select call__ has been __removed__. 
 * check the [__change log__](changes.md)
-* piping data into the threefive cli tool now works on Windows, the select call has been removed. 
 ___
-# [ a really really quick start ]
+# `[ a really really quick start ]`
 
 * __Install__
 ```
@@ -55,7 +57,7 @@ ___
 
 
 
-# [ Documentation ] 
+# `[ Documentation ]` 
 
  [A Lot of Examples ](https://github.com/superkabuki/threefive_is_scte35/blob/main/examples)  |  [  Tip of the Week  ](totw.md)  |   [  Cheap Tricks   ](cheaptricks.md) | 
 
@@ -148,7 +150,7 @@ make install py3=/home/a/pypy3/bin/pypy3
 #### [⇧](#-documentation-)
 ___
 
-## [ CLI ]
+## `[ CLI ]`
 threefive is designed to be easy to use. I'm not sure that it's served well by a long explaination, so I'm going to try and keep this brief. 
 
 ### The threefive cli tool.
@@ -248,7 +250,7 @@ threefive udp://@235.35.3.5:3535
 threefive https://iodisco.com/longb2.ts xml
 ```
 
-## [ threefive hls ]
+## `[ threefive hls ]`
 
 * threefive is also an HLS SCTE-35 parser. 
 
@@ -402,7 +404,7 @@ ___
 
 #### [⇧](#-documentation-)
 
-## [ Using the library ]
+## `[ Using the library ]`
 # Writing Code with threefive.
 
 * threefive is designed so that you don't have to write a lot of code to parse SCTE-35
@@ -582,13 +584,22 @@ help(Cue)
 
 ### Triggering on SCTE-35 
 
-* __Stream.decode_next()__ is a __python generator__ that __yields a Cue instance__ when SCTE-35 is found in an MPEGTS stream
+* __Stream.decode_next()__ returns the __next SCTE-35 Cue__ in an __MPEGTS__ stream.
+```py3
+>>>> from threefive import Stream
+>>>> st=Stream('https://iodisco.com/longb2.ts')
+>>>> while cue := st.decode_next():
+....     cue.show()
+```
 
+* __Stream.decoderator()__ **** is a __python generator__ that __yields a Cue instance__ when SCTE-35 is found in an MPEGTS stream
+
+**** _Somebody please give me a better name for this method_
 ```py3
 from threefive import Stream
 
 >>>> st =Stream('https://iodisco.com/longb2.ts')
->>>> for cue in st.decode_next():
+>>>> for cue in st.decoderator():
 ....     cmd = f"Command: {cue.command.name}"
 ....     if cue.command.has("pts_time"):
 ....         cmd += f"\t pts: {cue.command.pts_time}"
