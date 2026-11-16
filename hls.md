@@ -5,11 +5,16 @@
 ```py3
  threefive https://demo.unified-streaming.com/k8s/live/scte35.isml/.m3u8
 ```
-* first thing you see is profile settings. 
-<img width="811" height="250" alt="image" src="https://github.com/user-attachments/assets/cf6b803e-39b7-42f6-82f7-8e66794ecf0d" />
+___
+
+### [ hls profile ]
+* these are the settings for parsing SCTE-35 in HLS. this is optional.
+*  __the default profile will work for most people__
+
+<img width="799" height="177" alt="image" src="https://github.com/user-attachments/assets/4fd04331-83d8-47b9-8b82-2b965dda5845" />
 
 * to edit the profile settings, generate a hls.profile file and edit the file.
-* this is optional, __the default profile will work for most people__
+ 
 ```py3
 threefive hls profile
 
