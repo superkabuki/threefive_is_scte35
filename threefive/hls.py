@@ -114,6 +114,7 @@ class HlsParser:
         self.prof = Scte35Profile()
         self.prof.read_profile(self.pro_file)
         self.rendition = None
+        self.auto_return = False
         self._clear_files()
 
     @staticmethod
@@ -204,36 +205,31 @@ class HlsParser:
         return f"{NSUB}{self.hls_pts}: {self.pts}"
 
     def _chk_cue_in(self, line, head, mpegts=False):
-        if line.startswith("#EXT-X-CUE-IN") or line.startswith("CUE IN") or  "SCTE35-IN" in line:
-            if self.cue_state not in ["CONT", "OUT"]:
-                return self._invalid(line, mpegts)
-            self.cue_state = "IN"
-            self._to_sidecar(self.pts, line)
-            self._clear()
-            print(f"{head}{self._diff_stuff()}{NSUB}{self._media_stuff()}\n")
-            self._reset_break()
+        for ci in ("#EXT-X-CUE-IN", "CUE IN","SCTE35-IN",):
+            if ci in line:
+                if self.cue_state not in ["CONT", "OUT"]:
+                    return self._invalid(line, mpegts)
+                self.cue_state = "IN"
+                self.auto_return = False
+                self._to_sidecar(self.pts, line)
+                self._clear()
+                print(f"{head}{self._diff_stuff()}{NSUB}{self._media_stuff()}\n")
+                self._reset_break()
         return line
 
     def _chk_cue_out(self, line, head, mpegts=False):
-        one = False
-        two = False
-        if line.startswith("CUE OUT") or "SCTE35-OUT" in line:
-            one = True
-        if line.startswith("#EXT-X-CUE-OUT"):
-            one = True
-        if self.cue_state in [None, "IN"]:
-            two = True
-        if one and not two:
-            return self._invalid(line, mpegts)
-        if one and two:
-            self._reset_break()
-            self.cue_state = "OUT"
-            self.break_timer = 0.0
-            if ":" in line:
-                self.break_duration = pif(line.split(":")[1])
-            self._to_sidecar(self.pts, line)
-            self._clear()
-            print(f"\n{head}{self._dur_stuff()}{NSUB}{self._media_stuff()}\n")
+        for co in ("CUE OUT", "SCTE35-OUT" ,"#EXT-X-CUE-OUT",):
+            if co in line:
+                if self.cue_state not in [None, "IN"]:
+                    return self._invalid(line, mpegts)
+                self._reset_break()
+                self.cue_state = "OUT"
+                self.break_timer = 0.0
+                if ":" in line:
+                    self.break_duration = pif(line.split(":")[1])
+                self._to_sidecar(self.pts, line)
+                self._clear()
+                print(f"\n{head}{self._dur_stuff()}{NSUB}{self._media_stuff()}\n")
         return line
 
     def _set_cue_state(self, cue, line):
@@ -241,6 +237,8 @@ class HlsParser:
         _set_cue_state determines cue_state
 
         """
+        if line.startswith("##"):
+            return line
         mpegts = False
         if "-MPEGTS" in line:
             line = line.replace("-MPEGTS", "")
@@ -332,7 +330,6 @@ class HlsParser:
             self.cue_state = "CONT"
             self._set_break_timer(line, cont_tags)
             self._set_break_duration(line, cont_tags)
-            line = self._auto_cuein(line)
         return self._auto_cont()
 
     def _chk_x_cue_in(self, tags, line):
@@ -357,6 +354,7 @@ class HlsParser:
         cue = None
         if "CUE" in tags["#EXT-X-SCTE35"]:
             cue = Cue(tags["#EXT-X-SCTE35"]["CUE"])
+            self.auto_return = cue.command.has("break_auto_return")
             pts, new_line = self.prof.validate_cue(cue)
             line = new_line
         self._clear()
@@ -370,10 +368,11 @@ class HlsParser:
         for scte35_tag in ["SCTE35-OUT", "SCTE35-IN"]:
             if scte35_tag in tags["#EXT-X-DATERANGE"]:
                 cue = Cue(tags["#EXT-X-DATERANGE"][scte35_tag])
+                self.auto_return = cue.command.has("break_auto_return")
                 pts, new_line = self.prof.validate_cue(cue)
-                new_line = new_line.replace("CUE OUT",scte35_tag)
-                new_line = new_line.replace("CUE IN",scte35_tag)
-                new_line=new_line.strip('\n')
+                new_line = new_line.replace("CUE OUT", scte35_tag)
+                new_line = new_line.replace("CUE IN", scte35_tag)
+                new_line = new_line.strip("\n")
 
                 line = f"DATERANGE {new_line}"
         return self._set_cue_state(cue, line)
@@ -385,6 +384,7 @@ class HlsParser:
         HLS tags.
         """
         cue = Cue(tags["#EXT-OATCLS-SCTE35"])
+        self.auto_return = cue.command.has("break_auto_return")
         pts, new_line = self.prof.validate_cue(cue)
         if abs(pts - self.pts) > 5:  # Handle Cues out of sync with video PTS
             pts = self.pts
@@ -433,6 +433,9 @@ class HlsParser:
         """
         _auto_cuein handles cue.command.auto-return
         """
+        if not self.auto_return:
+            return line
+        self.auto_return = False
         if self.cue_state == "CONT":
             if self.break_timer and self.break_duration:
                 if self.break_timer > self.break_duration:
@@ -467,7 +470,6 @@ class HlsParser:
             if isinstance(tags["#EXTINF"], str):
                 tags["#EXTINF"] = tags["#EXTINF"].rsplit(",", 1)[0]
             seg_time = round(pif(tags["#EXTINF"]), 6)
-            #    line = self._auto_cuein(line)
             if self.pts is not None:
                 self.pts += seg_time
             if self.break_timer is not None:
@@ -512,6 +514,7 @@ class HlsParser:
                 self.pts = cue.packet_data.pts
             self._ts_set_cue(cue)
 
+
     def _ts_set_cue(self, cue):
         """
         _ts_set_cue validate and set cue from ts segment.
@@ -534,7 +537,7 @@ class HlsParser:
             self._ts_pts(seg)
             if self.prof.parse_segments:
                 self._ts_cues(seg)
-                self._print_time()
+
 
     def _chk_aac(self, this):
         """
@@ -547,7 +550,7 @@ class HlsParser:
             if pts:
                 self.pts = pts
                 self.hls_pts = "PTS"
-                self._print_time()
+           #     self._print_time()
 
     def _new_media(self, this):
         """
@@ -612,7 +615,6 @@ class HlsParser:
         """
         if "#EXT-X-PROGRAM-DATE-TIME" in line:
             return None
-
         if "#EXTINF:" in line:
             line = self._extinf(line)
             return line
@@ -639,6 +641,7 @@ class HlsParser:
         if line contains ENDLIST tag.
         """
         if "#EXT-X-ENDLIST" in line:
+            print("End list tag")
             self.reload = False
 
     def _write_flat(self, lines, media):
@@ -667,9 +670,7 @@ class HlsParser:
 
     def _parse_new_media(self, lines, media):
         self._write_flat(lines, media)
-        parsed = [self._parse_line(line) for line in lines]
-        lines = [line for line in parsed if line is not None]
-        media = media.replace("\n", "")
+        lines = [self._parse_line(line) for line in lines if line is not None]
         try:
             self._chk_ts(media)
         except ERR:
@@ -687,6 +688,7 @@ class HlsParser:
                 self._auto_cuein("## AUTO IN")
 
     def _fixup_media(self, lines, media):
+        media = media.replace("\n", "").strip()
         if not media.startswith("http"):
             media = self.base_uri + "/" + media
         if self._new_media(media):
