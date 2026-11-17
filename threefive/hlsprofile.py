@@ -80,7 +80,6 @@ class Scte35Profile:
 
     def _write_profile_lines(self, pro_f):
         for quay, vee in vars(self).items():
-            print(quay)
             if quay not in ('starts' , 'seg_type') :
                 line = self._mk_profile_line(quay, vee)
                 pro_f.write(line + "\n")
