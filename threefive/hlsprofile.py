@@ -54,6 +54,7 @@ class Scte35Profile:
 
     def _is_int(self, vee, line):
         for item in vee:
+
             if isinstance(item, int):
                 line = f"{line}{hex(item)},"
             else:
@@ -79,8 +80,10 @@ class Scte35Profile:
 
     def _write_profile_lines(self, pro_f):
         for quay, vee in vars(self).items():
-            line = self._mk_profile_line(quay, vee)
-            pro_f.write(line + "\n")
+            print(quay)
+            if quay not in ('starts' , 'seg_type') :
+                line = self._mk_profile_line(quay, vee)
+                pro_f.write(line + "\n")
 
     def write_profile(self, pro_file):
         """
