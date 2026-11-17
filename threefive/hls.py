@@ -273,8 +273,13 @@ class HlsParser:
         """
         _show_tags print tags
         """
+        self._clear()
+        print2(f'\n{REV}Tags{NORM}')
         for que, vee in tags.items():
-            print(f"{SUB}{que}: {vee}\n")
+            if vee is None:
+                print2(f"{SUB}{que}")
+            else:
+                print2(f"{SUB}{que}: {vee}")
 
     def _set_break_timer(self, line, cont_tags):
         """
@@ -321,6 +326,10 @@ class HlsParser:
             self._set_break_timer(line, cont_tags)
             self._set_break_duration(line, cont_tags)
 
+    def _chk_expand(self,tags):
+        if self.prof.expand_cues:
+            self._show_tags(tags)        
+
     def _chk_x_cue_out_cont(self, tags, line):
         """
         _chk_x_cue_out_const processes
@@ -339,7 +348,8 @@ class HlsParser:
         _chk_x_cue_in processes
         #EXT-X-CUE-IN tags.
         """
-        return self._set_cue_state(line, line)
+        self._chk_expand(tags)
+        self._set_cue_state(line, line)
 
     def _chk_x_cue_out(self, tags, line):
         """
@@ -347,21 +357,22 @@ class HlsParser:
         #EXT-X-CUE-OUT tags
         """
         self._clear()
-        self._show_tags(tags)
-        return self._set_cue_state(line, line)
+        self._chk_expand(tags)
+        self._set_cue_state(line, line)
 
     def _chk_x_scte35(self, tags, line):
         """
         _chk_x_scte35 handles #EXT-X-SCTE35 tags.
         """
-        cue = None
+
         if "CUE" in tags["#EXT-X-SCTE35"]:
             cue = Cue(tags["#EXT-X-SCTE35"]["CUE"])
             self.auto_return = cue.command.has("break_auto_return")
             pts, new_line = self.prof.validate_cue(cue)
             line = new_line
-        self._clear()
-        return self._set_cue_state(cue, line)
+            self._clear()
+            self._chk_expand(tags)
+            self._set_cue_state(cue, line)
 
     def _chk_x_daterange(self, tags, line):
         """
@@ -370,16 +381,16 @@ class HlsParser:
         cue = None
         for scte35_tag in ["SCTE35-OUT", "SCTE35-IN"]:
             if scte35_tag in tags["#EXT-X-DATERANGE"]:
-                cue = Cue(tags["#EXT-X-DATERANGE"][scte35_tag])
+                dtags = tags["#EXT-X-DATERANGE"]
+                cue = Cue(dtags[scte35_tag])
                 self.auto_return = cue.command.has("break_auto_return")
                 pts, new_line = self.prof.validate_cue(cue)
                 new_line = new_line.replace("CUE OUT", scte35_tag)
                 new_line = new_line.replace("CUE IN", scte35_tag)
                 new_line = new_line.strip("\n")
-
-                line = f"DATERANGE {new_line}"
-                self._show_tags(tags)
-        return self._set_cue_state(cue, line)
+                line = f"DATERANGE {new_line}"  
+                self._chk_expand(dtags)
+                self._set_cue_state(cue, line)
 
     def _chk_x_oatcls(self, tags, line):
         """
@@ -392,7 +403,8 @@ class HlsParser:
         pts, new_line = self.prof.validate_cue(cue)
         if abs(pts - self.pts) > 5:  # Handle Cues out of sync with video PTS
             pts = self.pts
-        return self._set_cue_state(cue, new_line)
+        self._chk_expand(tags)
+        self._set_cue_state(cue, new_line)
 
     def _dump_by_key(self, pts, line, keys):
         for key in keys:
@@ -489,7 +501,6 @@ class HlsParser:
             gonzo = f"{first}{second}"
         third = f"{REV}{self.hls_pts}{NORM} "
         self._clear()
-
         reblue(f"{NORM}  {third}{self.pts:.6f} {gonzo}")
 
     def _ts_pts(self, seg):
@@ -546,7 +557,6 @@ class HlsParser:
             if pts:
                 self.pts = pts
                 self.hls_pts = "PTS"
-           #     self._print_time()
 
     def _new_media(self, this):
         """
@@ -681,15 +691,10 @@ class HlsParser:
         self._write_flat(lines, media)
         lines = [self._parse_line(line) for line in lines if line is not None]
         self._parse_media_segment(media)
-
         pane = Pane(media, lines)
         self.sliding_window.slide_panes(pane)
         self.first_segment = False
-        self._clear()
         self._print_time()
-
-
-
 
     def _fixup_media(self, lines, media):
         media = media.replace("\n", "").strip()
@@ -866,7 +871,6 @@ HELPME = """
     #EXT-X-DATERANGE,#EXT-X-SCTE35,#EXT-X-CUE-IN,#EXT-X-CUE-OUT
     command_types = 0x6,0x5
     descriptor_tags = 0x2
-    starts = 0x22,0x30,0x32,0x34,0x36,0x44,0x46
 
     ( Integers are show in hex (base 16),
       base 10 unsigned integers can also be used in .35rc )
@@ -877,7 +881,6 @@ HELPME = """
     * hls_tags:          set which SCTE-35 HLS Tags to parse.
     * command_types:     set which Splice Commands to parse.
     * descriptor_tags:   set which Splice Descriptor Tags to parse.
-    * starts:            set which Segmentation Type IDs to use to start breaks.
 
     Edit the file as needed and then run threefive hls.
 
