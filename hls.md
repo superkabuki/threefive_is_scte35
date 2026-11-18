@@ -1,3 +1,7 @@
+### Heads's up 
+> I am actively working on the HLS, I will have a new release by the end of the week. If you need the updates faster, go to threefive in your python3 site-packages and run git pull.  ~Adrian
+
+
 # [threefive and HLS SCTE-35]
 * parsing SCTE-35 in HLS with threefive is easy.
 * threefive supports single rendition and multi-rendition(maaster.m3u8)
