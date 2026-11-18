@@ -23,7 +23,7 @@ class Scte35Profile:
         A Scte35Profile
         """
         self.expand_cues = False  # Show SCTE-35 Cues fully expanded.
-        self.parse_segments = True  # Parse Segments for SCTE-35.
+        self.parse_segments = False  # Parse Segments for SCTE-35.
         self.parse_manifests = True  # Parse m3u8 files for SCTE-35 HLS tags.
         #  Parse these types of HLS SCTE-35 tags.
         self.hls_tags = [
@@ -200,9 +200,8 @@ class Scte35Profile:
         return pts
 
     def _chk_expand(self, cue):
-       # if self.expand_cues:
-         #   cue.show()
-        return
+        if self.expand_cues:
+            cue.show()
     
     def _chk_time_signal(self, cue, line):
         if cue.command.command_type == 6:
