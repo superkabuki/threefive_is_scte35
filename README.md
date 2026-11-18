@@ -161,34 +161,34 @@ __threefive__ __[media to parse for SCTE-35]__
 
 examples:
 
-*
+* __base64__
 ```sed
 threefive '/DAWAAAAAAAAAP/wBQb+AKmKxwAACzuu2Q=='
 ```
-*
+* __hex__
 ```sed
 threefive 0xfc301600000000000000fff00506fe00a98ac700000b3baed9
 ```
-*
+* __int__
 ```sed
 threefive 1583008701074197245727019716796221242036302348025116111908569
 ```
-*
+* __mpegts__
 ```sed
 threefive video.ts
 ```
-*
+* __hls__
 ```sed
 threefive https://demo.unified-streaming.com/k8s/live/scte35.isml/scte35-audio_eng=64000-video=500000.m3u8
 ```
 
 * Formats like ___XML and JSON__ that may be to large to type on the command line,they can be __redirected or piped__ in to threefive.
 
-* redirect
+* __redirect__
 ```sed
 threefive < xml.xml
 ```
-* pipe
+* __pipe__
 ```sed
 cat json.json | threefive
 
