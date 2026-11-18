@@ -200,9 +200,10 @@ class Scte35Profile:
         return pts
 
     def _chk_expand(self, cue):
-        if self.expand_cues:
-            cue.show()
-
+       # if self.expand_cues:
+         #   cue.show()
+        return
+    
     def _chk_time_signal(self, cue, line):
         if cue.command.command_type == 6:
             line = self._validate_time_signal(cue)
