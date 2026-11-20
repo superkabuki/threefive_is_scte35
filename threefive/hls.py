@@ -284,8 +284,9 @@ class HlsParser:
         self._clear()
         print2(f"{SUB}{REV}Tags{NORM}")
         for que, vee in tags.items():
+            que= que.strip("\n")
             if vee is None:
-                print2(f"{SUB}{que.strip('\n')}")
+                print2(f"{SUB}{que}")
             else:
                 print2(f"{SUB}{que}: {vee}")
         print2('')
