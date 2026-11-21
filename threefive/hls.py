@@ -100,7 +100,6 @@ class HlsParser:
         self.break_timer = None
         self.break_duration = None
         self.reload = True
-        self.sleep_duration = 0
         self.window_size = None
         self.sliding_window = SlidingWindow()
         self.cue_state = None
@@ -116,6 +115,7 @@ class HlsParser:
         self.rendition = None
         self.auto_return = False
         self._clear_files()
+        self.media_list=[]
 
     @staticmethod
     def _clear():
@@ -184,7 +184,6 @@ class HlsParser:
             if not self.break_duration:
                 return f"{NSUB}Break Timer: {round(self.break_timer,6)}"
             return f"{NSUB}Break Duration: {self.break_duration} Actual: { round(self.break_timer,3)} Diff: {round(self.break_timer - self.break_duration,3)}"
-
         return ""
 
     def _dur_stuff(self):
@@ -213,6 +212,7 @@ class HlsParser:
                 self.cue_state = "IN"
                 self.auto_return = False
                 self._to_sidecar(self.pts, line)
+                self._clear()
                 print2(f"{head}{self._diff_stuff()}{NSUB}{self._media_stuff()}")
                 self._reset_break()
                 self._update_cue_state()
@@ -234,6 +234,7 @@ class HlsParser:
                     self.break_duration = pif(line.split(":")[1])
                 self._to_sidecar(self.pts, line)
                 self._update_cue_state()
+                self._clear()
                 print2(f"{head}{self._dur_stuff()}{NSUB}{self._media_stuff()}")
         return line
 
@@ -251,7 +252,6 @@ class HlsParser:
         if isinstance(cue, int):
             cue = f"{cue}"
         if "CONT" not in line:
-          #  self._clear()
             splice = f"{REV}Splice Point{NORM}"
             head = f"{iso8601()}{splice} {line.strip()}         {self._pts_stuff()} "
             if mpegts:
@@ -350,7 +350,6 @@ class HlsParser:
     def _output(self, tags, line):
         self._set_cue_state(line, line)
         self._show_tags(tags)
-        #print2("\n")
 
     def _chk_x_cue_in(self, tags, line):
         """
@@ -370,7 +369,6 @@ class HlsParser:
         """
         _chk_x_scte35 handles #EXT-X-SCTE35 tags.
         """
-
         if "CUE" in tags["#EXT-X-SCTE35"]:
             cue = Cue(tags["#EXT-X-SCTE35"]["CUE"])
             self.auto_return = cue.command.has("break_auto_return")
@@ -459,7 +457,6 @@ class HlsParser:
         if self.cue_state == "CONT":
             self.auto_return = False
             new_line = "#EXT-X-CUE-IN  ## Auto \n"
-           # print2("\n\n")
             self._output({"Auto":None}, new_line)
             return new_line
         return line
@@ -489,6 +486,7 @@ class HlsParser:
                 self.pts += seg_time
             if self.break_timer is not None:
                 self.break_timer += seg_time
+            time.sleep(seg_time*.9)
         return line
 
     def _print_time(self):
@@ -531,7 +529,6 @@ class HlsParser:
         """
         _ts_set_cue validate and set cue from ts segment.
         """
-
         cue_pts, line = self.prof.validate_cue(cue)
         self._set_cue_state(cue, line.replace("\n", "-MPEGTS\n"))
 
@@ -584,10 +581,8 @@ class HlsParser:
          requests.
         """
         if "TARGETDURATION" in line:
-            if self.sleep_duration == 0:
-                target_duration = pif(line.split(":")[1])
-                self.sleep_duration = round(target_duration * 0.5, 3)
-                print(f"    {REV} Target Duration {NORM} {target_duration}\n ")
+            target_duration = pif(line.split(":")[1])
+            print(f"    {REV} Target Duration {NORM} {target_duration}\n ")
 
     def _mk_window_size(self, lines):
         return len([line for line in lines if "#EXTINF:" in line])
@@ -628,6 +623,7 @@ class HlsParser:
             return None
         if "#EXTINF:" in line:
             line = self._extinf(line)
+
             return line
         self._chk_aes(line)
         line = self.scte35(line)
@@ -669,15 +665,15 @@ class HlsParser:
                 flat.write(line)
             flat.write(media + "\n")
 
-    def write_manifest(self):
-        """
-        write_manifest write data to sc.m3u8
-        with profile rules applied.
-        """
-        with open(self.m3u8, "w", encoding="utf-8") as out:
-            out.write("#EXTM3U\n")
-            out.write("".join(self.headers))
-            out.write(self.sliding_window.all_panes())
+##    def write_manifest(self):
+##        """
+##        write_manifest write data to sc.m3u8
+##        with profile rules applied.
+##        """
+##        with open(self.m3u8, "w", encoding="utf-8") as out:
+##            out.write("#EXTM3U\n")
+##            out.write("".join(self.headers))
+##            out.write(self.sliding_window.all_panes())
 
     def _parse_media_segment(self, media):
         try:
@@ -686,7 +682,7 @@ class HlsParser:
             try:
                 self._chk_aac(media)
             except ERR:
-                red(f"Skipping {media}\n")
+                blue(f"Not parsing -> {media}\n")
         return
 
     def _parse_new_media(self, lines, media):
@@ -704,12 +700,18 @@ class HlsParser:
         if self._new_media(media):
             self._parse_new_media(lines, media)
             self._print_time()
+##
+##    def _post_parse(self):
+##        print("post")
+##        self.write_manifest()
+##        self.hls_headers = []
+##        self._update_cue_state()
+##     #   time.sleep(self.sleep_duration)
 
-    def _post_parse(self):
-        self.write_manifest()
-        self.hls_headers = []
-        self._update_cue_state()
-        time.sleep(self.sleep_duration)
+    def _chk_break(self):
+        if self.break_timer > self.break_duration:
+            self._clear()
+            self._auto_cuein("## AUTO IN")
 
     def _parse_manifest(self):
         """
@@ -718,26 +720,27 @@ class HlsParser:
         if not self.rendition:
             red("No rendition to parse")
             return
-        self.rendition = self.rendition.strip()
-        with reader(self.rendition, headers=self.headers) as m3u8:
-            lines = []
-            m3u8_lines = self._decode_lines(m3u8.readlines())
-            self._chk_window_size(m3u8_lines)
-            for line in m3u8_lines:
-                self._chk_endlist(line)
-                if line.startswith("#"):
-                    if not self._parse_header(line):
-                        lines.append(line)
-                else:
-                    media = line
-                    self._fixup_media(lines, media)
-                    lines = []
-                if self.break_timer:
-                    if self.break_timer > self.break_duration:
-                        self._clear()
-                        self._auto_cuein("## AUTO IN")
+        self.reload=True
+        while self.reload:
+            self.rendition = self.rendition.strip()
+            with reader(self.rendition, headers=self.headers) as m3u8:
+                lines = []
+                m3u8_lines = self._decode_lines(m3u8.readlines())
+                self._chk_window_size(m3u8_lines)
+                for line in m3u8_lines:
+                    self._chk_endlist(line)
+                    if line.startswith("#"):
+                        if not self._parse_header(line):
+                            lines.append(line)
+                    else:
+                        media = line
+                        self._fixup_media(lines, media)
+                        lines = []
+                    if self.break_timer:
+                        self._chk_break()
 
-            self._post_parse()
+
+
 
     def pull(self):
         """
@@ -747,8 +750,7 @@ class HlsParser:
         print(f"{REV} Rendition Selected {NORM} {self.rendition}\n ")
         self.base_uri = self.rendition.rsplit("/", 1)[0]
         self.sliding_window = SlidingWindow()
-        while self.reload:
-            self._parse_manifest()
+        self._parse_manifest()
         with open(self.flat, "a", encoding="utf-8") as flat:
             flat.write("#EXT-X-ENDLIST\n")
 
@@ -827,7 +829,7 @@ def cli():
     manifest = sys.argv[1]
     hlsparser.find_renditions(manifest)
     hlsparser.pull()
-    sys.exit()
+   # sys.exit()
 
 
 HELPME = """
@@ -845,7 +847,7 @@ HELPME = """
     Video codecs: mpeg2, h.264, h.265
 	Audio codecs: mpeg2, aac, ac3, mp3
     Protocols: File, Http(s), Multicast, SRT, Stdin, UDP
-    Encryption: AES-128 (automatic)
+    Decryption: AES-128 (automatic)
 
 [ SCTE-35 ]
 
@@ -853,7 +855,7 @@ HELPME = """
 
   [ Supported HLS Tags ]
 
-	* #EXT-OATCLS-SCTE35
+    * #EXT-OATCLS-SCTE35
     * #EXT-X-CUE-OUT-CONT
     * #EXT-X-DATERANGE
     * #EXT-X-SCTE35
@@ -864,7 +866,7 @@ HELPME = """
 
     SCTE-35 parsing can be fine tuned by setting a parsing profile.
 
-    running the command:   scte35hls profile
+    running the command:   threefive hls profile
 
     will generate a default profile and write a file named hls.profile
     in the current working directory.
@@ -891,25 +893,11 @@ HELPME = """
 
     Edit the file as needed and then run threefive hls.
 
-[ Profile Formatting Rules ]
 
-    * Values do not need to be quoted.
-    * Multiple values are separated by a commas.
-    * No partial line comments. Comments must be on a separate lines.
-    * Comments can be started with a # or //
-    * Integers can be base 10 or base 16
 
 [ Output Files ]
-	scte35 hls creates a few output files.
 
-	* Profile rules applied to the output:
-
-		* hls.m3u8  - live playable rewrite of the m3u8 with the profile SCTE-35 rules.
-        * hls.sidecar - list of ( pts, HLS SCTE-35 tag ) pairs
-
-	* Profile rules not applied to the output:
-
-		* hlsflat.m3u8  - hls live streams are flattened out into a vod playlist.
+	* hlsflat.m3u8  - hls live streams are flattened out into a vod playlist.
                      When the live m3u8  first loads, every line is written to hlsflat.m3u8
                      Wnen a live m3u8 is reloaded, everything except the headers
                     is appended to hlsflat.m3u8. This give you a VOD style m3u8
