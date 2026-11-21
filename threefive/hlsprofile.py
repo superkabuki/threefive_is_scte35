@@ -22,7 +22,7 @@ class Scte35Profile:
         """
         A Scte35Profile
         """
-        self.expand_cues = False  # Show SCTE-35 Cues fully expanded.
+        self.expand_cues =False # Show SCTE-35 Cues fully expanded.
         self.parse_segments = False  # Parse Segments for SCTE-35.
         self.parse_manifests = True  # Parse m3u8 files for SCTE-35 HLS tags.
         #  Parse these types of HLS SCTE-35 tags.
@@ -42,7 +42,7 @@ class Scte35Profile:
         ]
         # Which Descriptor Segmentation Types IDs should be parsed
         self.starts = [0x22, 0x30, 0x32, 0x34, 0x36, 0x44, 0x46]
-        self.seg_type = 0x23
+        self.seg_type = 0x00
 
     # self.stops = [0x23, 0x31, 0x33, 0x35, 0x37, 0x45, 0x47]
 
