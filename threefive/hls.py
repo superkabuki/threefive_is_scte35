@@ -326,7 +326,7 @@ class HlsParser:
                 self.break_duration = None
         if self.break_duration:
             print(f"{iso8601()}{REV} Break Duration {NORM} {self.break_duration}\n")
-            time.sleep(0.1)
+           # time.sleep(0.1)
 
     def _resume_break(self, line, cont_tags):
         blue(f"{NORM}{iso8601()}{REV} Resuming Ad Break")
@@ -345,7 +345,8 @@ class HlsParser:
             return None
         if self.first_segment:
             self._resume_break(line, cont_tags)
-        return self._auto_cont()
+        #self._output(cont_tags, line)
+        #return self._auto_cont()
 
     def _output(self, tags, line):
         self._set_cue_state(line, line)
@@ -373,6 +374,7 @@ class HlsParser:
             cue = Cue(tags["#EXT-X-SCTE35"]["CUE"])
             self.auto_return = cue.command.has("break_auto_return")
             pts, new_line = self.prof.validate_cue(cue)
+            print("NEW",new_line)
             line = new_line
             self._output(tags, line)
 
@@ -447,7 +449,7 @@ class HlsParser:
         line = (
             f"#EXT-X-CUE-OUT-CONT:{round(self.break_timer,3)}/{self.break_duration}\n"
         )
-        self._output(line,line)
+#        self._output(line,line)
         return line
 
     def _auto_cuein(self, line):
@@ -637,7 +639,7 @@ class HlsParser:
             return False
         splitline = line.split(":", 1)
         if splitline[0] in HEADER_TAGS:
-            self._parse_target_duration(line)
+            #self._parse_target_duration(line)
             self.hls_headers.append(line)
             return True
         return False
@@ -738,6 +740,7 @@ class HlsParser:
                         lines = []
                     if self.break_timer:
                         self._chk_break()
+                time.sleep(1)
 
 
 
