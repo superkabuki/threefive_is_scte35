@@ -86,7 +86,7 @@ def mk_sidecar(cue):
             pts = cue.packet_data.pts
         if cue.command.pts_time:
             pts = (cue.command.pts_time + cue.info_section.pts_adjustment) % rollover
-        data = f"{pts},{cue.encode()}\n"
+        data = f"{round(pts,6)},{cue.encode()}\n"
         sidecar.write(data)
 
 
@@ -109,7 +109,7 @@ def not_pkt(args, rdr, one):
     args.append((one + two).decode())  # no rewind on stdin?
 
 
-def is_pkt( rdr, one):
+def is_pkt(rdr, one):
     """
     is_pkt runs when stdin is an mpegts stream
     """
@@ -190,6 +190,7 @@ class PrintMapper:
     """
     PrintMapper handles version and help related keywords
     """
+
     def hls(self):
         sys.argv.remove("hls")
         hlscli()
