@@ -203,6 +203,8 @@ class HlsParser:
             "#EXT-X-CUE-IN",
             "CUE IN",
             "SCTE35-IN",
+            'CUE-IN=YES'
+
         ):
             if ci in line:
                 if self.cue_state not in [
@@ -215,27 +217,32 @@ class HlsParser:
                 self._clear()
                 print2(f"{head}{self._diff_stuff()}{NSUB}{self._media_stuff()}")
                 self._reset_break()
-                self._update_cue_state()
+                return line
         return line
 
-    def _chk_cue_out(self, line, head, mpegts=False):
+    def _chk_cue_out(self, line, head,cue, mpegts=False):
         for co in (
             "CUE OUT",
             "SCTE35-OUT",
             "#EXT-X-CUE-OUT",
+            "CUE-OUT=YES"
         ):
-            if co in line:
-                if self.cue_state not in [None, "IN"]:
+            if co in line and 'CONT' not in line:
+                if self.cue_state not in [None]:
                     return self._invalid(line, mpegts)
                 self._reset_break()
                 self.cue_state = "OUT"
                 self.break_timer = 0.0
-                if ":" in line:
+                if ":" in line and '#EXT-X-SCTE35' not in line:
                     self.break_duration = pif(line.split(":")[1])
+                else:
+                    if self.cue_state == "OUT":
+                        if bd:=cue.command.has("break_duration"):
+                            self.break_duration=bd
                 self._to_sidecar(self.pts, line)
-                self._update_cue_state()
                 self._clear()
                 print2(f"{head}{self._dur_stuff()}{NSUB}{self._media_stuff()}")
+                return line
         return line
 
     def _set_cue_state(self, cue, line):
@@ -257,11 +264,8 @@ class HlsParser:
             if mpegts:
                 head = f"{iso8601()}{splice} {line.strip()} ## MPEGTS         {self._pts_stuff()}"
             line = self._chk_cue_in(line, head, mpegts)
-            line = self._chk_cue_out(line, head, mpegts)
-        if self.cue_state in ["CONT"]:
-            self._to_sidecar(self.pts, line)
-            self.cue_state = "CONT"
-
+            line = self._chk_cue_out(line, head, cue,mpegts)
+            self._update_cue_state()
         return line
 
     def _invalid(self, line, mpegts=False):
@@ -306,7 +310,6 @@ class HlsParser:
             except ERR:
                 self.break_timer = 0.0
         print(f"{iso8601()}{REV} Break Timer {NORM} {self.break_timer}\n")
-        time.sleep(0.1)
 
     def _set_break_duration(self, line, cont_tags):
         """
@@ -326,7 +329,6 @@ class HlsParser:
                 self.break_duration = None
         if self.break_duration:
             print(f"{iso8601()}{REV} Break Duration {NORM} {self.break_duration}\n")
-           # time.sleep(0.1)
 
     def _resume_break(self, line, cont_tags):
         blue(f"{NORM}{iso8601()}{REV} Resuming Ad Break")
@@ -345,8 +347,8 @@ class HlsParser:
             return None
         if self.first_segment:
             self._resume_break(line, cont_tags)
-        #self._output(cont_tags, line)
-        #return self._auto_cont()
+        self._set_cue_state(line, line)
+        return self._auto_cont()
 
     def _output(self, tags, line):
         self._set_cue_state(line, line)
@@ -370,13 +372,18 @@ class HlsParser:
         """
         _chk_x_scte35 handles #EXT-X-SCTE35 tags.
         """
-        if "CUE" in tags["#EXT-X-SCTE35"]:
-            cue = Cue(tags["#EXT-X-SCTE35"]["CUE"])
+        cue=None
+        if 'CONT' in line:
+            if self.cue_state in ["OUT","CONT",None]:
+                self.cue_state="CONT"
+        stags = tags["#EXT-X-SCTE35"]
+        if "CUE" in stags:
+            cue = Cue(stags["CUE"])
             self.auto_return = cue.command.has("break_auto_return")
+        if 'CONT' not in line:
             pts, new_line = self.prof.validate_cue(cue)
-            print("NEW",new_line)
-            line = new_line
-            self._output(tags, line)
+            self._set_cue_state(cue, line)
+            self._show_tags(stags)
 
     def _chk_x_daterange(self, tags, line):
         """
@@ -456,11 +463,12 @@ class HlsParser:
         """
         _auto_cuein handles cue.command.auto-return
         """
-        if self.cue_state == "CONT":
-            self.auto_return = False
-            new_line = "#EXT-X-CUE-IN  ## Auto \n"
-            self._output({"Auto":None}, new_line)
-            return new_line
+        if self.auto_return:
+            if self.cue_state == "CONT":
+                self.auto_return = False
+                new_line = "#EXT-X-CUE-IN  ## Auto \n"
+                self._output({"Auto":None}, new_line)
+                return new_line
         return line
 
     def _reset_break(self):
@@ -625,7 +633,6 @@ class HlsParser:
             return None
         if "#EXTINF:" in line:
             line = self._extinf(line)
-
             return line
         self._chk_aes(line)
         line = self.scte35(line)
@@ -667,16 +674,6 @@ class HlsParser:
                 flat.write(line)
             flat.write(media + "\n")
 
-##    def write_manifest(self):
-##        """
-##        write_manifest write data to sc.m3u8
-##        with profile rules applied.
-##        """
-##        with open(self.m3u8, "w", encoding="utf-8") as out:
-##            out.write("#EXTM3U\n")
-##            out.write("".join(self.headers))
-##            out.write(self.sliding_window.all_panes())
-
     def _parse_media_segment(self, media):
         try:
             self._chk_ts(media)
@@ -702,13 +699,6 @@ class HlsParser:
         if self._new_media(media):
             self._parse_new_media(lines, media)
             self._print_time()
-##
-##    def _post_parse(self):
-##        print("post")
-##        self.write_manifest()
-##        self.hls_headers = []
-##        self._update_cue_state()
-##     #   time.sleep(self.sleep_duration)
 
     def _chk_break(self):
         if self.break_timer > self.break_duration:
