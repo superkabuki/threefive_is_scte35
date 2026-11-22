@@ -200,9 +200,10 @@ class Scte35Profile:
         return pts
 
     def _chk_expand(self, cue):
-        if self.expand_cues:
-            cue.show()
-    
+##        if self.expand_cues:
+##            cue.show()
+        return
+
     def _chk_time_signal(self, cue, line):
         if cue.command.command_type == 6:
             line = self._validate_time_signal(cue)
@@ -232,7 +233,7 @@ class Scte35Profile:
 
     def _is_splice_insert_cueout(self, cue):
         line = None
-        if cue.command.has("break_duration"):
+        if cue.command.out_of_network_indicator==True:
             line = self._mk_cueout_line(cue.command.break_duration)
         return line
 
@@ -242,7 +243,7 @@ class Scte35Profile:
         """
         line = self._is_splice_insert_cueout(cue)
         if not line:
-            line = "CUE IN\n"
+            line = "CUE-IN=YES"
         return line
 
     def _incr_seg_type(self, line, dscptr):
