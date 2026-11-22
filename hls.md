@@ -10,8 +10,15 @@
  threefive https://demo.unified-streaming.com/k8s/live/scte35.isml/.m3u8
 ```
 ### [ output ]
+* __CUE OUT__
+<img width="723" height="212" alt="image" src="https://github.com/user-attachments/assets/ef10b846-0903-4d10-871c-670fc981f73e" />
 
-<img width="790" height="432" alt="image" src="https://github.com/user-attachments/assets/06d838ae-d7c3-4f3a-af5c-786cba6b6396" />
+* __CUE IN__
+<img width="724" height="131" alt="image" src="https://github.com/user-attachments/assets/7b6c2b20-2dd7-41e4-a08d-ac91c8016411" />
+
+ * __Skipped Cue__
+ 
+<img width="713" height="172" alt="image" src="https://github.com/user-attachments/assets/4144a4ad-2922-4285-bfdf-ef486ff8d7b4" />
 
 * __across the bottom of the screen__ you'll see the current __PTS__ and __Media Segment__
 ```js
