@@ -6,11 +6,11 @@ __***__ _if you need to encode SCTE-35 to HLS, use [x9k3](https://github.com/sup
 ___
 # `[ version ]`
 
-## latest threefive version is _v3.1.11_
-* pylint:  __9.8__/10.0
-* cyclomatic complexity: __2.051__
+## latest threefive version is _v3.1.13_
+* pylint:  __9.82__/10.0
+* cyclomatic complexity: __2.04__
+   __HLS Parser__ has been __SUPER tuned up__. Try it, you'll like it.
 * __automatic__ parsing of __ID3__ streams for __SCTE-35__ in __MPEGTS__ streams 
-* __HLS Parser__ has been __tuned up__. __DATERANGE__ tag __fixed__.
 * __Iframer__ has been merged into the __Stream__ class.
 * __piping SCTE-35__ data into the __threefive cli__ tool __now works on Windows too__ the __select call__ has been __removed__. 
 * check the [__change log__](changes.md)
