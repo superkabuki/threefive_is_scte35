@@ -1,6 +1,8 @@
 
 # [__Breaking News__]
-* New stuff coming in threefive v3.1.9
+* New stuff coming in threefive v3.1.13
+
+* __Tons of work__ on the __HLS parser__ with a focus on __X-DATERANGE__ and __X-SCTE35__ tags.
 
 * __threefive now parses ID3 streams for SCTE-35 in MPEGTS__. it's automatically detected, you don't need to do anything. SCTE-35 in a single ID3 packet and SCTE-35 spread over multiple ID3 packets are both supported. You can filter which pids are parsed for SCTE-35 with __Stream.decode_pids(list_of_pids)__
 
