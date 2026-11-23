@@ -2,8 +2,7 @@
 decodenext.py demonstrates how to use Stream.decode_next() to grab and process
 the next SCTE-35 Cue in an MPEGTS stream.
 
-threefive.Stream.decode_next() is a python generator that yields a cue
-when it finds one
+threefive.Stream.decode_next() yields the next SCTE-35 cue in an MPEGTS stream.
 
 once you have a cue, you can show it, or pass it to another function or method
 
@@ -22,7 +21,7 @@ from threefive import Stream
 def do():
     arg = sys.argv[1]
     strm = Stream(sys.argv[1])
-    for cue in strm.decode_next():
+    while cue:= strm.decode_next():
         cmd = f"Command: {cue.command.name}"
         if cue.command.has("pts_time"):
             cmd += f"\t pts: {cue.command.pts_time}"
