@@ -4,7 +4,6 @@ hlsprofile.py contains Scte35Profile for the HLSParser class.
 """
 
 import os
-
 from .stuff import pif
 
 
@@ -182,8 +181,6 @@ class Scte35Profile:
             with open(pro_file, "r", encoding="utf-8") as pro_handle:
                 self._parse_profile(pro_handle)
 
-    #####
-
     def set_pts(self, cue):
         """
         set_pts cue.command.pts_time +
@@ -200,9 +197,8 @@ class Scte35Profile:
         return pts
 
     def _chk_expand(self, cue):
-##        if self.expand_cues:
-##            cue.show()
-        return
+        if self.expand_cues:
+            cue.show()
 
     def _chk_time_signal(self, cue, line):
         if cue.command.command_type == 6:
@@ -233,7 +229,7 @@ class Scte35Profile:
 
     def _is_splice_insert_cueout(self, cue):
         line = None
-        if cue.command.out_of_network_indicator==True:
+        if cue.command.out_of_network_indicator is True:
             line = self._mk_cueout_line(cue.command.break_duration)
         return line
 
