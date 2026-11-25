@@ -10,14 +10,15 @@ import re
 from sys import stderr
 
 ERR = (
-    LookupError,
-    ValueError,
-    OSError,
-    TypeError,
-    IndexError,
-    NameError,
     AttributeError,
+    IndexError,
     KeyError,
+    LookupError,
+    NameError,
+    OSError,
+    RuntimeError,
+    TypeError,
+    ValueError,
 )
 
 BLUE = "\033[7m"  # \033[44m"
@@ -218,12 +219,11 @@ def print2(gonzo=b""):
     if "HTTP_USER_AGENT" in environ:
         no_color = no_color.lstrip("#")
         print(f'<script>alert("{no_color}")</script>')
-        #print(f'<script>alert("{no_color}");window.location.href="https://iodisco.com/scte35";</script>')
+        # print(f'<script>alert("{no_color}");window.location.href="https://iodisco.com/scte35";</script>')
         return
 
     print(no_color, file=stderr, flush=True)
     return
-
 
 
 def iso8601():
