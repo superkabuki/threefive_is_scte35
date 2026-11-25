@@ -7,11 +7,7 @@ from .bitn import Bitn, NBin
 from .stuff import ERR
 from .xml import Node
 
-charset = "ascii"  #  pylint, this isn't a constant.
 
-"""
-set charset to None to return raw bytes
-"""
 
 
 class Upid:
@@ -20,6 +16,7 @@ class Upid:
     """
 
     def __init__(self, bitbin=None, upid_type=0, upid_length=0):
+        self.charset='ascii'
         self.bitbin = bitbin
         self.upid_type = upid_type
         self.upid_name = upid_map[upid_type][0]
@@ -31,7 +28,7 @@ class Upid:
         """
         decode Upid
         """
-        self.upid_value = self.bitbin.charset(self.bit_length, charset)
+        self.upid_value = self.bitbin.charset(self.bit_length, self.charset)
         return self.upid_name, self.upid_value
 
     def encode(self, nbin, seg_upid):
@@ -186,7 +183,7 @@ class Atsc(Upid):
             "reserved": self.bitbin.int(2),
             "end_of_day": self.bitbin.int(5),
             "unique_for": self.bitbin.int(9),
-            "content_id": self.bitbin.charset(cont_size, charset),
+            "content_id": self.bitbin.charset(cont_size, self.charset),
         }
         return self.upid_name, self.upid_value
 
