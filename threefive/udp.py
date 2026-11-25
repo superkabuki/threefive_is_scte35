@@ -3,7 +3,7 @@ udp.py      udp/multicast socket setting functions
 """
 
 import socket
-from .stuff import blue
+from .stuff import blue,ERR
 
 
 TIMEOUT = 60
@@ -44,12 +44,14 @@ def _iter_flags(socked):
     """
     _iter_flags iterate and set socket flags
     """
-    for k,v in { socket.SO_REUSEADDR:socket.SOL_SOCKET,
-                    socket.SO_REUSEPORT:socket.SOL_SOCKET,
-                    socket.IP_MULTICAST_LOOP:socket.IPPROTO_IP ,}.items():
+    for k, v in {
+        socket.SO_REUSEADDR: socket.SOL_SOCKET,
+        socket.SO_REUSEPORT: socket.SOL_SOCKET,
+        socket.IP_MULTICAST_LOOP: socket.IPPROTO_IP,
+    }.items():
         try:
-            socked.setsockopt(v,k,1)
-        except:
+            socked.setsockopt(v, k, 1)
+        except ERR:
             pass
 
 
@@ -59,7 +61,7 @@ def _udp_flags(socked):
     """
     _set_so_rcvbuf(socked)
     _iter_flags(socked)
-    set_timeout(socked,TIMEOUT)
+    set_timeout(socked, TIMEOUT)
 
 
 def udp_receiver():
