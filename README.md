@@ -12,7 +12,7 @@ __I am changing the version system used on threefive__.<br> I do a lot of releas
 __YYYY.MM.DD__ like __v2026.11.25__  for November 11th 2026. <BR>
 We'll try it and if it everybody hates it, I'll switch it back.
 
-## latest threefive version is _v2026.11.25
+## latest threefive version is v2026.11.25
 * pylint:  __9.82__/10.0
 * cyclomatic complexity: __2.04__
    __HLS Parser__ has been __SUPER tuned up__. Try it, you'll like it.
