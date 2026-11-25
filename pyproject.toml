@@ -1,11 +1,11 @@
 
 [project]
 name = "threefive"
-version = "3.1.13"
+version = "2026.11.25"
 authors = [
   { name="AdrianofDoom", email="spam@iodisco.com" },
 ]
-description = "threefive - SCTE-35 for the people."
+description = "threefive - the #1 SCTE-35 tool worldwide. "
 readme = "README.md"
 requires-python = ">=3.9"
 dependencies=["srtfu >=0.0.11","pyaes",]
