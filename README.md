@@ -6,6 +6,11 @@ __***__ _if you need to encode SCTE-35 to HLS, use [x9k3](https://github.com/sup
 ___
 # `[ version ]`
 
+## Heads Up!
+__I am changing the version system used on threefive__. I do a lot of releases, so to make a bit clearer, threefive versions will now be in the format
+__vYYYY.MM.DD__ like __v2026.11.25__  for November 11th 2026. <BR>
+We'll try it and if it everybody hates it, I'll switch it back.
+
 ## latest threefive version is _v3.1.13_
 * pylint:  __9.82__/10.0
 * cyclomatic complexity: __2.04__
