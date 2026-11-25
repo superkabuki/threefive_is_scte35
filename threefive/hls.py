@@ -87,10 +87,8 @@ class HlsParser:
     def __init__(self, pro_file="hls.profile", headers={}):
         self.media = deque()
         self.sidecar = "hls.sidecar"
-        self.dumpfile = "hls.dump"
         self.flat = "hlsflat.m3u8"
         self.pro_file = pro_file
-        self.m3u8 = "hls.m3u8"
         self.last_dump_line = None
         self.base_uri = None
         self.iv = None
@@ -131,7 +129,7 @@ class HlsParser:
         self.sidecar, self.dumpfile, self.flat, self.m3u8
         when showcues is started.
         """
-        for sidef in [self.sidecar, self.dumpfile, self.flat, self.m3u8]:
+        for sidef in [self.sidecar, self.flat,]:
             with open(sidef, "w+", encoding="utf-8") as side_file:  # touch
                 side_file.close()
 
@@ -155,16 +153,6 @@ class HlsParser:
         """
         with open(self.sidecar, "a", encoding="utf-8") as sidecar:
             sidecar.write(f"{round(pts,6)},{line}\n")
-
-    def _to_dump(self, pts, line):
-        """
-        _to_dump copies all SCTE-35 lines to self.dumpfile.
-        """
-        with open(self.dumpfile, "a", encoding="utf-8") as dump:
-            dump_line = f"{pts},{line}\n"
-            if dump_line != self.last_dump_line:
-                dump.write(dump_line)
-                self.last_dump_line = dump_line
 
     def _media_stuff(self):
         """
@@ -418,11 +406,6 @@ class HlsParser:
         line = new_line
         self._output(tags, line)
 
-    def _dump_by_key(self, pts, line, keys):
-        for key in keys:
-            if key in line:
-                self._to_dump(self.pts, line)
-
     def scte35(self, line):
         """
         threefive processes SCTE-35 related tags.
@@ -436,8 +419,6 @@ class HlsParser:
             "#EXT-X-CUE-OUT": self._chk_x_cue_out,
         }
         tags = TagParser([line]).tags
-        keys = list(scte35_map.keys())
-        self._dump_by_key(self.pts, line, keys)
         if self.prof.parse_manifests:
             for que, vee in scte35_map.items():
                 if que in line:
@@ -456,7 +437,6 @@ class HlsParser:
         line = (
             f"#EXT-X-CUE-OUT-CONT:{round(self.break_timer,3)}/{self.break_duration}\n"
         )
-#        self._output(line,line)
         return line
 
     def _auto_cuein(self, line):
@@ -496,7 +476,7 @@ class HlsParser:
                 self.pts += seg_time
             if self.break_timer is not None:
                 self.break_timer += seg_time
-            time.sleep(seg_time*.9)
+          #  time.sleep(seg_time*.9)
         return line
 
     def _print_time(self):
@@ -693,12 +673,14 @@ class HlsParser:
         self._parse_media_segment(media)
 
     def _fixup_media(self, lines, media):
+
         media = media.replace("\n", "").strip()
         if not media.startswith("http"):
             media = self.base_uri + "/" + media
         if self._new_media(media):
-            self._parse_new_media(lines, media)
             self._print_time()
+
+            self._parse_new_media(lines, media)
 
     def _chk_break(self):
         if self.break_timer > self.break_duration:
