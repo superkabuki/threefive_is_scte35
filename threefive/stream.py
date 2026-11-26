@@ -344,6 +344,7 @@ class Stream(Based):
             if iframe := self.parse_iframe(pkt):
                 return iframe
         return False
+
     # done
 
     def pkt2cue(self, pkt, func=show_cue):
@@ -365,7 +366,8 @@ class Stream(Based):
         The method is written this way for speed.
         """
         while pkt := self._tsdata.read(self.PACKET_SIZE):
-            pid = self._parse_pid(pkt[1], pkt[2])
+            one = (pkt[1] & 0x1F) << 8
+            pid = one + pkt[2]
             if pid in self.pids.pcr:
                 if pkt[1] & 0x40:
                     self._parse_pts(pkt, pid)
@@ -679,24 +681,23 @@ class Stream(Based):
         return self._chk_maybe_pid(pay, pid)
 
     def _parse_id3_payload(self, pkt, pid):
-        pay = self._parse_payload(pkt)  
-        whole = self._chk_partial(pay, pid, b"ID3")  
+        pay = self._parse_payload(pkt)
+        whole = self._chk_partial(pay, pid, b"ID3")
         if not whole:
-            return False  
-        privpay = self._split_by_idx(pay, b"PRIV")  
+            return False
+        privpay = self._split_by_idx(pay, b"PRIV")
         if not privpay:
             return False
         if b"scte" not in privpay:
-            return False  
-        return self._split_by_idx(
-            privpay, self.SCTE35_TID
-        )  
+            return False
+        return self._split_by_idx(privpay, self.SCTE35_TID)
 
     def _parse_scte35(self, pkt, pid):
         """
         parse a threefive cue from one or more packets
         """
-        if self.the_scte35_pids:  
+
+        if self.the_scte35_pids:
             if pid not in self.the_scte35_pids:
                 return False
         if pid in self.pids.id3:
