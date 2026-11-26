@@ -3,7 +3,7 @@ udp.py      udp/multicast socket setting functions
 """
 
 import socket
-from .stuff import blue,ERR
+from .stuff import blue, ERR
 
 
 TIMEOUT = 60
