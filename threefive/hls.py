@@ -147,7 +147,7 @@ class HlsParser:
                     self.key_uri = re_uri
                 if "IV" in tags["#EXT-X-KEY"]:
                     self.iv = tags["#EXT-X-KEY"]["IV"]
-
+        
     def _chk_cue_in(self, line, head, mpegts=False):
         for ci in ("#EXT-X-CUE-IN", "CUE IN", "SCTE35-IN", "CUE-IN=YES"):
             if ci in line:
@@ -163,23 +163,27 @@ class HlsParser:
                 return line
         return line
 
+    def _b(self,line,cue):
+        self._reset_break()
+        self.cue_state = "OUT"
+        self.break_timer = 0.0
+        if ":" in line and "#EXT-X-SCTE35" not in line:
+            self.break_duration = pif(line.split(":")[1])
+        else:
+            if self.cue_state == "OUT":
+                if bd := cue.command.has("break_duration"):
+                    self.break_duration = bd
+
     def _chk_cue_out(self, line, head, cue, mpegts=False):
-        for co in ("CUE OUT", "SCTE35-OUT", "#EXT-X-CUE-OUT", "CUE-OUT=YES"):
-            if co in line and "CONT" not in line:
-                if self.cue_state not in [None]:
-                    return self._invalid(line, mpegts)
-                self._reset_break()
-                self.cue_state = "OUT"
-                self.break_timer = 0.0
-                if ":" in line and "#EXT-X-SCTE35" not in line:
-                    self.break_duration = pif(line.split(":")[1])
-                else:
-                    if self.cue_state == "OUT":
-                        if bd := cue.command.has("break_duration"):
-                            self.break_duration = bd
-                self._clear()
-                print2(f"{head}{self._dur_stuff()}{NSUB}{self._media_stuff()}")
-                return line
+        if "CONT" not in line:
+            for co in ("CUE OUT", "SCTE35-OUT", "#EXT-X-CUE-OUT", "CUE-OUT=YES"):
+                if co in line:
+                    if self.cue_state not in [None]:
+                        return self._invalid(line, mpegts)
+                    self._b(line,cue)
+                    self._clear()
+                    print2(f"{head}{self._dur_stuff()}{NSUB}{self._media_stuff()}")
+           
         return line
 
     def _chk_x_cue_out_cont(self, tags, line):
@@ -437,6 +441,28 @@ class HlsParser:
         self._set_cue_state(line, line)
         self._show_tags(tags)
 
+    def _chk_break_timer(self):
+        if self.break_timer:
+            self._chk_break()
+
+    def _read_m3u8_lines(self):
+        self.rendition = self.rendition.strip()
+        with reader(self.rendition, headers=self.headers) as m3u8:
+            lines = []
+            m3u8_lines = self._decode_lines(m3u8.readlines())
+            self._chk_window_size(m3u8_lines)
+            for line in m3u8_lines:
+                self._chk_endlist(line)
+                if line.startswith("#"):
+                    if not self._parse_header(line):
+                        lines.append(line)
+                else:
+                    media = line
+                    self._fixup_media(lines, media)
+                    lines = []
+                self._chk_break_timer()
+            time.sleep(1)
+            
     def _parse_manifest(self):
         """
         _parse_manifest, parses m3u8 files.
@@ -446,23 +472,8 @@ class HlsParser:
             return
         self.reload = True
         while self.reload:
-            self.rendition = self.rendition.strip()
-            with reader(self.rendition, headers=self.headers) as m3u8:
-                lines = []
-                m3u8_lines = self._decode_lines(m3u8.readlines())
-                self._chk_window_size(m3u8_lines)
-                for line in m3u8_lines:
-                    self._chk_endlist(line)
-                    if line.startswith("#"):
-                        if not self._parse_header(line):
-                            lines.append(line)
-                    else:
-                        media = line
-                        self._fixup_media(lines, media)
-                        lines = []
-                    if self.break_timer:
-                        self._chk_break()
-                time.sleep(1)
+            self._read_m3u8_lines()
+
 
     def _parse_line(self, line):
         """
@@ -647,6 +658,13 @@ class HlsParser:
                 self.break_timer = 0.0
         print2(f"{iso8601()}{REV} Break Timer {NORM} {self.break_timer}\n")
 
+    def _set_mpegts(self,line):
+        mpegts = False
+        if "MPEGTS" in line:
+            line = line.replace("-MPEGTS", "")
+            mpegts = True
+        return mpegts
+
     def _set_cue_state(self, cue, line):
         """
         _set_cue_state determines cue_state
@@ -654,10 +672,7 @@ class HlsParser:
         """
         if line.startswith("##"):
             return line
-        mpegts = False
-        if "MPEGTS" in line:
-            line = line.replace("-MPEGTS", "")
-            mpegts = True
+        mpegts=self._set_mpegts(line)
         if isinstance(cue, int):
             cue = f"{cue}"
         if "CONT" not in line:
