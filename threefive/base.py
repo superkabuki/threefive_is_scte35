@@ -21,9 +21,7 @@ class SCTE35Base:
 
     @staticmethod
     def _chk_nbin(nbin):
-        if not nbin:
-            nbin = NBin()
-        return nbin
+        return (nbin, NBin())[not nbin]
 
     @staticmethod
     def _err2(var_name, var_value, bit_count, var_type):
@@ -100,15 +98,12 @@ class SCTE35Base:
                 >>> idxsplit('123456789',4)
                 >>>'456789'
         """
-        if sep in data:
-            return data[data.index(sep) :]
-        return data
+
+        return (data, data[data.index(sep) :])[sep in data]
 
     @staticmethod
     def _json2dict(data):
-        if isinstance(data, str):
-            data = json.loads(data)
-        return data
+        return (data, json.loads(data))[isinstance(data, str)]
 
     def _chk_var(self, var_type, nbin_method, var_name, bit_count):
         """
@@ -156,6 +151,30 @@ class SCTE35Base:
             return vars(self)[what]
         return None
 
+    def _isbytes(self, val):
+        bites = (
+            bytes,
+            bytearray,
+        )
+        if isinstance(val, bites):
+            return val.decode(errors="ignore")
+        return False
+
+    def _islist(self, val):
+        if isinstance(val, list):
+            return [self._v2v(v) for v in val]
+        return False
+
+    def _isdict(self, val):
+        if isinstance(val, dict):
+            return {k: self._v2v(v) for k, v in val.items()}
+        return False
+
+    def _isclass(self, val):
+        if hasattr(val, "__dict__"):
+            return self.kv_clean(val)
+        return False
+
     def json(self):
         """
         json returns self as kv_clean'ed json
@@ -163,21 +182,18 @@ class SCTE35Base:
         return json.dumps(self.get(), indent=4)
 
     def _v2v(self, val):
-        bites = (
-            bytes,
-            bytearray,
-        )
-        if isinstance(val, bites):
-            val = val.decode(errors="ignore")
-        elif isinstance(val, list):
-            val = [self._v2v(v) for v in val]
-        elif isinstance(val, dict):
-            val = {k: self._v2v(v) for k, v in val.items()}
-        elif isinstance(val, SCTE35Base):
-            val.kv_clean()
-            print(val)
-        elif hasattr(val, "__dict__"):
-            val = {k: self._v2v(v) for k, v in val.__dict__.items()}
+        new_val = [
+            x
+            for x in [
+                self._isbytes(val),
+                self._isdict(val),
+                self._islist(val),
+                self._isclass(val),
+            ]
+            if x
+        ]
+        if new_val:
+            return new_val[0]
         return val
 
     def chk_obj(self, obj):
@@ -204,7 +220,7 @@ class SCTE35Base:
                 None,
                 [],
             ]
-        }  # added empty list []
+        }
 
     def _chk_vars(self, k, v):
         if k in vars(self):
