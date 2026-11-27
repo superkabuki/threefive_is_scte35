@@ -1,16 +1,22 @@
 # `[ threefive ]` 
-*   Decodes SCTE-35 from MPEGTS✔ Base64✔ Bytes✔ DASH✔ Hex✔ HLS✔ Integer✔ JSON✔ XML✔ XML+Binary✔  
-*   Encodes SCTE-35 to   MPEGTS✔ Base64✔ Bytes✔ Hex✔ Integer✔ JSON ✔ XML✔  XML+Binary✔
+*   __Decodes SCTE-35__ from MPEGTS✔ Base64✔ Bytes✔ DASH✔ Hex✔ HLS✔ Integer✔ JSON✔ XML✔ XML+Binary✔  
+*   __Encodes SCTE-35__ to   MPEGTS✔ Base64✔ Bytes✔ Hex✔ Integer✔ JSON ✔ XML✔  XML+Binary✔
 
 __***__ _if you need to encode SCTE-35 to HLS, use [x9k3](https://github.com/supeerkabuki/x9k3)._  
 ___
+
+
+
+## `[ Heads Up! ]`
+
+* __11/27/2026__ "Update on the threefive __versioning__ system" __OR__ "I am one of a million."
+	* I did some research last night, and it __turns out I am not the first person to have this idea__, a lot of people have been doing this for years, __they have a spec and a website and everything__. It's called __Cal-versioning__ (_or something like that_). I am now on the __Cal-Versioning__(_or something like that_) bandwagon. 
+
+* __11/25/2026__ I am changing the __version__ system used on threefive.
+	*   threefive versions will now be in the format __YYYY.MM.DD__ like __v2026.11.25__  for November 11th 2026.
+	* We'll try it and if it everybody hates it, I'll switch it back.
+___
 # `[ version ]`
-
-
-## Heads Up!
-__I am changing the version system used on threefive__.<br> I do a lot of releases, so to make a bit clearer, threefive versions will now be in the format<br>
-__YYYY.MM.DD__ like __v2026.11.25__  for November 11th 2026. <BR>
-We'll try it and if it everybody hates it, I'll switch it back.
 
 ## latest threefive version is v2026.11.25
 * pylint:  __9.82__/10.0
@@ -22,18 +28,13 @@ We'll try it and if it everybody hates it, I'll switch it back.
 * check the [__change log__](changes.md)
 ___
 
-# [ public relations ]
-> I received an email last Tuesday that said,<BR>
- ___" I don't like python stop being such a dick."___
+# `[ public relations ]`
 
-In hopes of coming across as __less of a dick,__ I offer the following,
+>  I am deep. I have layers. _~Adrian_
 
-* [Super Karate Death Car](https://github.com/superkabuki/skdc) the world's fastest SCTE-35 parser, written in Golang.
-* [Sassy https://iodisco.com/sassy](https://github.com/superkabuki/threefive_is_scte35/sassy.md) Scte35 Parsing over https, no python required.<BR>
-	* [sassy example open in a browser or with curl or whatever](https://iodisco.com/cb/sassy?scte35=%3Cscte35%3ASpliceInfoSection%20xmlns%3Ascte35%3D%22https%3A//scte.org/schemas/35%22%20%20ptsAdjustment%3D%220%22%20protocolVersion%3D%220%22%20sapType%3D%223%22%20tier%3D%224095%22%3E%0A%20%20%20%3Cscte35%3ASpliceInsert%20spliceEventId%3D%221073743095%22%20spliceEventCancelIndicator%3D%22false%22%20spliceImmediateFlag%3D%22false%22%20eventIdComplianceFlag%3D%22true%22%20availNum%3D%2212%22%20availsExpected%3D%225%22%20outOfNetworkIndicator%3D%22true%22%20uniqueProgramId%3D%221%22%3E%0A%20%20%20%20%20%20%3Cscte35%3AProgram%3E%0A%20%20%20%20%20%20%20%20%20%3Cscte35%3ASpliceTime%20ptsTime%3D%222116514489%22/%3E%0A%20%20%20%20%20%20%3C/scte35%3AProgram%3E%0A%20%20%20%20%20%20%3Cscte35%3ABreakDuration%20autoReturn%3D%22false%22%20duration%3D%2216200000%22/%3E%0A%20%20%20%3C/scte35%3ASpliceInsert%3E%0A%20%20%20%3Cscte35%3AAvailDescriptor%20providerAvailId%3D%2212%22/%3E%0A%20%20%20%3Cscte35%3AAvailDescriptor%20providerAvailId%3D%2213%22/%3E%0A%20%20%20%3Cscte35%3AAvailDescriptor%20providerAvailId%3D%2214%22/%3E%0A%20%20%20%3Cscte35%3AAvailDescriptor%20providerAvailId%3D%2215%22/%3E%0A%20%20%20%3Cscte35%3AAvailDescriptor%20providerAvailId%3D%2216%22/%3E%0A%20%20%20%3Cscte35%3AAvailDescriptor%20providerAvailId%3D%2217%22/%3E%0A%3C/scte35%3ASpliceInfoSection%3E%0A)
-	* Sassy https://iodisco.com/sassy
 
-> See? I am deep. I have layers. _~Adrian_
+* [Super Karate Death Car](https://github.com/superkabuki/skdc) 
+
 ___
 
 
