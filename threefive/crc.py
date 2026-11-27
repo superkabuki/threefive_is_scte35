@@ -5,7 +5,6 @@ crc.py  crc32 function for encoding.
 from .crctable import CRCTABLE
 
 INIT_VALUE = 0xFFFFFFFF
-GONZO = 0xFFFFFF00
 EIGHT = 0x08
 TWENTYFOUR = 0x18
 TWOFIFTYFIVE = 0xFF
@@ -18,7 +17,7 @@ def crc32(data):
     crc = INIT_VALUE
     for bite in data:
         crc = CRCTABLE[bite ^ ((crc >> TWENTYFOUR) & TWOFIFTYFIVE)] ^ (
-            (crc << EIGHT) & (GONZO)
+            (crc << EIGHT) & (INIT_VALUE - TWOFIFTYFIVE)
         )
     return crc
 
