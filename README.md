@@ -21,6 +21,22 @@ We'll try it and if it everybody hates it, I'll switch it back.
 * __piping SCTE-35__ data into the __threefive cli__ tool __now works on Windows too__ the __select call__ has been __removed__. 
 * check the [__change log__](changes.md)
 ___
+
+# [ public relations ]
+> I received an email last Tuesday that said,<BR>
+ ___" I don't like python stop being such a dick."___
+
+In hopes of coming across as __less of a dick,__ I offer the following,
+
+* [Super Karate Death Car](https://github.com/superkabuki/skdc) the world's fastest SCTE-35 parser, written in Golang.
+* [Sassy https://iodisco.com/sassy](https://github.com/superkabuki/threefive_is_scte35/sassy.md) Scte35 Parsing over https, no python required.<BR>
+	* [sassy example open in a browser or with curl or whatever](https://iodisco.com/cb/sassy?scte35=%3Cscte35%3ASpliceInfoSection%20xmlns%3Ascte35%3D%22https%3A//scte.org/schemas/35%22%20%20ptsAdjustment%3D%220%22%20protocolVersion%3D%220%22%20sapType%3D%223%22%20tier%3D%224095%22%3E%0A%20%20%20%3Cscte35%3ASpliceInsert%20spliceEventId%3D%221073743095%22%20spliceEventCancelIndicator%3D%22false%22%20spliceImmediateFlag%3D%22false%22%20eventIdComplianceFlag%3D%22true%22%20availNum%3D%2212%22%20availsExpected%3D%225%22%20outOfNetworkIndicator%3D%22true%22%20uniqueProgramId%3D%221%22%3E%0A%20%20%20%20%20%20%3Cscte35%3AProgram%3E%0A%20%20%20%20%20%20%20%20%20%3Cscte35%3ASpliceTime%20ptsTime%3D%222116514489%22/%3E%0A%20%20%20%20%20%20%3C/scte35%3AProgram%3E%0A%20%20%20%20%20%20%3Cscte35%3ABreakDuration%20autoReturn%3D%22false%22%20duration%3D%2216200000%22/%3E%0A%20%20%20%3C/scte35%3ASpliceInsert%3E%0A%20%20%20%3Cscte35%3AAvailDescriptor%20providerAvailId%3D%2212%22/%3E%0A%20%20%20%3Cscte35%3AAvailDescriptor%20providerAvailId%3D%2213%22/%3E%0A%20%20%20%3Cscte35%3AAvailDescriptor%20providerAvailId%3D%2214%22/%3E%0A%20%20%20%3Cscte35%3AAvailDescriptor%20providerAvailId%3D%2215%22/%3E%0A%20%20%20%3Cscte35%3AAvailDescriptor%20providerAvailId%3D%2216%22/%3E%0A%20%20%20%3Cscte35%3AAvailDescriptor%20providerAvailId%3D%2217%22/%3E%0A%3C/scte35%3ASpliceInfoSection%3E%0A)
+	* Sassy https://iodisco.com/sassy
+
+> See? I am deep. I have layers. _~Adrian_
+___
+
+
 # `[ a really really quick start ]`
 
 * __Install__
