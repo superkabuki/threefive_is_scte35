@@ -30,10 +30,10 @@ ___
 
 # `[ public relations ]`
 
->  I am deep. I have layers. _~Adrian_
+>  I am deep, deep like a [Super Karate Death Car](https://github.com/superkabuki/skdc) . I have layers. _~Adrian_
 
 
-* [Super Karate Death Car](https://github.com/superkabuki/skdc) 
+*  
 
 ___
 
