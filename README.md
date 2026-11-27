@@ -75,7 +75,8 @@ threefive 'https;//iodisco.com/longb2.ts' bytes
 threefive udp://@235.3.5.35:3535
 ```
  
-* __threefive does a lot more__, that was just to get you started.
+* __threefive__ does a lot more, that was just to get you started.
+* __writing code__ with __threefive__ is [__easy__ like Sunday morning](easy.md)
 ___
 
 
