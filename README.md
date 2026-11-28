@@ -9,6 +9,7 @@ ___
 
 ## `[ Heads Up! ]`
 
+* __11/27/2026__ Socialism is for the people, except the that the Mayor makes a lot more money than you do, and has much better insurance.In four years, he'll write a book and retire, and you'll have to work for 25 more years. 
 * __11/27/2026__ "Update on the threefive __versioning__ system" __OR__ "I am one of a million."
 	* I did some research last night, and it __turns out I am not the first person to have this idea__, a lot of people have been doing this for years, __they have a spec and a website and everything__. It's called __Cal-versioning__ (_or something like that_). I am now on the __Cal-Versioning__(_or something like that_) bandwagon. 
 
