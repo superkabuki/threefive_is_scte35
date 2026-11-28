@@ -6,16 +6,16 @@ __***__ _if you need to encode SCTE-35 to HLS, use [x9k3](https://github.com/sup
 ___
 
 
-
 ## `[ Heads Up! ]`
 
-* __11/27/2026__ Socialism is for the people, except the that the Mayor makes a lot more money than you do, and has much better insurance. In four years, he'll write a book about his 'Socialist experiment' and retire off the capitalism of book sales. You'll have to work for 25 more years. 
+  
 * __11/27/2026__ "Update on the threefive __versioning__ system" __OR__ "I am one of a million."
 	* I did some research last night, and it __turns out I am not the first person to have this idea__, a lot of people have been doing this for years, __they have a spec and a website and everything__. It's called __Cal-versioning__ (_or something like that_). I am now on the __Cal-Versioning__(_or something like that_) bandwagon. 
 
 * __11/25/2026__ I am changing the __version__ system used on threefive.
 	*   threefive versions will now be in the format __YYYY.MM.DD__ like __v2026.11.25__  for November 11th 2026.
 	* We'll try it and if it everybody hates it, I'll switch it back.
+ 
 ___
 # `[ version ]`
 
@@ -780,3 +780,5 @@ ___
 ___
 
 # [⇧](#-documentation-)
+
+> Socialism is fair and inclusive for everyone, except the that the Mayor makes a lot more money than you do, and has much better insurance. In four years, he'll write a book about his 'Socialist experiment' and retire off the capitalism of book sales. You'll have to work for 25 more years.
